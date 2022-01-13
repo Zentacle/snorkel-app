@@ -29,7 +29,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="1nC-zT-qxx">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="849"/>
+                                <rect key="frame" x="0.0" y="-23" width="414" height="907"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
                             </imageView>
@@ -52,6 +52,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="LaunchScreen" width="768" height="1024"/>
+        <image name="LaunchScreen" width="160" height="289"/>
     </resources>
 </document>
