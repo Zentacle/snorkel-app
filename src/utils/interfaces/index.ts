@@ -1,7 +1,7 @@
 import type { ViewStyle, TextStyle, ImageStyle } from 'react-native';
 
 export type RootStackParamList = {
-  Home: undefined;
+  Landing: undefined;
 };
 
 export interface Page {
