@@ -1,19 +1,17 @@
 import React from 'react';
 import {
   SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
+  // useColorScheme,
   View,
   ImageBackground,
   Dimensions,
 } from 'react-native';
 
-import Button from '../Components/Button';
-
+import Button from './components/SM-Logins';
 import CoverImage from '../../assets/main-screen.png';
+
 const HEIGHT = Dimensions.get('window').width;
 
 interface ActionButtons {

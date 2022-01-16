@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import type { RootStackParamList } from '../utils/interfaces';
 
-import Landing from '../Containers/Landing';
+import Landing from '../Screens/Onboarding';
 
 const Navigator: React.FC = () => {
   const Stack = createNativeStackNavigator<RootStackParamList>();
