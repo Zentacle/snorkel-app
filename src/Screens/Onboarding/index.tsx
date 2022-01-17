@@ -9,8 +9,14 @@ import {
   Dimensions,
 } from 'react-native';
 
-import Button from './components/SM-Logins';
+import type { ImageSourcePropType } from 'react-native';
+
+import SMButton from './components/SM-Logins';
+import Button from '../../Components/ui/Button';
 import CoverImage from '../../assets/main-screen.png';
+import AppleLogo from '../../assets/logos/apple-logo/AppleLogo.png';
+import FacebookLogo from '../../assets/logos/facebook-logo/FacebookLogo.png';
+import GoogleLogo from '../../assets/logos/google-logo/GoogleLogo.png';
 
 const HEIGHT = Dimensions.get('window').width;
 
@@ -18,6 +24,7 @@ interface ActionButtons {
   name: string;
   icon: string;
   action: () => void;
+  imageSource: ImageSourcePropType;
 }
 
 const App = () => {
@@ -26,20 +33,23 @@ const App = () => {
       name: 'Apple',
       icon: '',
       action: () => {},
+      imageSource: AppleLogo,
     },
     {
       name: 'Google',
       icon: '',
       action: () => {},
+      imageSource: GoogleLogo,
     },
     {
       name: 'Facebook',
       icon: '',
       action: () => {},
+      imageSource: FacebookLogo,
     },
   ];
   return (
-    <SafeAreaView style={styles.backgroundImage}>
+    <SafeAreaView style={styles.container}>
       <ImageBackground style={styles.backgroundImage} source={CoverImage}>
         <View>
           <View style={styles.introTextContainer}>
@@ -49,19 +59,40 @@ const App = () => {
           </View>
           <View style={styles.buttonsContainer}>
             {actionButtons.map((actionButton, index) => (
-              <Button
+              <SMButton
                 key={index}
+                imageSource={actionButton.imageSource}
                 style={{
                   container: {
                     backgroundColor: 'white',
                   },
                   text: {
                     color: 'black',
+                    fontSize: 16,
+                    fontWeight: '800',
                   },
                 }}>
                 Continue with {actionButton.name}
-              </Button>
+              </SMButton>
             ))}
+            <View style={styles.altDirContainer}>
+              <Text style={styles.altDirText}>OR</Text>
+            </View>
+            <Button
+              style={{
+                container: {
+                  backgroundColor: 'white',
+                  borderRadius: 7,
+                  padding: 15,
+                },
+                text: {
+                  color: 'black',
+                  fontSize: 16,
+                  fontWeight: '800',
+                },
+              }}>
+              Email
+            </Button>
           </View>
         </View>
       </ImageBackground>
@@ -81,7 +112,7 @@ const styles = StyleSheet.create({
     zIndex: 0,
   },
   introTextContainer: {
-    marginHorizontal: 20,
+    marginHorizontal: 15,
     alignItems: 'center',
     marginTop: HEIGHT * 0.4,
   },
@@ -90,7 +121,16 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   buttonsContainer: {
-    marginTop: 20,
+    marginTop: HEIGHT * 0.06,
+    marginHorizontal: 15,
+  },
+  altDirContainer: {
+    alignItems: 'center',
+    marginVertical: 5,
+  },
+  altDirText: {
+    color: '#FFF',
+    fontWeight: '600',
   },
 });
 

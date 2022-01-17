@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
 import type { FunctionComponent } from 'react';
 import type { NamedStyles } from '../../../utils/interfaces';
+
+import type { ImageSourcePropType } from 'react-native';
 
 interface ButtonProps {
   onPress?: () => any;
@@ -12,6 +14,7 @@ interface ButtonProps {
   };
   disabled?: boolean;
   inactiveColor?: string;
+  imageSource: ImageSourcePropType;
 }
 
 export const Button: FunctionComponent<ButtonProps> = (props): JSX.Element => {
@@ -25,6 +28,7 @@ export const Button: FunctionComponent<ButtonProps> = (props): JSX.Element => {
           elevation: 1,
         },
       ]}>
+      <Image style={styles.image} source={props.imageSource} />
       <Text
         style={[
           styles.text,
@@ -35,6 +39,7 @@ export const Button: FunctionComponent<ButtonProps> = (props): JSX.Element => {
         ]}>
         {props.children}
       </Text>
+      <View />
     </View>
   );
 
@@ -46,14 +51,17 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
     marginHorizontal: 10,
-    padding: 10,
+    padding: 15,
     elevation: 3,
-    borderRadius: 3,
+    borderRadius: 7,
     backgroundColor: 'grey',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
+  image: {},
   text: {
     color: '#FFF',
-    alignSelf: 'center',
+    textAlign: 'center',
   },
 });
 
