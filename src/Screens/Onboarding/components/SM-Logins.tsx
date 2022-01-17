@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import MaskedView from '@react-native-masked-view/masked-view';
+import LinearGradient from 'react-native-linear-gradient';
 
 import type { FunctionComponent } from 'react';
 import type { ImageSourcePropType } from 'react-native';
@@ -17,6 +19,44 @@ interface ButtonProps {
 }
 
 export const Button: FunctionComponent<ButtonProps> = (props): JSX.Element => {
+  const textComp = (
+    <MaskedView
+      maskElement={
+        <Text
+          style={[
+            styles.text,
+            props.style?.text,
+            props.disabled && {
+              color: 'grey',
+            },
+          ]}>
+          {props.children}
+        </Text>
+      }>
+      <LinearGradient
+        start={{
+          x: 0.003,
+          y: 3.75,
+        }}
+        end={{
+          x: 1.5,
+          y: 0.08,
+        }}
+        colors={['#AA00FF', '#00E0FF']}>
+        <Text
+          style={[
+            styles.text,
+            props.style?.text,
+            props.disabled && {
+              color: 'grey',
+            },
+            { opacity: 0 },
+          ]}>
+          {props.children}
+        </Text>
+      </LinearGradient>
+    </MaskedView>
+  );
   const button = (
     <View
       style={[
@@ -28,16 +68,7 @@ export const Button: FunctionComponent<ButtonProps> = (props): JSX.Element => {
         },
       ]}>
       <Image style={styles.image} source={props.imageSource} />
-      <Text
-        style={[
-          styles.text,
-          props.style?.text,
-          props.disabled && {
-            color: 'grey',
-          },
-        ]}>
-        {props.children}
-      </Text>
+      {textComp}
       <View />
     </View>
   );
@@ -48,9 +79,9 @@ export const Button: FunctionComponent<ButtonProps> = (props): JSX.Element => {
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 10,
+    marginVertical: 5,
     marginHorizontal: 10,
-    padding: 15,
+    padding: 12,
     elevation: 3,
     borderRadius: 7,
     backgroundColor: 'grey',

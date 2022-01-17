@@ -7,12 +7,14 @@ import {
   View,
   ImageBackground,
   Dimensions,
+  TouchableWithoutFeedback,
 } from 'react-native';
 
 import type { ImageSourcePropType } from 'react-native';
-
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RootStackParamList } from '_utils/interfaces';
 import SMButton from './components/SM-Logins';
-import Button from '_components/ui/Button';
+import Button from '_components/ui/Buttons/Button';
 import CoverImage from '_assets/main-screen.png';
 import AppleLogo from '_assets/logos/apple-logo/AppleLogo.png';
 import FacebookLogo from '_assets/logos/facebook-logo/FacebookLogo.png';
@@ -26,8 +28,16 @@ interface ActionButtons {
   action: () => void;
   imageSource: ImageSourcePropType;
 }
+type LandingScreenNavigationProps = NativeStackNavigationProp<
+  RootStackParamList,
+  'Landing'
+>;
 
-const App = () => {
+interface LandingProps {
+  navigation: LandingScreenNavigationProps;
+}
+
+const App = (props: LandingProps) => {
   const actionButtons: ActionButtons[] = [
     {
       name: 'Apple',
@@ -48,6 +58,11 @@ const App = () => {
       imageSource: FacebookLogo,
     },
   ];
+
+  const navigateToSignIn = () => {
+    props.navigation.navigate('SignIn');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground style={styles.backgroundImage} source={CoverImage}>
@@ -65,6 +80,7 @@ const App = () => {
                 style={{
                   container: {
                     backgroundColor: 'white',
+                    borderRadius: 10,
                   },
                   text: {
                     color: 'black',
@@ -79,20 +95,54 @@ const App = () => {
               <Text style={styles.altDirText}>OR</Text>
             </View>
             <Button
+              // onPress={navigateToSignIn}
+              gradient
+              gradientColors={['#AA00FF', '#00E0FF']}
+              gradientLocations={[-0.0332, 1.1906]}
+              start={{
+                x: 0.003,
+                y: 3.75,
+              }}
+              end={{
+                x: 1.5,
+                y: 0.08,
+              }}
               style={{
                 container: {
                   backgroundColor: 'white',
-                  borderRadius: 7,
-                  padding: 15,
+                  borderRadius: 12,
+                  padding: 12,
                 },
                 text: {
-                  color: 'black',
+                  color: '#FFF',
                   fontSize: 16,
                   fontWeight: '800',
                 },
               }}>
               Email
             </Button>
+          </View>
+          <View style={styles.privacyContainer}>
+            <Text style={styles.privacyText}>
+              By proceeding, you agree to our&nbsp;
+              <TouchableWithoutFeedback>
+                <Text style={styles.privacyLink}>Terms of Use </Text>
+              </TouchableWithoutFeedback>
+              and confirm that you have read our&nbsp;
+              <TouchableWithoutFeedback>
+                <Text style={styles.privacyLink}>
+                  Privacy and Cookie Statement.
+                </Text>
+              </TouchableWithoutFeedback>
+            </Text>
+          </View>
+          <View style={styles.signInContainer}>
+            <Text style={styles.signInText}>
+              Have an Account, &nbsp;
+              <TouchableWithoutFeedback onPress={navigateToSignIn}>
+                <Text style={styles.signInHighlight}>Sign In</Text>
+              </TouchableWithoutFeedback>
+            </Text>
           </View>
         </View>
       </ImageBackground>
@@ -114,7 +164,7 @@ const styles = StyleSheet.create({
   introTextContainer: {
     marginHorizontal: 15,
     alignItems: 'center',
-    marginTop: HEIGHT * 0.4,
+    marginTop: HEIGHT * 0.38,
   },
   introText: {
     fontSize: 32,
@@ -126,11 +176,36 @@ const styles = StyleSheet.create({
   },
   altDirContainer: {
     alignItems: 'center',
-    marginVertical: 5,
+    marginVertical: 4,
   },
   altDirText: {
     color: '#FFF',
     fontWeight: '600',
+  },
+  privacyContainer: {
+    marginHorizontal: 10,
+    marginTop: 5,
+  },
+  privacyText: {
+    textAlign: 'center',
+    color: '#FFF',
+  },
+  privacyLink: {
+    textDecorationStyle: 'dotted',
+    textDecorationLine: 'underline',
+  },
+  signInContainer: {
+    marginTop: 10,
+  },
+  signInText: {
+    textAlign: 'center',
+    fontSize: 15,
+    fontWeight: '400',
+    color: '#FFF',
+  },
+  signInHighlight: {
+    color: '#AA00FF',
+    fontWeight: '700',
   },
 });
 
