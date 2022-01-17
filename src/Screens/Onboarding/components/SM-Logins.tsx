@@ -2,9 +2,8 @@ import * as React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
 import type { FunctionComponent } from 'react';
-import type { NamedStyles } from '../../../utils/interfaces';
-
 import type { ImageSourcePropType } from 'react-native';
+import type { NamedStyles } from '_utils/interfaces';
 
 interface ButtonProps {
   onPress?: () => any;

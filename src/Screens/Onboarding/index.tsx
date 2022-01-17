@@ -12,11 +12,11 @@ import {
 import type { ImageSourcePropType } from 'react-native';
 
 import SMButton from './components/SM-Logins';
-import Button from '../../Components/ui/Button';
-import CoverImage from '../../assets/main-screen.png';
-import AppleLogo from '../../assets/logos/apple-logo/AppleLogo.png';
-import FacebookLogo from '../../assets/logos/facebook-logo/FacebookLogo.png';
-import GoogleLogo from '../../assets/logos/google-logo/GoogleLogo.png';
+import Button from '_components/ui/Button';
+import CoverImage from '_assets/main-screen.png';
+import AppleLogo from '_assets/logos/apple-logo/AppleLogo.png';
+import FacebookLogo from '_assets/logos/facebook-logo/FacebookLogo.png';
+import GoogleLogo from '_assets/logos/google-logo/GoogleLogo.png';
 
 const HEIGHT = Dimensions.get('window').width;
 

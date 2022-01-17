@@ -21,11 +21,10 @@
     "moduleResolution": "node",
     "baseUrl": "./",
     "paths": {
-      // "app": ["src"],
-      // "_assets": ["assets"],
-      // "_components": ["src/Components"],
-      // "_screens": ["src/Screens"],
-      // "_utils": ["src/utils"]
+      "_assets/*": ["assets/*"],
+      "_components/*": ["src/Components/*"],
+      "_screens/*": ["src/Screens/*"],
+      "_utils/*": ["src/utils/*"]
     },
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
