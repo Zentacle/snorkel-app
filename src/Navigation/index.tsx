@@ -4,22 +4,20 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import type { RootStackParamList } from '_utils/interfaces';
 
-import Landing from '_screens/Auth/Landing';
-import SignIn from '_screens/Auth/SignIn';
-import EmailSignUp from '_screens/Auth/EmailSignUp';
+import AuthNavigator from './Auth';
+import OnboardingNavigator from './Onboarding';
 
 const Navigator: React.FC = () => {
   const Stack = createNativeStackNavigator<RootStackParamList>();
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Landing"
+        initialRouteName="Auth"
         screenOptions={{
           headerShown: false,
         }}>
-        <Stack.Screen name="Landing" component={Landing} />
-        <Stack.Screen name="SignIn" component={SignIn} />
-        <Stack.Screen name="EmailSignUp" component={EmailSignUp} />
+        <Stack.Screen name="Auth" component={AuthNavigator} />
+        <Stack.Screen name="OnBoarding" component={OnboardingNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
   );
