@@ -4,9 +4,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import type { RootStackParamList } from '_utils/interfaces';
 
-import Landing from '_screens/Onboarding';
-import SignIn from '_screens/Onboarding/SignIn';
-import EmailSignUp from '_screens/Onboarding/EmailSignUp';
+import Landing from '_screens/Auth/Landing';
+import SignIn from '_screens/Auth/SignIn';
+import EmailSignUp from '_screens/Auth/EmailSignUp';
 
 const Navigator: React.FC = () => {
   const Stack = createNativeStackNavigator<RootStackParamList>();
