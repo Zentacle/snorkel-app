@@ -86,13 +86,13 @@ const SignIn: FunctionComponent<SignInProps> = props => {
           <Input
             placeholder="Email"
             placeholderTextColor="#BFBFBF"
-            style={{ color: 'black' }}
+            // style={{ color: 'black' }}
             containerStyle={styles.inputContainer}
           />
           <Input
             placeholder="Password"
             placeholderTextColor="#BFBFBF"
-            style={{ color: 'black' }}
+            // style={{ color: 'black' }}
             containerStyle={styles.inputContainer}
             passwordType
           />
@@ -116,6 +116,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
                 backgroundColor: 'white',
                 borderRadius: 12,
                 padding: 12,
+                marginVertical: HEIGHT < 400 ? 10 : 20,
               },
               text: {
                 color: '#FFF',
@@ -136,6 +137,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
                 container: {
                   backgroundColor: 'white',
                   borderRadius: 10,
+                  marginVertical: HEIGHT < 400 ? 5 : 10,
                 },
                 text: {
                   color: 'black',
@@ -187,9 +189,8 @@ const styles = StyleSheet.create({
   },
   introTextContainer: {
     marginHorizontal: 25,
-    // alignItems: 'center',
-    marginTop: HEIGHT * 0.08,
-    marginBottom: HEIGHT * 0.08,
+    marginTop: HEIGHT < 400 ? HEIGHT * 0.07 : HEIGHT * 0.12,
+    marginBottom: HEIGHT < 400 ? HEIGHT * 0.07 : HEIGHT * 0.12,
   },
   introText: {
     fontSize: 32,
@@ -211,7 +212,7 @@ const styles = StyleSheet.create({
   },
   privacyContainer: {
     marginHorizontal: 10,
-    marginTop: 5,
+    marginTop: HEIGHT < 400 ? 5 : 15,
   },
   privacyText: {
     textAlign: 'center',
@@ -222,7 +223,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   signInContainer: {
-    marginTop: 10,
+    marginTop: HEIGHT < 400 ? 10 : 20,
   },
   signInText: {
     textAlign: 'center',

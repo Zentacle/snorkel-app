@@ -84,7 +84,7 @@ const Input: FunctionComponent<InputProps> = (props): JSX.Element => {
           { flexDirection: 'row', justifyContent: 'space-between' },
         ]}>
         <TextInput
-          style={[styles.input, props.style, { width: 500 }]}
+          style={[styles.input, props.style]}
           secureTextEntry={secureTextEntry}
           {...(props as unknown as FilteredInputProps)}
         />
@@ -117,7 +117,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     borderRadius: 8,
   },
-  input: {},
+  input: {
+    height: 40,
+    color: 'black',
+  },
 });
 
 export default Input;

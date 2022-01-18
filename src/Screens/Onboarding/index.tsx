@@ -83,6 +83,7 @@ const Landing: FunctionComponent<LandingProps> = props => {
                   container: {
                     backgroundColor: 'white',
                     borderRadius: 10,
+                    marginVertical: HEIGHT < 400 ? 5 : 10,
                   },
                   text: {
                     color: 'black',
@@ -114,6 +115,7 @@ const Landing: FunctionComponent<LandingProps> = props => {
                   backgroundColor: 'white',
                   borderRadius: 12,
                   padding: 12,
+                  marginVertical: HEIGHT < 400 ? 10 : 20,
                 },
                 text: {
                   color: '#FFF',
@@ -166,14 +168,15 @@ const styles = StyleSheet.create({
   introTextContainer: {
     marginHorizontal: 15,
     alignItems: 'center',
-    marginTop: HEIGHT * 0.38,
+    marginTop: HEIGHT < 400 ? HEIGHT * 0.38 : HEIGHT * 0.44,
   },
   introText: {
     fontSize: 32,
     fontWeight: '600',
+    color: '#FFF',
   },
   buttonsContainer: {
-    marginTop: HEIGHT * 0.06,
+    marginTop: HEIGHT < 400 ? HEIGHT * 0.06 : HEIGHT * 0.15,
     marginHorizontal: 15,
   },
   altDirContainer: {
@@ -186,7 +189,7 @@ const styles = StyleSheet.create({
   },
   privacyContainer: {
     marginHorizontal: 10,
-    marginTop: 5,
+    marginTop: HEIGHT < 400 ? 5 : 15,
   },
   privacyText: {
     textAlign: 'center',
@@ -197,7 +200,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   signInContainer: {
-    marginTop: 10,
+    marginTop: HEIGHT < 400 ? 10 : 20,
   },
   signInText: {
     textAlign: 'center',
