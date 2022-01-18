@@ -40,6 +40,12 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
     props.navigation.navigate('SignIn');
   };
 
+  const navigateToOnboarding = () => {
+    props.navigation.navigate('OnBoarding', {
+      screen: 'ChooseUserName',
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAwareScrollView>
@@ -69,7 +75,7 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
         </View>
         <View style={styles.buttonsContainer}>
           <Button
-            // onPress={navigateToEmailRegister}
+            onPress={navigateToOnboarding}
             gradient
             gradientColors={['#AA00FF', '#00E0FF']}
             gradientLocations={[0.0332, 1]}
