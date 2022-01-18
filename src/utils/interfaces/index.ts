@@ -10,16 +10,15 @@ export type AuthtackParamList = {
 export type OnboardingStackParamList = {
   ChooseUserName: undefined;
   ChooseAvatar: undefined;
+  CameraPermissions: undefined;
+  LocationPermissions: undefined;
+  MeasurementType: undefined;
+  ActivityType: undefined;
 };
 
 export type RootStackParamList = {
   Auth: NavigatorScreenParams<AuthtackParamList>;
   OnBoarding: NavigatorScreenParams<OnboardingStackParamList>;
 };
-
-export interface Page {
-  name: string;
-  componentName: keyof RootStackParamList;
-}
 
 export type NamedStyles = ViewStyle | TextStyle | ImageStyle;
