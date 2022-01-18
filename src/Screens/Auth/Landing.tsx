@@ -10,7 +10,6 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 
-import type { ImageSourcePropType } from 'react-native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { FunctionComponent } from 'react';
 import type { RootStackParamList } from '_utils/interfaces';
@@ -18,18 +17,10 @@ import type { RootStackParamList } from '_utils/interfaces';
 import SMButton from './components/SM-Logins';
 import Button from '_components/ui/Buttons/Button';
 import CoverImage from '_assets/main-screen.png';
-import AppleLogo from '_assets/logos/apple-logo/AppleLogo.png';
-import FacebookLogo from '_assets/logos/facebook-logo/FacebookLogo.png';
-import GoogleLogo from '_assets/logos/google-logo/GoogleLogo.png';
+import { actionButtons } from './utils';
 
 const HEIGHT = Dimensions.get('window').width;
 
-interface ActionButtons {
-  name: string;
-  icon: string;
-  action: () => void;
-  imageSource: ImageSourcePropType;
-}
 type LandingScreenNavigationProps = NativeStackNavigationProp<
   RootStackParamList,
   'Landing'
@@ -40,27 +31,6 @@ interface LandingProps {
 }
 
 const Landing: FunctionComponent<LandingProps> = props => {
-  const actionButtons: ActionButtons[] = [
-    {
-      name: 'Apple',
-      icon: '',
-      action: () => {},
-      imageSource: AppleLogo,
-    },
-    {
-      name: 'Google',
-      icon: '',
-      action: () => {},
-      imageSource: GoogleLogo,
-    },
-    {
-      name: 'Facebook',
-      icon: '',
-      action: () => {},
-      imageSource: FacebookLogo,
-    },
-  ];
-
   const navigateToSignIn = () => {
     props.navigation.navigate('SignIn');
   };

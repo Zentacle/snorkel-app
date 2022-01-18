@@ -10,26 +10,16 @@ import {
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import type { ImageSourcePropType } from 'react-native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { FunctionComponent } from 'react';
 import type { RootStackParamList } from '_utils/interfaces';
 
 import SMButton from './components/SM-Logins';
 import Button from '_components/ui/Buttons/Button';
-import AppleLogo from '_assets/logos/apple-logo/AppleLogo.png';
-import FacebookLogo from '_assets/logos/facebook-logo/FacebookLogo.png';
-import GoogleLogo from '_assets/logos/google-logo/GoogleLogo.png';
 import Input from '_components/ui/Input';
+import { actionButtons } from './utils';
 
 const HEIGHT = Dimensions.get('window').width;
-
-interface ActionButtons {
-  name: string;
-  icon: string;
-  action: () => void;
-  imageSource: ImageSourcePropType;
-}
 
 type LandingScreenNavigationProps = NativeStackNavigationProp<
   RootStackParamList,
@@ -41,27 +31,6 @@ interface SignInProps {
 }
 
 const SignIn: FunctionComponent<SignInProps> = props => {
-  const actionButtons: ActionButtons[] = [
-    {
-      name: 'Apple',
-      icon: '',
-      action: () => {},
-      imageSource: AppleLogo,
-    },
-    {
-      name: 'Google',
-      icon: '',
-      action: () => {},
-      imageSource: GoogleLogo,
-    },
-    {
-      name: 'Facebook',
-      icon: '',
-      action: () => {},
-      imageSource: FacebookLogo,
-    },
-  ];
-
   const navigateBack = () => {
     props.navigation.goBack();
   };
