@@ -124,7 +124,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
                 fontWeight: '800',
               },
             }}>
-            Email
+            Log in
           </Button>
           <View style={styles.altDirContainer}>
             <Text style={styles.altDirText}>OR</Text>
