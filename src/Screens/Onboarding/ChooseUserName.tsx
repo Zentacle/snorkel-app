@@ -51,15 +51,15 @@ const ChooseUserName: FunctionComponent<ChooseUserNameProps> = props => {
         <Button
           onPress={navigateToAvatar}
           gradient
-          gradientColors={['#AA00FF', '#00E0FF']}
-          gradientLocations={[0.0332, 1]}
+          gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+          gradientLocations={[0.0, 1, 1]}
           start={{
-            x: 0.003,
-            y: 3.75,
+            x: 0,
+            y: 0,
           }}
           end={{
-            x: 1.5,
-            y: 0.08,
+            x: 0.06,
+            y: 2.3,
           }}
           style={{
             container: {
