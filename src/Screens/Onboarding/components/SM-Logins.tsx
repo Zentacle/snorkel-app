@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableNativeFeedback,
+  Image,
+} from 'react-native';
 import MaskedView from '@react-native-masked-view/masked-view';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -74,7 +80,11 @@ export const Button: FunctionComponent<ButtonProps> = (props): JSX.Element => {
   );
 
   if (props.disabled) return button;
-  return <TouchableOpacity onPress={props.onPress}>{button}</TouchableOpacity>;
+  return (
+    <TouchableNativeFeedback onPress={props.onPress}>
+      {button}
+    </TouchableNativeFeedback>
+  );
 };
 
 const styles = StyleSheet.create({

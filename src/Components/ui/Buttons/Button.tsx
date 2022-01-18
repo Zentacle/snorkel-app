@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableNativeFeedback } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import type { FunctionComponent } from 'react';
@@ -93,7 +93,11 @@ export const Button: FunctionComponent<ButtonProps & GradientProps> = (
   if (props.disabled) {
     return button;
   }
-  return <TouchableOpacity onPress={props.onPress}>{button}</TouchableOpacity>;
+  return (
+    <TouchableNativeFeedback onPress={props.onPress}>
+      {button}
+    </TouchableNativeFeedback>
+  );
 };
 
 const styles = StyleSheet.create({
