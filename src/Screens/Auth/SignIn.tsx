@@ -15,7 +15,7 @@ import type { CompositeNavigationProp } from '@react-navigation/native';
 import type { FunctionComponent } from 'react';
 import type { RootStackParamList, AuthtackParamList } from '_utils/interfaces';
 
-import SMButton from './components/SM-Logins';
+import SMButton from '_components/ui/Buttons/SM-Logins';
 import Button from '_components/ui/Buttons/Button';
 import Input from '_components/ui/Input';
 import { actionButtons } from './utils';
@@ -69,15 +69,15 @@ const SignIn: FunctionComponent<SignInProps> = props => {
           <Button
             onPress={navigateToEmailRegister}
             gradient
-            gradientColors={['#AA00FF', '#00E0FF']}
-            gradientLocations={[0.0332, 1]}
+            gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+            gradientLocations={[0.01, 1, 1]}
             start={{
-              x: 0.003,
-              y: 3.75,
+              x: 0,
+              y: 0,
             }}
             end={{
-              x: 1.5,
-              y: 0.08,
+              x: 0.06,
+              y: 2.2,
             }}
             style={{
               container: {
