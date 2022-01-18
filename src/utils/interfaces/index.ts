@@ -1,4 +1,5 @@
 import type { ViewStyle, TextStyle, ImageStyle } from 'react-native';
+import { NavigatorScreenParams } from '@react-navigation/native';
 
 export type AuthtackParamList = {
   Landing: undefined;
@@ -11,8 +12,8 @@ export type OnboardingStackParamList = {
 };
 
 export type RootStackParamList = {
-  Auth: undefined;
-  OnBoarding: undefined;
+  Auth: NavigatorScreenParams<AuthtackParamList>;
+  OnBoarding: NavigatorScreenParams<OnboardingStackParamList>;
 };
 
 export interface Page {

@@ -11,8 +11,9 @@ import {
 } from 'react-native';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { CompositeNavigationProp } from '@react-navigation/native';
 import type { FunctionComponent } from 'react';
-import type { RootStackParamList } from '_utils/interfaces';
+import type { RootStackParamList, AuthtackParamList } from '_utils/interfaces';
 
 import SMButton from './components/SM-Logins';
 import Button from '_components/ui/Buttons/Button';
@@ -21,9 +22,9 @@ import { actionButtons } from './utils';
 
 const HEIGHT = Dimensions.get('window').width;
 
-type LandingScreenNavigationProps = NativeStackNavigationProp<
-  RootStackParamList,
-  'Landing'
+type LandingScreenNavigationProps = CompositeNavigationProp<
+  NativeStackNavigationProp<AuthtackParamList, 'Landing'>,
+  NativeStackNavigationProp<RootStackParamList>
 >;
 
 interface LandingProps {

@@ -11,8 +11,9 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { CompositeNavigationProp } from '@react-navigation/native';
 import type { FunctionComponent } from 'react';
-import type { RootStackParamList } from '_utils/interfaces';
+import type { RootStackParamList, AuthtackParamList } from '_utils/interfaces';
 
 import SMButton from './components/SM-Logins';
 import Button from '_components/ui/Buttons/Button';
@@ -21,9 +22,9 @@ import { actionButtons } from './utils';
 
 const HEIGHT = Dimensions.get('window').width;
 
-type LandingScreenNavigationProps = NativeStackNavigationProp<
-  RootStackParamList,
-  'SignIn'
+type LandingScreenNavigationProps = CompositeNavigationProp<
+  NativeStackNavigationProp<AuthtackParamList, 'SignIn'>,
+  NativeStackNavigationProp<RootStackParamList>
 >;
 
 interface SignInProps {
@@ -55,13 +56,11 @@ const SignIn: FunctionComponent<SignInProps> = props => {
           <Input
             placeholder="Email"
             placeholderTextColor="#BFBFBF"
-            // style={{ color: 'black' }}
             containerStyle={styles.inputContainer}
           />
           <Input
             placeholder="Password"
             placeholderTextColor="#BFBFBF"
-            // style={{ color: 'black' }}
             containerStyle={styles.inputContainer}
             passwordType
           />
