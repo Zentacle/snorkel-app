@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import type { OnboardingStackParamList } from '_utils/interfaces';
 
 import ChooseUserName from '_screens/Onboarding/ChooseUserName';
+import ChooseAvatar from '_screens/Onboarding/ChooseAvatar';
 
 const OnboardingNavigator: React.FC = () => {
   const OnboardingStack =
@@ -18,6 +19,7 @@ const OnboardingNavigator: React.FC = () => {
         name="ChooseUserName"
         component={ChooseUserName}
       />
+      <OnboardingStack.Screen name="ChooseAvatar" component={ChooseAvatar} />
     </OnboardingStack.Navigator>
   );
 };

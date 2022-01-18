@@ -1,5 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions, SafeAreaView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  Image,
+  SafeAreaView,
+} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -9,47 +17,49 @@ import type {
   OnboardingStackParamList,
 } from '_utils/interfaces';
 
-import Input from '_components/ui/Input';
 import Button from '_components/ui/Buttons/Button';
+import UploadAvatarIcon from '_assets/UploadAvatarIcon.png';
 
 const HEIGHT = Dimensions.get('window').width;
 
-type ChooseUserNameScreenNavigationProps = CompositeNavigationProp<
-  NativeStackNavigationProp<OnboardingStackParamList, 'ChooseUserName'>,
+type ChooseAvatarScreenNavigationProps = CompositeNavigationProp<
+  NativeStackNavigationProp<OnboardingStackParamList, 'ChooseAvatar'>,
   NativeStackNavigationProp<RootStackParamList>
 >;
 
-interface ChooseUserNameProps {
-  navigation: ChooseUserNameScreenNavigationProps;
+interface ChooseAvatarProps {
+  navigation: ChooseAvatarScreenNavigationProps;
 }
 
-const ChooseUserName: FunctionComponent<ChooseUserNameProps> = props => {
-  const navigateToAvatar = () => {
-    props.navigation.navigate('ChooseAvatar');
+const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
+  const navigateBack = () => {
+    props.navigation.goBack();
   };
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.contentContainer}>
+        <View style={styles.iconBackContainer}>
+          <Icon
+            onPress={navigateBack}
+            name="chevron-back"
+            color="black"
+            size={25}
+          />
+        </View>
         <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>What's your username?</Text>
+          <Text style={styles.headerText}>Choose your avatar</Text>
           <Text style={styles.headerSubtext}>
-            How you will appear in Zentacle
+            Upload your avatar to continue
           </Text>
         </View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>Enter Name</Text>
-          <Input
-            placeholder="Username"
-            placeholderTextColor="#BFBFBF"
-            containerStyle={styles.input}
-          />
+        <View style={styles.iconAddContainer}>
+          <Image source={UploadAvatarIcon} />
         </View>
       </View>
 
       <View style={styles.footer}>
         <Button
-          onPress={navigateToAvatar}
+          // onPress={navigateBack}
           gradient
           gradientColors={['#AA00FF', '#00E0FF']}
           gradientLocations={[0.0332, 1]}
@@ -88,8 +98,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#EFF6F9',
   },
   headerContainer: {
-    marginTop: HEIGHT < 400 ? HEIGHT * 0.2 : HEIGHT * 0.3,
-    marginBottom: HEIGHT < 400 ? HEIGHT * 0.08 : HEIGHT * 0.12,
+    marginTop: HEIGHT < 400 ? HEIGHT * 0.1 : HEIGHT * 0.12,
+    marginBottom: HEIGHT < 400 ? HEIGHT * 0.08 : HEIGHT * 0.09,
   },
   headerText: {
     color: 'black',
@@ -100,15 +110,15 @@ const styles = StyleSheet.create({
     color: 'black',
     marginTop: 8,
   },
-  inputContainer: {},
-  input: {
-    marginHorizontal: 0,
-    borderColor: 'whitesmoke',
-    borderWidth: StyleSheet.hairlineWidth,
-  },
-  inputLabel: {
-    color: 'black',
-    fontWeight: '500',
+  iconAddContainer: {
+    backgroundColor: '#FFF',
+    width: 168,
+    height: 168,
+    borderRadius: 84,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
   },
   contentContainer: {
     flex: 1,
@@ -117,6 +127,9 @@ const styles = StyleSheet.create({
   footer: {
     marginHorizontal: 25,
   },
+  iconBackContainer: {
+    marginTop: 20,
+  },
 });
 
-export default ChooseUserName;
+export default ChooseAvatar;

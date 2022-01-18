@@ -9,6 +9,7 @@ export type AuthtackParamList = {
 
 export type OnboardingStackParamList = {
   ChooseUserName: undefined;
+  ChooseAvatar: undefined;
 };
 
 export type RootStackParamList = {
