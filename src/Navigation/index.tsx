@@ -6,6 +6,7 @@ import type { RootStackParamList } from '_utils/interfaces';
 
 import Landing from '_screens/Onboarding';
 import SignIn from '_screens/Onboarding/SignIn';
+import EmailSignUp from '_screens/Onboarding/EmailSignUp';
 
 const Navigator: React.FC = () => {
   const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -18,6 +19,7 @@ const Navigator: React.FC = () => {
         }}>
         <Stack.Screen name="Landing" component={Landing} />
         <Stack.Screen name="SignIn" component={SignIn} />
+        <Stack.Screen name="EmailSignUp" component={EmailSignUp} />
       </Stack.Navigator>
     </NavigationContainer>
   );

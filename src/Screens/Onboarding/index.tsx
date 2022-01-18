@@ -65,6 +65,10 @@ const Landing: FunctionComponent<LandingProps> = props => {
     props.navigation.navigate('SignIn');
   };
 
+  const navigateToEmailRegister = () => {
+    props.navigation.navigate('EmailSignUp');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground style={styles.backgroundImage} source={CoverImage}>
@@ -98,7 +102,7 @@ const Landing: FunctionComponent<LandingProps> = props => {
               <Text style={styles.altDirText}>OR</Text>
             </View>
             <Button
-              // onPress={navigateToSignIn}
+              onPress={navigateToEmailRegister}
               gradient
               gradientColors={['#AA00FF', '#00E0FF']}
               gradientLocations={[0.0332, 1]}
@@ -142,7 +146,7 @@ const Landing: FunctionComponent<LandingProps> = props => {
           </View>
           <View style={styles.signInContainer}>
             <Text style={styles.signInText}>
-              Have an Account, &nbsp;
+              Have an Account? &nbsp;
               <TouchableWithoutFeedback onPress={navigateToSignIn}>
                 <Text style={styles.signInHighlight}>Sign In</Text>
               </TouchableWithoutFeedback>

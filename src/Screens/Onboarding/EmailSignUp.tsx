@@ -31,16 +31,16 @@ interface ActionButtons {
   imageSource: ImageSourcePropType;
 }
 
-type LandingScreenNavigationProps = NativeStackNavigationProp<
+type EmailSignUpScreenNavigationProps = NativeStackNavigationProp<
   RootStackParamList,
-  'SignIn'
+  'EmailSignUp'
 >;
 
-interface SignInProps {
-  navigation: LandingScreenNavigationProps;
+interface EmailSignUpProps {
+  navigation: EmailSignUpScreenNavigationProps;
 }
 
-const SignIn: FunctionComponent<SignInProps> = props => {
+const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
   const actionButtons: ActionButtons[] = [
     {
       name: 'Apple',
@@ -61,12 +61,13 @@ const SignIn: FunctionComponent<SignInProps> = props => {
       imageSource: FacebookLogo,
     },
   ];
-
   const navigateBack = () => {
     props.navigation.goBack();
   };
 
-  const navigateToEmailRegister = () => {};
+  const navigateToSignIn = () => {
+    props.navigation.navigate('SignIn');
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -80,26 +81,24 @@ const SignIn: FunctionComponent<SignInProps> = props => {
           />
         </View>
         <View style={styles.introTextContainer}>
-          <Text style={styles.introText}>Welcome Back</Text>
+          <Text style={styles.introText}>Become a Zentacle member.</Text>
         </View>
         <View>
           <Input
             placeholder="Email"
             placeholderTextColor="#BFBFBF"
-            // style={{ color: 'black' }}
             containerStyle={styles.inputContainer}
           />
           <Input
             placeholder="Password"
             placeholderTextColor="#BFBFBF"
-            // style={{ color: 'black' }}
             containerStyle={styles.inputContainer}
             passwordType
           />
         </View>
         <View style={styles.buttonsContainer}>
           <Button
-            onPress={navigateToEmailRegister}
+            // onPress={navigateToEmailRegister}
             gradient
             gradientColors={['#AA00FF', '#00E0FF']}
             gradientLocations={[0.0332, 1]}
@@ -124,7 +123,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
                 fontWeight: '800',
               },
             }}>
-            Log in
+            Sign Up
           </Button>
           <View style={styles.altDirContainer}>
             <Text style={styles.altDirText}>OR</Text>
@@ -165,9 +164,9 @@ const SignIn: FunctionComponent<SignInProps> = props => {
         </View>
         <View style={styles.signInContainer}>
           <Text style={styles.signInText}>
-            Don't have an Account? &nbsp;
-            <TouchableWithoutFeedback onPress={navigateBack}>
-              <Text style={styles.signInHighlight}>Sign Up</Text>
+            Have an Account? &nbsp;
+            <TouchableWithoutFeedback onPress={navigateToSignIn}>
+              <Text style={styles.signInHighlight}>Sign in</Text>
             </TouchableWithoutFeedback>
           </Text>
         </View>
@@ -242,4 +241,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignIn;
+export default EmailSignUp;
