@@ -101,7 +101,7 @@ const Landing: FunctionComponent<LandingProps> = props => {
               // onPress={navigateToSignIn}
               gradient
               gradientColors={['#AA00FF', '#00E0FF']}
-              gradientLocations={[-0.0332, 1.1906]}
+              gradientLocations={[0.0332, 1]}
               start={{
                 x: 0.003,
                 y: 3.75,
