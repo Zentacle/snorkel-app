@@ -83,7 +83,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
               container: {
                 backgroundColor: 'white',
                 borderRadius: 12,
-                padding: 12,
+                padding: HEIGHT < 400 ? 12 : 16,
                 marginVertical: HEIGHT < 400 ? 10 : 20,
               },
               text: {
@@ -106,6 +106,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
                   backgroundColor: 'white',
                   borderRadius: 10,
                   marginVertical: HEIGHT < 400 ? 5 : 10,
+                  padding: HEIGHT < 400 ? 12 : 16,
                 },
                 text: {
                   color: 'black',
