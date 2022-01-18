@@ -12,7 +12,9 @@ import {
 
 import type { ImageSourcePropType } from 'react-native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { FunctionComponent } from 'react';
 import type { RootStackParamList } from '_utils/interfaces';
+
 import SMButton from './components/SM-Logins';
 import Button from '_components/ui/Buttons/Button';
 import CoverImage from '_assets/main-screen.png';
@@ -37,7 +39,7 @@ interface LandingProps {
   navigation: LandingScreenNavigationProps;
 }
 
-const App = (props: LandingProps) => {
+const Landing: FunctionComponent<LandingProps> = props => {
   const actionButtons: ActionButtons[] = [
     {
       name: 'Apple',
@@ -209,4 +211,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default Landing;

@@ -18,10 +18,10 @@ interface ButtonProps {
 type GradientProps =
   | {
       gradient: false;
-      gradientColors: never;
-      gradientLocations: never;
-      useAngle: never;
-      angle: never;
+      gradientColors?: never;
+      gradientLocations?: never;
+      useAngle?: never;
+      angle?: never;
     }
   | {
       gradient: true;
@@ -56,9 +56,7 @@ export const Button: FunctionComponent<ButtonProps & GradientProps> = (
         style={[
           styles.text,
           props.style?.text,
-          props.disabled && {
-            color: 'grey',
-          },
+          props.disabled && styles.disabledText,
         ]}>
         {props.children}
       </Text>
@@ -84,9 +82,7 @@ export const Button: FunctionComponent<ButtonProps & GradientProps> = (
           style={[
             styles.text,
             props.style?.text,
-            props.disabled && {
-              color: 'grey',
-            },
+            props.disabled && styles.disabledText,
           ]}>
           {props.children}
         </Text>
@@ -94,7 +90,9 @@ export const Button: FunctionComponent<ButtonProps & GradientProps> = (
     );
   }
 
-  if (props.disabled) return button;
+  if (props.disabled) {
+    return button;
+  }
   return <TouchableOpacity onPress={props.onPress}>{button}</TouchableOpacity>;
 };
 
@@ -111,6 +109,8 @@ const styles = StyleSheet.create({
     color: '#FFF',
     alignSelf: 'center',
   },
+  disabledContainer: {},
+  disabledText: { color: 'grey' },
 });
 
 export default Button;
