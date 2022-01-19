@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 const Explore = () => {
   return (
     <View style={styles.container}>
-      <Text>Explore</Text>
+      <Text style={styles.text}>Explore</Text>
     </View>
   );
 };
@@ -14,7 +14,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#2c3e50',
+    backgroundColor: '#EFF6F9',
+  },
+  text: {
+    color: 'black',
+    fontSize: 18,
   },
 });
 
