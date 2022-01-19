@@ -10,7 +10,7 @@ import type {
   OnboardingStackParamList,
 } from '_utils/interfaces';
 
-import GradientCircle from './components/GradientCircle';
+import GradientCircle from '_components/ui/GradientCircle';
 import Button from '_components/ui/Buttons/Button';
 
 const HEIGHT = Dimensions.get('window').width;
@@ -34,7 +34,17 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.mainContainer}>
-        <GradientCircle>
+        <GradientCircle
+          gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+          gradientLocations={[0.002, 1, 1]}
+          start={{
+            x: 0,
+            y: 0,
+          }}
+          end={{
+            x: 1.06,
+            y: 1.2,
+          }}>
           <Icon name="camera-outline" size={40} />
         </GradientCircle>
         <View style={styles.descriptionContainer}>

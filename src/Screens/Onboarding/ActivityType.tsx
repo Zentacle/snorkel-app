@@ -17,7 +17,7 @@ import type {
   OnboardingStackParamList,
 } from '_utils/interfaces';
 
-import GradientCircle from './components/GradientCircle';
+import GradientCircle from '_components/ui/GradientCircle';
 import ActivityImage from '_assets/Activity.png';
 import GradientText from '_components/ui/GradientText';
 
@@ -32,16 +32,51 @@ interface ActivityTypeProps {
   navigation: ActivityTypeNavigationProps;
 }
 
-const ActivityType: FunctionComponent<ActivityTypeProps> = () => {
+interface ActivityTypes {
+  name: string;
+}
+
+const activityTypes: ActivityTypes[] = [
+  {
+    name: 'Freediving',
+  },
+  {
+    name: 'Scuba',
+  },
+  {
+    name: 'Snorkel',
+  },
+];
+
+const ActivityType: FunctionComponent<ActivityTypeProps> = ({ navigation }) => {
+  const navigateToApp = () => {
+    navigation.navigate('App', {
+      screen: 'ExploreStack',
+      params: {
+        screen: 'Explore',
+      },
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={navigateToApp}>
         <View style={styles.skipContainer}>
           <Text style={styles.skipText}>Skip</Text>
         </View>
       </TouchableWithoutFeedback>
       <View style={styles.mainContainer}>
-        <GradientCircle>
+        <GradientCircle
+          gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+          gradientLocations={[0.002, 1, 1]}
+          start={{
+            x: 0,
+            y: 0,
+          }}
+          end={{
+            x: 1.06,
+            y: 1.2,
+          }}>
           <Image source={ActivityImage} />
         </GradientCircle>
         <View style={styles.descriptionContainer}>
@@ -55,60 +90,26 @@ const ActivityType: FunctionComponent<ActivityTypeProps> = () => {
         </View>
       </View>
       <View style={styles.selectionContainer}>
-        <TouchableWithoutFeedback>
-          <View style={styles.selection}>
-            <GradientText
-              gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-              start={{
-                x: 0,
-                y: 0,
-              }}
-              end={{
-                x: 0.06,
-                y: 1.8,
-              }}
-              gradientLocations={[0.01, 1, 1]}
-              style={styles.selectionText}>
-              Freediving
-            </GradientText>
-          </View>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback>
-          <View style={styles.selection}>
-            <GradientText
-              gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-              start={{
-                x: 0,
-                y: 0,
-              }}
-              end={{
-                x: 0.06,
-                y: 1.8,
-              }}
-              gradientLocations={[0.01, 1, 1]}
-              style={styles.selectionText}>
-              Scuba
-            </GradientText>
-          </View>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback>
-          <View style={styles.selection}>
-            <GradientText
-              gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-              start={{
-                x: 0,
-                y: 0,
-              }}
-              end={{
-                x: 0.06,
-                y: 1.8,
-              }}
-              gradientLocations={[0.01, 1, 1]}
-              style={styles.selectionText}>
-              Snorkel
-            </GradientText>
-          </View>
-        </TouchableWithoutFeedback>
+        {activityTypes.map((activityType, index) => (
+          <TouchableWithoutFeedback key={index} onPress={navigateToApp}>
+            <View style={styles.selection}>
+              <GradientText
+                gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+                start={{
+                  x: 0,
+                  y: 0,
+                }}
+                end={{
+                  x: 0.06,
+                  y: 1.8,
+                }}
+                gradientLocations={[0.01, 1, 1]}
+                style={styles.selectionText}>
+                {activityType.name}
+              </GradientText>
+            </View>
+          </TouchableWithoutFeedback>
+        ))}
       </View>
     </SafeAreaView>
   );

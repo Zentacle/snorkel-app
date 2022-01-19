@@ -3,12 +3,25 @@ import { StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import type { FunctionComponent } from 'react';
+import type { TextStyle } from 'react-native';
 
-interface GradientCircleProps {}
+interface GradientCircleProps {
+  style?: TextStyle;
+  gradientColors: string[];
+  gradientLocations: number[];
+  start?: {
+    x: number;
+    y: number;
+  };
+  end?: {
+    x: number;
+    y: number;
+  };
+}
 const GradientCircle: FunctionComponent<GradientCircleProps> = props => {
   return (
     <LinearGradient
-      style={styles.container}
+      style={[styles.container, props.style]}
       colors={['#AA00FF', '#00E0FF', '#00E0FF']}
       locations={[0.002, 1, 1]}
       start={{
