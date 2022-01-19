@@ -26,6 +26,7 @@ const AppTabsNavigator: React.FC = () => {
   const AppTabs = createBottomTabNavigator<AppTabsParamList>();
   return (
     <AppTabs.Navigator
+      initialRouteName="ExploreStack"
       screenOptions={{
         headerShown: false,
         tabBarStyle: styles.tabBarStyle,
@@ -53,6 +54,7 @@ const AppTabsNavigator: React.FC = () => {
       />
       <AppTabs.Screen
         options={{
+          tabBarStyle: { display: 'none' },
           title: '',
           tabBarIcon: () => (
             <GradientCircle
