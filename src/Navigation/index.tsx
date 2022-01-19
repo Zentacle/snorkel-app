@@ -6,6 +6,7 @@ import type { RootStackParamList } from '_utils/interfaces';
 
 import AuthNavigator from './Auth';
 import OnboardingNavigator from './Onboarding';
+import AppTabsNavigator from './App';
 
 const Navigator: React.FC = () => {
   const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -18,6 +19,7 @@ const Navigator: React.FC = () => {
         }}>
         <Stack.Screen name="Auth" component={AuthNavigator} />
         <Stack.Screen name="OnBoarding" component={OnboardingNavigator} />
+        <Stack.Screen name="App" component={AppTabsNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
   );
