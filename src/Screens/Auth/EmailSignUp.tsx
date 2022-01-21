@@ -108,6 +108,7 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
           {actionButtons.map((actionButton, index) => (
             <SMButton
               key={index}
+              onPress={actionButton.action}
               imageSource={actionButton.imageSource}
               style={{
                 container: {

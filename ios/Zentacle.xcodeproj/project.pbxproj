@@ -9,6 +9,14 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* ZentacleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ZentacleTests.m */; };
 		0E35FE66278F3E8D0080B9BF /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E35FE65278F3E8D0080B9BF /* Launch Screen.storyboard */; };
+		0E9C3D13279A3DF70020D871 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0E9C3D12279A3DF70020D871 /* GoogleService-Info.plist */; };
+		0ED8D8F2279A1DFB00944708 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ED8D8F1279A1DFB00944708 /* File.swift */; };
+		0ED8D8F6279A211800944708 /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 0ED8D8F5279A211800944708 /* FacebookLogin */; };
+		0ED8D8F8279A211800944708 /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 0ED8D8F7279A211800944708 /* FacebookCore */; };
+		0ED8D8FA279A211800944708 /* FacebookAEM in Frameworks */ = {isa = PBXBuildFile; productRef = 0ED8D8F9279A211800944708 /* FacebookAEM */; };
+		0ED8D8FC279A211800944708 /* FacebookShare in Frameworks */ = {isa = PBXBuildFile; productRef = 0ED8D8FB279A211800944708 /* FacebookShare */; };
+		0ED8D8FE279A211800944708 /* FacebookGamingServices in Frameworks */ = {isa = PBXBuildFile; productRef = 0ED8D8FD279A211800944708 /* FacebookGamingServices */; };
+		0ED8D900279A211800944708 /* FacebookBasics in Frameworks */ = {isa = PBXBuildFile; productRef = 0ED8D8FF279A211800944708 /* FacebookBasics */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -32,6 +40,10 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* ZentacleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZentacleTests.m; sourceTree = "<group>"; };
 		0E35FE65278F3E8D0080B9BF /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		0E4642132799D6E400EE1D9F /* Zentacle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Zentacle.entitlements; path = Zentacle/Zentacle.entitlements; sourceTree = "<group>"; };
+		0E9C3D12279A3DF70020D871 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0ED8D8F1279A1DFB00944708 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		0ED8D8F3279A1E2F00944708 /* Zentacle-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Zentacle-Bridging-Header.h"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Zentacle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zentacle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Zentacle/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Zentacle/AppDelegate.m; sourceTree = "<group>"; };
@@ -61,6 +73,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0ED8D900279A211800944708 /* FacebookBasics in Frameworks */,
+				0ED8D8FA279A211800944708 /* FacebookAEM in Frameworks */,
+				0ED8D8F6279A211800944708 /* FacebookLogin in Frameworks */,
+				0ED8D8F8279A211800944708 /* FacebookCore in Frameworks */,
+				0ED8D8FE279A211800944708 /* FacebookGamingServices in Frameworks */,
+				0ED8D8FC279A211800944708 /* FacebookShare in Frameworks */,
 				6172F2D35A4C3AA820D92908 /* libPods-Zentacle.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -88,7 +106,9 @@
 		13B07FAE1A68108700A75B9A /* Zentacle */ = {
 			isa = PBXGroup;
 			children = (
+				0E4642132799D6E400EE1D9F /* Zentacle.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
+				0E9C3D12279A3DF70020D871 /* GoogleService-Info.plist */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -118,6 +138,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				0ED8D8F1279A1DFB00944708 /* File.swift */,
+				0ED8D8F3279A1E2F00944708 /* Zentacle-Bridging-Header.h */,
 				0E35FE65278F3E8D0080B9BF /* Launch Screen.storyboard */,
 				13B07FAE1A68108700A75B9A /* Zentacle */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -193,6 +215,14 @@
 			dependencies = (
 			);
 			name = Zentacle;
+			packageProductDependencies = (
+				0ED8D8F5279A211800944708 /* FacebookLogin */,
+				0ED8D8F7279A211800944708 /* FacebookCore */,
+				0ED8D8F9279A211800944708 /* FacebookAEM */,
+				0ED8D8FB279A211800944708 /* FacebookShare */,
+				0ED8D8FD279A211800944708 /* FacebookGamingServices */,
+				0ED8D8FF279A211800944708 /* FacebookBasics */,
+			);
 			productName = Zentacle;
 			productReference = 13B07F961A680F5B00A75B9A /* Zentacle.app */;
 			productType = "com.apple.product-type.application";
@@ -210,7 +240,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1250;
 					};
 				};
 			};
@@ -223,6 +253,9 @@
 				Base,
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
+			packageReferences = (
+				0ED8D8F4279A211800944708 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
+			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -246,6 +279,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E35FE66278F3E8D0080B9BF /* Launch Screen.storyboard in Resources */,
+				0E9C3D13279A3DF70020D871 /* GoogleService-Info.plist in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
@@ -415,6 +449,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				0ED8D8F2279A1DFB00944708 /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -434,6 +469,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6C97AB639B58BBB4B15BBE30 /* Pods-Zentacle-ZentacleTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -461,6 +497,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1D0AE47A65C8663E3B452821 /* Pods-Zentacle-ZentacleTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = ZentacleTests/Info.plist;
@@ -487,6 +524,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Zentacle/Zentacle.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Zentacle/Info.plist;
@@ -501,6 +539,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Zentacle;
+				SWIFT_OBJC_BRIDGING_HEADER = "Zentacle-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -513,6 +552,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Zentacle/Zentacle.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = Zentacle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -526,6 +566,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Zentacle;
+				SWIFT_OBJC_BRIDGING_HEADER = "Zentacle-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -687,6 +728,50 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0ED8D8F4279A211800944708 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/facebook-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.3.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0ED8D8F5279A211800944708 /* FacebookLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0ED8D8F4279A211800944708 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookLogin;
+		};
+		0ED8D8F7279A211800944708 /* FacebookCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0ED8D8F4279A211800944708 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookCore;
+		};
+		0ED8D8F9279A211800944708 /* FacebookAEM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0ED8D8F4279A211800944708 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookAEM;
+		};
+		0ED8D8FB279A211800944708 /* FacebookShare */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0ED8D8F4279A211800944708 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookShare;
+		};
+		0ED8D8FD279A211800944708 /* FacebookGamingServices */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0ED8D8F4279A211800944708 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookGamingServices;
+		};
+		0ED8D8FF279A211800944708 /* FacebookBasics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0ED8D8F4279A211800944708 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookBasics;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 83CBB9F71A601CBA00E9B192 /* Project object */;
 }

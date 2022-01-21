@@ -36,7 +36,11 @@ const SignIn: FunctionComponent<SignInProps> = props => {
     props.navigation.goBack();
   };
 
-  const navigateToEmailRegister = () => {};
+  const navigateToOnboarding = () => {
+    props.navigation.navigate('OnBoarding', {
+      screen: 'ChooseUserName',
+    });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -67,7 +71,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
         </View>
         <View style={styles.buttonsContainer}>
           <Button
-            onPress={navigateToEmailRegister}
+            onPress={navigateToOnboarding}
             gradient
             gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
             gradientLocations={[0.01, 1, 1]}
@@ -100,6 +104,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
           {actionButtons.map((actionButton, index) => (
             <SMButton
               key={index}
+              onPress={actionButton.action}
               imageSource={actionButton.imageSource}
               style={{
                 container: {

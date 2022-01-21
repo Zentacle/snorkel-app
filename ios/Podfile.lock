@@ -1,9 +1,16 @@
 PODS:
+  - AppAuth (1.4.0):
+    - AppAuth/Core (= 1.4.0)
+    - AppAuth/ExternalUserAgent (= 1.4.0)
+  - AppAuth/Core (1.4.0)
+  - AppAuth/ExternalUserAgent (1.4.0)
   - boost (1.76.0)
   - BVLinearGradient (2.5.6):
     - React
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
+  - FBAEMKit (12.2.1):
+    - FBSDKCoreKit_Basics (= 12.2.1)
   - FBLazyVector (0.66.4)
   - FBReactNativeSpec (0.66.4):
     - RCT-Folly (= 2021.06.28.00-v2)
@@ -12,6 +19,14 @@ PODS:
     - React-Core (= 0.66.4)
     - React-jsi (= 0.66.4)
     - ReactCommon/turbomodule/core (= 0.66.4)
+  - FBSDKCoreKit (12.2.1):
+    - FBAEMKit (= 12.2.1)
+    - FBSDKCoreKit_Basics (= 12.2.1)
+  - FBSDKCoreKit_Basics (12.2.1)
+  - FBSDKLoginKit (12.2.1):
+    - FBSDKCoreKit (= 12.2.1)
+  - FBSDKShareKit (12.2.1):
+    - FBSDKCoreKit (= 12.2.1)
   - Flipper (0.99.0):
     - Flipper-Folly (~> 2.6)
     - Flipper-RSocket (~> 1.4)
@@ -74,6 +89,14 @@ PODS:
     - FlipperKit/FlipperKitNetworkPlugin
   - fmt (6.2.1)
   - glog (0.3.5)
+  - GoogleSignIn (6.0.2):
+    - AppAuth (~> 1.4)
+    - GTMAppAuth (~> 1.0)
+    - GTMSessionFetcher/Core (~> 1.1)
+  - GTMAppAuth (1.2.2):
+    - AppAuth/Core (~> 1.4)
+    - GTMSessionFetcher/Core (~> 1.5)
+  - GTMSessionFetcher/Core (1.7.0)
   - libevent (2.1.12)
   - OpenSSL-Universal (1.1.180)
   - RCT-Folly (2021.06.28.00-v2):
@@ -274,6 +297,22 @@ PODS:
   - React-jsinspector (0.66.4)
   - React-logger (0.66.4):
     - glog
+  - react-native-fbsdk-next (6.2.0):
+    - React-Core
+    - react-native-fbsdk-next/Core (= 6.2.0)
+    - react-native-fbsdk-next/Login (= 6.2.0)
+    - react-native-fbsdk-next/Share (= 6.2.0)
+  - react-native-fbsdk-next/Core (6.2.0):
+    - FBSDKCoreKit (~> 12.2.1)
+    - React-Core
+  - react-native-fbsdk-next/Login (6.2.0):
+    - FBSDKLoginKit (~> 12.2.1)
+    - React-Core
+  - react-native-fbsdk-next/Share (6.2.0):
+    - FBSDKShareKit (~> 12.2.1)
+    - React-Core
+  - react-native-get-random-values (1.7.2):
+    - React-Core
   - react-native-safe-area-context (3.3.2):
     - React-Core
   - react-native-splash-screen (3.3.0):
@@ -343,7 +382,12 @@ PODS:
     - React-jsi (= 0.66.4)
     - React-logger (= 0.66.4)
     - React-perflogger (= 0.66.4)
+  - RNAppleAuthentication (2.1.5):
+    - React-Core
   - RNCMaskedView (0.2.6):
+    - React-Core
+  - RNGoogleSignin (7.0.4):
+    - GoogleSignIn (~> 6.0.0)
     - React-Core
   - RNScreens (3.10.1):
     - React-Core
@@ -396,6 +440,8 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
+  - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
+  - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -410,14 +456,22 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
   - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
+  - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
   trunk:
+    - AppAuth
     - CocoaAsyncSocket
+    - FBAEMKit
+    - FBSDKCoreKit
+    - FBSDKCoreKit_Basics
+    - FBSDKLoginKit
+    - FBSDKShareKit
     - Flipper
     - Flipper-Boost-iOSX
     - Flipper-DoubleConversion
@@ -428,6 +482,9 @@ SPEC REPOS:
     - Flipper-RSocket
     - FlipperKit
     - fmt
+    - GoogleSignIn
+    - GTMAppAuth
+    - GTMSessionFetcher
     - libevent
     - OpenSSL-Universal
     - YogaKit
@@ -469,6 +526,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
+  react-native-fbsdk-next:
+    :path: "../node_modules/react-native-fbsdk-next"
+  react-native-get-random-values:
+    :path: "../node_modules/react-native-get-random-values"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-splash-screen:
@@ -497,8 +558,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/runtimeexecutor"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNAppleAuthentication:
+    :path: "../node_modules/@invertase/react-native-apple-authentication"
   RNCMaskedView:
     :path: "../node_modules/@react-native-masked-view/masked-view"
+  RNGoogleSignin:
+    :path: "../node_modules/@react-native-google-signin/google-signin"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNVectorIcons:
@@ -507,12 +572,18 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
+  FBAEMKit: 4cea610d0bc1680572f2aad7b25db7a2f2690d82
   FBLazyVector: e5569e42a1c79ca00521846c223173a57aca1fe1
   FBReactNativeSpec: fe08c1cd7e2e205718d77ad14b34957cce949b58
+  FBSDKCoreKit: 5b1992fe65802ca26be7e68bc4fac5f59fa39908
+  FBSDKCoreKit_Basics: a6a92ca628e05f86f458a4721574c5ddfb058ba3
+  FBSDKLoginKit: 7467b7f988ca4fdf48f12a839bcfce4264752429
+  FBSDKShareKit: 25fe0e2cd0811918e5b5b1603cb3fc580154cc48
   Flipper: 30e8eeeed6abdc98edaf32af0cda2f198be4b733
   Flipper-Boost-iOSX: fd1e2b8cbef7e662a122412d7ac5f5bea715403c
   Flipper-DoubleConversion: 57ffbe81ef95306cc9e69c4aa3aeeeeb58a6a28c
@@ -524,6 +595,9 @@ SPEC CHECKSUMS:
   FlipperKit: d8d346844eca5d9120c17d441a2f38596e8ed2b9
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 5337263514dd6f09803962437687240c5dc39aa4
+  GoogleSignIn: fd381840dbe7c1137aa6dc30849a5c3e070c034a
+  GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
+  GTMSessionFetcher: 43748f93435c2aa068b1cbe39655aaf600652e91
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
   RCT-Folly: a21c126816d8025b547704b777a2ba552f3d9fa9
@@ -538,6 +612,8 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 94ce921e1d8ce7023366873ec371f3441383b396
   React-jsinspector: d0374f7509d407d2264168b6d0fad0b54e300b85
   React-logger: 933f80c97c633ee8965d609876848148e3fef438
+  react-native-fbsdk-next: 3a9545d174f16ec343e7bcaf12f970fdc82feed2
+  react-native-get-random-values: 30b3f74ca34e30e2e480de48e4add2706a40ac8f
   react-native-safe-area-context: 5cf05f49df9d17261e40e518481f2e334c6cd4b5
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   React-perflogger: 93075d8931c32cd1fce8a98c15d2d5ccc4d891bd
@@ -552,7 +628,9 @@ SPEC CHECKSUMS:
   React-RCTVibration: e3ffca672dd3772536cb844274094b0e2c31b187
   React-runtimeexecutor: dec32ee6f2e2a26e13e58152271535fadff5455a
   ReactCommon: 57b69f6383eafcbd7da625bfa6003810332313c4
+  RNAppleAuthentication: 63c2127ace11985b94f852fc480eb84145653712
   RNCMaskedView: d367b2a8df3992114e31b32b091a0c00dc800827
+  RNGoogleSignin: aeb29e549e6748da3e5847516fdd1327c85894c5
   RNScreens: 522705f2e5c9d27efb17f24aceb2bf8335bc7b8e
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280

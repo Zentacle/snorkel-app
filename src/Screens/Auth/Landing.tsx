@@ -53,6 +53,7 @@ const Landing: FunctionComponent<LandingProps> = props => {
             {actionButtons.map((actionButton, index) => (
               <SMButton
                 key={index}
+                onPress={actionButton.action}
                 imageSource={actionButton.imageSource}
                 style={{
                   container: {
