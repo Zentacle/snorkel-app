@@ -36,8 +36,6 @@ type FilteredSearchInputProps = Omit<
   'containerStyle' | 'onClickFilterIcon'
 >;
 
-console.log('hi', HEIGHT);
-
 const SearchInput: FunctionComponent<BaseProps> = props => {
   return (
     <View style={[styles.container, props.containerStyle]}>
@@ -62,10 +60,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginHorizontal: 25,
     borderRadius: 12,
-    marginTop: HEIGHT < 705 ? HEIGHT * 0.045 : HEIGHT * 0.055,
+    marginTop: HEIGHT * 0.045,
   },
   input: {
     width: '80%',
+    height: 40,
   },
 });
 

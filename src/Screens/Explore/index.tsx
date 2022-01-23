@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Dimensions,
+  Platform,
 } from 'react-native';
 
 import SearchInput from '_components/ui/SearchInput';
@@ -187,7 +188,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#EFF6F9',
   },
   contentContainer: {
-    marginBottom: 100,
+    marginBottom: Platform.OS === 'android' ? 100 : 65,
     paddingBottom: 50,
   },
   welcomeText: {

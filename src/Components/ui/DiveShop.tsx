@@ -1,38 +1,26 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MapView from 'react-native-maps';
 
 import LocationImage from '_assets/Location.png';
-
-const attachIcons = (count: number) => {
-  const iconList: JSX.Element[] = [];
-
-  for (let i = 0; i < 5; i++) {
-    if (count > i && count >= i + 1) {
-      iconList.push(<Icon key={i} name="star" size={15} color="#aa00ff" />);
-    } else if (count > i && count < i + 1) {
-      iconList.push(
-        <Icon key={i} name="star-half-full" size={15} color="#aa00ff" />,
-      );
-    } else {
-      iconList.push(
-        <Icon key={i} name="star-outline" size={15} color="#aa00ff" />,
-      );
-    }
-  }
-
-  return iconList;
-};
 
 const DiveShop = () => {
   return (
     <View style={styles.container}>
-      <View>
-        <View style={styles.map} />
-        <View style={styles.imageCountContainer}>
-          <Icon name="image-outline" size={18} color="#FFF" />
-          <Text style={styles.imageCountText}>24</Text>
-        </View>
+      <View style={styles.mapContainer}>
+        <MapView
+          provider="google"
+          style={styles.map}
+          scrollEnabled={false}
+          liteMode={true}
+          initialRegion={{
+            latitude: -8.409518,
+            longitude: 115.188919,
+            latitudeDelta: 0.0421,
+            longitudeDelta: 0.6922,
+          }}
+        />
       </View>
       <View style={styles.descriptionContainer}>
         <Text style={styles.descriptionText}>Dive Shop on the beach</Text>
@@ -42,7 +30,7 @@ const DiveShop = () => {
         </View>
         <View style={styles.ratingsContainer}>
           <Text style={styles.ratingsText}>3.5</Text>
-          <View style={styles.ratingsIconsContainer}>{attachIcons(3.5)}</View>
+          <Icon name="star" size={20} color="#aa00ff" />
           <Text style={styles.ratingsCount}>(463)</Text>
         </View>
       </View>
@@ -52,32 +40,28 @@ const DiveShop = () => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 185,
+    // height: 185,
     width: 228,
     backgroundColor: '#FFF',
     marginRight: 15,
     borderRadius: 18,
   },
-  map: {
-    width: 196,
-    height: 60,
-    borderTopRightRadius: 18,
-    borderTopLeftRadius: 18,
-  },
-  imageCountContainer: {
-    position: 'absolute',
-    right: 15,
-    bottom: 10,
-    flexDirection: 'row',
-    backgroundColor: 'rgba(131,131,131,0.5)',
-    paddingVertical: 2,
-    paddingHorizontal: 7,
-    borderRadius: 10,
+  mapContainer: {
+    width: 208,
+    height: 80,
+    borderRadius: 15,
+    marginTop: 10,
+    justifyContent: 'center',
     alignItems: 'center',
+    overflow: 'hidden',
+    alignSelf: 'center',
   },
-  imageCountText: {
-    marginLeft: 5,
-    opacity: 1,
+  map: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 18,
+    flex: 1,
+    ...StyleSheet.absoluteFillObject,
   },
   descriptionContainer: {
     paddingHorizontal: 15,
@@ -100,22 +84,17 @@ const styles = StyleSheet.create({
   ratingsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  ratingsLevelText: {
-    color: '#0b94ef',
-  },
-  ratingsIconsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: 2,
+    marginTop: 5,
   },
   ratingsText: {
     color: 'black',
     marginHorizontal: 5,
+    fontSize: 16,
   },
   ratingsCount: {
     color: 'black',
     marginLeft: 5,
+    fontSize: 16,
   },
 });
 
