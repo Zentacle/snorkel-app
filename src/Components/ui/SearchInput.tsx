@@ -29,11 +29,12 @@ interface BaseProps {
   placeholder?: string;
   placeholderTextColor?: ColorValue;
   onClickFilterIcon?: () => void;
+  withFilterIcon?: boolean;
 }
 
 type FilteredSearchInputProps = Omit<
   BaseProps,
-  'containerStyle' | 'onClickFilterIcon'
+  'containerStyle' | 'onClickFilterIcon' | 'withFilterIcon'
 >;
 
 const SearchInput: FunctionComponent<BaseProps> = props => {
@@ -44,9 +45,11 @@ const SearchInput: FunctionComponent<BaseProps> = props => {
         {...(props as unknown as FilteredSearchInputProps)}
         style={styles.input}
       />
-      <TouchableWithoutFeedback onPress={props.onClickFilterIcon}>
-        <Image source={FilterIcon} />
-      </TouchableWithoutFeedback>
+      {props.withFilterIcon && (
+        <TouchableWithoutFeedback onPress={props.onClickFilterIcon}>
+          <Image source={FilterIcon} />
+        </TouchableWithoutFeedback>
+      )}
     </View>
   );
 };
