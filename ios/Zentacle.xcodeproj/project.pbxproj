@@ -108,6 +108,7 @@
 			children = (
 				0E4642132799D6E400EE1D9F /* Zentacle.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
+				0E9C3D12279A3DF70020D871 /* GoogleService-Info.plist */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
