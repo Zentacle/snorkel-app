@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import type { FunctionComponent } from 'react';
@@ -32,10 +38,11 @@ interface DiveSiteProps {
   containerStyle?: ViewStyle;
   imageContainerStyle?: ViewStyle;
   imageStyle?: ImageStyle;
+  onPressContainer?: () => void;
 }
 
 const DiveSite: FunctionComponent<DiveSiteProps> = props => {
-  return (
+  const content = (
     <View style={[styles.container, props.containerStyle]}>
       <View style={[styles.imageContainer, props.imageContainerStyle]}>
         <Image
@@ -63,6 +70,15 @@ const DiveSite: FunctionComponent<DiveSiteProps> = props => {
       </View>
     </View>
   );
+
+  if (props.onPressContainer) {
+    return (
+      <TouchableWithoutFeedback onPress={props.onPressContainer}>
+        {content}
+      </TouchableWithoutFeedback>
+    );
+  }
+  return content;
 };
 
 const styles = StyleSheet.create({

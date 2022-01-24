@@ -1,12 +1,24 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MapView from 'react-native-maps';
 
+import type { FunctionComponent } from 'react';
+
 import LocationImage from '_assets/Location.png';
 
-const DiveShop = () => {
-  return (
+interface DiveShopProps {
+  onPressContainer?: () => void;
+}
+
+const DiveShop: FunctionComponent<DiveShopProps> = props => {
+  let content = (
     <View style={styles.container}>
       <View style={styles.mapContainer}>
         <MapView
@@ -36,6 +48,15 @@ const DiveShop = () => {
       </View>
     </View>
   );
+
+  if (props.onPressContainer) {
+    return (
+      <TouchableWithoutFeedback onPress={props.onPressContainer}>
+        {content}
+      </TouchableWithoutFeedback>
+    );
+  }
+  return content;
 };
 
 const styles = StyleSheet.create({
