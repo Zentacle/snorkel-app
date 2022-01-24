@@ -13,8 +13,8 @@ import {
 import SearchInput from '_components/ui/SearchInput';
 import Tag from '_components/ui/Tag';
 import GradientText from '_components/ui/GradientText';
-import DiveSite from '_components/ui/DiveSite';
-import DiveShop from '_components/ui/DiveShop';
+import DiveSite from '_components/reusable-child-components/DiveSite';
+import DiveShop from '_components/reusable-child-components/DiveShop';
 
 import type { ImageSourcePropType } from 'react-native';
 import Newest from '_assets/tags/newest.png';
