@@ -16,7 +16,13 @@ import GradientText from '_components/ui/GradientText';
 import DiveSite from '_components/reusable-child-components/DiveSite';
 import DiveShop from '_components/reusable-child-components/DiveShop';
 
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import type { CompositeNavigationProp } from '@react-navigation/native';
+import type { FunctionComponent } from 'react';
+import type { RootStackParamList, AppTabsParamList } from '_utils/interfaces';
 import type { ImageSourcePropType } from 'react-native';
+
 import Newest from '_assets/tags/newest.png';
 import Popular from '_assets/tags/popular.png';
 import TopRating from '_assets/tags/top-rating.png';
@@ -50,7 +56,28 @@ const tags: TagInterface[] = [
   },
 ];
 
-const Explore = () => {
+type ExploreNavigationProps = CompositeNavigationProp<
+  BottomTabNavigationProp<AppTabsParamList, 'Explore'>,
+  NativeStackNavigationProp<RootStackParamList>
+>;
+
+interface ExploreProps {
+  navigation: ExploreNavigationProps;
+}
+
+const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
+  const navigateToDiveSite = () => {
+    navigation.navigate('ExploreStack', {
+      screen: 'DiveSite',
+    });
+  };
+
+  const navigateToDiveShop = () => {
+    navigation.navigate('ExploreStack', {
+      screen: 'DiveShop',
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.contentContainer}>
@@ -90,21 +117,15 @@ const Explore = () => {
             horizontal
             contentContainerStyle={styles.nearbySitesCardsContainer}
             showsHorizontalScrollIndicator={false}>
-            <DiveSite
-              containerStyle={styles.nearbySiteItemContainer}
-              imageContainerStyle={styles.nearbySiteItemContainer}
-              imageStyle={styles.nearbySiteItemImage}
-            />
-            <DiveSite
-              containerStyle={styles.nearbySiteItemContainer}
-              imageContainerStyle={styles.nearbySiteItemContainer}
-              imageStyle={styles.nearbySiteItemImage}
-            />
-            <DiveSite
-              containerStyle={styles.nearbySiteItemContainer}
-              imageContainerStyle={styles.nearbySiteItemContainer}
-              imageStyle={styles.nearbySiteItemImage}
-            />
+            {[1, 2, 3].map((item, index) => (
+              <DiveSite
+                key={index}
+                containerStyle={styles.nearbySiteItemContainer}
+                imageContainerStyle={styles.nearbySiteItemContainer}
+                imageStyle={styles.nearbySiteItemImage}
+                onPressContainer={navigateToDiveSite}
+              />
+            ))}
           </ScrollView>
         </View>
         <View style={styles.diveShops}>
@@ -131,9 +152,9 @@ const Explore = () => {
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.diveShopsCardsContainer}>
-            <DiveShop />
-            <DiveShop />
-            <DiveShop />
+            {[1, 2, 3].map((item, index) => (
+              <DiveShop key={index} onPressContainer={navigateToDiveShop} />
+            ))}
           </ScrollView>
         </View>
 
@@ -160,21 +181,15 @@ const Explore = () => {
           <ScrollView
             contentContainerStyle={styles.diveSitesCardsContainer}
             showsHorizontalScrollIndicator={false}>
-            <DiveSite
-              containerStyle={styles.diveSiteItemContainer}
-              imageContainerStyle={styles.diveSiteItemContainer}
-              imageStyle={styles.diveSiteItemImage}
-            />
-            <DiveSite
-              containerStyle={styles.diveSiteItemContainer}
-              imageContainerStyle={styles.diveSiteItemContainer}
-              imageStyle={styles.diveSiteItemImage}
-            />
-            <DiveSite
-              containerStyle={styles.diveSiteItemContainer}
-              imageContainerStyle={styles.diveSiteItemContainer}
-              imageStyle={styles.diveSiteItemImage}
-            />
+            {[1, 2, 3].map((item, index) => (
+              <DiveSite
+                key={index}
+                containerStyle={styles.diveSiteItemContainer}
+                imageContainerStyle={styles.diveSiteItemContainer}
+                imageStyle={styles.diveSiteItemImage}
+                onPressContainer={navigateToDiveSite}
+              />
+            ))}
           </ScrollView>
         </View>
       </ScrollView>

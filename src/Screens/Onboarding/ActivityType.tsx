@@ -51,10 +51,7 @@ const activityTypes: ActivityTypes[] = [
 const ActivityType: FunctionComponent<ActivityTypeProps> = ({ navigation }) => {
   const navigateToApp = () => {
     navigation.navigate('App', {
-      screen: 'ExploreStack',
-      params: {
-        screen: 'Explore',
-      },
+      screen: 'Explore',
     });
   };
 

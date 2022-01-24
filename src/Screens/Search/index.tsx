@@ -5,12 +5,12 @@ import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
-  Dimensions,
+  // Dimensions,
   Platform,
 } from 'react-native';
 
 import SearchInput from '_components/ui/SearchInput';
-const WIDTH = Dimensions.get('window').width;
+// const WIDTH = Dimensions.get('window').width;
 
 const Search = () => {
   return (

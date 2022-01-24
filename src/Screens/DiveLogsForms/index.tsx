@@ -6,19 +6,20 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import type { CompositeNavigationProp } from '@react-navigation/native';
 import type { FunctionComponent } from 'react';
-import type {
-  RootStackParamList,
-  AppTabsParamList,
-  LogsFormStackParamList,
-} from '_utils/interfaces';
+import type { RootStackParamList, AppTabsParamList } from '_utils/interfaces';
 
 type DiveLogsFormsNavigationProps = CompositeNavigationProp<
-  CompositeNavigationProp<
-    NativeStackNavigationProp<LogsFormStackParamList, 'SimpleLogsForm'>,
-    BottomTabNavigationProp<AppTabsParamList>
-  >,
+  BottomTabNavigationProp<AppTabsParamList, 'LogsForm'>,
   NativeStackNavigationProp<RootStackParamList>
 >;
+
+// CompositeNavigationProp<
+//   CompositeNavigationProp<
+//     NativeStackNavigationProp<LogsFormStackParamList, 'SimpleLogsForm'>,
+//     BottomTabNavigationProp<AppTabsParamList>
+//   >,
+//   NativeStackNavigationProp<RootStackParamList>
+// >;
 
 interface DiveLogsFormsProps {
   navigation: DiveLogsFormsNavigationProps;
