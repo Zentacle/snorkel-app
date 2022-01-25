@@ -13,8 +13,8 @@ import {
 import SearchInput from '_components/ui/SearchInput';
 import Tag from '_components/ui/Tag';
 import GradientText from '_components/ui/GradientText';
-import DiveSite from '_components/reusable-child-components/DiveSite';
-import DiveShop from '_components/reusable-child-components/DiveShop';
+import DiveSite from './components/DiveSite';
+import DiveShop from './components/DiveShop';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';

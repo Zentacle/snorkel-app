@@ -17,7 +17,6 @@ export type OnboardingStackParamList = {
 };
 
 export type ExploreStackParamList = {
-  // Explore: undefined;
   DiveSite: undefined;
   DiveShop: undefined;
 };

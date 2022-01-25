@@ -14,25 +14,7 @@ import type { ViewStyle, ImageStyle } from 'react-native';
 import DiveSiteImage from '_assets/DiveSite.jpg';
 import LocationImage from '_assets/Location.png';
 
-const attachIcons = (count: number) => {
-  const iconList: JSX.Element[] = [];
-
-  for (let i = 0; i < 5; i++) {
-    if (count > i && count >= i + 1) {
-      iconList.push(<Icon key={i} name="star" size={15} color="#aa00ff" />);
-    } else if (count > i && count < i + 1) {
-      iconList.push(
-        <Icon key={i} name="star-half-full" size={15} color="#aa00ff" />,
-      );
-    } else {
-      iconList.push(
-        <Icon key={i} name="star-outline" size={15} color="#aa00ff" />,
-      );
-    }
-  }
-
-  return iconList;
-};
+import { attachIcons } from '../utils/utils';
 
 interface DiveSiteProps {
   containerStyle?: ViewStyle;

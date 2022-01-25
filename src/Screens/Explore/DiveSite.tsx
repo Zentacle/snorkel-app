@@ -4,150 +4,148 @@ import {
   Text,
   StyleSheet,
   Image,
-  Dimensions,
   ScrollView,
+  SafeAreaView,
+  TouchableWithoutFeedback,
+  Dimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import FEIcon from 'react-native-vector-icons/Feather';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 
+import ImageCarousel from './components/ImageCarousel';
+import DiveLocation from './components/DiveLocation';
+import DiveSiteReviews from './components/DiveSiteReviews';
+import GradientText from '_components/ui/GradientText';
+import DiveSiteComp from './components/DiveSite';
+import DiveShopComp from './components/DiveShop';
+import Footer from './components/DiveSiteFooter';
+
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { CompositeNavigationProp } from '@react-navigation/native';
+import type { FunctionComponent } from 'react';
 import type {
-  NativeSyntheticEvent,
-  NativeScrollEvent,
-  ImageSourcePropType,
-} from 'react-native';
-
-import DiveSite1 from '_assets/DiveSite.jpg';
-import DiveSite2 from '_assets/DiveSite2.jpg';
-import DiveSite3 from '_assets/DiveSite3.jpg';
-import DiveSite4 from '_assets/DiveSite4.jpg';
+  RootStackParamList,
+  ExploreStackParamList,
+} from '_utils/interfaces';
 
 import LocationImage from '_assets/Location.png';
 
+type DiveSiteNavigationProps = CompositeNavigationProp<
+  NativeStackNavigationProp<ExploreStackParamList, 'DiveSite'>,
+  NativeStackNavigationProp<RootStackParamList>
+>;
+
+interface DiveSiteProps {
+  navigation: DiveSiteNavigationProps;
+}
+
 const WIDTH = Dimensions.get('window').width;
 
-enum Directions {
-  initial = 'initial',
-  right = 'right',
-  left = 'left',
-}
+const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation }) => {
+  const navigateToDiveSite = () => {
+    navigation.navigate('ExploreStack', {
+      screen: 'DiveSite',
+    });
+  };
 
-interface Images {
-  source: ImageSourcePropType;
-}
+  const navigateToDiveShop = () => {
+    navigation.navigate('ExploreStack', {
+      screen: 'DiveShop',
+    });
+  };
 
-const images: Images[] = [
-  {
-    source: DiveSite1,
-  },
-  {
-    source: DiveSite2,
-  },
-  {
-    source: DiveSite3,
-  },
-  {
-    source: DiveSite4,
-  },
-];
-
-const DiveSite = () => {
-  const [focusedImageIndex, setFocusedImageIndex] = React.useState(0);
-
-  const handleScroll = ({
-    nativeEvent: { layoutMeasurement, contentOffset },
-  }: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const widthForFullSwipe = layoutMeasurement.width;
-    let direction: Directions = Directions.initial;
-    let focusedIndex = contentOffset.x / widthForFullSwipe;
-
-    if (!Number.isInteger(focusedIndex)) {
-      return;
-    }
-
-    if (focusedImageIndex < focusedIndex) {
-      direction = Directions.right;
-    } else if (focusedImageIndex > focusedIndex) {
-      direction = Directions.left;
-    }
-
-    if (direction === Directions.initial) {
-      // this means that a full swipe was not completed. Shouls not proceed
-      return;
-    }
-
-    setFocusedImageIndex(focusedIndex);
+  const navigateToDiveLogForm = () => {
+    navigation.navigate('App', {
+      screen: 'LogsForm',
+    });
   };
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <ScrollView
-          horizontal
-          pagingEnabled
-          onScroll={handleScroll}
-          showsHorizontalScrollIndicator={false}>
-          <Image style={styles.headerImage} source={DiveSite1} />
-          <Image style={styles.headerImage} source={DiveSite2} />
-          <Image style={styles.headerImage} source={DiveSite3} />
-          <Image style={styles.headerImage} source={DiveSite4} />
-        </ScrollView>
-        <View style={styles.headerIconsContainer}>
-          <FEIcon
-            style={styles.headerIcon}
-            name="chevron-left"
-            color="black"
-            size={25}
-          />
-          <FEIcon
-            style={styles.headerIcon}
-            name="share"
-            color="black"
-            size={25}
-          />
-        </View>
-        <View style={styles.headerBottomContainer}>
-          <View style={styles.photoDots}>
-            {images.map((_dot, index) => {
-              return (
-                <View
-                  key={index}
-                  style={
-                    index === focusedImageIndex
-                      ? styles.whitePhotoDot
-                      : styles.blackPhotoDot
-                  }
-                />
-              );
-            })}
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.scrollContainer}>
+        <ImageCarousel />
+
+        <View style={styles.contentContainer}>
+          <Text style={styles.mainDescription}>
+            USS Liberty Wreck on the Beach
+          </Text>
+          <View style={styles.locationContainer}>
+            <Image source={LocationImage} />
+            <Text style={styles.locationText}>East Bali, Indonesia</Text>
           </View>
-          <View style={styles.imageCountContainer}>
-            <Icon name="image-outline" size={18} color="#FFF" />
-            <Text style={styles.imageCountText}>{`${focusedImageIndex + 1}/${
-              images.length
-            }`}</Text>
+          <View style={styles.ratingsContainer}>
+            <Text style={styles.ratingsLevelText}>Beginner</Text>
+            <View style={styles.dot} />
+            <Text style={styles.ratingsText}>3.5</Text>
+            <Icon name="star" size={20} color="#aa00ff" />
+            <Text style={styles.ratingsCount}>(463)</Text>
+          </View>
+
+          <DiveLocation />
+
+          <DiveSiteReviews />
+        </View>
+        <View style={styles.nearbySites}>
+          <View style={styles.nearbySitesTextContainer}>
+            <Text style={styles.nearbySitesMainText}>Nearby Locations</Text>
+          </View>
+          <ScrollView
+            horizontal
+            contentContainerStyle={styles.nearbySitesCardsContainer}
+            showsHorizontalScrollIndicator={false}>
+            {[1, 2, 3].map((item, index) => (
+              <DiveSiteComp
+                key={index}
+                containerStyle={styles.nearbySiteItemContainer}
+                imageContainerStyle={styles.nearbySiteItemContainer}
+                imageStyle={styles.nearbySiteItemImage}
+                onPressContainer={navigateToDiveSite}
+              />
+            ))}
+          </ScrollView>
+        </View>
+        <View style={styles.diveShops}>
+          <View style={styles.diveShopsTextContainer}>
+            <Text style={styles.diveShopsMainText}>Closest Dive Shops</Text>
+            <TouchableWithoutFeedback>
+              <GradientText
+                gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+                start={{
+                  x: 0,
+                  y: 0,
+                }}
+                end={{
+                  x: 0.06,
+                  y: 1.8,
+                }}
+                gradientLocations={[0.01, 1, 1]}
+                style={styles.diveShopsMoreText}>
+                Open More
+              </GradientText>
+            </TouchableWithoutFeedback>
+          </View>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.diveShopsCardsContainer}>
+            {[1, 2, 3].map((item, index) => (
+              <DiveShopComp key={index} onPressContainer={navigateToDiveShop} />
+            ))}
+          </ScrollView>
+          <View style={styles.reportContainer}>
+            <Ionicon name="flag-outline" color="black" size={22} />
+            <Text style={styles.reportText}>Report this location</Text>
           </View>
         </View>
-      </View>
-      <View style={styles.contentContainer}>
-        <Text style={styles.mainDescription}>
-          USS Liberty Wreck on the Beach
-        </Text>
-        <View style={styles.locationContainer}>
-          <Image source={LocationImage} />
-          <Text style={styles.locationText}>East Bali, Indonesia</Text>
-        </View>
-        <View style={styles.ratingsContainer}>
-          <Text style={styles.ratingsLevelText}>Beginner</Text>
-          <View style={styles.dot} />
-          <Text style={styles.ratingsText}>3.5</Text>
-          <Icon name="star" size={20} color="#aa00ff" />
-          <Text style={styles.ratingsCount}>(463)</Text>
-        </View>
-      </View>
-    </View>
+      </ScrollView>
+      <Footer navigateToDiveLogForm={navigateToDiveLogForm} />
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    marginBottom: 114,
+  },
   container: {
     flex: 1,
     backgroundColor: '#EFF6F9',
@@ -169,35 +167,6 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 28,
     fontWeight: '700',
-  },
-  header: {},
-  headerIconsContainer: {
-    position: 'absolute',
-    top: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-    alignItems: 'center',
-  },
-  headerIcon: {
-    backgroundColor: '#FFF',
-    position: 'relative',
-    marginHorizontal: 20,
-    paddingVertical: 2,
-    paddingHorizontal: 3,
-    borderRadius: 5,
-  },
-  headerImage: {
-    width: WIDTH,
-    height: 300,
-  },
-  headerBottomContainer: {
-    position: 'absolute',
-    bottom: 20,
-    // flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
   },
   ratingsLevelText: {
     color: '#aa00ff',
@@ -225,41 +194,64 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     fontSize: 16,
   },
-  photoDots: {
+  nearbySites: {},
+  nearbySiteItemContainer: {
+    width: WIDTH * 0.8,
+    marginRight: 15,
+  },
+  nearbySiteItemImageContainer: {
+    width: WIDTH * 0.8,
+  },
+  nearbySiteItemImage: {
+    width: WIDTH * 0.8,
+  },
+  nearbySitesTextContainer: {
+    marginHorizontal: 25,
+  },
+  nearbySitesMainText: {
+    color: 'black',
+    fontSize: 20,
+    fontWeight: '500',
+  },
+  nearbySitesCardsContainer: {
+    paddingLeft: 25,
+    paddingRight: 10,
+    marginTop: 10,
+  },
+  diveShops: {
+    marginTop: 5,
+  },
+  diveShopsCardsContainer: {
+    paddingLeft: 25,
+    paddingRight: 10,
+    marginTop: 10,
+  },
+  diveShopsTextContainer: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 25,
     alignItems: 'center',
   },
-  blackPhotoDot: {
-    width: 10,
-    height: 10,
-    backgroundColor: 'black',
-    position: 'relative',
-    borderRadius: 5,
-    marginHorizontal: 2.5,
+  diveShopsMainText: {
+    color: 'black',
+    fontSize: 20,
+    fontWeight: '500',
   },
-  whitePhotoDot: {
-    width: 10,
-    height: 10,
-    backgroundColor: '#FFF',
-    position: 'relative',
-    borderRadius: 5,
-    marginHorizontal: 2.5,
+  diveShopsMoreText: {
+    fontSize: 18,
+    fontWeight: '400',
   },
-  imageCountContainer: {
-    position: 'absolute',
-    right: 10,
+  reportContainer: {
+    marginVertical: 20,
+    marginHorizontal: 25,
     flexDirection: 'row',
-    backgroundColor: 'rgba(131,131,131,0.5)',
-    paddingVertical: 2,
-    paddingHorizontal: 7,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginRight: 10,
   },
-  imageCountText: {
+  reportText: {
+    color: 'black',
+    fontSize: 15,
     marginLeft: 5,
-    opacity: 1,
-    color: '#FFF',
+    textDecorationStyle: 'solid',
+    textDecorationLine: 'underline',
   },
 });
 
