@@ -30,13 +30,6 @@ enum Directions {
   right = 'right',
   left = 'left',
 }
-interface FocusedImageProp {
-  index: number;
-  offset: {
-    x: number;
-    y: number;
-  };
-}
 
 interface Images {
   source: ImageSourcePropType;
@@ -58,27 +51,22 @@ const images: Images[] = [
 ];
 
 const DiveSite = () => {
-  const [focusedImageProp, setFocusedImageProp] =
-    React.useState<FocusedImageProp>({
-      index: 0,
-      offset: {
-        x: 0,
-        y: 0,
-      },
-    });
+  const [focusedImageIndex, setFocusedImageIndex] = React.useState(0);
 
   const handleScroll = ({
     nativeEvent: { layoutMeasurement, contentOffset },
   }: NativeSyntheticEvent<NativeScrollEvent>) => {
     const widthForFullSwipe = layoutMeasurement.width;
     let direction: Directions = Directions.initial;
+    let focusedIndex = contentOffset.x / widthForFullSwipe;
 
-    if (contentOffset.x === focusedImageProp.offset.x + widthForFullSwipe) {
+    if (!Number.isInteger(focusedIndex)) {
+      return;
+    }
+
+    if (focusedImageIndex < focusedIndex) {
       direction = Directions.right;
-    } else if (
-      contentOffset.x ===
-      focusedImageProp.offset.x - widthForFullSwipe
-    ) {
+    } else if (focusedImageIndex > focusedIndex) {
       direction = Directions.left;
     }
 
@@ -87,18 +75,7 @@ const DiveSite = () => {
       return;
     }
 
-    const focusedImageStateObj: FocusedImageProp = {
-      index:
-        direction === Directions.right
-          ? focusedImageProp.index + 1
-          : focusedImageProp.index - 1,
-      offset: {
-        x: contentOffset.x,
-        y: 0,
-      },
-    };
-
-    setFocusedImageProp(focusedImageStateObj);
+    setFocusedImageIndex(focusedIndex);
   };
   return (
     <View style={styles.container}>
@@ -134,7 +111,7 @@ const DiveSite = () => {
                 <View
                   key={index}
                   style={
-                    index === focusedImageProp.index
+                    index === focusedImageIndex
                       ? styles.whitePhotoDot
                       : styles.blackPhotoDot
                   }
@@ -144,9 +121,9 @@ const DiveSite = () => {
           </View>
           <View style={styles.imageCountContainer}>
             <Icon name="image-outline" size={18} color="#FFF" />
-            <Text style={styles.imageCountText}>{`${
-              focusedImageProp.index + 1
-            }/${images.length}`}</Text>
+            <Text style={styles.imageCountText}>{`${focusedImageIndex + 1}/${
+              images.length
+            }`}</Text>
           </View>
         </View>
       </View>
