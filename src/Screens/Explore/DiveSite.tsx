@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   TouchableWithoutFeedback,
   Dimensions,
+  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
@@ -59,6 +60,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation }) => {
       screen: 'LogsForm',
     });
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
@@ -144,7 +146,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    marginBottom: 114,
+    marginBottom: Platform.OS === 'android' ? 114 : 80,
   },
   container: {
     flex: 1,
