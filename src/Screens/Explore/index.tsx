@@ -9,13 +9,17 @@ import {
   Dimensions,
   Platform,
 } from 'react-native';
-import config from 'react-native-config';
 
 import SearchInput from '_components/ui/SearchInput';
 import Tag from '_components/ui/Tag';
 import GradientText from '_components/ui/GradientText';
 import DiveSite from './components/DiveSite';
 import DiveShop from './components/DiveShop';
+import { useAppDispatch, useAppSelector } from '_redux/hooks';
+import {
+  handleFetchDiveSites,
+  selectAllDiveSites,
+} from '_redux/slices/dive-sites';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
@@ -23,6 +27,7 @@ import type { CompositeNavigationProp } from '@react-navigation/native';
 import type { FunctionComponent } from 'react';
 import type { RootStackParamList, AppTabsParamList } from '_utils/interfaces';
 import type { ImageSourcePropType } from 'react-native';
+// import type { Spot } from '_utils/interfaces/data/spot';
 
 import Newest from '_assets/tags/newest.png';
 import Popular from '_assets/tags/popular.png';
@@ -67,6 +72,15 @@ interface ExploreProps {
 }
 
 const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
+  const dispatch = useAppDispatch();
+  const diveSites = useAppSelector(selectAllDiveSites);
+
+  console.log('dive sites from store', diveSites);
+  // const [diveSites, setDiveSites] = React.useState<Spot>([]);
+  React.useEffect(() => {
+    dispatch(handleFetchDiveSites());
+  }, []);
+
   const navigateToDiveSite = () => {
     navigation.navigate('ExploreStack', {
       screen: 'DiveSite',
