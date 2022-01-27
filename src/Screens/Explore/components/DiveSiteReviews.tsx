@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     elevation: 1.5,
     padding: 20,
+    zIndex: 5,
   },
   reviewCardShadow1: {
     width: '97%',
@@ -115,6 +116,7 @@ const styles = StyleSheet.create({
     left: 4,
     elevation: 1.2,
     opacity: 0.9,
+    zIndex: 3,
   },
   reviewCardShadow2: {
     width: '93%',
