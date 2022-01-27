@@ -18,7 +18,7 @@ const Navigator: React.FC = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Auth"
+        initialRouteName="App"
         screenOptions={{
           headerShown: false,
         }}>

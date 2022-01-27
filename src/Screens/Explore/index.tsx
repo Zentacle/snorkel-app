@@ -9,6 +9,7 @@ import {
   Dimensions,
   Platform,
 } from 'react-native';
+import config from 'react-native-config';
 
 import SearchInput from '_components/ui/SearchInput';
 import Tag from '_components/ui/Tag';
