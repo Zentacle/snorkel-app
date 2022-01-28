@@ -10,52 +10,74 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import type { FunctionComponent } from 'react';
 import type { ViewStyle, ImageStyle } from 'react-native';
+import type { Spot } from '_utils/interfaces/data/spot';
 
 import DiveSiteImage from '_assets/DiveSite.jpg';
 import LocationImage from '_assets/Location.png';
 
-import { attachIcons } from '../utils/utils';
+import { attachIcons, capitalize } from '../utils/utils';
 
 interface DiveSiteProps {
   containerStyle?: ViewStyle;
   imageContainerStyle?: ViewStyle;
   imageStyle?: ImageStyle;
-  onPressContainer?: () => void;
+  onPressContainer?: (diveSpot: Spot) => void;
+  site: Spot;
 }
 
 const DiveSite: FunctionComponent<DiveSiteProps> = props => {
   const content = (
     <View style={[styles.container, props.containerStyle]}>
       <View style={[styles.imageContainer, props.imageContainerStyle]}>
-        <Image
-          style={[styles.image, props.imageStyle]}
-          source={DiveSiteImage}
-        />
+        {props.site.hero_img ? (
+          <Image
+            style={[styles.image, props.imageStyle]}
+            source={{
+              uri: props.site.hero_img,
+            }}
+          />
+        ) : (
+          <Image
+            style={[styles.image, props.imageStyle]}
+            source={DiveSiteImage}
+          />
+        )}
         <View style={styles.imageCountContainer}>
           <Icon name="image-outline" size={18} color="#FFF" />
           <Text style={styles.imageCountText}>24</Text>
         </View>
       </View>
       <View style={styles.descriptionContainer}>
-        <Text style={styles.descriptionText}>Mala Wharf</Text>
+        <Text style={styles.descriptionText}>{props.site.name}</Text>
         <View style={styles.locationContainer}>
           <Image source={LocationImage} />
-          <Text style={styles.locationText}>Maui</Text>
+          <Text style={styles.locationText}>
+            {props.site.location_city.split(',')[0]}
+          </Text>
         </View>
         <View style={styles.ratingsContainer}>
-          <Text style={styles.ratingsLevelText}>Beginner</Text>
+          <Text style={styles.ratingsLevelText}>
+            {capitalize(props.site.difficulty) || 'Beginner'}
+          </Text>
           <View style={styles.dot} />
-          <Text style={styles.ratingsText}>3.5</Text>
-          <View style={styles.ratingsIconsContainer}>{attachIcons(3.5)}</View>
-          <Text style={styles.ratingsCount}>(463)</Text>
+          <Text style={styles.ratingsText}>
+            {Number(props.site.rating).toFixed(1)}
+          </Text>
+          <View style={styles.ratingsIconsContainer}>
+            {attachIcons(Number(props.site.rating))}
+          </View>
+          <Text style={styles.ratingsCount}>({props.site.num_reviews})</Text>
         </View>
       </View>
     </View>
   );
 
-  if (props.onPressContainer) {
+  if (props.onPressContainer && typeof props.onPressContainer === 'function') {
     return (
-      <TouchableWithoutFeedback onPress={props.onPressContainer}>
+      <TouchableWithoutFeedback
+        onPress={() =>
+          props.onPressContainer && props.onPressContainer(props.site)
+        }>
         {content}
       </TouchableWithoutFeedback>
     );

@@ -22,7 +22,10 @@ import DiveShopComp from './components/DiveShop';
 import Footer from './components/DiveSiteFooter';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import type { CompositeNavigationProp } from '@react-navigation/native';
+import type {
+  CompositeNavigationProp,
+  RouteProp,
+} from '@react-navigation/native';
 import type { FunctionComponent } from 'react';
 import type {
   RootStackParamList,
@@ -30,22 +33,36 @@ import type {
 } from '_utils/interfaces';
 
 import LocationImage from '_assets/Location.png';
+import { capitalize } from './utils/utils';
 
 type DiveSiteNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<ExploreStackParamList, 'DiveSite'>,
   NativeStackNavigationProp<RootStackParamList>
 >;
 
+// type DiveSiteRouteProps = CompositeNavigationProp<
+//   RouteProp<ExploreStackParamList, 'DiveSite'>,
+//   RouteProp<RootStackParamList>
+// >;
+
+type DiveSiteRouteProps = RouteProp<ExploreStackParamList, 'DiveSite'>;
+// >;
+
 interface DiveSiteProps {
   navigation: DiveSiteNavigationProps;
+  route: DiveSiteRouteProps;
 }
 
 const WIDTH = Dimensions.get('window').width;
 
-const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation }) => {
+const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
+  const currentSpot = route.params.diveSpot;
   const navigateToDiveSite = () => {
     navigation.navigate('ExploreStack', {
       screen: 'DiveSite',
+      params: {
+        diveSpot: currentSpot,
+      },
     });
   };
 
@@ -61,25 +78,30 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation }) => {
     });
   };
 
+  const navigateBack = () => {
+    navigation.goBack();
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
-        <ImageCarousel />
+        <ImageCarousel goBack={navigateBack} />
 
         <View style={styles.contentContainer}>
-          <Text style={styles.mainDescription}>
-            USS Liberty Wreck on the Beach
-          </Text>
+          <Text style={styles.mainDescription}>{currentSpot.name}</Text>
           <View style={styles.locationContainer}>
             <Image source={LocationImage} />
-            <Text style={styles.locationText}>East Bali, Indonesia</Text>
+            <Text style={styles.locationText}>{currentSpot.location_city}</Text>
           </View>
           <View style={styles.ratingsContainer}>
-            <Text style={styles.ratingsLevelText}>Beginner</Text>
+            <Text style={styles.ratingsLevelText}>
+              {capitalize(currentSpot.difficulty) || 'Beginner'}
+            </Text>
             <View style={styles.dot} />
-            <Text style={styles.ratingsText}>3.5</Text>
+            <Text style={styles.ratingsText}>
+              {Number(currentSpot.rating).toFixed(1)}
+            </Text>
             <Icon name="star" size={20} color="#aa00ff" />
-            <Text style={styles.ratingsCount}>(463)</Text>
+            <Text style={styles.ratingsCount}>({currentSpot.num_reviews})</Text>
           </View>
 
           <DiveLocation />
@@ -97,6 +119,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation }) => {
             {[1, 2, 3].map((item, index) => (
               <DiveSiteComp
                 key={index}
+                site={currentSpot}
                 containerStyle={styles.nearbySiteItemContainer}
                 imageContainerStyle={styles.nearbySiteItemContainer}
                 imageStyle={styles.nearbySiteItemImage}

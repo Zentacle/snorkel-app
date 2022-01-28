@@ -49,9 +49,11 @@ const images: Images[] = [
   },
 ];
 
-interface ImageCarouselProps {}
+interface ImageCarouselProps {
+  goBack: () => void;
+}
 
-const ImageCarousel: FunctionComponent<ImageCarouselProps> = () => {
+const ImageCarousel: FunctionComponent<ImageCarouselProps> = props => {
   const handleScroll = ({
     nativeEvent: { layoutMeasurement, contentOffset },
   }: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -96,6 +98,7 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = () => {
           name="chevron-left"
           color="black"
           size={25}
+          onPress={props.goBack}
         />
         <FEIcon
           style={styles.headerIcon}

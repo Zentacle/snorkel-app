@@ -27,11 +27,11 @@ import type { CompositeNavigationProp } from '@react-navigation/native';
 import type { FunctionComponent } from 'react';
 import type { RootStackParamList, AppTabsParamList } from '_utils/interfaces';
 import type { ImageSourcePropType } from 'react-native';
-// import type { Spot } from '_utils/interfaces/data/spot';
 
 import Newest from '_assets/tags/newest.png';
 import Popular from '_assets/tags/popular.png';
 import TopRating from '_assets/tags/top-rating.png';
+import type { Spot } from '_utils/interfaces/data/spot';
 
 const WIDTH = Dimensions.get('window').width;
 
@@ -75,15 +75,18 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
   const diveSites = useAppSelector(selectAllDiveSites);
 
-  console.log('dive sites from store', diveSites);
+  // console.log('dive sites from store', diveSites);
   // const [diveSites, setDiveSites] = React.useState<Spot>([]);
   React.useEffect(() => {
     dispatch(handleFetchDiveSites());
   }, []);
 
-  const navigateToDiveSite = () => {
+  const navigateToDiveSite = (diveSpot: Spot) => {
     navigation.navigate('ExploreStack', {
       screen: 'DiveSite',
+      params: {
+        diveSpot,
+      },
     });
   };
 
@@ -132,9 +135,10 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
             horizontal
             contentContainerStyle={styles.nearbySitesCardsContainer}
             showsHorizontalScrollIndicator={false}>
-            {[1, 2, 3].map((item, index) => (
+            {diveSites.slice(0, 5).map(item => (
               <DiveSite
-                key={index}
+                key={item.id}
+                site={item}
                 containerStyle={styles.nearbySiteItemContainer}
                 imageContainerStyle={styles.nearbySiteItemContainer}
                 imageStyle={styles.nearbySiteItemImage}
@@ -175,7 +179,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
 
         <View style={styles.diveSites}>
           <View style={styles.diveSitesTextContainer}>
-            <Text style={styles.diveSitesMainText}>Dive Sites Nearby</Text>
+            <Text style={styles.diveSitesMainText}>Recommended</Text>
             <TouchableWithoutFeedback>
               <GradientText
                 gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
@@ -196,9 +200,10 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
           <ScrollView
             contentContainerStyle={styles.diveSitesCardsContainer}
             showsHorizontalScrollIndicator={false}>
-            {[1, 2, 3].map((item, index) => (
+            {diveSites.slice(5).map(item => (
               <DiveSite
-                key={index}
+                key={item.id}
+                site={item}
                 containerStyle={styles.diveSiteItemContainer}
                 imageContainerStyle={styles.diveSiteItemContainer}
                 imageStyle={styles.diveSiteItemImage}
@@ -299,6 +304,7 @@ const styles = StyleSheet.create({
   },
   diveSiteItemImage: {
     width: WIDTH * 0.87,
+    // height: '100%',
   },
   diveSitesTextContainer: {
     flexDirection: 'row',

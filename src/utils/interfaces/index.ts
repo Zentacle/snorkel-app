@@ -1,5 +1,7 @@
-import type { ViewStyle, TextStyle, ImageStyle } from 'react-native';
 import { NavigatorScreenParams } from '@react-navigation/native';
+
+import type { ViewStyle, TextStyle, ImageStyle } from 'react-native';
+import type { Spot } from './data/spot';
 
 export type AuthtackParamList = {
   Landing: undefined;
@@ -17,7 +19,9 @@ export type OnboardingStackParamList = {
 };
 
 export type ExploreStackParamList = {
-  DiveSite: undefined;
+  DiveSite: {
+    diveSpot: Spot;
+  };
   DiveShop: undefined;
 };
 

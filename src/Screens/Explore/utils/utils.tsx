@@ -22,3 +22,10 @@ export const attachIcons = (count: number, iconSize = 15) => {
 
   return iconList;
 };
+
+export function capitalize(str: string) {
+  if (!str) {
+    return;
+  }
+  return str.substring(0, 1).toUpperCase() + str.substring(1);
+}
