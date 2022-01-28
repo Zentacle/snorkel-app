@@ -1,6 +1,15 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  Dimensions,
+  Platform,
+  Alert,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -27,8 +36,32 @@ interface LocationPermissionsProps {
 const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
   navigation,
 }) => {
-  const navigateToLocationPermissions = () => {
+  const navigateToMeasurementType = () => {
     navigation.navigate('MeasurementType');
+  };
+
+  const handleLocationPermissions = async () => {
+    try {
+      if (Platform.OS === 'android') {
+        const PermissionsLocationAndroid = await request(
+          PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+        );
+
+        if (PermissionsLocationAndroid === RESULTS.GRANTED) {
+          navigateToMeasurementType();
+        }
+      } else {
+        const PermissionsLocationIOS = await request(
+          PERMISSIONS.IOS.LOCATION_ALWAYS,
+        );
+
+        if (PermissionsLocationIOS === RESULTS.GRANTED) {
+          navigateToMeasurementType();
+        }
+      }
+    } catch (err) {
+      console.warn('there was an error', err);
+    }
   };
 
   return (
@@ -56,7 +89,7 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
       </View>
       <View style={styles.footer}>
         <Button
-          onPress={navigateToLocationPermissions}
+          onPress={handleLocationPermissions}
           gradient
           gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
           gradientLocations={[0.01, 1, 1]}
@@ -75,6 +108,9 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
           Enable
         </Button>
         <Button
+          onPress={() => {
+            Alert.alert('We need to handle this case');
+          }}
           textGradient
           start={{
             x: 0,
