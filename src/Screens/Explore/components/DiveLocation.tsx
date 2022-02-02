@@ -4,38 +4,20 @@ import MapView, { Marker } from 'react-native-maps';
 
 import type { FunctionComponent } from 'react';
 import Button from '_components/ui/Buttons/Button';
-import type { Spot } from '_utils/interfaces/data/spot';
-
-interface Activity {
-  label: string;
-  values: string[];
-}
-
-const activities: Activity[] = [
-  {
-    label: 'Activity',
-    values: ['Scuba', 'Snorkel', 'Free'],
-  },
-  {
-    label: 'Entry',
-    values: ['Shore', 'Water'],
-  },
-  {
-    label: 'Tags',
-    values: ['Beach', 'Coral', 'Dive Party'],
-  },
-];
 
 interface DiveLocationProps {
   navigateToMap: () => void;
-  currentSpot: Spot;
+  coordinates: {
+    latitude: number;
+    longitude: number;
+  };
 }
 
 const DiveLocation: FunctionComponent<DiveLocationProps> = ({
   navigateToMap,
-  currentSpot,
+  coordinates,
 }) => {
-  const canShowLocation = currentSpot.latitude && currentSpot.longitude;
+  const canShowLocation = coordinates.latitude && coordinates.longitude;
   return (
     <View style={styles.diveLocationContainer}>
       {canShowLocation ? (
@@ -48,15 +30,15 @@ const DiveLocation: FunctionComponent<DiveLocationProps> = ({
               scrollEnabled={false}
               liteMode={true}
               initialRegion={{
-                latitude: currentSpot.latitude,
-                longitude: currentSpot.longitude,
+                latitude: coordinates.latitude,
+                longitude: coordinates.longitude,
                 latitudeDelta: 0.0121,
                 longitudeDelta: 0.2122,
               }}>
               <Marker
                 coordinate={{
-                  latitude: currentSpot.latitude,
-                  longitude: currentSpot.longitude,
+                  latitude: coordinates.latitude,
+                  longitude: coordinates.longitude,
                 }}
               />
             </MapView>
@@ -83,21 +65,6 @@ const DiveLocation: FunctionComponent<DiveLocationProps> = ({
       ) : (
         <View />
       )}
-
-      {activities.map((activity, index) => (
-        <View key={index} style={styles.activityContainer}>
-          <View style={styles.activity}>
-            <Text style={styles.activityLabel}>{activity.label}</Text>
-            <View style={styles.activityValueContainer}>
-              {activity.values.map((value, idx) => (
-                <Text key={idx} style={styles.activityValue}>
-                  {value}
-                </Text>
-              ))}
-            </View>
-          </View>
-        </View>
-      ))}
     </View>
   );
 };
@@ -141,30 +108,6 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 16,
     fontWeight: '800',
-  },
-  activityContainer: {
-    marginVertical: 5,
-    backgroundColor: '#FFF',
-    padding: 10,
-    borderRadius: 10,
-  },
-  activity: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  activityLabel: {
-    color: 'grey',
-    fontSize: 15,
-    width: '25%',
-  },
-  activityValueContainer: {
-    flexDirection: 'row',
-    width: '75%',
-  },
-  activityValue: {
-    fontWeight: '500',
-    color: 'black',
-    marginHorizontal: 5,
   },
 });
 

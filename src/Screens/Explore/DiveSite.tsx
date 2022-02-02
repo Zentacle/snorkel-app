@@ -47,6 +47,26 @@ interface DiveSiteProps {
   route: DiveSiteRouteProps;
 }
 
+interface Activity {
+  label: string;
+  values: string[];
+}
+
+const activities: Activity[] = [
+  {
+    label: 'Activity',
+    values: ['Scuba', 'Snorkel', 'Free'],
+  },
+  {
+    label: 'Entry',
+    values: ['Shore', 'Water'],
+  },
+  {
+    label: 'Tags',
+    values: ['Beach', 'Coral', 'Dive Party'],
+  },
+];
+
 const WIDTH = Dimensions.get('window').width;
 
 const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
@@ -116,9 +136,27 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
           </View>
 
           <DiveLocation
-            currentSpot={currentSpot}
+            coordinates={{
+              latitude: currentSpot.latitude,
+              longitude: currentSpot.longitude,
+            }}
             navigateToMap={navigateToMap}
           />
+
+          {activities.map((activity, index) => (
+            <View key={index} style={styles.activityContainer}>
+              <View style={styles.activity}>
+                <Text style={styles.activityLabel}>{activity.label}</Text>
+                <View style={styles.activityValueContainer}>
+                  {activity.values.map((value, idx) => (
+                    <Text key={idx} style={styles.activityValue}>
+                      {value}
+                    </Text>
+                  ))}
+                </View>
+              </View>
+            </View>
+          ))}
 
           <DiveSiteReviews navigateToReviews={navigateToReviews} />
         </View>
@@ -291,6 +329,30 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     textDecorationStyle: 'solid',
     textDecorationLine: 'underline',
+  },
+  activityContainer: {
+    marginVertical: 5,
+    backgroundColor: '#FFF',
+    padding: 10,
+    borderRadius: 10,
+  },
+  activity: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  activityLabel: {
+    color: 'grey',
+    fontSize: 15,
+    width: '25%',
+  },
+  activityValueContainer: {
+    flexDirection: 'row',
+    width: '75%',
+  },
+  activityValue: {
+    fontWeight: '500',
+    color: 'black',
+    marginHorizontal: 5,
   },
 });
 
