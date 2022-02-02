@@ -22,7 +22,7 @@ const Navigator: React.FC = () => {
     // handle fetching of dive sites and logs here
     // to improve user experience
     dispatch(handleFetchDiveSites());
-  }, []);
+  }, [dispatch]);
 
   const Stack = createNativeStackNavigator<RootStackParamList>();
   return (
