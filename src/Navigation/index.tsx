@@ -13,12 +13,22 @@ import SearchNavigator from './App/Search';
 import ProfileNavigator from './App/Profile';
 import LogsFormNavigator from './App/DiveLogsForm';
 
+import { useAppDispatch } from '_redux/hooks';
+import { handleFetchDiveSites } from '_redux/slices/dive-sites';
+
 const Navigator: React.FC = () => {
+  const dispatch = useAppDispatch();
+  React.useEffect(() => {
+    // handle fetching of dive sites and logs here
+    // to improve user experience
+    dispatch(handleFetchDiveSites());
+  }, []);
+
   const Stack = createNativeStackNavigator<RootStackParamList>();
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Auth"
+        initialRouteName="App"
         screenOptions={{
           headerShown: false,
         }}>
