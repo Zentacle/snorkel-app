@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 
+import type { FunctionComponent } from 'react';
 import Button from '_components/ui/Buttons/Button';
+import type { Spot } from '_utils/interfaces/data/spot';
 
 interface Activity {
   label: string;
@@ -24,41 +26,64 @@ const activities: Activity[] = [
   },
 ];
 
-const DiveLocation = () => {
+interface DiveLocationProps {
+  navigateToMap: () => void;
+  currentSpot: Spot;
+}
+
+const DiveLocation: FunctionComponent<DiveLocationProps> = ({
+  navigateToMap,
+  currentSpot,
+}) => {
+  const canShowLocation = currentSpot.latitude && currentSpot.longitude;
   return (
     <View style={styles.diveLocationContainer}>
-      <Text style={styles.diveSiteLocationHeader}>Dive Site Location</Text>
-      <View style={styles.mapContainer}>
-        <MapView
-          provider="google"
-          style={styles.map}
-          scrollEnabled={false}
-          liteMode={true}
-          initialRegion={{
-            latitude: -8.409518,
-            longitude: 115.188919,
-            latitudeDelta: 0.0421,
-            longitudeDelta: 0.6922,
-          }}
-        />
-      </View>
-      <Button
-        textGradient
-        start={{
-          x: 0,
-          y: 1,
-        }}
-        end={{
-          x: 0.65,
-          y: 0.4,
-        }}
-        gradientColors={['#AA00FF', '#AA00FF', '#00E0FF']}
-        style={{
-          container: styles.viewMapButtonContainer,
-          text: styles.viewMapButtonText,
-        }}>
-        View Map
-      </Button>
+      {canShowLocation ? (
+        <>
+          <Text style={styles.diveSiteLocationHeader}>Dive Site Location</Text>
+          <View style={styles.mapContainer}>
+            <MapView
+              provider="google"
+              style={styles.map}
+              scrollEnabled={false}
+              liteMode={true}
+              initialRegion={{
+                latitude: currentSpot.latitude,
+                longitude: currentSpot.longitude,
+                latitudeDelta: 0.0121,
+                longitudeDelta: 0.2122,
+              }}>
+              <Marker
+                coordinate={{
+                  latitude: currentSpot.latitude,
+                  longitude: currentSpot.longitude,
+                }}
+              />
+            </MapView>
+          </View>
+          <Button
+            onPress={navigateToMap}
+            textGradient
+            start={{
+              x: 0,
+              y: 1,
+            }}
+            end={{
+              x: 0.65,
+              y: 0.4,
+            }}
+            gradientColors={['#AA00FF', '#AA00FF', '#00E0FF']}
+            style={{
+              container: styles.viewMapButtonContainer,
+              text: styles.viewMapButtonText,
+            }}>
+            View Map
+          </Button>
+        </>
+      ) : (
+        <View />
+      )}
+
       {activities.map((activity, index) => (
         <View key={index} style={styles.activityContainer}>
           <View style={styles.activity}>

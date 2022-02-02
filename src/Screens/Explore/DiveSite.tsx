@@ -40,13 +40,7 @@ type DiveSiteNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<RootStackParamList>
 >;
 
-// type DiveSiteRouteProps = CompositeNavigationProp<
-//   RouteProp<ExploreStackParamList, 'DiveSite'>,
-//   RouteProp<RootStackParamList>
-// >;
-
 type DiveSiteRouteProps = RouteProp<ExploreStackParamList, 'DiveSite'>;
-// >;
 
 interface DiveSiteProps {
   navigation: DiveSiteNavigationProps;
@@ -78,6 +72,18 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
     });
   };
 
+  const navigateToMap = () => {
+    navigation.navigate('ExploreStack', {
+      screen: 'Map',
+      params: {
+        coords: {
+          lat: currentSpot.latitude,
+          lng: currentSpot.longitude,
+        },
+      },
+    });
+  };
+
   const navigateBack = () => {
     navigation.goBack();
   };
@@ -104,7 +110,10 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
             <Text style={styles.ratingsCount}>({currentSpot.num_reviews})</Text>
           </View>
 
-          <DiveLocation />
+          <DiveLocation
+            currentSpot={currentSpot}
+            navigateToMap={navigateToMap}
+          />
 
           <DiveSiteReviews />
         </View>

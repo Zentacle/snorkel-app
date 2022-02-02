@@ -23,6 +23,12 @@ export type ExploreStackParamList = {
     diveSpot: Spot;
   };
   DiveShop: undefined;
+  Map: {
+    coords: {
+      lat: number;
+      lng: number;
+    };
+  };
 };
 
 export type ProfileStackParamList = {

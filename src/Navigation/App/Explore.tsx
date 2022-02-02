@@ -6,6 +6,7 @@ import type { ExploreStackParamList } from '_utils/interfaces';
 
 import DiveSite from '_screens/Explore/DiveSite';
 import DiveShop from '_screens/Explore/DiveShop';
+import Map from '_screens/Explore/Map';
 
 const ExploreNavigator: React.FC = () => {
   const ExploreStack = createNativeStackNavigator<ExploreStackParamList>();
@@ -17,6 +18,7 @@ const ExploreNavigator: React.FC = () => {
       }}>
       <ExploreStack.Screen name="DiveSite" component={DiveSite} />
       <ExploreStack.Screen name="DiveShop" component={DiveShop} />
+      <ExploreStack.Screen name="Map" component={Map} />
     </ExploreStack.Navigator>
   );
 };

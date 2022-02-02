@@ -72,7 +72,7 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = props => {
     }
 
     if (direction === Directions.initial) {
-      // this means that a full swipe was not completed. Shouls not proceed
+      // this means that a full swipe was not completed. Should not proceed
       return;
     }
 
