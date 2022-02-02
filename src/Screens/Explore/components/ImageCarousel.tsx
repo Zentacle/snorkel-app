@@ -6,6 +6,7 @@ import {
   Image,
   Dimensions,
   ScrollView,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FEIcon from 'react-native-vector-icons/Feather';
@@ -93,19 +94,16 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = props => {
         <Image style={styles.headerImage} source={DiveSite4} />
       </ScrollView>
       <View style={styles.headerIconsContainer}>
-        <FEIcon
-          style={styles.headerIcon}
-          name="chevron-left"
-          color="black"
-          size={25}
-          onPress={props.goBack}
-        />
-        <FEIcon
-          style={styles.headerIcon}
-          name="share"
-          color="black"
-          size={25}
-        />
+        <TouchableWithoutFeedback onPress={props.goBack}>
+          <View style={styles.headerIcon}>
+            <FEIcon name="chevron-left" color="black" size={25} />
+          </View>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback>
+          <View style={styles.headerIcon}>
+            <FEIcon name="share" color="black" size={25} />
+          </View>
+        </TouchableWithoutFeedback>
       </View>
       <View style={styles.headerBottomContainer}>
         <View style={styles.photoDots}>

@@ -1,5 +1,10 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import {
+  StyleSheet,
+  Platform,
+  View,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 
 import FullScreenMap from './components/FullScreenMap';
@@ -36,21 +41,22 @@ const Map: FunctionComponent<MapProps> = ({ navigation, route }) => {
   return (
     <>
       <FullScreenMap coords={coords} />
-      <Icon
-        style={styles.icon}
-        name="chevron-left"
-        color="black"
-        size={23}
-        onPress={goBack}
-      />
+      <TouchableWithoutFeedback onPress={goBack}>
+        <View style={styles.icon}>
+          <Icon name="chevron-left" color="black" size={23} />
+        </View>
+      </TouchableWithoutFeedback>
     </>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   icon: {
     position: 'absolute',
-    top: 20,
+    top: Platform.OS === 'ios' ? 40 : 20,
     left: 20,
     backgroundColor: '#FFF',
     paddingVertical: 7,
