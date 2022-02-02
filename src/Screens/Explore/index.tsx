@@ -79,7 +79,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   // const [diveSites, setDiveSites] = React.useState<Spot>([]);
   React.useEffect(() => {
     dispatch(handleFetchDiveSites());
-  }, []);
+  }, [dispatch]);
 
   const navigateToDiveSite = (diveSpot: Spot) => {
     navigation.navigate('ExploreStack', {

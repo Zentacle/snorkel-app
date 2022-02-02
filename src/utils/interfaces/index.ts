@@ -29,6 +29,7 @@ export type ExploreStackParamList = {
       lng: number;
     };
   };
+  Reviews: undefined;
 };
 
 export type ProfileStackParamList = {

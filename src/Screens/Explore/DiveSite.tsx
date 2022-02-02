@@ -87,6 +87,11 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   const navigateBack = () => {
     navigation.goBack();
   };
+
+  const navigateToReviews = () => {
+    navigation.navigate('Reviews');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
@@ -115,7 +120,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
             navigateToMap={navigateToMap}
           />
 
-          <DiveSiteReviews />
+          <DiveSiteReviews navigateToReviews={navigateToReviews} />
         </View>
         <View style={styles.nearbySites}>
           <View style={styles.nearbySitesTextContainer}>

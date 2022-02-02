@@ -2,12 +2,20 @@ import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import type { FunctionComponent } from 'react';
+
 import Button from '_components/ui/Buttons/Button';
 
 import ProfileImage from '_assets/Profile.jpg';
 import { attachIcons } from '../utils/utils';
 
-const DiveSiteReviews = () => {
+interface DiveSiteReviewsProps {
+  navigateToReviews: () => void;
+}
+
+const DiveSiteReviews: FunctionComponent<DiveSiteReviewsProps> = ({
+  navigateToReviews,
+}) => {
   return (
     <View style={styles.reviewContainer}>
       <View style={styles.reviewLabelContainer}>
@@ -45,6 +53,7 @@ const DiveSiteReviews = () => {
       </View>
 
       <Button
+        onPress={navigateToReviews}
         textGradient
         start={{
           x: 0,
