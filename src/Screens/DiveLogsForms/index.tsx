@@ -1,47 +1,62 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  Platform,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import type { CompositeNavigationProp } from '@react-navigation/native';
 import type { FunctionComponent } from 'react';
-import type { RootStackParamList, AppTabsParamList } from '_utils/interfaces';
+import type {
+  RootStackParamList,
+  LogsFormStackParamList,
+} from '_utils/interfaces';
 
-type DiveLogsFormsNavigationProps = CompositeNavigationProp<
-  BottomTabNavigationProp<AppTabsParamList, 'LogsForm'>,
+import FormStates from './components/FormStates';
+import Footer from './components/SimpleFormFooter';
+
+import { stages } from './utils/utils';
+import Location from './forms/simple/Location';
+
+type SimpleDiveLogsFormsNavigationProps = CompositeNavigationProp<
+  NativeStackNavigationProp<LogsFormStackParamList, 'SimpleDiveLogsForm'>,
   NativeStackNavigationProp<RootStackParamList>
 >;
 
-// CompositeNavigationProp<
-//   CompositeNavigationProp<
-//     NativeStackNavigationProp<LogsFormStackParamList, 'SimpleLogsForm'>,
-//     BottomTabNavigationProp<AppTabsParamList>
-//   >,
-//   NativeStackNavigationProp<RootStackParamList>
-// >;
-
-interface DiveLogsFormsProps {
-  navigation: DiveLogsFormsNavigationProps;
+interface SimpleDiveLogsFormsProps {
+  navigation: SimpleDiveLogsFormsNavigationProps;
 }
 
-const DiveLogsForms: FunctionComponent<DiveLogsFormsProps> = props => {
+const SimpleDiveLogsForms: FunctionComponent<
+  SimpleDiveLogsFormsProps
+> = props => {
   const goBack = () => {
     props.navigation.goBack();
-    // props.navigation.navigate('App', {
-    //   screen: 'ExploreStack',
-    //   params: {
-    //     screen: 'Explore',
-    //   },
-    // });
   };
+
+  const next = () => {};
+
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.headerContainer}>
-        <View />
-        <Text style={styles.header}>Create Dive Log</Text>
-        <Icon onPress={goBack} name="close-outline" color="black" size={30} />
-      </View>
+      <ScrollView style={styles.scrollContainer}>
+        <View style={styles.headerContainer}>
+          <View />
+          <Text style={styles.header}>Create Dive Log</Text>
+          <Icon onPress={goBack} name="close-outline" color="black" size={30} />
+        </View>
+        <View>
+          <FormStates activeId={0} stages={stages} />
+        </View>
+        <View>
+          <Location />
+        </View>
+      </ScrollView>
+      <Footer next={next} text="Continue" />
     </SafeAreaView>
   );
 };
@@ -50,6 +65,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#EFF6F9',
+  },
+  scrollContainer: {
+    marginBottom: Platform.OS === 'android' ? 114 : 80,
   },
   headerContainer: {
     flexDirection: 'row',
@@ -67,4 +85,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DiveLogsForms;
+export default SimpleDiveLogsForms;

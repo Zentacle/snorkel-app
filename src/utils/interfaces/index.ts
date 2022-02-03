@@ -45,7 +45,7 @@ export type LogsStackParamList = {
 };
 
 export type LogsFormStackParamList = {
-  // SimpleLogsForm: undefined;
+  SimpleDiveLogsForm: undefined;
 };
 
 export type AppTabsParamList = {

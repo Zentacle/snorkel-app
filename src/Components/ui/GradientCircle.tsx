@@ -3,12 +3,12 @@ import { StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import type { FunctionComponent } from 'react';
-import type { TextStyle } from 'react-native';
+import type { ViewStyle } from 'react-native';
 
 interface GradientCircleProps {
-  style?: TextStyle;
-  gradientColors: string[];
-  gradientLocations: number[];
+  style?: ViewStyle;
+  gradientColors?: string[];
+  gradientLocations?: number[];
   start?: {
     x: number;
     y: number;
