@@ -80,7 +80,7 @@ const SimpleDiveLogsForms: FunctionComponent<
           <Icon onPress={goBack} name="close-outline" color="black" size={30} />
         </View>
         <View>
-          <FormStates activeId={page} stages={stages} />
+          <FormStates goToPage={goToPage} activeId={page} stages={stages} />
         </View>
 
         {showForms()}

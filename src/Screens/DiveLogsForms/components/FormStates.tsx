@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import FEIcons from 'react-native-vector-icons/Feather';
 
 import type { FunctionComponent } from 'react';
@@ -9,6 +15,7 @@ import GradientCircle from '_components/ui/GradientCircle';
 interface FormStatesProps {
   stages: Stage[];
   activeId: number;
+  goToPage: (target: number) => void;
 }
 
 const WIDTH = Dimensions.get('window').width;
@@ -16,6 +23,7 @@ const WIDTH = Dimensions.get('window').width;
 const FormStates: FunctionComponent<FormStatesProps> = ({
   stages,
   activeId,
+  goToPage,
 }) => {
   return (
     <View style={styles.container}>
@@ -26,20 +34,26 @@ const FormStates: FunctionComponent<FormStatesProps> = ({
               <View style={styles.stageItem}>
                 {stage.id === activeId ? (
                   <>
-                    <View style={styles.activeDotContainer}>
-                      <GradientCircle style={styles.activeDot}>
-                        <FEIcons name="edit-2" size={10} color="white" />
-                      </GradientCircle>
-                    </View>
+                    <TouchableWithoutFeedback
+                      onPress={() => goToPage(stage.id)}>
+                      <View style={styles.activeDotContainer}>
+                        <GradientCircle style={styles.activeDot}>
+                          <FEIcons name="edit-2" size={10} color="white" />
+                        </GradientCircle>
+                      </View>
+                    </TouchableWithoutFeedback>
                     <Text style={[styles.stageText, { fontWeight: '700' }]}>
                       {stage.name}
                     </Text>
                   </>
                 ) : (
                   <>
-                    <View style={styles.normalDotContainer}>
-                      <GradientCircle style={styles.normalDot} />
-                    </View>
+                    <TouchableWithoutFeedback
+                      onPress={() => goToPage(stage.id)}>
+                      <View style={styles.normalDotContainer}>
+                        <GradientCircle style={styles.normalDot} />
+                      </View>
+                    </TouchableWithoutFeedback>
                     <Text style={[styles.stageText, { opacity: 0.6 }]}>
                       {stage.name}
                     </Text>
