@@ -32,6 +32,7 @@ interface BaseProps {
   placeholderTextColor?: ColorValue;
   passwordType?: boolean;
   maxLength?: number;
+  multiline?: boolean;
 }
 
 interface FormManagementInput {

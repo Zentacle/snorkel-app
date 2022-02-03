@@ -85,7 +85,10 @@ const SimpleDiveLogsForms: FunctionComponent<
 
         {showForms()}
       </ScrollView>
-      <Footer next={next} text="Continue" />
+      <Footer
+        next={next}
+        text={page === stages.length - 1 ? 'Complete' : 'Continue'}
+      />
     </SafeAreaView>
   );
 };
