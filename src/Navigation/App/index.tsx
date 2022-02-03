@@ -5,11 +5,11 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import type { AppTabsParamList } from '_utils/interfaces';
 
-import ExploreNavigator from './Explore';
-import LogsNavigator from './Logs';
-import SearchNavigator from './Search';
-import ProfileNavigator from './Profile';
-import LogsFormNavigator from './DiveLogsForm';
+import ExploreScreen from '_screens/Explore';
+import LogsScreen from '_screens/Logs';
+import SearchScreen from '_screens/Search';
+import ProfileScreen from '_screens/Profile';
+import DiveLogsFormScreen from '_screens/DiveLogsForms';
 
 import GradientCircle from '_components/ui/GradientCircle';
 
@@ -26,7 +26,7 @@ const AppTabsNavigator: React.FC = () => {
   const AppTabs = createBottomTabNavigator<AppTabsParamList>();
   return (
     <AppTabs.Navigator
-      initialRouteName="ExploreStack"
+      initialRouteName="Explore"
       screenOptions={{
         headerShown: false,
         tabBarStyle: styles.tabBarStyle,
@@ -39,8 +39,8 @@ const AppTabsNavigator: React.FC = () => {
             <Image source={focused ? HomeActive : Home} />
           ),
         }}
-        name="ExploreStack"
-        component={ExploreNavigator}
+        name="Explore"
+        component={ExploreScreen}
       />
       <AppTabs.Screen
         options={{
@@ -49,8 +49,8 @@ const AppTabsNavigator: React.FC = () => {
             <Image source={focused ? SearchActive : Search} />
           ),
         }}
-        name="SearchStack"
-        component={SearchNavigator}
+        name="Search"
+        component={SearchScreen}
       />
       <AppTabs.Screen
         options={{
@@ -73,8 +73,8 @@ const AppTabsNavigator: React.FC = () => {
             </GradientCircle>
           ),
         }}
-        name="LogsFormStack"
-        component={LogsFormNavigator}
+        name="LogsForm"
+        component={DiveLogsFormScreen}
       />
       <AppTabs.Screen
         options={{
@@ -83,8 +83,8 @@ const AppTabsNavigator: React.FC = () => {
             <Image source={focused ? LogsActive : Logs} />
           ),
         }}
-        name="LogsStack"
-        component={LogsNavigator}
+        name="Logs"
+        component={LogsScreen}
       />
       <AppTabs.Screen
         options={{
@@ -93,8 +93,8 @@ const AppTabsNavigator: React.FC = () => {
             <Image source={focused ? ProfileActive : Profile} />
           ),
         }}
-        name="ProfileStack"
-        component={ProfileNavigator}
+        name="Profile"
+        component={ProfileScreen}
       />
     </AppTabs.Navigator>
   );

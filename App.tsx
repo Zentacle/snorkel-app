@@ -2,8 +2,10 @@ import React, { useEffect } from 'react';
 import SplashScreen from 'react-native-splash-screen';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Settings as FBSdkSignin } from 'react-native-fbsdk-next';
+import { Provider } from 'react-redux';
 
 import Navigator from './src/Navigation';
+import store from '_redux/store';
 
 export default function App() {
   useEffect(() => {
@@ -13,5 +15,9 @@ export default function App() {
     SplashScreen.hide();
   }, []);
 
-  return <Navigator />;
+  return (
+    <Provider store={store}>
+      <Navigator />
+    </Provider>
+  );
 }

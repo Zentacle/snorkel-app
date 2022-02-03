@@ -24,8 +24,8 @@ interface ChooseUserNameProps {
 }
 
 const ChooseUserName: FunctionComponent<ChooseUserNameProps> = props => {
-  const navigateToAvatar = () => {
-    props.navigation.navigate('ChooseAvatar');
+  const navigateToCameraPermissions = () => {
+    props.navigation.navigate('CameraPermissions');
   };
 
   return (
@@ -49,7 +49,7 @@ const ChooseUserName: FunctionComponent<ChooseUserNameProps> = props => {
 
       <View style={styles.footer}>
         <Button
-          onPress={navigateToAvatar}
+          onPress={navigateToCameraPermissions}
           gradient
           gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
           gradientLocations={[0.0, 1, 1]}

@@ -6,8 +6,10 @@ import {
   Dimensions,
   Image,
   SafeAreaView,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -32,12 +34,25 @@ interface ChooseAvatarProps {
 }
 
 const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
+  const [cameraImage, setCameraImage] = React.useState('');
   const navigateBack = () => {
     props.navigation.goBack();
   };
-  const navigateToCameraPermissions = () => {
-    props.navigation.navigate('CameraPermissions');
+
+  const navigateToLovationPermissions = () => {
+    props.navigation.navigate('LocationPermissions');
   };
+
+  const handleLaunchCamera = async () => {
+    const result = await launchCamera({
+      mediaType: 'photo',
+      // includeBase64: true,
+    });
+    if (result.assets && result.assets[0].uri) {
+      setCameraImage(result.assets[0].uri);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.contentContainer}>
@@ -56,13 +71,22 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
           </Text>
         </View>
         <View style={styles.iconAddContainer}>
-          <Image source={UploadAvatarIcon} />
+          {cameraImage ? (
+            <Image
+              style={{ width: 168, height: 168, borderRadius: 84 }}
+              source={{ uri: cameraImage }}
+            />
+          ) : (
+            <TouchableWithoutFeedback onPress={handleLaunchCamera}>
+              <Image source={UploadAvatarIcon} />
+            </TouchableWithoutFeedback>
+          )}
         </View>
       </View>
 
       <View style={styles.footer}>
         <Button
-          onPress={navigateToCameraPermissions}
+          onPress={navigateToLovationPermissions}
           gradient
           gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
           gradientLocations={[0.0, 1, 1]}

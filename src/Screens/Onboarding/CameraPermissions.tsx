@@ -1,6 +1,16 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  Dimensions,
+  // PermissionsAndroid,
+  Alert,
+  Platform,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -27,8 +37,38 @@ interface CameraPermissionsProps {
 const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
   navigation,
 }) => {
-  const navigateToLocationPermissions = () => {
-    navigation.navigate('LocationPermissions');
+  const navigateToAvatar = () => {
+    navigation.navigate('ChooseAvatar');
+  };
+
+  const handleCameraPermissions = async () => {
+    try {
+      if (Platform.OS === 'android') {
+        request(PERMISSIONS.ANDROID.CAMERA).then(result => {
+          if (result === RESULTS.GRANTED) {
+            navigateToAvatar();
+          }
+        });
+      } else {
+        const PermissionsCamera = await request(PERMISSIONS.IOS.CAMERA);
+        if (PermissionsCamera === RESULTS.GRANTED) {
+          const PermissionsMedia = await request(PERMISSIONS.IOS.MEDIA_LIBRARY);
+          if (
+            PermissionsMedia === RESULTS.GRANTED ||
+            PermissionsMedia === RESULTS.UNAVAILABLE
+          ) {
+            const PermissionsMicrophone = await request(
+              PERMISSIONS.IOS.MICROPHONE,
+            );
+            if (PermissionsMicrophone === RESULTS.GRANTED) {
+              navigateToAvatar();
+            }
+          }
+        }
+      }
+    } catch (err) {
+      console.warn('there was an error', err);
+    }
   };
 
   return (
@@ -59,7 +99,7 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
       </View>
       <View style={styles.footer}>
         <Button
-          onPress={navigateToLocationPermissions}
+          onPress={handleCameraPermissions}
           gradient
           gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
           gradientLocations={[0.01, 1, 1]}
@@ -78,6 +118,9 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
           Enable
         </Button>
         <Button
+          onPress={() => {
+            Alert.alert('We need to handle this case');
+          }}
           textGradient
           start={{
             x: 0,
