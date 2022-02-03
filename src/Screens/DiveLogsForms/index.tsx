@@ -22,6 +22,9 @@ import Footer from './components/SimpleFormFooter';
 
 import { stages } from './utils/utils';
 import Location from './forms/simple/Location';
+import Rating from './forms/simple/Rating';
+import Name from './forms/simple/Name';
+import Notes from './forms/simple/Notes';
 
 type SimpleDiveLogsFormsNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<LogsFormStackParamList, 'SimpleDiveLogsForm'>,
@@ -35,11 +38,38 @@ interface SimpleDiveLogsFormsProps {
 const SimpleDiveLogsForms: FunctionComponent<
   SimpleDiveLogsFormsProps
 > = props => {
+  const [page, switchPage] = React.useState(0);
+
   const goBack = () => {
     props.navigation.goBack();
   };
 
-  const next = () => {};
+  const showForms = (): JSX.Element => {
+    switch (page) {
+      case 0:
+        return <Location />;
+      case 1:
+        return <Rating />;
+      case 2:
+        return <Name />;
+      case 3:
+        return <Notes />;
+      default:
+        return <Location />;
+    }
+  };
+
+  const next = () => {
+    if (page + 1 > stages.length - 1) {
+      switchPage(0);
+    } else {
+      switchPage(page + 1);
+    }
+  };
+
+  const goToPage = (target: number) => {
+    switchPage(target);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -50,11 +80,10 @@ const SimpleDiveLogsForms: FunctionComponent<
           <Icon onPress={goBack} name="close-outline" color="black" size={30} />
         </View>
         <View>
-          <FormStates activeId={0} stages={stages} />
+          <FormStates activeId={page} stages={stages} />
         </View>
-        <View>
-          <Location />
-        </View>
+
+        {showForms()}
       </ScrollView>
       <Footer next={next} text="Continue" />
     </SafeAreaView>
