@@ -17,6 +17,7 @@ const Name = () => {
           placeholder="Write Title"
           style={styles.input}
           containerStyle={styles.inputContainer}
+          maxLength={40}
         />
       </View>
     </View>
