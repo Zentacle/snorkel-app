@@ -14,13 +14,21 @@ import GradientCircle from '_components/ui/GradientCircle';
 import GradientText from '_components/ui/GradientText';
 import Button from '_components/ui/Buttons/Button';
 
+import { FunctionComponent } from 'react';
+
 import DiveSiteImg from '_assets/DiveSite3.jpg';
 import LocationImage from '_assets/Location.png';
 import DescIcon from '_assets/DescIcon.png';
 import CopyIcon from '_assets/CopySimple.png';
 import UploadIcon from '_assets/UploadSimple.png';
 
-const Review = () => {
+interface ReviewProps {
+  navigateToAdvancedDiveForm: () => void;
+}
+
+const Review: FunctionComponent<ReviewProps> = ({
+  navigateToAdvancedDiveForm,
+}) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.gradientContainer}>
@@ -93,6 +101,7 @@ const Review = () => {
 
       <View>
         <Button
+          onPress={navigateToAdvancedDiveForm}
           gradient
           gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
           gradientLocations={[0.01, 1, 1]}

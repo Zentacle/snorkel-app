@@ -46,6 +46,12 @@ const SimpleDiveLogsForms: FunctionComponent<
     props.navigation.goBack();
   };
 
+  const navigateToAdvancedDiveForm = () => {
+    props.navigation.navigate('LogsFormStack', {
+      screen: 'AdvancedDiveLogsForm',
+    });
+  };
+
   React.useEffect(() => {
     return props.navigation.addListener('blur', () => {
       switchPage(0);
@@ -63,7 +69,9 @@ const SimpleDiveLogsForms: FunctionComponent<
       case 3:
         return <Notes />;
       default:
-        return <Review />;
+        return (
+          <Review navigateToAdvancedDiveForm={navigateToAdvancedDiveForm} />
+        );
     }
   };
 
