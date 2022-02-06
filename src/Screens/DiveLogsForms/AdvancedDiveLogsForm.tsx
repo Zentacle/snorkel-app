@@ -1,20 +1,169 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  SafeAreaView,
+  Platform,
+  TouchableWithoutFeedback,
+} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-const AdvancedDiveLogsForm = () => {
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type {
+  CompositeNavigationProp,
+  RouteProp,
+} from '@react-navigation/native';
+import type { FunctionComponent } from 'react';
+import type {
+  RootStackParamList,
+  LogsFormStackParamList,
+} from '_utils/interfaces';
+
+import Footer from './components/SimpleFormFooter';
+import FormStates from './components/FormStates';
+
+import { advancedFormStages as stages } from './utils/utils';
+import BasicInfo from './forms/advanced/BasicInfo';
+
+type AdvancedDiveLogsFormsNavigationProps = CompositeNavigationProp<
+  NativeStackNavigationProp<LogsFormStackParamList, 'AdvancedDiveLogsForm'>,
+  NativeStackNavigationProp<RootStackParamList>
+>;
+
+type AdvancedDiveFormRouteProps = RouteProp<
+  LogsFormStackParamList,
+  'AdvancedDiveLogsForm'
+>;
+
+interface AdvancedDiveLogsFormsProps {
+  navigation: AdvancedDiveLogsFormsNavigationProps;
+  route: AdvancedDiveFormRouteProps;
+}
+
+const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
+  navigation,
+  route,
+}) => {
+  const [page, switchPage] = React.useState(0);
+
+  const next = () => {
+    switchPage(page + 1);
+  };
+
+  const goToPage = (target: number) => {
+    switchPage(target);
+  };
+
+  const previous = () => {
+    switchPage(page - 1);
+  };
+
+  const goBack = () => {
+    navigation.goBack();
+  };
+
+  const showForms = (): JSX.Element => {
+    switch (page) {
+      case 0:
+        return <BasicInfo />;
+      // case 1:
+      //   return <Rating />;
+      // case 2:
+      //   return <Name />;
+      // case 3:
+      //   return <Notes />;
+      // default:
+      //   return (
+      //     <Review navigateToAdvancedDiveForm={navigateToAdvancedDiveForm} />
+      //   );
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>AdvancedDiveLogs</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.headerContainer}>
+        {page > 0 && page !== stages.length ? (
+          <TouchableWithoutFeedback onPress={previous}>
+            <Icon
+              name="chevron-back-outline"
+              color="black"
+              size={30}
+              style={styles.prev}
+            />
+          </TouchableWithoutFeedback>
+        ) : (
+          <View style={styles.prevPlaceholder} />
+        )}
+        <View />
+        <Text style={[styles.header, page === 0 && { marginLeft: -20 }]}>
+          {page === stages.length ? 'Dive Log Created' : 'Create Dive Log'}
+        </Text>
+        <TouchableWithoutFeedback onPress={goBack}>
+          <Icon
+            style={styles.back}
+            name="close-outline"
+            color="black"
+            size={30}
+          />
+        </TouchableWithoutFeedback>
+      </View>
+
+      {!!(page !== stages.length) && (
+        <View style={styles.formStatesContainer}>
+          <FormStates goToPage={goToPage} activeId={page} stages={stages} />
+        </View>
+      )}
+      <ScrollView style={styles.scrollContainer}>{showForms()}</ScrollView>
+      <Footer
+        next={next}
+        text={page === stages.length - 1 ? 'Complete' : 'Continue'}
+      />
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#EFF6F9',
+  },
+  scrollContainer: {
+    marginBottom: Platform.OS === 'android' ? 114 : 80,
+  },
+  headerContainer: {
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#EFF6F9',
+    marginHorizontal: 20,
+    marginTop: 25,
+  },
+  header: {
+    color: 'black',
+    fontSize: 22,
+    fontWeight: '700',
+    textAlign: 'center',
+    alignSelf: 'center',
+  },
+  prevPlaceholder: {
+    width: 30,
+    position: 'absolute',
+    left: 0,
+  },
+  prev: {
+    position: 'absolute',
+    left: 0,
+  },
+  back: {
+    position: 'absolute',
+    right: 0,
+  },
+  formStatesContainer: {
+    paddingBottom: 10,
+    borderBottomColor: '#A8A8A8',
+    borderStyle: 'solid',
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
 });
 

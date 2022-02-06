@@ -21,7 +21,7 @@ import type {
 import FormStates from './components/FormStates';
 import Footer from './components/SimpleFormFooter';
 
-import { stages } from './utils/utils';
+import { simpleformStages as stages } from './utils/utils';
 import Location from './forms/simple/Location';
 import Rating from './forms/simple/Rating';
 import Name from './forms/simple/Name';

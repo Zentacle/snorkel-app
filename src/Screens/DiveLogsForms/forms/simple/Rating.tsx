@@ -26,7 +26,9 @@ const Rating = () => {
         <Text style={styles.headerLabel}>Rating</Text>
         <View style={styles.ratingContainer}>
           {[1, 2, 3, 4, 5].map((_item, index) => (
-            <TouchableWithoutFeedback onPress={() => setRating(index + 1)}>
+            <TouchableWithoutFeedback
+              key={index}
+              onPress={() => setRating(index + 1)}>
               <Image
                 style={[styles.star, index !== 0 && {}]}
                 source={rating >= index + 1 ? StarFull : StarEmpty}
