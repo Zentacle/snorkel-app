@@ -26,6 +26,10 @@ import FormStates from './components/FormStates';
 
 import { advancedFormStages as stages } from './utils/utils';
 import BasicInfo from './forms/advanced/BasicInfo';
+import DateTimeDepth from './forms/advanced/DateTimeDepth';
+import WaterOnshore from './forms/advanced/WaterOnshore';
+import WearGear from './forms/advanced/WearGear';
+import Review from './forms/advanced/Review';
 
 type AdvancedDiveLogsFormsNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<LogsFormStackParamList, 'AdvancedDiveLogsForm'>,
@@ -46,7 +50,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   navigation,
   route,
 }) => {
-  const [page, switchPage] = React.useState(0);
+  const [page, switchPage] = React.useState(1);
 
   const next = () => {
     switchPage(page + 1);
@@ -68,16 +72,14 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     switch (page) {
       case 0:
         return <BasicInfo />;
-      // case 1:
-      //   return <Rating />;
-      // case 2:
-      //   return <Name />;
-      // case 3:
-      //   return <Notes />;
-      // default:
-      //   return (
-      //     <Review navigateToAdvancedDiveForm={navigateToAdvancedDiveForm} />
-      //   );
+      case 1:
+        return <DateTimeDepth />;
+      case 2:
+        return <WaterOnshore />;
+      case 3:
+        return <WearGear />;
+      default:
+        return <Review navigateToAdvancedDiveForm={() => {}} />;
     }
   };
 
@@ -98,7 +100,9 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
         )}
         <View />
         <Text style={[styles.header, page === 0 && { marginLeft: -20 }]}>
-          {page === stages.length ? 'Dive Log Created' : 'Create Dive Log'}
+          {page === stages.length
+            ? 'Advanced Dive Log Created'
+            : 'Full Dive Log'}
         </Text>
         <TouchableWithoutFeedback onPress={goBack}>
           <Icon
@@ -115,11 +119,23 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
           <FormStates goToPage={goToPage} activeId={page} stages={stages} />
         </View>
       )}
-      <ScrollView style={styles.scrollContainer}>{showForms()}</ScrollView>
-      <Footer
-        next={next}
-        text={page === stages.length - 1 ? 'Complete' : 'Continue'}
-      />
+      <ScrollView
+        style={[
+          styles.scrollContainer,
+          page !== stages.length && {
+            marginBottom: Platform.OS === 'android' ? 114 : 80,
+          },
+        ]}>
+        {showForms()}
+      </ScrollView>
+      {page === stages.length ? (
+        <View />
+      ) : (
+        <Footer
+          next={next}
+          text={page === stages.length - 1 ? 'Complete' : 'Continue'}
+        />
+      )}
     </SafeAreaView>
   );
 };
@@ -129,9 +145,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#EFF6F9',
   },
-  scrollContainer: {
-    marginBottom: Platform.OS === 'android' ? 114 : 80,
-  },
+  scrollContainer: {},
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
