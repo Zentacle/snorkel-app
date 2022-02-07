@@ -1,158 +1,112 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  Image,
-} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import { Field } from 'react-final-form';
 
 import SliderComp from '_components/ui/Slider';
+import VisibilityFormComp from '_components/ui/VisibilityFormComp';
+import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
 import GradientBox from '_components/ui/GradientBox';
 import GradientCircle from '_components/ui/GradientCircle';
 
-import Visibility from '_assets/Visibility.png';
+const levels = ['Scuba', 'Freediving', 'Snorkel'];
+const entries = ['Shore', 'Boat'];
+
+const DiveActiveComp = (level: string) => (
+  <View style={styles.selectedShadow}>
+    <GradientBox style={styles.selectedActivity}>
+      <View style={styles.selectBox}>
+        <View style={styles.selectedActivityCircle}>
+          <GradientCircle style={styles.selectedGradient} />
+        </View>
+        <Text style={styles.activityText}>{level}</Text>
+      </View>
+    </GradientBox>
+  </View>
+);
+
+const DiveInactiveComp = (level: string) => (
+  <View style={styles.activity}>
+    <View style={styles.normalActivityCircle}></View>
+    <Text style={styles.activityText}>{level}</Text>
+  </View>
+);
+
+const EntryActiveComp = (entry: string) => (
+  <View style={styles.selectedShadow}>
+    <GradientBox style={styles.selectedActivity}>
+      <View style={styles.selectBox}>
+        <View style={styles.selectedActivityCircle}>
+          <GradientCircle style={styles.selectedGradient} />
+        </View>
+        <Text style={styles.activityText}>{entry}</Text>
+      </View>
+    </GradientBox>
+  </View>
+);
+const EntryInctiveComp = (entry: string) => {
+  const index = entries.findIndex(item => item === entry);
+  return (
+    <View
+      style={[
+        styles.activity,
+        index === 0 ? { marginRight: 15 } : { marginLeft: 15 },
+      ]}>
+      <View style={styles.normalActivityCircle}></View>
+      <Text style={styles.activityText}>{entry}</Text>
+    </View>
+  );
+};
 
 const WaterOnshore = () => {
-  const [selectedDiff, selectDiff] = React.useState('Scuba');
-  const [selectedEntry, selectEntry] = React.useState('Shore');
-  const [visibility, setVisibility] = React.useState(0);
-  const levels = ['Scuba', 'Freediving', 'Snorkel'];
-  const entries = ['Shore', 'Boat'];
-
-  const visibilityLevels = [
-    'Poor',
-    'Below Average',
-    'Average',
-    'Good',
-    'Amazing',
-  ];
-
   return (
     <View style={styles.container}>
       <View style={{ marginTop: 30 }}>
-        <View style={styles.labelTextContainer}>
-          <Text style={styles.labelText}>Water Temp. C</Text>
-          <Text style={styles.labelText}>14</Text>
-        </View>
-        <SliderComp />
+        <Field
+          name="waterTemp"
+          label="Water Temp . C"
+          component={SliderComp}
+          trackMarks={[0, 10, 20, 30, 40, 50, 60]}
+          benchMarks={[0, 30, 60]}
+          minimumValue={0}
+          maximumValue={60}
+        />
       </View>
 
       <View style={{ marginTop: 30, marginBottom: 20 }}>
-        <View style={styles.labelTextContainer}>
-          <Text style={styles.labelText}>Air Temp. C</Text>
-          <Text style={styles.labelText}>20</Text>
-        </View>
-        <SliderComp />
+        <Field
+          name="airTemp"
+          label="Air Temp . C"
+          component={SliderComp}
+          trackMarks={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
+          benchMarks={[0, 50, 100]}
+          minimumValue={0}
+          maximumValue={100}
+        />
       </View>
 
-      <View style={styles.visibilityContentContainer}>
-        <View style={styles.labelTextContainer}>
-          <Text style={styles.labelText}>Air Temp. C</Text>
-          <Text style={styles.labelText}>20</Text>
-        </View>
-        <View style={styles.visibility}>
-          {visibilityLevels.map((visibilityLevel, index) => {
-            if (visibility >= index) {
-              return (
-                <View>
-                  <TouchableWithoutFeedback
-                    onPress={() => setVisibility(index)}>
-                    <View style={styles.selectedVisibilityShadow}>
-                      <GradientBox style={styles.visibilityBox}>
-                        <View style={styles.visibilityContainer}>
-                          <Image source={Visibility} />
-                        </View>
-                      </GradientBox>
-                    </View>
-                  </TouchableWithoutFeedback>
-                  <Text style={styles.visibilityLevelText}>
-                    {visibilityLevel}
-                  </Text>
-                </View>
-              );
-            }
-
-            return (
-              <View>
-                <TouchableWithoutFeedback onPress={() => setVisibility(index)}>
-                  <View style={styles.visibilityContainer}></View>
-                </TouchableWithoutFeedback>
-                <Text style={styles.visibilityLevelText}>
-                  {visibilityLevel}
-                </Text>
-              </View>
-            );
-          })}
-        </View>
-      </View>
+      <Field name="visibility" component={VisibilityFormComp} />
 
       <View style={styles.activityContentContainer}>
         <Text style={styles.labelText}>Dive Activity</Text>
-        <View style={styles.activityContainer}>
-          {levels.map(level => {
-            if (level === selectedDiff) {
-              return (
-                <TouchableWithoutFeedback>
-                  <View style={styles.selectedShadow}>
-                    <GradientBox style={styles.selectedActivity}>
-                      <View style={styles.selectBox}>
-                        <View style={styles.selectedActivityCircle}>
-                          <GradientCircle style={styles.selectedGradient} />
-                        </View>
-                        <Text style={styles.activityText}>{level}</Text>
-                      </View>
-                    </GradientBox>
-                  </View>
-                </TouchableWithoutFeedback>
-              );
-            }
-            return (
-              <TouchableWithoutFeedback onPress={() => selectDiff(level)}>
-                <View style={styles.activity}>
-                  <View style={styles.normalActivityCircle}></View>
-                  <Text style={styles.activityText}>{level}</Text>
-                </View>
-              </TouchableWithoutFeedback>
-            );
-          })}
-        </View>
+        <Field
+          name="diveActivity"
+          component={SelectWGradientBorder}
+          options={levels}
+          activeComponent={DiveActiveComp}
+          inactiveComponent={DiveInactiveComp}
+        />
       </View>
 
       <View style={styles.diveActivityContentContainer}>
-        <Text style={styles.labelText}>Dive Activity</Text>
-        <View style={styles.entryContainer}>
-          {entries.map((entry, index) => {
-            if (entry === selectedEntry) {
-              return (
-                <TouchableWithoutFeedback>
-                  <View style={styles.selectedShadow}>
-                    <GradientBox style={styles.selectedActivity}>
-                      <View style={styles.selectBox}>
-                        <View style={styles.selectedActivityCircle}>
-                          <GradientCircle style={styles.selectedGradient} />
-                        </View>
-                        <Text style={styles.activityText}>{entry}</Text>
-                      </View>
-                    </GradientBox>
-                  </View>
-                </TouchableWithoutFeedback>
-              );
-            }
-            return (
-              <TouchableWithoutFeedback onPress={() => selectEntry(entry)}>
-                <View
-                  style={[
-                    styles.activity,
-                    index === 0 ? { marginRight: 15 } : { marginLeft: 15 },
-                  ]}>
-                  <View style={styles.normalActivityCircle}></View>
-                  <Text style={styles.activityText}>{entry}</Text>
-                </View>
-              </TouchableWithoutFeedback>
-            );
-          })}
-        </View>
+        <Text style={styles.labelText}>Entry</Text>
+        <Field
+          name="entry"
+          component={SelectWGradientBorder}
+          options={entries}
+          activeComponent={EntryActiveComp}
+          inactiveComponent={EntryInctiveComp}
+          style={styles.entryContainer}
+        />
       </View>
     </View>
   );
@@ -249,45 +203,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  visibilityContainer: {
-    backgroundColor: '#fff',
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    width: 45,
-    height: 45,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  visibilityContentContainer: {},
-  visibility: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  visibilityBox: {
-    padding: 1.5,
-    borderRadius: 8,
-  },
-  selectedVisibilityShadow: {
-    borderRadius: 8,
-    shadowColor: 'black',
-    shadowRadius: 4,
-    shadowOffset: {
-      width: 2,
-      height: 2,
-    },
-    shadowOpacity: 0.2,
-  },
   diveActivityContentContainer: {
     marginTop: 20,
     marginBottom: 20,
-  },
-  visibilityLevelText: {
-    width: 45,
-    marginTop: 10,
-    fontWeight: '500',
-    fontSize: 10,
-    textAlign: 'center',
   },
 });
 

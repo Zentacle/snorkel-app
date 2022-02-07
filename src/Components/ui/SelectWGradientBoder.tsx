@@ -3,11 +3,13 @@ import { View, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 
 import type { FunctionComponent } from 'react';
 import type { FieldRenderProps } from 'react-final-form';
+import type { ViewStyle } from 'react-native';
 
 interface SelectWGradientBorderProps {
   options: string[];
   activeComponent: (level: string) => JSX.Element;
   inactiveComponent: (level: string) => JSX.Element;
+  style?: ViewStyle;
 }
 type FinalFormProps = FieldRenderProps<string, any>;
 type ComponentProps = SelectWGradientBorderProps & FinalFormProps;
@@ -17,9 +19,10 @@ const SelectWGradientBorder: FunctionComponent<ComponentProps> = ({
   options,
   activeComponent,
   inactiveComponent,
+  style,
 }) => {
   return (
-    <View style={styles.levelContainer}>
+    <View style={style ? style : styles.container}>
       {options.map((level, index) => {
         if (level === value) {
           return (
@@ -40,12 +43,6 @@ const SelectWGradientBorder: FunctionComponent<ComponentProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#2c3e50',
-  },
-  levelContainer: {
     marginTop: 20,
     flexDirection: 'row',
     alignItems: 'center',
