@@ -7,23 +7,12 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import PasswordImage from '_assets/logos/pwd/EyeClosed.png';
+import type { FieldRenderProps } from 'react-final-form';
 
 import type { FunctionComponent } from 'react';
-import type {
-  ViewStyle,
-  TextStyle,
-  ColorValue,
-  NativeSyntheticEvent,
-  TextInputFocusEventData,
-  TextInputChangeEventData,
-} from 'react-native';
+import type { ViewStyle, TextStyle, ColorValue } from 'react-native';
 
-type NativeSyntheticFocus =
-  | ((e: NativeSyntheticEvent<TextInputFocusEventData>) => void)
-  | undefined;
-type NativeSyntheticChange =
-  | ((e: NativeSyntheticEvent<TextInputChangeEventData>) => void)
-  | undefined;
+type FinalFormProps = FieldRenderProps<string, any>;
 
 interface BaseProps {
   style?: TextStyle;
@@ -33,13 +22,9 @@ interface BaseProps {
   passwordType?: boolean;
   maxLength?: number;
   multiline?: boolean;
-  onChange?: NativeSyntheticChange;
-  value?: string | undefined;
-  onFocus?: NativeSyntheticFocus;
-  onBlur?: NativeSyntheticFocus;
 }
 
-type InputProps = BaseProps;
+type InputProps = BaseProps & FinalFormProps;
 type FilteredInputProps = Omit<
   InputProps,
   'containerStyle' | 'input' | 'meta' | 'passwordType'
@@ -59,6 +44,10 @@ const Input: FunctionComponent<InputProps> = (props): JSX.Element => {
           style={[styles.input, props.style]}
           secureTextEntry={secureTextEntry}
           {...(props as unknown as FilteredInputProps)}
+          value={props.input.value}
+          onChangeText={(text: string) =>
+            props.input.onChange && props.input.onChange(text)
+          }
         />
         <TouchableWithoutFeedback
           onPress={() => setSecureTextEntry(!secureTextEntry)}>
@@ -74,6 +63,10 @@ const Input: FunctionComponent<InputProps> = (props): JSX.Element => {
       <TextInput
         style={[styles.input, props.style]}
         {...(props as unknown as FilteredInputProps)}
+        value={props.input.value}
+        onChangeText={(text: string) =>
+          props.input.onChange && props.input.onChange(text)
+        }
       />
     </View>
   );
