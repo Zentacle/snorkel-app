@@ -14,7 +14,9 @@ import GradientCircle from '_components/ui/GradientCircle';
 import GradientText from '_components/ui/GradientText';
 import Button from '_components/ui/Buttons/Button';
 
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
+
+import type { SimpleFormInitialValues as InitialValues } from '../../utils/interfaces';
 
 import DiveSiteImg from '_assets/DiveSite3.jpg';
 import LocationImage from '_assets/Location.png';
@@ -24,10 +26,12 @@ import UploadIcon from '_assets/UploadSimple.png';
 
 interface ReviewProps {
   navigateToAdvancedDiveForm: () => void;
+  formValues: InitialValues;
 }
 
 const Review: FunctionComponent<ReviewProps> = ({
   navigateToAdvancedDiveForm,
+  formValues,
 }) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -49,10 +53,10 @@ const Review: FunctionComponent<ReviewProps> = ({
       </View>
 
       <View style={styles.details}>
-        <Text style={styles.detailsTitle}>USS Liberty Wreck on Beach</Text>
+        <Text style={styles.detailsTitle}>{formValues.name}</Text>
         <View style={styles.descContainer}>
           <Image source={DescIcon} />
-          <Text style={styles.descText}>USS liberty with Jim and Sarah</Text>
+          <Text style={styles.descText}>{formValues.name}</Text>
         </View>
         <View style={styles.locationContainer}>
           <Image source={LocationImage} />
