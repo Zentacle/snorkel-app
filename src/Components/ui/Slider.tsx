@@ -3,10 +3,24 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import { Slider } from '_components/modules/slider';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import type { FunctionComponent } from 'react';
+import type { FieldRenderProps } from 'react-final-form';
+
 import GradientBox from './GradientBox';
 
 import PlusIcon from '_assets/Plus.png';
 import MinusIcon from '_assets/Minus.png';
+
+interface SliderCompProps {
+  label: string;
+  trackMarks: number[];
+  benchMarks: number[];
+  minimumValue: number;
+  maximumValue: number;
+}
+
+type FinalFormProps = FieldRenderProps<number, any>;
+type ComponentProps = SliderCompProps & FinalFormProps;
 
 const ThumbComponent = () => {
   return (
@@ -16,13 +30,15 @@ const ThumbComponent = () => {
   );
 };
 
-const SliderComp = () => {
-  const [sliderValue, setSliderValue] = React.useState(2);
-
-  const trackMarks = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120];
-
+const SliderComp: FunctionComponent<ComponentProps> = ({
+  input: { value, onChange },
+  label,
+  trackMarks,
+  benchMarks,
+  minimumValue,
+  maximumValue,
+}) => {
   const TrackMarkComponent = (index: number) => {
-    const benchMarks = [0, 60, 120];
     const fullNum = trackMarks[index];
     const trackInBench = benchMarks.find(benchNum => benchNum === fullNum);
     return (
@@ -49,14 +65,18 @@ const SliderComp = () => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.labelTextContainer}>
+        <Text style={styles.labelText}>{label}</Text>
+        <Text style={styles.labelText}>{value}</Text>
+      </View>
       <View style={styles.sliderContainer}>
         <View style={styles.iconContainer}>
           <Image style={styles.iconImage} source={MinusIcon} />
         </View>
         <Slider
-          value={sliderValue}
+          value={value}
           animateTransitions
-          onValueChange={value => setSliderValue(value as number)}
+          onValueChange={val => onChange(Number(val))}
           renderThumbComponent={ThumbComponent}
           trackStyle={{
             height: 5,
@@ -65,8 +85,8 @@ const SliderComp = () => {
           maximumTrackTintColor="#FFF"
           trackMarks={trackMarks}
           step={1}
-          minimumValue={0}
-          maximumValue={120}
+          minimumValue={minimumValue}
+          maximumValue={maximumValue}
           renderTrackMarkComponent={TrackMarkComponent}
           containerStyle={{ alignSelf: 'stretch', width: '82%' }}
         />
@@ -102,6 +122,18 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   iconImage: {},
+  labelText: {
+    textAlign: 'left',
+    alignSelf: 'flex-start',
+    color: 'black',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  labelTextContainer: {
+    marginBottom: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
 });
 
 export default SliderComp;
