@@ -1,31 +1,42 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Image,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import IOIcon from 'react-native-vector-icons/Ionicons';
 import MAIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MapView, { Marker } from 'react-native-maps';
+import { Field } from 'react-final-form';
 
 import GradientText from '_components/ui/GradientText';
 import GradientCircle from '_components/ui/GradientCircle';
 import GradientBox from '_components/ui/GradientBox';
 
-import Input from '_components/ui/Input';
+import FormManagementInput from '_components/ui/FormManagementInput';
+import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
+import RatingsInputComp from '_components/ui/RatingsInputComp';
 
 import LocationImage from '_assets/Location.png';
 import LogImage from '_assets/log-color.png';
-import StarEmpty from '_assets/StarEmpty.png';
-import StarFull from '_assets/StarFull.png';
+
+const ActiveLevelComponent = (level: string) => (
+  <View style={styles.selectedShadow}>
+    <GradientBox style={styles.selectedLevel}>
+      <View style={styles.selectBox}>
+        <View style={styles.selectedLevelCircle}>
+          <GradientCircle style={styles.selectedGradient} />
+        </View>
+        <Text style={styles.levelText}>{level}</Text>
+      </View>
+    </GradientBox>
+  </View>
+);
+const InactiveLevelComponent = (level: string) => (
+  <View style={styles.level}>
+    <View style={styles.normalLevelCircle}></View>
+    <Text style={styles.levelText}>{level}</Text>
+  </View>
+);
 
 const BasicInfo = () => {
   const coordinates = { latitude: -8.409518, longitude: 115.188919 };
-  const [rating, setRating] = React.useState(0);
-  const [selectedDiff, selectDiff] = React.useState('Beginner');
 
   const levels = ['Beginner', 'Intermediate', 'Advanced'];
 
@@ -111,7 +122,9 @@ const BasicInfo = () => {
           </View>
         </View>
         <View>
-          <Input
+          <Field
+            name="name"
+            component={FormManagementInput}
             placeholder="Write Title"
             style={styles.nameInput}
             containerStyle={styles.inputContainer}
@@ -128,7 +141,9 @@ const BasicInfo = () => {
           </View>
         </View>
         <View>
-          <Input
+          <Field
+            name="name"
+            component={FormManagementInput}
             placeholder="Write Title"
             style={styles.notesInput}
             containerStyle={styles.inputContainer}
@@ -141,50 +156,19 @@ const BasicInfo = () => {
       <View style={styles.ratingContentContainner}>
         <Text style={styles.headerLabel}>Rating</Text>
         <View style={styles.ratingContainer}>
-          {[1, 2, 3, 4, 5].map((_item, index) => (
-            <TouchableWithoutFeedback
-              key={index}
-              onPress={() => setRating(index + 1)}>
-              <Image
-                style={[styles.star, index !== 0 && {}]}
-                source={rating >= index + 1 ? StarFull : StarEmpty}
-              />
-            </TouchableWithoutFeedback>
-          ))}
-          <Text style={styles.starLabel}>{rating} of 5</Text>
+          <Field name="rating" component={RatingsInputComp} />
         </View>
       </View>
 
       <View style={styles.levelContentContainer}>
         <Text style={styles.headerLabel}>Level of difficulty</Text>
-        <View style={styles.levelContainer}>
-          {levels.map(level => {
-            if (level === selectedDiff) {
-              return (
-                <TouchableWithoutFeedback>
-                  <View style={styles.selectedShadow}>
-                    <GradientBox style={styles.selectedLevel}>
-                      <View style={styles.selectBox}>
-                        <View style={styles.selectedLevelCircle}>
-                          <GradientCircle style={styles.selectedGradient} />
-                        </View>
-                        <Text style={styles.levelText}>{level}</Text>
-                      </View>
-                    </GradientBox>
-                  </View>
-                </TouchableWithoutFeedback>
-              );
-            }
-            return (
-              <TouchableWithoutFeedback onPress={() => selectDiff(level)}>
-                <View style={styles.level}>
-                  <View style={styles.normalLevelCircle}></View>
-                  <Text style={styles.levelText}>{level}</Text>
-                </View>
-              </TouchableWithoutFeedback>
-            );
-          })}
-        </View>
+        <Field
+          name="difficulty"
+          component={SelectWGradientBorder}
+          options={levels}
+          activeComponent={ActiveLevelComponent}
+          inactiveComponent={InactiveLevelComponent}
+        />
       </View>
     </ScrollView>
   );
