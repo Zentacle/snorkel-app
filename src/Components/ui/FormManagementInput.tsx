@@ -6,11 +6,12 @@ import {
   Image,
   TouchableWithoutFeedback,
 } from 'react-native';
-import PasswordImage from '_assets/logos/pwd/EyeClosed.png';
-import type { FieldRenderProps } from 'react-final-form';
 
+import type { FieldRenderProps } from 'react-final-form';
 import type { FunctionComponent } from 'react';
 import type { ViewStyle, TextStyle, ColorValue } from 'react-native';
+
+import PasswordImage from '_assets/logos/pwd/EyeClosed.png';
 
 type FinalFormProps = FieldRenderProps<string, any>;
 
@@ -24,13 +25,15 @@ interface BaseProps {
   multiline?: boolean;
 }
 
-type InputProps = BaseProps & FinalFormProps;
-type FilteredInputProps = Omit<
-  InputProps,
+type FormManagementInputProps = BaseProps & FinalFormProps;
+type FilteredFormManagementInputProps = Omit<
+  FormManagementInputProps,
   'containerStyle' | 'input' | 'meta' | 'passwordType'
 >;
 
-const Input: FunctionComponent<InputProps> = (props): JSX.Element => {
+const Input: FunctionComponent<FormManagementInputProps> = (
+  props,
+): JSX.Element => {
   const [secureTextEntry, setSecureTextEntry] = React.useState<boolean>(true);
   if (props.passwordType) {
     return (
@@ -43,7 +46,7 @@ const Input: FunctionComponent<InputProps> = (props): JSX.Element => {
         <TextInput
           style={[styles.input, props.style]}
           secureTextEntry={secureTextEntry}
-          {...(props as unknown as FilteredInputProps)}
+          {...(props as unknown as FilteredFormManagementInputProps)}
           value={props.input.value}
           onChangeText={(text: string) =>
             props.input.onChange && props.input.onChange(text)
@@ -62,7 +65,7 @@ const Input: FunctionComponent<InputProps> = (props): JSX.Element => {
     <View style={[styles.container, props.containerStyle]}>
       <TextInput
         style={[styles.input, props.style]}
-        {...(props as unknown as FilteredInputProps)}
+        {...(props as unknown as FilteredFormManagementInputProps)}
         value={props.input.value}
         onChangeText={(text: string) =>
           props.input.onChange && props.input.onChange(text)
