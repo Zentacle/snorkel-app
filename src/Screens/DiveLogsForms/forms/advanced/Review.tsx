@@ -21,6 +21,8 @@ import LocationImage from '_assets/Location.png';
 import DescIcon from '_assets/DescIcon.png';
 import CopyIcon from '_assets/CopySimple.png';
 import UploadIcon from '_assets/UploadSimple.png';
+import DepthArrow from '_assets/ArrowsDownUp.png';
+import DiveTimeClock from '_assets/ClockClockwise.png';
 
 interface ReviewProps {
   navigateToAdvancedDiveForm: () => void;
@@ -37,28 +39,46 @@ const Review: FunctionComponent<ReviewProps> = ({
         </GradientCircle>
       </View>
       <Text style={styles.mainText}>
-        Your dive log has been successfully created!
+        Your dive log has been successfully recorded!
       </Text>
 
-      <View style={styles.imageContainer}>
-        <Image style={styles.image} source={DiveSiteImg} />
-        <View style={styles.imageCountContainer}>
-          <Icon name="image-outline" size={18} color="#FFF" />
-          <Text style={styles.imageCountText}>24</Text>
+      <View style={styles.diveDetailsContainer}>
+        <View style={styles.imageContainer}>
+          <Image style={styles.image} source={DiveSiteImg} />
+          <View style={styles.imageCountContainer}>
+            <Icon name="image-outline" size={18} color="#FFF" />
+            <Text style={styles.imageCountText}>24</Text>
+          </View>
         </View>
-      </View>
 
-      <View style={styles.details}>
-        <Text style={styles.detailsTitle}>USS Liberty Wreck on Beach</Text>
-        <View style={styles.descContainer}>
-          <Image source={DescIcon} />
-          <Text style={styles.descText}>USS liberty with Jim and Sarah</Text>
-        </View>
-        <View style={styles.locationContainer}>
-          <Image source={LocationImage} />
-          <Text style={styles.locationText}>East bali, Indonesia</Text>
-          <View style={styles.dot} />
-          <Text style={styles.locationTimestamp}>21 Nov 2021</Text>
+        <View style={styles.details}>
+          <Text style={styles.detailsTitle}>USS Liberty Wreck on Beach</Text>
+          <View style={styles.descContainer}>
+            <Image source={DescIcon} />
+            <Text style={styles.descText}>USS liberty with Jim and Sarah</Text>
+          </View>
+          <View style={styles.locationContainer}>
+            <Image source={LocationImage} />
+            <Text style={styles.locationText}>East bali, Indonesia</Text>
+            <View style={styles.dot} />
+            <Text style={styles.locationTimestamp}>21 Nov 2021</Text>
+          </View>
+          <View style={styles.timeDepthContainer}>
+            <View style={styles.timeDepthItem}>
+              <Image source={DiveTimeClock} />
+              <View style={styles.timeDepthTextContainer}>
+                <Text style={styles.timeDepthLabel}>Dive time</Text>
+                <Text style={styles.timeDepthText}>61 min</Text>
+              </View>
+            </View>
+            <View style={styles.timeDepthItem}>
+              <Image source={DepthArrow} />
+              <View style={styles.timeDepthTextContainer}>
+                <Text style={styles.timeDepthLabel}>Max depth</Text>
+                <Text style={styles.timeDepthText}>19 m</Text>
+              </View>
+            </View>
+          </View>
         </View>
       </View>
 
@@ -145,9 +165,13 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
   },
-  imageContainer: {
+  diveDetailsContainer: {
+    backgroundColor: '#fff',
+    width: Dimensions.get('window').width * 0.9,
     marginTop: 30,
+    borderRadius: 20,
   },
+  imageContainer: {},
   image: {
     width: Dimensions.get('window').width * 0.9,
     height: 210,
@@ -170,6 +194,7 @@ const styles = StyleSheet.create({
   },
   details: {
     marginTop: 20,
+    marginHorizontal: 15,
   },
   detailsTitle: {
     fontSize: 16,
@@ -239,6 +264,28 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 16,
     fontWeight: '800',
+  },
+  timeDepthContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 20,
+    marginVertical: 30,
+    alignItems: 'center',
+  },
+  timeDepthItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  timeDepthTextContainer: {
+    marginLeft: 20,
+  },
+  timeDepthText: {
+    fontSize: 18,
+    fontWeight: '500',
+  },
+  timeDepthLabel: {
+    color: 'gray',
+    marginBottom: 15,
   },
 });
 
