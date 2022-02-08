@@ -25,12 +25,10 @@ import DepthArrow from '_assets/ArrowsDownUp.png';
 import DiveTimeClock from '_assets/ClockClockwise.png';
 
 interface ReviewProps {
-  navigateToAdvancedDiveForm: () => void;
+  navigateToDiveLogs: () => void;
 }
 
-const Review: FunctionComponent<ReviewProps> = ({
-  navigateToAdvancedDiveForm,
-}) => {
+const Review: FunctionComponent<ReviewProps> = ({ navigateToDiveLogs }) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.gradientContainer}>
@@ -121,7 +119,7 @@ const Review: FunctionComponent<ReviewProps> = ({
 
       <View>
         <Button
-          onPress={navigateToAdvancedDiveForm}
+          onPress={navigateToDiveLogs}
           gradient
           gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
           gradientLocations={[0.01, 1, 1]}
@@ -137,7 +135,7 @@ const Review: FunctionComponent<ReviewProps> = ({
             container: styles.buttonContainer,
             text: styles.buttonText,
           }}>
-          Add More Details
+          Complete
         </Button>
       </View>
     </ScrollView>
@@ -159,6 +157,7 @@ const styles = StyleSheet.create({
   },
   gradientContainer: {
     alignItems: 'center',
+    marginTop: 20,
   },
   gradient: {
     width: 100,

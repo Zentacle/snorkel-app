@@ -9,6 +9,9 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { Form } from 'react-final-form';
+import validate from 'validate.js';
+import get from 'lodash/get';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type {
@@ -21,7 +24,7 @@ import type {
   LogsFormStackParamList,
 } from '_utils/interfaces';
 
-import Footer from './components/SimpleFormFooter';
+import Footer from './components/FormFooter';
 import FormStates from './components/FormStates';
 
 import { advancedFormStages as stages } from './utils/utils';
@@ -30,6 +33,7 @@ import DateTimeDepth from './forms/advanced/DateTimeDepth';
 import WaterOnshore from './forms/advanced/WaterOnshore';
 import WearGear from './forms/advanced/WearGear';
 import Review from './forms/advanced/Review';
+import type { AdvancedFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
 
 type AdvancedDiveLogsFormsNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<LogsFormStackParamList, 'AdvancedDiveLogsForm'>,
@@ -51,6 +55,8 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   route,
 }) => {
   const [page, switchPage] = React.useState(1);
+  const simpleDiveLogsForm = get(route, 'params.simpleDiveLog', {});
+  console.log('simple form', simpleDiveLogsForm);
 
   const next = () => {
     switchPage(page + 1);
@@ -64,79 +70,160 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     switchPage(page - 1);
   };
 
-  const goBack = () => {
-    navigation.goBack();
+  const navigateToDiveLog = () => {
+    navigation.navigate('App', {
+      screen: 'Logs',
+    }); // supposed to navigate to created simple dive log detail. Fix later
   };
 
-  const showForms = (): JSX.Element => {
-    switch (page) {
+  const navigateToHome = () => {
+    navigation.navigate('App', {
+      screen: 'Explore',
+    });
+  };
+
+  const navigateToDiveLogs = () => {
+    navigation.navigate('App', {
+      screen: 'Logs',
+    });
+  };
+
+  const handleCancel = () => {
+    if (page === stages.length) {
+      navigateToHome();
+    } else {
+      navigateToDiveLog();
+    }
+  };
+
+  const constraints = {};
+  const initialValues: InitialValues = {
+    ...simpleDiveLogsForm,
+    timeInWater: 45,
+    maxDepth: 40,
+    waterTemp: 14,
+    airTemp: 20,
+    visibility: 1,
+    diveActivity: 'Scuba',
+    entry: 'Shore',
+    startDate: new Date(),
+    startTime: new Date(),
+    weight: 5,
+    airTankStart: 40,
+    airTankEnd: 40,
+    nitrox: 'Normal',
+  };
+
+  const canMoveToNextPage = (
+    currentPage: number,
+    values: InitialValues,
+  ): boolean => {
+    switch (currentPage) {
       case 0:
-        return <BasicInfo />;
-      case 1:
-        return <DateTimeDepth />;
-      case 2:
-        return <WaterOnshore />;
-      case 3:
-        return <WearGear />;
+        return !!(
+          values.rating &&
+          values.difficulty &&
+          values.name &&
+          values.note
+        );
       default:
-        return <Review navigateToAdvancedDiveForm={() => {}} />;
+        return true;
     }
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.headerContainer}>
-        {page > 0 && page !== stages.length ? (
-          <TouchableWithoutFeedback onPress={previous}>
-            <Icon
-              name="chevron-back-outline"
-              color="black"
-              size={30}
-              style={styles.prev}
-            />
-          </TouchableWithoutFeedback>
-        ) : (
-          <View style={styles.prevPlaceholder} />
-        )}
-        <View />
-        <Text style={[styles.header, page === 0 && { marginLeft: -20 }]}>
-          {page === stages.length
-            ? 'Advanced Dive Log Created'
-            : 'Full Dive Log'}
-        </Text>
-        <TouchableWithoutFeedback onPress={goBack}>
-          <Icon
-            style={styles.back}
-            name="close-outline"
-            color="black"
-            size={30}
-          />
-        </TouchableWithoutFeedback>
-      </View>
+    <Form
+      validate={values => validate(values, constraints)}
+      onSubmit={() => {}}
+      initialValues={initialValues}
+      render={({
+        values,
+        handleSubmit,
+        submitting,
+        pristine,
+        form: { reset },
+      }) => {
+        const showForms = (): JSX.Element => {
+          switch (page) {
+            case 0:
+              return <BasicInfo />;
+            case 1:
+              return <DateTimeDepth />;
+            case 2:
+              return <WaterOnshore />;
+            case 3:
+              return <WearGear />;
+            default:
+              return <Review navigateToDiveLogs={navigateToDiveLogs} />;
+          }
+        };
 
-      {!!(page !== stages.length) && (
-        <View style={styles.formStatesContainer}>
-          <FormStates goToPage={goToPage} activeId={page} stages={stages} />
-        </View>
-      )}
-      <ScrollView
-        style={[
-          styles.scrollContainer,
-          page !== stages.length && {
-            marginBottom: Platform.OS === 'android' ? 114 : 80,
-          },
-        ]}>
-        {showForms()}
-      </ScrollView>
-      {page === stages.length ? (
-        <View />
-      ) : (
-        <Footer
-          next={next}
-          text={page === stages.length - 1 ? 'Complete' : 'Continue'}
-        />
-      )}
-    </SafeAreaView>
+        return (
+          <SafeAreaView style={styles.container}>
+            <View style={styles.headerContainer}>
+              {page > 0 && page !== stages.length ? (
+                <TouchableWithoutFeedback onPress={previous}>
+                  <Icon
+                    name="chevron-back-outline"
+                    color="black"
+                    size={30}
+                    style={styles.prev}
+                  />
+                </TouchableWithoutFeedback>
+              ) : (
+                <View style={styles.prevPlaceholder} />
+              )}
+              <View />
+              <Text style={[styles.header, page === 0 && { marginLeft: -20 }]}>
+                {page === stages.length
+                  ? 'Advanced Dive Log Created'
+                  : 'Full Dive Log'}
+              </Text>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  handleCancel();
+                  reset();
+                }}>
+                <Icon
+                  style={styles.back}
+                  name="close-outline"
+                  color="black"
+                  size={30}
+                />
+              </TouchableWithoutFeedback>
+            </View>
+
+            {!!(page !== stages.length) && (
+              <View style={styles.formStatesContainer}>
+                <FormStates
+                  goToPage={goToPage}
+                  activeId={page}
+                  stages={stages}
+                />
+              </View>
+            )}
+            <ScrollView
+              style={[
+                styles.scrollContainer,
+                page !== stages.length && {
+                  marginBottom: Platform.OS === 'android' ? 114 : 80,
+                },
+              ]}>
+              {showForms()}
+            </ScrollView>
+            {page === stages.length ? (
+              <View />
+            ) : (
+              <Footer
+                next={next}
+                disabled={!canMoveToNextPage(page, values as InitialValues)}
+                text={page === stages.length - 1 ? 'Complete' : 'Continue'}
+              />
+            )}
+          </SafeAreaView>
+        );
+      }}
+    />
   );
 };
 

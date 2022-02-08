@@ -2,6 +2,7 @@ import { NavigatorScreenParams } from '@react-navigation/native';
 
 import type { ViewStyle, TextStyle, ImageStyle } from 'react-native';
 import type { Spot } from './data/spot';
+import type { SimpleFormInitialValues } from './data/logs';
 
 export type AuthtackParamList = {
   Landing: undefined;
@@ -46,7 +47,9 @@ export type LogsStackParamList = {
 
 export type LogsFormStackParamList = {
   SimpleDiveLogsForm: undefined;
-  AdvancedDiveLogsForm: undefined;
+  AdvancedDiveLogsForm: {
+    simpleDiveLog: SimpleFormInitialValues;
+  };
 };
 
 export type AppTabsParamList = {

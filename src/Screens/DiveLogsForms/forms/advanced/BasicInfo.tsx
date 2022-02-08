@@ -142,7 +142,7 @@ const BasicInfo = () => {
         </View>
         <View>
           <Field
-            name="name"
+            name="note"
             component={FormManagementInput}
             placeholder="Write Title"
             style={styles.notesInput}
