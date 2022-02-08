@@ -205,7 +205,11 @@ const SimpleDiveLogsForms: FunctionComponent<
 
               {!!(page !== stages.length) && (
                 <FormStates
-                  goToPage={goToPage}
+                  goToPage={(target: number) => {
+                    canMoveToNextPage(target - 1, values as InitialValues)
+                      ? goToPage(target)
+                      : () => {};
+                  }}
                   activeId={page}
                   stages={stages}
                 />
