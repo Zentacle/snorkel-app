@@ -15,6 +15,7 @@ import GradientText from '_components/ui/GradientText';
 import Button from '_components/ui/Buttons/Button';
 
 import { FunctionComponent } from 'react';
+import type { AdvancedFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
 
 import DiveSiteImg from '_assets/DiveSite3.jpg';
 import LocationImage from '_assets/Location.png';
@@ -26,9 +27,13 @@ import DiveTimeClock from '_assets/ClockClockwise.png';
 
 interface ReviewProps {
   navigateToDiveLogs: () => void;
+  formValues: InitialValues;
 }
 
-const Review: FunctionComponent<ReviewProps> = ({ navigateToDiveLogs }) => {
+const Review: FunctionComponent<ReviewProps> = ({
+  navigateToDiveLogs,
+  formValues,
+}) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.gradientContainer}>
@@ -50,10 +55,10 @@ const Review: FunctionComponent<ReviewProps> = ({ navigateToDiveLogs }) => {
         </View>
 
         <View style={styles.details}>
-          <Text style={styles.detailsTitle}>USS Liberty Wreck on Beach</Text>
+          <Text style={styles.detailsTitle}>{formValues.name}</Text>
           <View style={styles.descContainer}>
             <Image source={DescIcon} />
-            <Text style={styles.descText}>USS liberty with Jim and Sarah</Text>
+            <Text style={styles.descText}>{formValues.name}</Text>
           </View>
           <View style={styles.locationContainer}>
             <Image source={LocationImage} />
@@ -66,14 +71,18 @@ const Review: FunctionComponent<ReviewProps> = ({ navigateToDiveLogs }) => {
               <Image source={DiveTimeClock} />
               <View style={styles.timeDepthTextContainer}>
                 <Text style={styles.timeDepthLabel}>Dive time</Text>
-                <Text style={styles.timeDepthText}>61 min</Text>
+                <Text style={styles.timeDepthText}>
+                  {formValues.timeInWater} min
+                </Text>
               </View>
             </View>
             <View style={styles.timeDepthItem}>
               <Image source={DepthArrow} />
               <View style={styles.timeDepthTextContainer}>
                 <Text style={styles.timeDepthLabel}>Max depth</Text>
-                <Text style={styles.timeDepthText}>19 m</Text>
+                <Text style={styles.timeDepthText}>
+                  {formValues.maxDepth} m
+                </Text>
               </View>
             </View>
           </View>
