@@ -1,21 +1,47 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import { Field } from 'react-final-form';
 
 import SliderComp from '_components/ui/Slider';
 import GradientCircle from '_components/ui/GradientCircle';
 import GradientBox from '_components/ui/GradientBox';
+import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
+
+const NitroxActiveComponent = (nitrox: string) => (
+  <View style={styles.selectedShadow}>
+    <GradientBox style={styles.selectedLevel}>
+      <View style={styles.selectBox}>
+        <View style={styles.selectedLevelCircle}>
+          <GradientCircle style={styles.selectedGradient} />
+        </View>
+        <Text style={styles.levelText}>{nitrox}</Text>
+      </View>
+    </GradientBox>
+  </View>
+);
+
+const NitroxInactiveComponent = (nitrox: string) => (
+  <View style={styles.level}>
+    <View style={styles.normalLevelCircle}></View>
+    <Text style={styles.levelText}>{nitrox}</Text>
+  </View>
+);
 
 const WearGear = () => {
-  const [selectedTankGearType, setTankGearType] = React.useState('Normal');
-  const tankGearTypes = ['Normal', 'EANx32', 'EANx36'];
+  const nitroxTypes = ['Normal', 'EANx32', 'EANx36'];
+
   return (
     <View style={styles.container}>
       <View style={{ marginTop: 30 }}>
-        <View style={styles.labelTextContainer}>
-          <Text style={styles.labelText}>Water Temp. C</Text>
-          <Text style={styles.labelText}>14</Text>
-        </View>
-        <SliderComp />
+        <Field
+          name="weight"
+          label="Weight . kg"
+          component={SliderComp}
+          trackMarks={[0, 5, 10, 15, 20, 25, 30, 35, 40]}
+          benchMarks={[0, 20, 40]}
+          minimumValue={0}
+          maximumValue={40}
+        />
       </View>
 
       <View style={{ marginTop: 30, marginBottom: 20 }}>
@@ -24,51 +50,34 @@ const WearGear = () => {
         </View>
       </View>
 
-      <View>
-        <View style={styles.labelTextContainer}>
-          <Text style={styles.labelText}>Start. Bar</Text>
-          <Text style={styles.labelText}>40</Text>
-        </View>
-        <SliderComp />
-      </View>
+      <Field
+        name="airTankStart"
+        label="Start . bar"
+        component={SliderComp}
+        trackMarks={[0, 40, 80, 120, 160, 200, 240, 280, 320, 360, 400]}
+        benchMarks={[0, 200, 400]}
+        minimumValue={0}
+        maximumValue={400}
+      />
 
-      <View>
-        <View style={styles.labelTextContainer}>
-          <Text style={styles.labelText}>End. Bar</Text>
-          <Text style={styles.labelText}>40</Text>
-        </View>
-        <SliderComp />
-      </View>
+      <Field
+        name="airTankEnd"
+        label="End . bar"
+        component={SliderComp}
+        trackMarks={[0, 40, 80, 120, 160, 200, 240, 280, 320, 360, 400]}
+        benchMarks={[0, 200, 400]}
+        minimumValue={0}
+        maximumValue={400}
+      />
 
       <View style={styles.gearTypesContainer}>
-        {tankGearTypes.map((gearType, index) => {
-          if (gearType === selectedTankGearType) {
-            return (
-              <TouchableWithoutFeedback key={index}>
-                <View style={styles.selectedShadow}>
-                  <GradientBox style={styles.selectedLevel}>
-                    <View style={styles.selectBox}>
-                      <View style={styles.selectedLevelCircle}>
-                        <GradientCircle style={styles.selectedGradient} />
-                      </View>
-                      <Text style={styles.levelText}>{gearType}</Text>
-                    </View>
-                  </GradientBox>
-                </View>
-              </TouchableWithoutFeedback>
-            );
-          }
-          return (
-            <TouchableWithoutFeedback
-              key={index}
-              onPress={() => setTankGearType(gearType)}>
-              <View style={styles.level}>
-                <View style={styles.normalLevelCircle}></View>
-                <Text style={styles.levelText}>{gearType}</Text>
-              </View>
-            </TouchableWithoutFeedback>
-          );
-        })}
+        <Field
+          name="nitrox"
+          component={SelectWGradientBorder}
+          options={nitroxTypes}
+          activeComponent={NitroxActiveComponent}
+          inactiveComponent={NitroxInactiveComponent}
+        />
       </View>
     </View>
   );

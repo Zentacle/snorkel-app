@@ -29,4 +29,8 @@ export interface AdvancedFormInitialValues {
   visibility?: number;
   diveActivity?: string;
   entry?: string;
+  weight?: number;
+  airTankStart: number;
+  airTankEnd: number;
+  nitrox: string;
 }
