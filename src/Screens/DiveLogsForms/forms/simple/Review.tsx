@@ -16,7 +16,7 @@ import Button from '_components/ui/Buttons/Button';
 
 import type { FunctionComponent } from 'react';
 
-import type { SimpleFormInitialValues as InitialValues } from '../../utils/interfaces';
+import type { SimpleFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
 
 import DiveSiteImg from '_assets/DiveSite3.jpg';
 import LocationImage from '_assets/Location.png';

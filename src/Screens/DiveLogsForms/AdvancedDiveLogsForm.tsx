@@ -174,14 +174,19 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
             case 3:
               return <WearGear />;
             default:
-              return <Review navigateToDiveLogs={navigateToDiveLogs} />;
+              return (
+                <Review
+                  formValues={values as InitialValues}
+                  navigateToDiveLogs={navigateToDiveLogs}
+                />
+              );
           }
         };
 
         return (
           <SafeAreaView style={styles.container}>
             <ExitModal
-              subtext="On exit, all dive log information you entered will be deleted."
+              subtext="When you exit, all advanced dive log information you entered will be deleted. The simple dive log informationis saved and will remain unchanged."
               isVisible={modalIsOpen}
               modalAction={modalAction}
               modalCancelAction={modalCancelAction}
@@ -207,7 +212,8 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
                   ? 'Advanced Dive Log Created'
                   : 'Full Dive Log'}
               </Text>
-              <TouchableWithoutFeedback onPress={openModal}>
+              <TouchableWithoutFeedback
+                onPress={page === stages.length ? navigateToHome : openModal}>
                 <Icon
                   style={styles.back}
                   name="close-outline"
