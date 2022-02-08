@@ -15,6 +15,8 @@ import validate from 'validate.js';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
 import type { FunctionComponent } from 'react';
+import type { FormApi } from 'final-form';
+
 import type {
   RootStackParamList,
   LogsFormStackParamList,
@@ -29,6 +31,8 @@ import Rating from './forms/simple/Rating';
 import Name from './forms/simple/Name';
 import Notes from './forms/simple/Notes';
 import Review from './forms/simple/Review';
+import ExitModal from './components/ExitModal';
+
 import type { SimpleFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
 
 type SimpleDiveLogsFormsNavigationProps = CompositeNavigationProp<
@@ -44,9 +48,24 @@ const SimpleDiveLogsForms: FunctionComponent<
   SimpleDiveLogsFormsProps
 > = props => {
   const [page, switchPage] = React.useState(0);
+  const [modalIsOpen, toggleModal] = React.useState(false);
+  let formRef = React.useRef<FormApi>();
 
   const goBack = () => {
     props.navigation.goBack();
+  };
+
+  const openModal = () => {
+    toggleModal(true);
+  };
+
+  const modalAction = () => {
+    toggleModal(false);
+    goBack();
+  };
+
+  const modalCancelAction = () => {
+    toggleModal(false);
   };
 
   const navigateToAdvancedDiveForm = (formvalues: InitialValues) => {
@@ -67,6 +86,7 @@ const SimpleDiveLogsForms: FunctionComponent<
   React.useEffect(() => {
     return props.navigation.addListener('blur', () => {
       switchPage(0);
+      formRef.current?.reset();
     });
   }, [props.navigation]);
 
@@ -105,13 +125,14 @@ const SimpleDiveLogsForms: FunctionComponent<
       validate={values => validate(values, constraints)}
       onSubmit={() => {}}
       initialValues={initialValues}
-      render={({ values, handleSubmit, submitting, pristine }) => {
-        console.log(
-          'values',
-          values,
-          page,
-          canMoveToNextPage(page, values as InitialValues),
-        );
+      render={({ values, handleSubmit, submitting, pristine, form }) => {
+        // console.log(
+        //   'values',
+        //   values,
+        //   page,
+        //   canMoveToNextPage(page, values as InitialValues),
+        // );
+        formRef.current = form;
 
         const showForms = (): JSX.Element => {
           switch (page) {
@@ -136,6 +157,14 @@ const SimpleDiveLogsForms: FunctionComponent<
         };
         return (
           <SafeAreaView style={styles.container}>
+            <ExitModal
+              subtext="On exit, all dive log information you entered will be deleted."
+              isVisible={modalIsOpen}
+              modalAction={modalAction}
+              modalCancelAction={modalCancelAction}
+              actionText="Exit"
+              cancelActionText="Cancel"
+            />
             <ScrollView
               style={[
                 styles.scrollContainer,
@@ -163,7 +192,8 @@ const SimpleDiveLogsForms: FunctionComponent<
                     ? 'Dive Log Created'
                     : 'Create Dive Log'}
                 </Text>
-                <TouchableWithoutFeedback onPress={goBack}>
+                <TouchableWithoutFeedback
+                  onPress={page === stages.length ? goBack : openModal}>
                   <Icon
                     style={styles.back}
                     name="close-outline"

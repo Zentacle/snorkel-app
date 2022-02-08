@@ -19,6 +19,8 @@ import type {
   RouteProp,
 } from '@react-navigation/native';
 import type { FunctionComponent } from 'react';
+import type { FormApi } from 'final-form';
+
 import type {
   RootStackParamList,
   LogsFormStackParamList,
@@ -33,6 +35,8 @@ import DateTimeDepth from './forms/advanced/DateTimeDepth';
 import WaterOnshore from './forms/advanced/WaterOnshore';
 import WearGear from './forms/advanced/WearGear';
 import Review from './forms/advanced/Review';
+import ExitModal from './components/ExitModal';
+
 import type { AdvancedFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
 
 type AdvancedDiveLogsFormsNavigationProps = CompositeNavigationProp<
@@ -55,8 +59,10 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   route,
 }) => {
   const [page, switchPage] = React.useState(1);
+  const [modalIsOpen, toggleModal] = React.useState(false);
+  let formRef = React.useRef<FormApi>();
+
   const simpleDiveLogsForm = get(route, 'params.simpleDiveLog', {});
-  console.log('simple form', simpleDiveLogsForm);
 
   const next = () => {
     switchPage(page + 1);
@@ -69,6 +75,13 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   const previous = () => {
     switchPage(page - 1);
   };
+
+  React.useEffect(() => {
+    return navigation.addListener('blur', () => {
+      switchPage(1);
+      formRef.current?.reset();
+    });
+  }, [navigation]);
 
   const navigateToDiveLog = () => {
     navigation.navigate('App', {
@@ -94,6 +107,18 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     } else {
       navigateToDiveLog();
     }
+  };
+
+  const openModal = () => {
+    toggleModal(true);
+  };
+
+  const modalAction = () => {
+    toggleModal(false);
+    handleCancel();
+  };
+  const modalCancelAction = () => {
+    toggleModal(false);
   };
 
   const constraints = {};
@@ -136,13 +161,8 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
       validate={values => validate(values, constraints)}
       onSubmit={() => {}}
       initialValues={initialValues}
-      render={({
-        values,
-        handleSubmit,
-        submitting,
-        pristine,
-        form: { reset },
-      }) => {
+      render={({ values, handleSubmit, submitting, pristine, form }) => {
+        formRef.current = form;
         const showForms = (): JSX.Element => {
           switch (page) {
             case 0:
@@ -160,6 +180,14 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
 
         return (
           <SafeAreaView style={styles.container}>
+            <ExitModal
+              subtext="On exit, all dive log information you entered will be deleted."
+              isVisible={modalIsOpen}
+              modalAction={modalAction}
+              modalCancelAction={modalCancelAction}
+              actionText="Exit"
+              cancelActionText="Cancel"
+            />
             <View style={styles.headerContainer}>
               {page > 0 && page !== stages.length ? (
                 <TouchableWithoutFeedback onPress={previous}>
@@ -179,11 +207,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
                   ? 'Advanced Dive Log Created'
                   : 'Full Dive Log'}
               </Text>
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  handleCancel();
-                  reset();
-                }}>
+              <TouchableWithoutFeedback onPress={openModal}>
                 <Icon
                   style={styles.back}
                   name="close-outline"
