@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   Platform,
   TouchableWithoutFeedback,
+  ScrollViewProps,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Form } from 'react-final-form';
@@ -61,6 +62,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   const [page, switchPage] = React.useState(1);
   const [modalIsOpen, toggleModal] = React.useState(false);
   let formRef = React.useRef<FormApi>();
+  let scrollContainerRef = React.useRef<ScrollView | null>();
 
   const simpleDiveLogsForm = get(route, 'params.simpleDiveLog', {});
 
@@ -75,6 +77,12 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   const previous = () => {
     switchPage(page - 1);
   };
+
+  React.useEffect(() => {
+    scrollContainerRef.current?.scrollTo({
+      y: 0,
+    });
+  }, [page]);
 
   React.useEffect(() => {
     return navigation.addListener('blur', () => {
@@ -233,6 +241,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
               </View>
             )}
             <ScrollView
+              ref={ref => (scrollContainerRef.current = ref)}
               style={[
                 styles.scrollContainer,
                 page !== stages.length && {
