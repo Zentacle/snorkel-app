@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import IOIcon from 'react-native-vector-icons/Ionicons';
 import MAIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MapView, { Marker } from 'react-native-maps';
@@ -41,7 +41,7 @@ const BasicInfo = () => {
   const levels = ['Beginner', 'Intermediate', 'Advanced'];
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
       <View>
         <Text style={styles.headerLabel}>Dive Site Location</Text>
         <View style={styles.mapContainer}>
@@ -170,7 +170,7 @@ const BasicInfo = () => {
           inactiveComponent={InactiveLevelComponent}
         />
       </View>
-    </ScrollView>
+    </View>
   );
 };
 

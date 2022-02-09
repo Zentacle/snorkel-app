@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Image,
-  Dimensions,
-} from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
 import IoIcon from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -35,7 +28,7 @@ const Review: FunctionComponent<ReviewProps> = ({
   formValues,
 }) => {
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <View style={styles.container}>
       <View style={styles.gradientContainer}>
         <GradientCircle style={styles.gradient}>
           <IoIcon name="checkmark-outline" size={50} color="#fff" />
@@ -147,7 +140,7 @@ const Review: FunctionComponent<ReviewProps> = ({
           Complete
         </Button>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
