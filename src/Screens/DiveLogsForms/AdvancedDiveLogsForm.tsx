@@ -7,7 +7,6 @@ import {
   SafeAreaView,
   Platform,
   TouchableWithoutFeedback,
-  ScrollViewProps,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Form } from 'react-final-form';
