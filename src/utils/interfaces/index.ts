@@ -42,7 +42,7 @@ export type SearchStackParamList = {
 };
 
 export type LogsStackParamList = {
-  // Logs: undefined;
+  LogList: undefined;
 };
 
 export type LogsFormStackParamList = {
