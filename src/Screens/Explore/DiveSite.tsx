@@ -33,7 +33,7 @@ import type {
 } from '_utils/interfaces';
 
 import LocationImage from '_assets/Location.png';
-import { capitalize } from './utils/utils';
+import { capitalize } from '_utils/functions';
 
 type DiveSiteNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<ExploreStackParamList, 'DiveSite'>,
