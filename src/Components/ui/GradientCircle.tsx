@@ -22,16 +22,10 @@ const GradientCircle: FunctionComponent<GradientCircleProps> = props => {
   return (
     <LinearGradient
       style={[styles.container, props.style]}
-      colors={['#AA00FF', '#00E0FF', '#00E0FF']}
-      locations={[0.002, 1, 1]}
-      start={{
-        x: 0,
-        y: 0,
-      }}
-      end={{
-        x: 1.06,
-        y: 1.2,
-      }}>
+      colors={props.gradientColors ? props.gradientColors : []}
+      locations={props.gradientLocations ? props.gradientLocations : []}
+      start={props.start}
+      end={props.end}>
       {props.children}
     </LinearGradient>
   );
@@ -47,4 +41,16 @@ const styles = StyleSheet.create({
   },
 });
 
+GradientCircle.defaultProps = {
+  gradientColors: ['#AA00FF', '#00E0FF', '#00E0FF'],
+  gradientLocations: [0.002, 1, 1],
+  start: {
+    x: 0,
+    y: 0,
+  },
+  end: {
+    x: 1.06,
+    y: 1.2,
+  },
+};
 export default GradientCircle;
