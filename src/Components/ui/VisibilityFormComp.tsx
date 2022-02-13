@@ -41,7 +41,7 @@ const VisibilityFormComp: FunctionComponent<ComponentProps> = ({
         {visibilityLevels.map((visibilityLevel, index) => {
           if (value >= index + 1) {
             return (
-              <View>
+              <View key={index}>
                 <TouchableWithoutFeedback onPress={() => onChange(index + 1)}>
                   <View style={styles.selectedVisibilityShadow}>
                     <GradientBox style={styles.visibilityBox}>
