@@ -1,26 +1,23 @@
 export interface SimpleFormInitialValues {
+  id: number | string;
   rating: number;
   difficulty: string;
   name?: string;
   note?: string;
 }
 
-export interface AdvancedFormInitialValues {
-  rating: number;
-  difficulty: string;
-  name: string;
-  note: string;
-  startDate: Date;
-  startTime: Date;
-  timeInWater: number;
-  maxDepth: number;
-  waterTemp: number;
-  airTemp: number;
-  visibility: number;
-  diveActivity: string;
-  entry: string;
-  weight: number;
-  airTankStart: number;
-  airTankEnd: number;
-  nitrox: string;
+export interface AdvancedFormInitialValues extends SimpleFormInitialValues {
+  startDate?: Date | string; // date type for form, string type for redux. Will handle api value types later
+  startTime?: Date | string; // date type for form, string type for redux. Will handle api value types later
+  timeInWater?: number;
+  maxDepth?: number;
+  waterTemp?: number;
+  airTemp?: number;
+  visibility?: number;
+  diveActivity?: string;
+  entry?: string;
+  weight?: number;
+  airTankStart?: number;
+  airTankEnd?: number;
+  nitrox?: string;
 }
