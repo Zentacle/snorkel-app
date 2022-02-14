@@ -13,14 +13,15 @@ import { Form } from 'react-final-form';
 import validate from 'validate.js';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import type { CompositeNavigationProp } from '@react-navigation/native';
+import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import type {
+  CompositeNavigationProp,
+  RouteProp,
+} from '@react-navigation/native';
 import type { FunctionComponent } from 'react';
 import type { FormApi } from 'final-form';
 
-import type {
-  RootStackParamList,
-  LogsFormStackParamList,
-} from '_utils/interfaces';
+import type { RootStackParamList, AppTabsParamList } from '_utils/interfaces';
 
 import FormStates from './components/FormStates';
 import Footer from './components/FormFooter';
@@ -33,15 +34,21 @@ import Notes from './forms/simple/Notes';
 import Review from './forms/simple/Review';
 import ExitModal from './components/ExitModal';
 
+import { useAppDispatch } from '_redux/hooks';
+import { saveDiveLog } from '_redux/slices/dive-logs';
+
 import type { SimpleFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
 
 type SimpleDiveLogsFormsNavigationProps = CompositeNavigationProp<
-  NativeStackNavigationProp<LogsFormStackParamList, 'SimpleDiveLogsForm'>,
+  BottomTabNavigationProp<AppTabsParamList, 'LogsForm'>,
   NativeStackNavigationProp<RootStackParamList>
 >;
 
+type SimpleLogsFormRouteProps = RouteProp<AppTabsParamList, 'LogsForm'>;
+
 interface SimpleDiveLogsFormsProps {
   navigation: SimpleDiveLogsFormsNavigationProps;
+  route: SimpleLogsFormRouteProps;
 }
 
 const SimpleDiveLogsForms: FunctionComponent<
@@ -49,7 +56,9 @@ const SimpleDiveLogsForms: FunctionComponent<
 > = props => {
   const [page, switchPage] = React.useState(0);
   const [modalIsOpen, toggleModal] = React.useState(false);
+  const diveLogId = new Date().getTime();
   let formRef = React.useRef<FormApi>();
+  const dispatch = useAppDispatch();
 
   const goBack = () => {
     props.navigation.goBack();
@@ -57,6 +66,16 @@ const SimpleDiveLogsForms: FunctionComponent<
 
   const openModal = () => {
     toggleModal(true);
+  };
+
+  const submitAndGoToLog = (formvalues: InitialValues) => {
+    const diveLog = submitLog(formvalues);
+    props.navigation.navigate('LogsStack', {
+      screen: 'LogDetail',
+      params: {
+        diveLog,
+      },
+    });
   };
 
   const modalAction = () => {
@@ -77,8 +96,25 @@ const SimpleDiveLogsForms: FunctionComponent<
     });
   };
 
+  const handleNavigateToAdvancedDiveLog = (formvalues: InitialValues) => {
+    const diveLog = submitLog(formvalues);
+    navigateToAdvancedDiveForm(diveLog);
+  };
+
+  const submitLog = (values: InitialValues) => {
+    console.log('submitted values', values);
+    const diveLog = {
+      ...values,
+      id: diveLogId as number,
+    };
+
+    dispatch(saveDiveLog(diveLog));
+    return diveLog;
+  };
+
   const constraints = {};
   const initialValues: InitialValues = {
+    id: 0,
     rating: 0,
     difficulty: 'Beginner',
   };
@@ -125,13 +161,7 @@ const SimpleDiveLogsForms: FunctionComponent<
       validate={values => validate(values, constraints)}
       onSubmit={() => {}}
       initialValues={initialValues}
-      render={({ values, handleSubmit, submitting, pristine, form }) => {
-        // console.log(
-        //   'values',
-        //   values,
-        //   page,
-        //   canMoveToNextPage(page, values as InitialValues),
-        // );
+      render={({ values, form }) => {
         formRef.current = form;
 
         const showForms = (): JSX.Element => {
@@ -148,7 +178,7 @@ const SimpleDiveLogsForms: FunctionComponent<
               return (
                 <Review
                   navigateToAdvancedDiveForm={() =>
-                    navigateToAdvancedDiveForm(values as InitialValues)
+                    handleNavigateToAdvancedDiveLog(values as InitialValues)
                   }
                   formValues={values as InitialValues}
                 />
@@ -193,7 +223,11 @@ const SimpleDiveLogsForms: FunctionComponent<
                     : 'Create Dive Log'}
                 </Text>
                 <TouchableWithoutFeedback
-                  onPress={page === stages.length ? goBack : openModal}>
+                  onPress={
+                    page === stages.length
+                      ? () => submitAndGoToLog(values as InitialValues)
+                      : openModal
+                  }>
                   <Icon
                     style={styles.back}
                     name="close-outline"
