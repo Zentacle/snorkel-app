@@ -8,10 +8,40 @@ import {
   Platform,
 } from 'react-native';
 
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import type { CompositeNavigationProp } from '@react-navigation/native';
+import type { FunctionComponent } from 'react';
+
+import type { RootStackParamList, AppTabsParamList } from '_utils/interfaces';
+import type { AdvancedFormInitialValues as DiveLog } from '_utils/interfaces/data/logs';
+
+import { useAppSelector } from '_redux/hooks';
+import { selectAllDiveLogs } from '_redux/slices/dive-logs';
+
 import EmptyList from './components/EmptyList';
 import LogsList from './components/List';
 
-const Logs = () => {
+type LogsNavigationProps = CompositeNavigationProp<
+  BottomTabNavigationProp<AppTabsParamList, 'Logs'>,
+  NativeStackNavigationProp<RootStackParamList>
+>;
+
+interface LogsProps {
+  navigation: LogsNavigationProps;
+}
+
+const Logs: FunctionComponent<LogsProps> = ({ navigation }) => {
+  const diveLogs = useAppSelector(selectAllDiveLogs);
+  const navigateToLogDetail = (diveLog: DiveLog) => {
+    navigation.navigate('LogsStack', {
+      screen: 'LogDetail',
+      params: {
+        diveLog,
+      },
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View
@@ -26,8 +56,14 @@ const Logs = () => {
         <Text style={styles.headerText}>Dive Logs</Text>
       </View>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {/* <EmptyList /> */}
-        <LogsList />
+        {diveLogs.length ? (
+          <LogsList
+            navigateToDetail={navigateToLogDetail}
+            diveLogs={diveLogs}
+          />
+        ) : (
+          <EmptyList />
+        )}
       </ScrollView>
     </SafeAreaView>
   );

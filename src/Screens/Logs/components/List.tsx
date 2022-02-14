@@ -1,12 +1,27 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+
+import type { FunctionComponent } from 'react';
+import type { AdvancedFormInitialValues as DiveLog } from '_utils/interfaces/data/logs';
+
 import LogItem from './LogItem';
 
-const LogsList = () => {
+interface LogListProps {
+  navigateToDetail: (diveLog: DiveLog) => void;
+  diveLogs: DiveLog[];
+}
+const LogsList: FunctionComponent<LogListProps> = ({
+  navigateToDetail,
+  diveLogs,
+}) => {
   return (
     <View style={styles.container}>
-      {[1, 2, 3, 4, 5].map((_, index) => (
-        <LogItem key={index} />
+      {diveLogs.map(diveLog => (
+        <TouchableOpacity
+          key={diveLog.id}
+          onPress={() => navigateToDetail(diveLog)}>
+          <LogItem diveLog={diveLog} />
+        </TouchableOpacity>
       ))}
     </View>
   );
@@ -14,9 +29,6 @@ const LogsList = () => {
 
 const styles = StyleSheet.create({
   container: {
-    // borderTopColor: '#B1C1CA',
-    // borderTopWidth: StyleSheet.hairlineWidth,
-    // borderStyle: 'solid',
     margonTop: 30,
     paddingTop: 20,
   },

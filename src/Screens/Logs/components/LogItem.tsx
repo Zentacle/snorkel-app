@@ -3,13 +3,20 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import MapView from 'react-native-maps';
 
 import { attachIcons } from '_utils/functions';
+import type { FunctionComponent } from 'react';
+import type { AdvancedFormInitialValues as DiveLog } from '_utils/interfaces/data/logs';
 
 import LocationImage from '_assets/Location.png';
 import DescIcon from '_assets/DescIcon.png';
 import DepthArrow from '_assets/ArrowsDownUp.png';
 import DiveTimeClock from '_assets/ClockClockwise.png';
 
-const LogItem = () => {
+interface LogItemProps {
+  diveLog: DiveLog;
+}
+
+const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
+  const isAdvancedLog = !!(diveLog.timeInWater && diveLog.maxDepth);
   return (
     <View style={styles.container}>
       <View style={styles.mapRatingsContainer}>
@@ -29,38 +36,48 @@ const LogItem = () => {
         </View>
         <View style={styles.ratingsActivityContainer}>
           <View style={styles.ratingsContainer}>{attachIcons(4, 25)}</View>
-          <View style={styles.diveActivityContainer}>
-            <Text style={styles.diveActivity}>Freediving</Text>
-          </View>
+          {isAdvancedLog && (
+            <View style={styles.diveActivityContainer}>
+              <Text style={styles.diveActivity}>{diveLog.diveActivity}</Text>
+            </View>
+          )}
         </View>
       </View>
 
       <View style={styles.details}>
-        <Text style={styles.detailsTitle}>USS liberty with Tim and Sarah</Text>
-        <View style={styles.descContainer}>
-          <Image source={DescIcon} />
-          <Text style={styles.descText}>USS Liberty wreck on beach</Text>
-        </View>
-        <View style={styles.locationContainer}>
-          <Image source={LocationImage} />
-          <Text style={styles.locationText}>East bali, Indonesia</Text>
-        </View>
-        <View style={styles.timeDepthContainer}>
-          <View style={styles.timeDepthItem}>
-            <Image source={DiveTimeClock} />
-            <View style={styles.timeDepthTextContainer}>
-              <Text style={styles.timeDepthLabel}>Dive time</Text>
-              <Text style={styles.timeDepthText}>61 min</Text>
-            </View>
+        <View style={styles.simpleDetailsContainer}>
+          <Text style={styles.detailsTitle}>{diveLog.name}</Text>
+          <View style={styles.descContainer}>
+            <Image source={DescIcon} />
+            <Text style={styles.descText}>USS Liberty wreck on beach</Text>
           </View>
-          <View style={styles.timeDepthItem}>
-            <Image source={DepthArrow} />
-            <View style={styles.timeDepthTextContainer}>
-              <Text style={styles.timeDepthLabel}>Max depth</Text>
-              <Text style={styles.timeDepthText}>19 m</Text>
-            </View>
+          <View style={styles.locationContainer}>
+            <Image source={LocationImage} />
+            <Text style={styles.locationText}>East bali, Indonesia</Text>
           </View>
         </View>
+        {isAdvancedLog && (
+          <View style={styles.timeDepthContainer}>
+            <View style={styles.timeDepthItem}>
+              <Image source={DiveTimeClock} />
+              <View style={styles.timeDepthTextContainer}>
+                <Text style={styles.timeDepthLabel}>Dive time</Text>
+                <Text style={styles.timeDepthText}>
+                  {diveLog.timeInWater}&nbsp;min
+                </Text>
+              </View>
+            </View>
+            <View style={styles.timeDepthItem}>
+              <Image source={DepthArrow} />
+              <View style={styles.timeDepthTextContainer}>
+                <Text style={styles.timeDepthLabel}>Max depth</Text>
+                <Text style={styles.timeDepthText}>
+                  {diveLog.maxDepth}&nbsp;m
+                </Text>
+              </View>
+            </View>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -135,12 +152,15 @@ const styles = StyleSheet.create({
   timeDepthContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 10,
+    marginBottom: 15,
     alignItems: 'center',
     backgroundColor: '#EFF6F9',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 12,
+  },
+  simpleDetailsContainer: {
+    marginBottom: 15,
   },
   timeDepthItem: {
     flexDirection: 'row',
