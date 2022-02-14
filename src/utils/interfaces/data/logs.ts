@@ -13,7 +13,7 @@ export interface AdvancedFormInitialValues extends SimpleFormInitialValues {
   maxDepth?: number;
   waterTemp?: number;
   airTemp?: number;
-  visibility?: number;
+  visibility?: string;
   diveActivity?: string;
   entry?: string;
   weight?: number;
