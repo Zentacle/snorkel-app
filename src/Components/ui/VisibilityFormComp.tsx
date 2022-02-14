@@ -34,8 +34,8 @@ const VisibilityFormComp: FunctionComponent<ComponentProps> = ({
   return (
     <View style={styles.visibilityContentContainer}>
       <View style={styles.labelTextContainer}>
-        <Text style={styles.labelText}>Air Temp. C</Text>
-        <Text style={styles.labelText}>20</Text>
+        <Text style={styles.labelText}>Visibility</Text>
+        <Text style={styles.labelText}>{value}</Text>
       </View>
       <View style={styles.visibility}>
         {visibilityLevels.map((visibilityLevel, index) => {
@@ -59,7 +59,7 @@ const VisibilityFormComp: FunctionComponent<ComponentProps> = ({
           }
 
           return (
-            <View>
+            <View key={index}>
               <TouchableWithoutFeedback onPress={() => onChange(index + 1)}>
                 <View style={styles.visibilityContainer}></View>
               </TouchableWithoutFeedback>
