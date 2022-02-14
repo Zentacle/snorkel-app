@@ -5,7 +5,7 @@ import DatePicker from 'react-native-date-picker';
 import type { FunctionComponent } from 'react';
 import type { FieldRenderProps } from 'react-final-form';
 
-import type { DateTimeMode } from '_screens/DiveLogsForms/utils/interfaces';
+import { DateTimeMode } from '_screens/DiveLogsForms/utils/interfaces';
 
 interface DateTimeProps {
   label: string;
