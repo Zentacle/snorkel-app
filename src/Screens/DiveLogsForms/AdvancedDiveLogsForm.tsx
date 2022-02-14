@@ -121,7 +121,6 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   };
 
   const submitLog = (values: InitialValues) => {
-    console.log('submitted values', values);
     dispatch(
       editDiveLog({
         ...values,
@@ -129,7 +128,6 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
         startTime: new Date(values.startTime ?? today).toTimeString(),
       }),
     );
-    navigateToDiveLogs();
   };
 
   const openModal = () => {
@@ -184,6 +182,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
       validate={values => validate(values, constraints)}
       onSubmit={submitLog}
       initialValues={initialValues}
+      keepDirtyOnReinitialize
       render={({ values, handleSubmit, form }) => {
         formRef.current = form;
 
@@ -251,7 +250,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
               {page === 4 && (
                 <Review
                   formValues={values as InitialValues}
-                  submit={handleSubmit}
+                  navigateToDiveLogs={navigateToDiveLogs}
                 />
               )}
             </ScrollView>
@@ -259,7 +258,14 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
               <View />
             ) : (
               <Footer
-                next={next}
+                next={
+                  page === stages.length - 1
+                    ? () => {
+                        handleSubmit();
+                        next();
+                      }
+                    : next
+                }
                 disabled={!canMoveToNextPage(page, values as InitialValues)}
                 text={page === stages.length - 1 ? 'Complete' : 'Continue'}
               />
