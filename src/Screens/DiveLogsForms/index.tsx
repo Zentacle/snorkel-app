@@ -56,7 +56,7 @@ const SimpleDiveLogsForms: FunctionComponent<
 > = props => {
   const [page, switchPage] = React.useState(0);
   const [modalIsOpen, toggleModal] = React.useState(false);
-  const diveLogId = new Date().getTime();
+  const [savedDiveLogId, saveDiveLogId] = React.useState(0);
   let formRef = React.useRef<FormApi>();
   const dispatch = useAppDispatch();
 
@@ -68,12 +68,14 @@ const SimpleDiveLogsForms: FunctionComponent<
     toggleModal(true);
   };
 
-  const submitAndGoToLog = (formvalues: InitialValues) => {
-    const diveLog = submitLog(formvalues);
+  const goToLog = (formvalues: InitialValues) => {
     props.navigation.navigate('LogsStack', {
       screen: 'LogDetail',
       params: {
-        diveLog,
+        diveLog: {
+          ...formvalues,
+          id: savedDiveLogId,
+        },
       },
     });
   };
@@ -97,18 +99,20 @@ const SimpleDiveLogsForms: FunctionComponent<
   };
 
   const handleNavigateToAdvancedDiveLog = (formvalues: InitialValues) => {
-    const diveLog = submitLog(formvalues);
-    navigateToAdvancedDiveForm(diveLog);
+    navigateToAdvancedDiveForm({ ...formvalues, id: savedDiveLogId });
   };
 
   const submitLog = (values: InitialValues) => {
-    console.log('submitted values', values);
+    const diveLogId = new Date().getTime();
+
     const diveLog = {
       ...values,
       id: diveLogId as number,
     };
 
     dispatch(saveDiveLog(diveLog));
+    saveDiveLogId(diveLog.id);
+    console.log('submitted', diveLog);
     return diveLog;
   };
 
@@ -161,6 +165,7 @@ const SimpleDiveLogsForms: FunctionComponent<
       validate={values => validate(values, constraints)}
       onSubmit={() => {}}
       initialValues={initialValues}
+      keepDirtyOnReinitialize
       render={({ values, form }) => {
         formRef.current = form;
 
@@ -225,7 +230,7 @@ const SimpleDiveLogsForms: FunctionComponent<
                 <TouchableWithoutFeedback
                   onPress={
                     page === stages.length
-                      ? () => submitAndGoToLog(values as InitialValues)
+                      ? () => goToLog(values as InitialValues)
                       : openModal
                   }>
                   <Icon
@@ -255,7 +260,14 @@ const SimpleDiveLogsForms: FunctionComponent<
               <View />
             ) : (
               <Footer
-                next={next}
+                next={
+                  page === stages.length - 1
+                    ? () => {
+                        submitLog(values as InitialValues);
+                        next();
+                      }
+                    : next
+                }
                 disabled={!canMoveToNextPage(page, values as InitialValues)}
                 text={page === stages.length - 1 ? 'Complete' : 'Continue'}
               />
