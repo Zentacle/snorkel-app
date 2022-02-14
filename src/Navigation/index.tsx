@@ -36,9 +36,9 @@ const Navigator: React.FC = () => {
         <Stack.Screen name="OnBoarding" component={OnboardingNavigator} />
         <Stack.Screen name="App" component={AppTabsNavigator} />
         <Stack.Screen name="ExploreStack" component={ExploreNavigator} />
-        <Stack.Screen name="ProfileStack" component={LogsNavigator} />
+        <Stack.Screen name="ProfileStack" component={ProfileNavigator} />
         <Stack.Screen name="SearchStack" component={SearchNavigator} />
-        <Stack.Screen name="LogsStack" component={ProfileNavigator} />
+        <Stack.Screen name="LogsStack" component={LogsNavigator} />
         <Stack.Screen name="LogsFormStack" component={LogsFormNavigator} />
       </Stack.Navigator>
     </NavigationContainer>

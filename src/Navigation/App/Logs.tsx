@@ -1,7 +1,7 @@
 import * as React from 'react';
-
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Logs from '_screens/Logs';
+
+import Log from '_screens/Logs/Log';
 
 import type { LogsStackParamList } from '_utils/interfaces';
 
@@ -13,8 +13,8 @@ const LogsNavigator: React.FC = () => {
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName="LogList">
-      <LogsStack.Screen name="LogList" component={Logs} />
+      initialRouteName="LogDetail">
+      <LogsStack.Screen name="LogDetail" component={Log} />
     </LogsStack.Navigator>
   );
 };
