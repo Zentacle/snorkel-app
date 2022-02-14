@@ -100,10 +100,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
             <Text style={styles.locationText}>East Bali, Indonesia</Text>
           </View>
           <View style={styles.ratingsContainer}>
-            <Text style={styles.ratingsLevelText}>
-              {/* {capitalize(currentSpot.difficulty) || 'Beginner'} */}
-              {diveLog.difficulty}
-            </Text>
+            <Text style={styles.ratingsLevelText}>{diveLog.difficulty}</Text>
             {isAdvancedLog && (
               <>
                 <View style={styles.dot} />
@@ -128,14 +125,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
               </View>
             </View>
             <View style={styles.noteBodyContainer}>
-              <Text style={styles.noteBodyText}>
-                Love this site! There are plenty to see and too much of then to
-                fill in one dives so everyoneLove this site! There are plenty to
-                see and too much of then to fill in one much of then to fill in
-                one. There are plenty to see and too much of then to fill in
-                one. There are plenty to see and too much of then to fill in
-                one.
-              </Text>
+              <Text style={styles.noteBodyText}>{diveLog.note}</Text>
             </View>
           </View>
 
@@ -210,7 +200,9 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                       <View style={styles.airTankMeasurementContainer}>
                         <Text style={styles.capacityText}>400 bar</Text>
                         <Text style={styles.divider}>|</Text>
-                        <Text style={styles.airTankTypetext}>EANx32</Text>
+                        <Text style={styles.airTankTypetext}>
+                          {diveLog.nitrox}
+                        </Text>
                       </View>
                     </View>
                     <View style={styles.progressContainer}>
@@ -249,7 +241,9 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                       <View style={styles.airTankMeasurementContainer}>
                         <Text style={styles.capacityText}>400 bar</Text>
                         <Text style={styles.divider}>|</Text>
-                        <Text style={styles.airTankTypetext}>EANx32</Text>
+                        <Text style={styles.airTankTypetext}>
+                          {diveLog.nitrox}
+                        </Text>
                       </View>
                     </View>
                     <View style={styles.progressContainer}>
@@ -355,12 +349,12 @@ const styles = StyleSheet.create({
   ratingsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 5,
+    marginTop: 10,
   },
   ratingsText: {
-    color: 'black',
+    color: 'grey',
     marginHorizontal: 5,
-    fontSize: 16,
+    fontSize: 14,
   },
   note: {
     width: '100%',

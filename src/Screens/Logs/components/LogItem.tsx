@@ -35,7 +35,9 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
           />
         </View>
         <View style={styles.ratingsActivityContainer}>
-          <View style={styles.ratingsContainer}>{attachIcons(4, 25)}</View>
+          <View style={styles.ratingsContainer}>
+            {attachIcons(diveLog.rating, 25)}
+          </View>
           {isAdvancedLog && (
             <View style={styles.diveActivityContainer}>
               <Text style={styles.diveActivity}>{diveLog.diveActivity}</Text>
