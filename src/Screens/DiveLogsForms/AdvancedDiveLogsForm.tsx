@@ -67,7 +67,17 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   let scrollContainerRef = React.useRef<ScrollView | null>();
   const dispatch = useAppDispatch();
 
-  const simpleDiveLogsForm = get(route, 'params.simpleDiveLog', {});
+  const fullLogValues: InitialValues = get(route, 'params.simpleDiveLog', {});
+
+  const simpleDiveLogsForm: InitialValues = {
+    ...fullLogValues,
+    startDate:
+      fullLogValues.startDate &&
+      new Date(`${fullLogValues.startDate} ${fullLogValues.startTime}`),
+    startTime:
+      fullLogValues.startTime &&
+      new Date(`${fullLogValues.startDate} ${fullLogValues.startTime}`),
+  };
 
   const next = () => {
     switchPage(page + 1);
@@ -144,12 +154,11 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
 
   const constraints = {};
   const initialValues: InitialValues = {
-    ...simpleDiveLogsForm,
     timeInWater: 45,
     maxDepth: 40,
     waterTemp: 14,
     airTemp: 20,
-    visibility: 1,
+    visibility: 'Poor',
     diveActivity: 'Scuba',
     entry: 'Shore',
     // startDate: new Date(), // removed because they were for some re
@@ -158,6 +167,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     airTankStart: 40,
     airTankEnd: 40,
     nitrox: 'Normal',
+    ...simpleDiveLogsForm,
   };
 
   const canMoveToNextPage = (

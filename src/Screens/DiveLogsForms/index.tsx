@@ -11,6 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Form } from 'react-final-form';
 import validate from 'validate.js';
+import get from 'lodash/get';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
@@ -57,6 +58,7 @@ const SimpleDiveLogsForms: FunctionComponent<
   const [page, switchPage] = React.useState(0);
   const [modalIsOpen, toggleModal] = React.useState(false);
   const [savedDiveLogId, saveDiveLogId] = React.useState(0);
+  const passedInLog: InitialValues = get(props.route, 'params.diveLogs', {});
   let formRef = React.useRef<FormApi>();
   const dispatch = useAppDispatch();
 
@@ -107,12 +109,11 @@ const SimpleDiveLogsForms: FunctionComponent<
 
     const diveLog = {
       ...values,
-      id: diveLogId as number,
+      id: values.id ?? (diveLogId as number),
     };
 
     dispatch(saveDiveLog(diveLog));
-    saveDiveLogId(diveLog.id);
-    console.log('submitted', diveLog);
+    saveDiveLogId(diveLog.id as number);
     return diveLog;
   };
 
@@ -121,6 +122,7 @@ const SimpleDiveLogsForms: FunctionComponent<
     id: 0,
     rating: 0,
     difficulty: 'Beginner',
+    ...passedInLog,
   };
 
   React.useEffect(() => {
