@@ -19,14 +19,11 @@ import DepthArrow from '_assets/ArrowsDownUp.png';
 import DiveTimeClock from '_assets/ClockClockwise.png';
 
 interface ReviewProps {
-  navigateToDiveLogs: () => void;
+  submit: () => void;
   formValues: InitialValues;
 }
 
-const Review: FunctionComponent<ReviewProps> = ({
-  navigateToDiveLogs,
-  formValues,
-}) => {
+const Review: FunctionComponent<ReviewProps> = ({ submit, formValues }) => {
   return (
     <View style={styles.container}>
       <View style={styles.gradientContainer}>
@@ -121,7 +118,7 @@ const Review: FunctionComponent<ReviewProps> = ({
 
       <View>
         <Button
-          onPress={navigateToDiveLogs}
+          onPress={submit}
           gradient
           gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
           gradientLocations={[0.01, 1, 1]}
