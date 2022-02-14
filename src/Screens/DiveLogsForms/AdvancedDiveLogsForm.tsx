@@ -38,6 +38,8 @@ import Review from './forms/advanced/Review';
 import ExitModal from './components/ExitModal';
 
 import type { AdvancedFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
+import { useAppDispatch } from '_redux/hooks';
+import { editDiveLog } from '_redux/slices/dive-logs';
 
 type AdvancedDiveLogsFormsNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<LogsFormStackParamList, 'AdvancedDiveLogsForm'>,
@@ -60,8 +62,10 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
 }) => {
   const [page, switchPage] = React.useState(1);
   const [modalIsOpen, toggleModal] = React.useState(false);
-  let formRef = React.useRef<FormApi>();
+  const today = new Date();
+  let formRef = React.useRef<FormApi<InitialValues, Partial<InitialValues>>>();
   let scrollContainerRef = React.useRef<ScrollView | null>();
+  const dispatch = useAppDispatch();
 
   const simpleDiveLogsForm = get(route, 'params.simpleDiveLog', {});
 
@@ -116,6 +120,18 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     }
   };
 
+  const submitLog = (values: InitialValues) => {
+    console.log('submitted values', values);
+    dispatch(
+      editDiveLog({
+        ...values,
+        startDate: new Date(values.startDate ?? today).toDateString(),
+        startTime: new Date(values.startTime ?? today).toTimeString(),
+      }),
+    );
+    navigateToDiveLogs();
+  };
+
   const openModal = () => {
     toggleModal(true);
   };
@@ -138,8 +154,8 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     visibility: 1,
     diveActivity: 'Scuba',
     entry: 'Shore',
-    startDate: new Date(),
-    startTime: new Date(),
+    // startDate: new Date(), // removed because they were for some re
+    // startTime: new Date(),
     weight: 5,
     airTankStart: 40,
     airTankEnd: 40,
@@ -166,29 +182,10 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   return (
     <Form
       validate={values => validate(values, constraints)}
-      onSubmit={() => {}}
+      onSubmit={submitLog}
       initialValues={initialValues}
-      render={({ values, handleSubmit, submitting, pristine, form }) => {
+      render={({ values, handleSubmit, form }) => {
         formRef.current = form;
-        const showForms = (): JSX.Element => {
-          switch (page) {
-            case 0:
-              return <BasicInfo />;
-            case 1:
-              return <DateTimeDepth />;
-            case 2:
-              return <WaterOnshore />;
-            case 3:
-              return <WearGear />;
-            default:
-              return (
-                <Review
-                  formValues={values as InitialValues}
-                  navigateToDiveLogs={navigateToDiveLogs}
-                />
-              );
-          }
-        };
 
         return (
           <SafeAreaView style={styles.container}>
@@ -247,7 +244,16 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
                   marginBottom: Platform.OS === 'android' ? 114 : 80,
                 },
               ]}>
-              {showForms()}
+              {page === 0 && <BasicInfo />}
+              {page === 1 && <DateTimeDepth />}
+              {page === 2 && <WaterOnshore />}
+              {page === 3 && <WearGear />}
+              {page === 4 && (
+                <Review
+                  formValues={values as InitialValues}
+                  submit={handleSubmit}
+                />
+              )}
             </ScrollView>
             {page === stages.length ? (
               <View />
