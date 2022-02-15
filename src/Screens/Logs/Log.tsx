@@ -66,11 +66,11 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
     });
   };
 
-  const navigateToSimpleLogsForm = () => {
-    navigation.navigate('App', {
-      screen: 'LogsForm',
+  const navigateFromSimpleLogValue = () => {
+    navigation.navigate('LogsFormStack', {
+      screen: 'AdvancedDiveLogsForm',
       params: {
-        diveLogs: diveLog,
+        simpleDiveLog: diveLog,
       },
     });
   };
@@ -291,7 +291,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
               onPress={
                 isAdvancedLog
                   ? navigateToAdvancedLogsForm
-                  : navigateToSimpleLogsForm
+                  : navigateFromSimpleLogValue
               }
               name="pencil-outline"
               color="black"
@@ -301,7 +301,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
               onPress={
                 isAdvancedLog
                   ? navigateToAdvancedLogsForm
-                  : navigateToSimpleLogsForm
+                  : navigateFromSimpleLogValue
               }>
               <Text style={styles.editLogText}>
                 {isAdvancedLog
