@@ -79,7 +79,15 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
     navigation.navigate('LogsFormStack', {
       screen: 'AdvancedDiveLogsForm',
       params: {
-        simpleDiveLog: diveLog,
+        simpleDiveLog: {
+          ...diveLog,
+          startDate:
+            diveLog.startDate &&
+            new Date(`${diveLog.startDate} ${diveLog.startTime}`),
+          startTime:
+            diveLog.startTime &&
+            new Date(`${diveLog.startDate} ${diveLog.startTime}`),
+        },
       },
     });
   };

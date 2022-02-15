@@ -67,17 +67,11 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   let scrollContainerRef = React.useRef<ScrollView | null>();
   const dispatch = useAppDispatch();
 
-  const fullLogValues: InitialValues = get(route, 'params.simpleDiveLog', {});
-
-  const simpleDiveLogsForm: InitialValues = {
-    ...fullLogValues,
-    startDate:
-      fullLogValues.startDate &&
-      new Date(`${fullLogValues.startDate} ${fullLogValues.startTime}`),
-    startTime:
-      fullLogValues.startTime &&
-      new Date(`${fullLogValues.startDate} ${fullLogValues.startTime}`),
-  };
+  const simpleDiveLogsForm: InitialValues = get(
+    route,
+    'params.simpleDiveLog',
+    {},
+  );
 
   const next = () => {
     switchPage(page + 1);

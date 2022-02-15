@@ -62,7 +62,9 @@ const Review: FunctionComponent<ReviewProps> = ({
           <Image source={LocationImage} />
           <Text style={styles.locationText}>East bali, Indonesia</Text>
           <View style={styles.dot} />
-          <Text style={styles.locationTimestamp}>21 Nov 2021</Text>
+          <Text style={styles.locationTimestamp}>
+            {new Date().toDateString()}
+          </Text>
         </View>
       </View>
 
