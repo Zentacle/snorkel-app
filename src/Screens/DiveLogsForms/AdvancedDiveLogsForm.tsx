@@ -193,7 +193,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
         return (
           <SafeAreaView style={styles.container}>
             <ExitModal
-              subtext="When you exit, all advanced dive log information you entered will be deleted. The simple dive log informationis saved and will remain unchanged."
+              subtext="When you exit, all advanced dive log information you entered will be deleted. The simple dive log information is saved and will remain unchanged."
               isVisible={modalIsOpen}
               modalAction={modalAction}
               modalCancelAction={modalCancelAction}
