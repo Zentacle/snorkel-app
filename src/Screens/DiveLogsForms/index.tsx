@@ -129,6 +129,9 @@ const SimpleDiveLogsForms: FunctionComponent<
     return props.navigation.addListener('blur', () => {
       switchPage(0);
       formRef.current?.reset();
+      props.navigation.setParams({
+        diveLogs: {},
+      });
     });
   }, [props.navigation]);
 
