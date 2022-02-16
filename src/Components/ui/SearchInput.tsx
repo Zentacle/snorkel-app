@@ -10,18 +10,14 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import type { FunctionComponent } from 'react';
-import type {
-  ViewStyle,
-  TextStyle,
-  ColorValue,
-  // NativeSyntheticEvent,
-  // TextInputFocusEventData,
-  // TextInputChangeEventData,
-} from 'react-native';
+import type { ViewStyle, TextStyle, ColorValue } from 'react-native';
+import type { FieldRenderProps } from 'react-final-form';
 
 import FilterIcon from '_assets/Filter.png';
 
 const HEIGHT = Dimensions.get('window').height;
+
+type FinalFormProps = FieldRenderProps<string, any>;
 
 interface BaseProps {
   style?: ViewStyle | TextStyle;
@@ -30,23 +26,39 @@ interface BaseProps {
   placeholderTextColor?: ColorValue;
   onClickFilterIcon?: () => void;
   withFilterIcon?: boolean;
+  handleInputFocus?: () => void;
 }
+
+type InputSearchProps = BaseProps & FinalFormProps;
 
 type FilteredSearchInputProps = Omit<
   BaseProps,
   'containerStyle' | 'onClickFilterIcon' | 'withFilterIcon'
 >;
 
-const SearchInput: FunctionComponent<BaseProps> = props => {
+const SearchInput: FunctionComponent<InputSearchProps> = ({
+  withFilterIcon,
+  containerStyle,
+  onClickFilterIcon,
+  placeholder,
+  placeholderTextColor,
+  input: { value, onChange },
+  handleInputFocus,
+}) => {
   return (
-    <View style={[styles.container, props.containerStyle]}>
-      <Icon name="search" size={22} color="grey" />
+    <View style={[styles.container, containerStyle]}>
+      <Icon style={styles.icon} name="search" size={22} color="grey" />
       <TextInput
-        {...(props as unknown as FilteredSearchInputProps)}
-        style={styles.input}
+        // {...(props as unknown as FilteredSearchInputProps)}
+        style={[styles.input, withFilterIcon && { width: '80%' }]}
+        placeholder={placeholder}
+        placeholderTextColor={placeholderTextColor}
+        onFocus={handleInputFocus}
+        value={value}
+        onChangeText={(val: string) => onChange(val)}
       />
-      {props.withFilterIcon && (
-        <TouchableWithoutFeedback onPress={props.onClickFilterIcon}>
+      {withFilterIcon && (
+        <TouchableWithoutFeedback onPress={onClickFilterIcon}>
           <Image source={FilterIcon} />
         </TouchableWithoutFeedback>
       )}
@@ -66,9 +78,13 @@ const styles = StyleSheet.create({
     marginTop: HEIGHT * 0.045,
   },
   input: {
-    width: '80%',
+    width: '90%',
     height: 40,
   },
+  icon: {
+    width: 30,
+  },
+  image: {},
 });
 
 export default SearchInput;
