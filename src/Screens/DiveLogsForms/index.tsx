@@ -263,6 +263,7 @@ const SimpleDiveLogsForms: FunctionComponent<
                 next={
                   page === stages.length - 1
                     ? () => {
+                        // submit then navigate to review
                         submitLog(values as InitialValues);
                         next();
                       }
