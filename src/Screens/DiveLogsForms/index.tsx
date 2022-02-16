@@ -109,7 +109,7 @@ const SimpleDiveLogsForms: FunctionComponent<
 
     const diveLog = {
       ...values,
-      id: values.id ?? (diveLogId as number),
+      id: !!values.id ? values.id : (diveLogId as number),
     };
 
     dispatch(saveDiveLog(diveLog));
@@ -118,9 +118,14 @@ const SimpleDiveLogsForms: FunctionComponent<
   };
 
   const constraints = {};
+
   const initialValues: InitialValues = {
+    // ignore overwritten propertied error
+    // @ts-ignore
     id: 0,
+    // @ts-ignore
     rating: 0,
+    // @ts-ignore
     difficulty: 'Beginner',
     ...passedInLog,
   };
@@ -174,27 +179,6 @@ const SimpleDiveLogsForms: FunctionComponent<
       render={({ values, form }) => {
         formRef.current = form;
 
-        const showForms = (): JSX.Element => {
-          switch (page) {
-            case 0:
-              return <Location />;
-            case 1:
-              return <Rating />;
-            case 2:
-              return <Name />;
-            case 3:
-              return <Notes />;
-            default:
-              return (
-                <Review
-                  navigateToAdvancedDiveForm={() =>
-                    handleNavigateToAdvancedDiveLog(values as InitialValues)
-                  }
-                  formValues={values as InitialValues}
-                />
-              );
-          }
-        };
         return (
           <SafeAreaView style={styles.container}>
             <ExitModal
@@ -259,7 +243,18 @@ const SimpleDiveLogsForms: FunctionComponent<
                 />
               )}
 
-              {showForms()}
+              {page === 0 && <Location />}
+              {page === 1 && <Rating />}
+              {page === 2 && <Name />}
+              {page === 3 && <Notes />}
+              {page === 4 && (
+                <Review
+                  navigateToAdvancedDiveForm={() =>
+                    handleNavigateToAdvancedDiveLog(values as InitialValues)
+                  }
+                  formValues={values as InitialValues}
+                />
+              )}
             </ScrollView>
             {page === stages.length ? (
               <View />

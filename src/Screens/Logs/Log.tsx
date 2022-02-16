@@ -129,7 +129,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                 </View>
               </View>
               <View style={styles.ratingsIconsContainer}>
-                {attachIcons(4, 20)}
+                {attachIcons(diveLog.rating, 20)}
               </View>
             </View>
             <View style={styles.noteBodyContainer}>
