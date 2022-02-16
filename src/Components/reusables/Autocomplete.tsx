@@ -5,12 +5,9 @@ import {
   StyleSheet,
   Image,
   Dimensions,
-  Modal,
   ActivityIndicator,
-  FlatList,
   Keyboard,
   Pressable,
-  SafeAreaView,
   TouchableWithoutFeedback,
 } from 'react-native';
 import debounce from 'lodash/debounce';
@@ -23,10 +20,7 @@ import PlainSearchInput from '_components/ui/PlainSearchInput';
 import LocationImage from '_assets/LocationLargish.png';
 import FlagImage from '_assets/Flag.png';
 
-interface BaseProps {
-  isVisible: boolean;
-  closeModal: () => void;
-}
+interface BaseProps {}
 type FinalFormProps = FieldRenderProps<string, any>;
 
 interface PlaceSuggestion {
@@ -34,13 +28,11 @@ interface PlaceSuggestion {
   description: string;
 }
 
-type ModalWFinalFormProps = BaseProps & FinalFormProps;
+type AutocompleteWfinalProps = BaseProps & FinalFormProps;
 
 const HEIGHT = Dimensions.get('window').height;
 
-const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
-  isVisible,
-  closeModal,
+const Autocomplete: FunctionComponent<AutocompleteWfinalProps> = ({
   input: { onChange },
 }) => {
   const [text, changeText] = React.useState('');
@@ -85,74 +77,62 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
   };
 
   const handleCloseModal = () => {
-    closeModal();
     setLoading(false);
     setSuggestions([]);
     changeText('');
   };
 
-  const _renderItem = (item: { item: PlaceSuggestion }) => {
-    return (
-      <Pressable onPress={() => setPlace(item.item.description)}>
-        <View style={styles.resultContainer}>
-          <Image source={LocationImage} />
-          <View style={styles.placeContainer}>
-            <Text style={styles.place}>{item.item.description}</Text>
-            <Text style={styles.placeSubText}>Subtext</Text>
-          </View>
-        </View>
-      </Pressable>
-    );
-  };
-  const _keyExtractor = (item: any) => item.place_id;
   return (
-    <Modal visible={isVisible} onRequestClose={closeModal} style={styles.modal}>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.searchContainer}>
-          <PlainSearchInput
-            onChange={handleTextChange}
-            value={text}
-            containerStyle={styles.inputCompContainer}
-            style={styles.search}
-            placeholder="Search"
-          />
-          <TouchableWithoutFeedback onPress={handleCloseModal}>
-            <Text style={styles.searchLabel}>Cancel</Text>
-          </TouchableWithoutFeedback>
-        </View>
-        {loading ? (
-          <ActivityIndicator size="small" color="black" />
-        ) : (
-          <View style={styles.listContainer}>
-            {!!suggestions.length && (
-              <View style={styles.countryContainer}>
-                <Image source={FlagImage} />
-                <View style={styles.countryTextsContainer}>
-                  <Text style={styles.searchText}>{text}</Text>
-                  <Text style={styles.countryMainText}>
-                    {splitCountry(suggestions[0].description)}
-                  </Text>
+    <View style={styles.container}>
+      <View style={styles.searchContainer}>
+        <PlainSearchInput
+          onChange={handleTextChange}
+          value={text}
+          containerStyle={styles.inputCompContainer}
+          style={styles.search}
+          placeholder="Search"
+        />
+        <TouchableWithoutFeedback onPress={handleCloseModal}>
+          <Text style={styles.searchLabel}>Cancel</Text>
+        </TouchableWithoutFeedback>
+      </View>
+      {loading ? (
+        <ActivityIndicator size="small" color="black" />
+      ) : (
+        <View style={styles.listContainer}>
+          {!!suggestions.length && (
+            <View style={styles.countryContainer}>
+              <Image source={FlagImage} />
+              <View style={styles.countryTextsContainer}>
+                <Text style={styles.searchText}>{text}</Text>
+                <Text style={styles.countryMainText}>
+                  {splitCountry(suggestions[0].description)}
+                </Text>
+              </View>
+            </View>
+          )}
+
+          {suggestions.map((suggestion: PlaceSuggestion, index) => (
+            <Pressable
+              key={index}
+              onPress={() => setPlace(suggestion.description)}>
+              <View style={styles.resultContainer}>
+                <Image source={LocationImage} />
+                <View style={styles.placeContainer}>
+                  <Text style={styles.place}>{suggestion.description}</Text>
+                  <Text style={styles.placeSubText}>Subtext</Text>
                 </View>
               </View>
-            )}
-            <FlatList
-              keyExtractor={_keyExtractor}
-              renderItem={_renderItem}
-              data={suggestions}
-              keyboardShouldPersistTaps="always"
-            />
-          </View>
-        )}
-      </SafeAreaView>
-    </Modal>
+            </Pressable>
+          ))}
+        </View>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#EFF6F9',
-    flex: 1,
-  },
+  container: {},
   listContainer: {
     marginHorizontal: 25,
     marginTop: 10,
@@ -215,4 +195,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AutocompleteModal;
+export default Autocomplete;
