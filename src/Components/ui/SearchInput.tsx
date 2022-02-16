@@ -24,17 +24,20 @@ interface BaseProps {
   containerStyle?: ViewStyle;
   placeholder?: string;
   placeholderTextColor?: ColorValue;
-  onClickFilterIcon?: () => void;
-  withFilterIcon?: boolean;
   handleInputFocus?: () => void;
 }
 
-type InputSearchProps = BaseProps & FinalFormProps;
+type FilterIconOption =
+  | {
+      withFilterIcon?: boolean;
+      onClickFilterIcon: () => void;
+    }
+  | {
+      withFilterIcon?: false;
+      onClickFilterIcon: never;
+    };
 
-type FilteredSearchInputProps = Omit<
-  BaseProps,
-  'containerStyle' | 'onClickFilterIcon' | 'withFilterIcon'
->;
+type InputSearchProps = BaseProps & FinalFormProps & FilterIconOption;
 
 const SearchInput: FunctionComponent<InputSearchProps> = ({
   withFilterIcon,
@@ -49,7 +52,6 @@ const SearchInput: FunctionComponent<InputSearchProps> = ({
     <View style={[styles.container, containerStyle]}>
       <Icon style={styles.icon} name="search" size={22} color="grey" />
       <TextInput
-        // {...(props as unknown as FilteredSearchInputProps)}
         style={[styles.input, withFilterIcon && { width: '80%' }]}
         placeholder={placeholder}
         placeholderTextColor={placeholderTextColor}
