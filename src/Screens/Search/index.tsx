@@ -64,6 +64,7 @@ const Search = () => {
                 <Field
                   name="search"
                   component={SearchInput}
+                  containerStyle={styles.searchInputContainer}
                   withFilterIcon
                   handleInputFocus={handleInputFocus}
                   onClickFilterIcon={handleToggleFiltersModal}
@@ -102,6 +103,9 @@ const styles = StyleSheet.create({
     borderBottomColor: 'grey',
     borderBottomWidth: StyleSheet.hairlineWidth,
     paddingBottom: 20,
+  },
+  searchInputContainer: {
+    paddingVertical: 5,
   },
 });
 
