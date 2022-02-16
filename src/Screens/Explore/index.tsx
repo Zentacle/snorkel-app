@@ -9,6 +9,7 @@ import {
   Dimensions,
   Platform,
 } from 'react-native';
+import { Form, Field } from 'react-final-form';
 
 import SearchInput from '_components/ui/SearchInput';
 import Tag from '_components/ui/Tag';
@@ -100,7 +101,14 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.contentContainer}>
         <Text style={styles.welcomeText}>Welcome, David!</Text>
-        <SearchInput />
+        <Form
+          onSubmit={() => {}}
+          initialValues={{}}
+          keepDirtyOnReinitialize
+          render={({ values, form }) => {
+            return <Field name="search" component={SearchInput} />;
+          }}
+        />
         <ScrollView
           showsHorizontalScrollIndicator={false}
           horizontal
