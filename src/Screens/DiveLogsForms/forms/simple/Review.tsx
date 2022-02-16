@@ -14,13 +14,25 @@ import GradientCircle from '_components/ui/GradientCircle';
 import GradientText from '_components/ui/GradientText';
 import Button from '_components/ui/Buttons/Button';
 
+import type { FunctionComponent } from 'react';
+
+import type { SimpleFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
+
 import DiveSiteImg from '_assets/DiveSite3.jpg';
 import LocationImage from '_assets/Location.png';
 import DescIcon from '_assets/DescIcon.png';
 import CopyIcon from '_assets/CopySimple.png';
 import UploadIcon from '_assets/UploadSimple.png';
 
-const Review = () => {
+interface ReviewProps {
+  navigateToAdvancedDiveForm: () => void;
+  formValues: InitialValues;
+}
+
+const Review: FunctionComponent<ReviewProps> = ({
+  navigateToAdvancedDiveForm,
+  formValues,
+}) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.gradientContainer}>
@@ -41,16 +53,18 @@ const Review = () => {
       </View>
 
       <View style={styles.details}>
-        <Text style={styles.detailsTitle}>USS Liberty Wreck on Beach</Text>
+        <Text style={styles.detailsTitle}>{formValues.name}</Text>
         <View style={styles.descContainer}>
           <Image source={DescIcon} />
-          <Text style={styles.descText}>USS liberty with Jim and Sarah</Text>
+          <Text style={styles.descText}>{formValues.name}</Text>
         </View>
         <View style={styles.locationContainer}>
           <Image source={LocationImage} />
           <Text style={styles.locationText}>East bali, Indonesia</Text>
           <View style={styles.dot} />
-          <Text style={styles.locationTimestamp}>21 Nov 2021</Text>
+          <Text style={styles.locationTimestamp}>
+            {new Date().toDateString()}
+          </Text>
         </View>
       </View>
 
@@ -93,6 +107,7 @@ const Review = () => {
 
       <View>
         <Button
+          onPress={navigateToAdvancedDiveForm}
           gradient
           gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
           gradientLocations={[0.01, 1, 1]}

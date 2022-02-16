@@ -31,7 +31,7 @@ const DiveShopFooter: FunctionComponent<DiveShopFooterProps> = ({
           container: styles.buttonContainer,
           text: styles.buttonText,
         }}>
-        Log a Dive
+        View Website
       </Button>
     </View>
   );

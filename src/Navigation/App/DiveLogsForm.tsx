@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import SimpleDiveLogsForms from '_screens/DiveLogsForms';
+import AdvancedDiveLogsForm from '_screens/DiveLogsForms/AdvancedDiveLogsForm';
 
 import type { LogsFormStackParamList } from '_utils/interfaces';
 
@@ -10,13 +10,13 @@ const LogsFormNavigator: React.FC = () => {
 
   return (
     <LogsStack.Navigator
-      initialRouteName="SimpleDiveLogsForm"
+      initialRouteName="AdvancedDiveLogsForm"
       screenOptions={{
         headerShown: false,
       }}>
       <LogsStack.Screen
-        name="SimpleDiveLogsForm"
-        component={SimpleDiveLogsForms}
+        name="AdvancedDiveLogsForm"
+        component={AdvancedDiveLogsForm}
       />
     </LogsStack.Navigator>
   );

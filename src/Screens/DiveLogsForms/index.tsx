@@ -9,61 +9,152 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { Form } from 'react-final-form';
+import validate from 'validate.js';
+import get from 'lodash/get';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import type { CompositeNavigationProp } from '@react-navigation/native';
-import type { FunctionComponent } from 'react';
+import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import type {
-  RootStackParamList,
-  LogsFormStackParamList,
-} from '_utils/interfaces';
+  CompositeNavigationProp,
+  RouteProp,
+} from '@react-navigation/native';
+import type { FunctionComponent } from 'react';
+import type { FormApi } from 'final-form';
+
+import type { RootStackParamList, AppTabsParamList } from '_utils/interfaces';
 
 import FormStates from './components/FormStates';
-import Footer from './components/SimpleFormFooter';
+import Footer from './components/FormFooter';
 
-import { stages } from './utils/utils';
+import { simpleformStages as stages } from './utils/utils';
 import Location from './forms/simple/Location';
 import Rating from './forms/simple/Rating';
 import Name from './forms/simple/Name';
 import Notes from './forms/simple/Notes';
 import Review from './forms/simple/Review';
+import ExitModal from './components/ExitModal';
+
+import { useAppDispatch } from '_redux/hooks';
+import { saveDiveLog } from '_redux/slices/dive-logs';
+
+import type { SimpleFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
 
 type SimpleDiveLogsFormsNavigationProps = CompositeNavigationProp<
-  NativeStackNavigationProp<LogsFormStackParamList, 'SimpleDiveLogsForm'>,
+  BottomTabNavigationProp<AppTabsParamList, 'LogsForm'>,
   NativeStackNavigationProp<RootStackParamList>
 >;
 
+type SimpleLogsFormRouteProps = RouteProp<AppTabsParamList, 'LogsForm'>;
+
 interface SimpleDiveLogsFormsProps {
   navigation: SimpleDiveLogsFormsNavigationProps;
+  route: SimpleLogsFormRouteProps;
 }
 
 const SimpleDiveLogsForms: FunctionComponent<
   SimpleDiveLogsFormsProps
 > = props => {
   const [page, switchPage] = React.useState(0);
+  const [modalIsOpen, toggleModal] = React.useState(false);
+  const [savedDiveLogId, saveDiveLogId] = React.useState(0);
+  const passedInLog: InitialValues = get(props.route, 'params.diveLogs', {});
+  let formRef = React.useRef<FormApi>();
+  const dispatch = useAppDispatch();
 
   const goBack = () => {
     props.navigation.goBack();
   };
 
+  const openModal = () => {
+    toggleModal(true);
+  };
+
+  const goToLog = (formvalues: InitialValues) => {
+    props.navigation.navigate('LogsStack', {
+      screen: 'LogDetail',
+      params: {
+        diveLog: {
+          ...formvalues,
+          id: savedDiveLogId,
+        },
+      },
+    });
+  };
+
+  const modalAction = () => {
+    toggleModal(false);
+    goBack();
+  };
+
+  const modalCancelAction = () => {
+    toggleModal(false);
+  };
+
+  const navigateToAdvancedDiveForm = (formvalues: InitialValues) => {
+    props.navigation.navigate('LogsFormStack', {
+      screen: 'AdvancedDiveLogsForm',
+      params: {
+        simpleDiveLog: formvalues,
+      },
+    });
+  };
+
+  const handleNavigateToAdvancedDiveLog = (formvalues: InitialValues) => {
+    navigateToAdvancedDiveForm({ ...formvalues, id: savedDiveLogId });
+  };
+
+  const submitLog = (values: InitialValues) => {
+    const diveLogId = new Date().getTime();
+
+    const diveLog = {
+      ...values,
+      id: !!values.id ? values.id : (diveLogId as number),
+    };
+
+    dispatch(saveDiveLog(diveLog));
+    saveDiveLogId(diveLog.id as number);
+    return diveLog;
+  };
+
+  const constraints = {};
+
+  const initialValues: InitialValues = {
+    // ignore overwritten propertied error
+    // @ts-ignore
+    id: 0,
+    // @ts-ignore
+    rating: 0,
+    // @ts-ignore
+    difficulty: 'Beginner',
+    ...passedInLog,
+  };
+
   React.useEffect(() => {
     return props.navigation.addListener('blur', () => {
       switchPage(0);
+      formRef.current?.reset();
+      props.navigation.setParams({
+        diveLogs: {},
+      });
     });
   }, [props.navigation]);
 
-  const showForms = (): JSX.Element => {
-    switch (page) {
+  const canMoveToNextPage = (
+    currentPage: number,
+    values: InitialValues,
+  ): boolean => {
+    switch (currentPage) {
       case 0:
-        return <Location />;
+        return true;
       case 1:
-        return <Rating />;
+        return !!(values.rating && values.difficulty);
       case 2:
-        return <Name />;
+        return !!values.name;
       case 3:
-        return <Notes />;
+        return !!values.note;
       default:
-        return <Review />;
+        return true;
     }
   };
 
@@ -80,56 +171,112 @@ const SimpleDiveLogsForms: FunctionComponent<
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView
-        style={[
-          styles.scrollContainer,
-          page !== stages.length && {
-            marginBottom: Platform.OS === 'android' ? 114 : 80,
-          },
-        ]}>
-        <View style={styles.headerContainer}>
-          {page > 0 && page !== stages.length ? (
-            <TouchableWithoutFeedback onPress={previous}>
-              <Icon
-                name="chevron-back-outline"
-                color="black"
-                size={30}
-                style={styles.prev}
-              />
-            </TouchableWithoutFeedback>
-          ) : (
-            <View style={styles.prevPlaceholder} />
-          )}
-          <View />
-          <Text style={[styles.header, page === 0 && { marginLeft: -20 }]}>
-            {page === stages.length ? 'Dive Log Created' : 'Create Dive Log'}
-          </Text>
-          <TouchableWithoutFeedback onPress={goBack}>
-            <Icon
-              style={styles.back}
-              name="close-outline"
-              color="black"
-              size={30}
+    <Form
+      validate={values => validate(values, constraints)}
+      onSubmit={() => {}}
+      initialValues={initialValues}
+      keepDirtyOnReinitialize
+      render={({ values, form }) => {
+        formRef.current = form;
+
+        return (
+          <SafeAreaView style={styles.container}>
+            <ExitModal
+              subtext="On exit, all dive log information you entered will be deleted."
+              isVisible={modalIsOpen}
+              modalAction={modalAction}
+              modalCancelAction={modalCancelAction}
+              actionText="Exit"
+              cancelActionText="Cancel"
             />
-          </TouchableWithoutFeedback>
-        </View>
+            <ScrollView
+              style={[
+                styles.scrollContainer,
+                page !== stages.length && {
+                  marginBottom: Platform.OS === 'android' ? 114 : 80,
+                },
+              ]}>
+              <View style={styles.headerContainer}>
+                {page > 0 && page !== stages.length ? (
+                  <TouchableWithoutFeedback onPress={previous}>
+                    <Icon
+                      name="chevron-back-outline"
+                      color="black"
+                      size={30}
+                      style={styles.prev}
+                    />
+                  </TouchableWithoutFeedback>
+                ) : (
+                  <View style={styles.prevPlaceholder} />
+                )}
+                <View />
+                <Text
+                  style={[styles.header, page === 0 && { marginLeft: -20 }]}>
+                  {page === stages.length
+                    ? 'Dive Log Created'
+                    : 'Create Dive Log'}
+                </Text>
+                <TouchableWithoutFeedback
+                  onPress={
+                    page === stages.length
+                      ? () => goToLog(values as InitialValues)
+                      : openModal
+                  }>
+                  <Icon
+                    style={styles.back}
+                    name="close-outline"
+                    color="black"
+                    size={30}
+                  />
+                </TouchableWithoutFeedback>
+              </View>
 
-        {!!(page !== stages.length) && (
-          <FormStates goToPage={goToPage} activeId={page} stages={stages} />
-        )}
+              {!!(page !== stages.length) && (
+                <FormStates
+                  goToPage={(target: number) => {
+                    canMoveToNextPage(target - 1, values as InitialValues)
+                      ? goToPage(target)
+                      : () => {};
+                  }}
+                  activeId={page}
+                  stages={stages}
+                />
+              )}
 
-        {showForms()}
-      </ScrollView>
-      {page === stages.length ? (
-        <View />
-      ) : (
-        <Footer
-          next={next}
-          text={page === stages.length - 1 ? 'Complete' : 'Continue'}
-        />
-      )}
-    </SafeAreaView>
+              {page === 0 && <Location />}
+              {page === 1 && <Rating />}
+              {page === 2 && <Name />}
+              {page === 3 && <Notes />}
+              {page === 4 && (
+                <Review
+                  navigateToAdvancedDiveForm={() =>
+                    handleNavigateToAdvancedDiveLog(values as InitialValues)
+                  }
+                  formValues={values as InitialValues}
+                />
+              )}
+            </ScrollView>
+            {page === stages.length ? (
+              <View />
+            ) : (
+              <Footer
+                next={
+                  page === stages.length - 1
+                    ? () => {
+                        // submit then navigate to review
+                        submitLog(values as InitialValues);
+                        next();
+                      }
+                    : next
+                }
+                disabled={!canMoveToNextPage(page, values as InitialValues)}
+                text={page === stages.length - 1 ? 'Complete' : 'Continue'}
+              />
+            )}
+          </SafeAreaView>
+        );
+      }}
+    />
   );
 };
 

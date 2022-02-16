@@ -15,7 +15,7 @@ import type { Spot } from '_utils/interfaces/data/spot';
 import DiveSiteImage from '_assets/DiveSite.jpg';
 import LocationImage from '_assets/Location.png';
 
-import { attachIcons, capitalize } from '../utils/utils';
+import { attachIcons, capitalize } from '_utils/functions';
 
 interface DiveSiteProps {
   containerStyle?: ViewStyle;

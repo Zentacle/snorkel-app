@@ -1,6 +1,6 @@
 import { Stage } from './interfaces';
 
-export const stages: Stage[] = [
+export const simpleformStages: Stage[] = [
   {
     id: 0,
     name: 'Site Location & Photos',
@@ -16,5 +16,24 @@ export const stages: Stage[] = [
   {
     id: 3,
     name: 'Leave your notes',
+  },
+];
+
+export const advancedFormStages: Stage[] = [
+  {
+    id: 0,
+    name: 'Basic Info',
+  },
+  {
+    id: 1,
+    name: 'Date, Time, & Depth',
+  },
+  {
+    id: 2,
+    name: 'Water & Onshore',
+  },
+  {
+    id: 3,
+    name: 'Wear & Gear',
   },
 ];

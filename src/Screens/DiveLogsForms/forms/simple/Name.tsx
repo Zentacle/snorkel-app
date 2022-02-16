@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { Field } from 'react-final-form';
 
-import Input from '_components/ui/Input';
+import FMInput from '_components/ui/FormManagementInput';
 
 const Name = () => {
   return (
@@ -13,7 +14,9 @@ const Name = () => {
         </View>
       </View>
       <View>
-        <Input
+        <Field
+          name="name"
+          component={FMInput}
           placeholder="Write Title"
           style={styles.input}
           containerStyle={styles.inputContainer}

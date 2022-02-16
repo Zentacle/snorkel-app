@@ -13,7 +13,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 
-import ImageCarousel from './components/ImageCarousel';
+import ImageCarousel from '_components/reusables/ImageCarousel';
 import DiveLocation from './components/DiveLocation';
 import DiveSiteReviews from './components/DiveSiteReviews';
 import GradientText from '_components/ui/GradientText';
@@ -33,7 +33,7 @@ import type {
 } from '_utils/interfaces';
 
 import LocationImage from '_assets/Location.png';
-import { capitalize } from './utils/utils';
+import { capitalize } from '_utils/functions';
 
 type DiveSiteNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<ExploreStackParamList, 'DiveSite'>,
@@ -89,6 +89,9 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   const navigateToDiveLogForm = () => {
     navigation.navigate('App', {
       screen: 'LogsForm',
+      params: {
+        diveLogs: {},
+      },
     });
   };
 

@@ -8,16 +8,19 @@ import Button from '_components/ui/Buttons/Button';
 interface SimpleFormFooterProps {
   next: () => void;
   text: string;
+  disabled?: boolean;
 }
 
 const SimpleFormFooter: FunctionComponent<SimpleFormFooterProps> = ({
   next,
   text,
+  disabled,
 }) => {
+  const emptyFunc = () => {};
   return (
     <View style={styles.container}>
       <Button
-        onPress={next}
+        onPress={disabled ? emptyFunc : next}
         gradient
         gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
         gradientLocations={[0.01, 1, 1]}
@@ -30,7 +33,7 @@ const SimpleFormFooter: FunctionComponent<SimpleFormFooterProps> = ({
           y: 2.2,
         }}
         style={{
-          container: styles.buttonContainer,
+          container: { ...styles.buttonContainer, opacity: disabled ? 0.5 : 1 },
           text: styles.buttonText,
         }}>
         {text}

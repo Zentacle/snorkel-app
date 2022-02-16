@@ -7,7 +7,7 @@ import type { FunctionComponent } from 'react';
 import Button from '_components/ui/Buttons/Button';
 
 import ProfileImage from '_assets/Profile.jpg';
-import { attachIcons } from '../utils/utils';
+import { attachIcons } from '_utils/functions';
 
 interface DiveSiteReviewsProps {
   navigateToReviews: () => void;

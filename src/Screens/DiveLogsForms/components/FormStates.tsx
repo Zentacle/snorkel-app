@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 12,
     textAlign: 'center',
+    height: 30,
   },
   activeDotContainer: {
     width: 30,

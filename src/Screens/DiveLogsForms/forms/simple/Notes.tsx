@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { Field } from 'react-final-form';
 
-import Input from '_components/ui/Input';
+import FMInput from '_components/ui/FormManagementInput';
 
 const Notes = () => {
   return (
@@ -13,7 +14,9 @@ const Notes = () => {
         </View>
       </View>
       <View>
-        <Input
+        <Field
+          name="note"
+          component={FMInput}
           placeholder="Write Title"
           style={styles.input}
           containerStyle={styles.inputContainer}
@@ -55,8 +58,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   input: {
-    // height: 145,
-    minHeight: 45,
+    minHeight: 90,
     fontSize: 16,
     paddingTop: 12,
     paddingBottom: 5,

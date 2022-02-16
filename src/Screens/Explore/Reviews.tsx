@@ -22,7 +22,7 @@ import type {
 } from '_utils/interfaces';
 
 import RatingsGradient from '_components/ui/RatingsGradient';
-import { attachIcons } from './utils/utils';
+import { attachIcons } from '_utils/functions';
 import ProfileImage from '_assets/Profile.jpg';
 
 const ratings: { level: number; count: number }[] = [

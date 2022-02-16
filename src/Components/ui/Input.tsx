@@ -33,50 +33,20 @@ interface BaseProps {
   passwordType?: boolean;
   maxLength?: number;
   multiline?: boolean;
-}
-
-interface FormManagementInput {
-  value: string | undefined;
   onChange?: NativeSyntheticChange;
+  value?: string | undefined;
   onFocus?: NativeSyntheticFocus;
   onBlur?: NativeSyntheticFocus;
 }
-interface FormManagementMeta {
-  touched: boolean;
-  invalid: boolean;
-  error: boolean;
-  active: boolean;
-}
 
-type AdditionalProps =
-  | {
-      formManagement?: false;
-      onChange?: NativeSyntheticChange;
-      value?: string | undefined;
-      onFocus?: NativeSyntheticFocus;
-      onBlur?: NativeSyntheticFocus;
-      input?: never;
-      meta?: never;
-    }
-  | {
-      formManagement: true;
-      input: FormManagementInput;
-      meta: FormManagementMeta;
-      onChange?: never;
-      value?: never;
-      onFocus?: never;
-      onBlur?: never;
-    };
-
-type InputProps = BaseProps & AdditionalProps;
+type InputProps = BaseProps;
 type FilteredInputProps = Omit<
   InputProps,
-  'containerStyle' | 'formManagement' | 'input' | 'meta' | 'passwordType'
+  'containerStyle' | 'input' | 'meta' | 'passwordType'
 >;
 
 const Input: FunctionComponent<InputProps> = (props): JSX.Element => {
   const [secureTextEntry, setSecureTextEntry] = React.useState<boolean>(true);
-
   if (props.passwordType) {
     return (
       <View
