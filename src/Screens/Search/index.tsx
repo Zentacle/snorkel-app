@@ -53,7 +53,7 @@ const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
           onSubmit={() => {}}
           initialValues={{}}
           keepDirtyOnReinitialize
-          render={({ values, form }) => {
+          render={() => {
             return (
               <View>
                 <Field

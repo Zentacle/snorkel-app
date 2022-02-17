@@ -118,7 +118,7 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
       <Form
         onSubmit={() => {}}
         initialValues={initialValues}
-        render={({ form, values }) => {
+        render={({ form }) => {
           return (
             <ScrollView contentContainerStyle={styles.contentContainer}>
               <View style={styles.headerContainer}>
