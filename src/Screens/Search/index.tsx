@@ -9,36 +9,36 @@ import {
 } from 'react-native';
 import { Form, Field } from 'react-final-form';
 
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { CompositeNavigationProp } from '@react-navigation/native';
+import type { FunctionComponent } from 'react';
+import type { RootStackParamList, AppTabsParamList } from '_utils/interfaces';
+
 import SearchInput from '_components/ui/SearchInput';
 import AutocompleteModal from './components/AutocompleteModal';
-import SearchFiltersModal from './components/SearchFiltersModal';
 import SearchMainView from './components/SearchMainView';
 
-interface InitialValues {
-  difficulty: string;
-  preference: string;
-  entry: string;
-  maxDepth: number;
+type SearchNavigationProps = CompositeNavigationProp<
+  NativeStackNavigationProp<AppTabsParamList, 'Search'>,
+  NativeStackNavigationProp<RootStackParamList>
+>;
+
+interface SearchProps {
+  navigation: SearchNavigationProps;
 }
 
-const Search = () => {
+const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
   const [autocompleteModalOpen, toggleAutocompleteModal] =
     React.useState(false);
-  const [filtersModalopen, toggleFiltersModal] = React.useState(false);
 
   const handleInputFocus = () => {
     toggleAutocompleteModal(true);
   };
 
-  const handleToggleFiltersModal = () => {
-    toggleFiltersModal(!filtersModalopen);
-  };
-
-  const initialValues: InitialValues = {
-    difficulty: 'Beginner',
-    preference: 'Scuba',
-    entry: 'Shore',
-    maxDepth: 18,
+  const navigateToFilters = () => {
+    navigation.navigate('SearchStack', {
+      screen: 'SearchFilters',
+    });
   };
 
   return (
@@ -51,7 +51,8 @@ const Search = () => {
         style={styles.contentContainer}>
         <Form
           onSubmit={() => {}}
-          initialValues={initialValues}
+          initialValues={{}}
+          keepDirtyOnReinitialize
           render={({ values, form }) => {
             return (
               <View>
@@ -67,12 +68,7 @@ const Search = () => {
                   containerStyle={styles.searchInputContainer}
                   withFilterIcon
                   handleInputFocus={handleInputFocus}
-                  onClickFilterIcon={handleToggleFiltersModal}
-                />
-                <SearchFiltersModal
-                  isVisible={filtersModalopen}
-                  closeModal={handleToggleFiltersModal}
-                  reset={form.reset}
+                  onClickFilterIcon={navigateToFilters}
                 />
               </View>
             );
