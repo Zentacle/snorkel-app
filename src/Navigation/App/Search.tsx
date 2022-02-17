@@ -3,8 +3,9 @@ import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import type { SearchStackParamList } from '_utils/interfaces';
-import Search from '_screens/Search';
+
 import SearchResults from '_screens/Search/SearchResults';
+import SearchFilters from '_screens/Search/SearchFilters';
 
 const SearchNavigator: React.FC = () => {
   const SearchStack = createNativeStackNavigator<SearchStackParamList>();
@@ -13,10 +14,9 @@ const SearchNavigator: React.FC = () => {
     <SearchStack.Navigator
       screenOptions={{
         headerShown: false,
-      }}
-      initialRouteName="SearchMain">
-      <SearchStack.Screen options={{}} name="SearchMain" component={Search} />
+      }}>
       <SearchStack.Screen name="SearchResults" component={SearchResults} />
+      <SearchStack.Screen name="SearchFilters" component={SearchFilters} />
     </SearchStack.Navigator>
   );
 };

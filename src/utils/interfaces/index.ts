@@ -38,8 +38,8 @@ export type ProfileStackParamList = {
 };
 
 export type SearchStackParamList = {
-  SearchMain: undefined;
   SearchResults: undefined;
+  SearchFilters: undefined;
 };
 
 export type LogsStackParamList = {
