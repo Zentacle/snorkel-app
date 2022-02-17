@@ -108,9 +108,9 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
   };
 
   const navigateToResults = () => {
-    // navigation.navigate('SearchStack', {
-    //   screen: 'SearchResults',
-    // });
+    navigation.navigate('SearchStack', {
+      screen: 'SearchResults',
+    });
   };
 
   return (
