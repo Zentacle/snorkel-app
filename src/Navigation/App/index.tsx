@@ -11,6 +11,8 @@ import SearchScreen from '_screens/Search';
 import ProfileScreen from '_screens/Profile';
 import DiveLogsFormScreen from '_screens/DiveLogsForms';
 
+import SearchStack from './Search';
+
 import GradientCircle from '_components/ui/GradientCircle';
 
 import Home from '_assets/tab-icons/home.png';
@@ -50,7 +52,7 @@ const AppTabsNavigator: React.FC = () => {
           ),
         }}
         name="Search"
-        component={SearchScreen}
+        component={SearchStack}
       />
       <AppTabs.Screen
         options={{

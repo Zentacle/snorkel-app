@@ -9,7 +9,7 @@ import OnboardingNavigator from './Onboarding';
 import AppTabsNavigator from './App';
 import ExploreNavigator from './App/Explore';
 import LogsNavigator from './App/Logs';
-import SearchNavigator from './App/Search';
+// import SearchNavigator from './App/Search';
 import ProfileNavigator from './App/Profile';
 import LogsFormNavigator from './App/DiveLogsForm';
 
@@ -37,7 +37,7 @@ const Navigator: React.FC = () => {
         <Stack.Screen name="App" component={AppTabsNavigator} />
         <Stack.Screen name="ExploreStack" component={ExploreNavigator} />
         <Stack.Screen name="ProfileStack" component={ProfileNavigator} />
-        <Stack.Screen name="SearchStack" component={SearchNavigator} />
+        {/* <Stack.Screen name="SearchStack" component={SearchNavigator} /> */}
         <Stack.Screen name="LogsStack" component={LogsNavigator} />
         <Stack.Screen name="LogsFormStack" component={LogsFormNavigator} />
       </Stack.Navigator>
