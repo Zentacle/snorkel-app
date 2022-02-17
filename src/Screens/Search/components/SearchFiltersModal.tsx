@@ -163,7 +163,7 @@ const SearchFiltersModal: FunctionComponent<SearchFiltersModalProps> = ({
                 container: styles.buttonContainer,
                 text: styles.buttonText,
               }}>
-              Complete
+              Show (32 results)
             </Button>
           </View>
         </ScrollView>
