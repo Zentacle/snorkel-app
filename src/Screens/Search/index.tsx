@@ -13,6 +13,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
 import type { FunctionComponent } from 'react';
 import type { RootStackParamList, AppTabsParamList } from '_utils/interfaces';
+import type { LocationSearchInitialValues } from '_utils/interfaces/data/search';
 
 import SearchInput from '_components/ui/SearchInput';
 import AutocompleteModal from './components/AutocompleteModal';
@@ -35,11 +36,16 @@ const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
     toggleAutocompleteModal(true);
   };
 
-  const navigateToFilters = () => {
+  const navigateToFilters = (values: LocationSearchInitialValues) => {
     navigation.navigate('SearchStack', {
       screen: 'SearchFilters',
+      params: {
+        search: values,
+      },
     });
   };
+
+  const initialValues: LocationSearchInitialValues = {};
 
   return (
     <SafeAreaView style={styles.container}>
@@ -51,24 +57,24 @@ const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
         style={styles.contentContainer}>
         <Form
           onSubmit={() => {}}
-          initialValues={{}}
+          initialValues={initialValues}
           keepDirtyOnReinitialize
-          render={() => {
+          render={({ values }) => {
             return (
               <View>
                 <Field
-                  name="search"
+                  name="location"
                   isVisible={autocompleteModalOpen}
                   component={AutocompleteModal}
                   closeModal={() => toggleAutocompleteModal(false)}
                 />
                 <Field
-                  name="search"
+                  name="location"
                   component={SearchInput}
                   containerStyle={styles.searchInputContainer}
                   withFilterIcon
                   handleInputFocus={handleInputFocus}
-                  onClickFilterIcon={navigateToFilters}
+                  onClickFilterIcon={() => navigateToFilters(values)}
                 />
               </View>
             );

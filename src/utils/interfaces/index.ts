@@ -3,6 +3,7 @@ import { NavigatorScreenParams } from '@react-navigation/native';
 import type { ViewStyle, TextStyle, ImageStyle } from 'react-native';
 import type { Spot } from './data/spot';
 import type { AdvancedFormInitialValues as DiveLog } from './data/logs';
+import type { InitialSearchValues as FullInitialValues } from './data/search';
 
 export type AuthtackParamList = {
   Landing: undefined;
@@ -38,8 +39,12 @@ export type ProfileStackParamList = {
 };
 
 export type SearchStackParamList = {
-  SearchResults: undefined;
-  SearchFilters: undefined;
+  SearchResults: {
+    search: FullInitialValues;
+  };
+  SearchFilters: {
+    search: FullInitialValues;
+  };
 };
 
 export type LogsStackParamList = {

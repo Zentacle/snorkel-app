@@ -9,14 +9,23 @@ import {
 } from 'react-native';
 import { Field, Form } from 'react-final-form';
 import Icon from 'react-native-vector-icons/Ionicons';
+import get from 'lodash/get';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import type { CompositeNavigationProp } from '@react-navigation/native';
+import type {
+  CompositeNavigationProp,
+  RouteProp,
+} from '@react-navigation/native';
 import type { FunctionComponent } from 'react';
 import type {
   RootStackParamList,
   SearchStackParamList,
 } from '_utils/interfaces';
+
+import type {
+  InitialSearchValues,
+  LocationSearchInitialValues,
+} from '_utils/interfaces/data/search';
 
 import GradientCircle from '_components/ui/GradientCircle';
 import GradientBox from '_components/ui/GradientBox';
@@ -29,8 +38,11 @@ type SearchFiltersNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<RootStackParamList>
 >;
 
+type SearchFiltersRouteProps = RouteProp<SearchStackParamList, 'SearchFilters'>;
+
 interface SearchFiltersProps {
   navigation: SearchFiltersNavigationProps;
+  route: SearchFiltersRouteProps;
 }
 
 const levels = ['Beginner', 'Intermediate', 'Advanced'];
@@ -84,17 +96,17 @@ const EntryInctiveComp = (entry: string) => {
   );
 };
 
-interface InitialValues {
-  difficulty: string;
-  preference: string;
-  entry: string;
-  maxDepth: number;
-}
-
 const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
   navigation,
+  route,
 }) => {
-  const initialValues: InitialValues = {
+  const passedInLocationValues: InitialSearchValues = get(
+    route,
+    'params.search',
+    {},
+  );
+  const initialValues: InitialSearchValues = {
+    ...passedInLocationValues,
     difficulty: 'Beginner',
     preference: 'Scuba',
     entry: 'Shore',
@@ -107,9 +119,12 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
     });
   };
 
-  const navigateToResults = () => {
+  const navigateToResults = (values: InitialSearchValues) => {
     navigation.navigate('SearchStack', {
       screen: 'SearchResults',
+      params: {
+        search: values,
+      },
     });
   };
 
@@ -118,7 +133,7 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
       <Form
         onSubmit={() => {}}
         initialValues={initialValues}
-        render={({ form }) => {
+        render={({ form, values }) => {
           return (
             <ScrollView contentContainerStyle={styles.contentContainer}>
               <View style={styles.headerContainer}>
@@ -185,7 +200,7 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
                 </View>
 
                 <Button
-                  onPress={navigateToResults}
+                  onPress={() => navigateToResults(values)}
                   gradient
                   gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
                   gradientLocations={[0.01, 1, 1]}
