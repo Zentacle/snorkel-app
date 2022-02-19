@@ -31,10 +31,14 @@ type FilterIconOption =
   | {
       withFilterIcon?: boolean;
       onClickFilterIcon: () => void;
+      filterIcon?: string;
+      filterIconSize?: number;
     }
   | {
       withFilterIcon?: false;
       onClickFilterIcon: never;
+      filterIcon: never;
+      filterIconSize: never;
     };
 
 type InputSearchProps = BaseProps & FinalFormProps & FilterIconOption;
@@ -47,12 +51,15 @@ const SearchInput: FunctionComponent<InputSearchProps> = ({
   placeholderTextColor,
   input: { value, onChange },
   handleInputFocus,
+  filterIcon,
+  filterIconSize,
+  style,
 }) => {
   return (
     <View style={[styles.container, containerStyle]}>
       <Icon style={styles.icon} name="search" size={22} color="grey" />
       <TextInput
-        style={[styles.input, withFilterIcon && { width: '80%' }]}
+        style={[styles.input, style, withFilterIcon && { width: '80%' }]}
         placeholder={placeholder}
         placeholderTextColor={placeholderTextColor}
         onFocus={handleInputFocus}
@@ -61,7 +68,16 @@ const SearchInput: FunctionComponent<InputSearchProps> = ({
       />
       {withFilterIcon && (
         <TouchableWithoutFeedback onPress={onClickFilterIcon}>
-          <Image source={FilterIcon} />
+          {filterIcon ? (
+            <Icon
+              style={styles.icon}
+              name={filterIcon}
+              size={filterIconSize || 30}
+              color="black"
+            />
+          ) : (
+            <Image source={FilterIcon} />
+          )}
         </TouchableWithoutFeedback>
       )}
     </View>
