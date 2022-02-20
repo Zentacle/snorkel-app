@@ -17,15 +17,13 @@ import type {
   RouteProp,
 } from '@react-navigation/native';
 import type { FunctionComponent } from 'react';
+import type { FormApi } from 'final-form';
 import type {
   RootStackParamList,
   SearchStackParamList,
 } from '_utils/interfaces';
 
-import type {
-  InitialSearchValues,
-  LocationSearchInitialValues,
-} from '_utils/interfaces/data/search';
+import type { InitialSearchValues } from '_utils/interfaces/data/search';
 
 import GradientCircle from '_components/ui/GradientCircle';
 import GradientBox from '_components/ui/GradientBox';
@@ -105,18 +103,33 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
     'params.search',
     {},
   );
+
+  let formRef = React.useRef<FormApi>();
+
   const initialValues: InitialSearchValues = {
-    ...passedInLocationValues,
     difficulty: 'Beginner',
     preference: 'Scuba',
     entry: 'Shore',
     maxDepth: 18,
+    ...passedInLocationValues,
+  };
+
+  /**
+   * since initial state is passed in from navigation params,
+   * resetting the form without modifying navigation params
+   * will not change anything.
+   * Besides, we only want to change one value instead of resetting
+   * the entire form.
+   */
+  const resetFiltersFromNav = () => {
+    navigation.setParams({
+      search: {},
+    });
+    formRef.current?.reset();
   };
 
   const navigatebackToSearch = () => {
-    navigation.navigate('App', {
-      screen: 'Search',
-    });
+    navigation.goBack();
   };
 
   const navigateToResults = (values: InitialSearchValues) => {
@@ -134,6 +147,7 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
         onSubmit={() => {}}
         initialValues={initialValues}
         render={({ form, values }) => {
+          formRef.current = form;
           return (
             <ScrollView contentContainerStyle={styles.contentContainer}>
               <View style={styles.headerContainer}>
@@ -144,7 +158,7 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
                   size={30}
                 />
                 <Text style={styles.headerMainText}>Filter</Text>
-                <TouchableWithoutFeedback onPress={form.reset}>
+                <TouchableWithoutFeedback onPress={resetFiltersFromNav}>
                   <Text style={styles.headerRightText}>Reset</Text>
                 </TouchableWithoutFeedback>
               </View>
