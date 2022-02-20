@@ -176,6 +176,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     marginHorizontal: 25,
+    marginBottom: 50,
   },
   headerContainer: {
     flexDirection: 'row',
@@ -219,6 +220,8 @@ const styles = StyleSheet.create({
   },
   diveSitesCardsContainer: {
     marginTop: 30,
+    paddingBottom: 50,
+    // flexGrow: 1,
   },
   diveSitesHeaderContainer: {
     flexDirection: 'row',
