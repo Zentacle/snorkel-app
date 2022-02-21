@@ -36,6 +36,7 @@ import {
 import type { Spot } from '_utils/interfaces/data/spot';
 
 import FiltersIcon from '_assets/FadersHorizontal.png';
+import SortModal from './components/SortModal';
 
 type SearchResultsNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<SearchStackParamList, 'SearchResults'>,
@@ -55,6 +56,7 @@ const SearchResults: FunctionComponent<SearchResultsProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const diveSites = useAppSelector(selectAllDiveSites);
+  const [sortModalIsOpen, toggleSortModal] = React.useState(false);
   let formRef = React.useRef<FormApi>();
   const searchValues: InitialSearchValues = get(route, 'params.search', {});
   const goBack = () => {
@@ -69,6 +71,10 @@ const SearchResults: FunctionComponent<SearchResultsProps> = ({
 
   const initialValues: InitialSearchValues = {
     ...searchValues,
+  };
+
+  const handleToggleSortModal = () => {
+    toggleSortModal(!sortModalIsOpen);
   };
 
   /**
@@ -104,6 +110,10 @@ const SearchResults: FunctionComponent<SearchResultsProps> = ({
 
   return (
     <SafeAreaView style={styles.container}>
+      <SortModal
+        modalIsVisible={sortModalIsOpen}
+        closeModal={handleToggleSortModal}
+      />
       <Form
         onSubmit={() => {}}
         initialValues={initialValues}
@@ -144,7 +154,7 @@ const SearchResults: FunctionComponent<SearchResultsProps> = ({
             <View style={styles.diveSitesSortContainer}>
               <Text style={styles.diveSitesSortText}>Sort by</Text>
               <Icon
-                // onPress={goBack}
+                onPress={handleToggleSortModal}
                 name="chevron-down-outline"
                 color="black"
                 size={23}
