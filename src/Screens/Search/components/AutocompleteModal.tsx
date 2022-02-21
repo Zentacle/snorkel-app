@@ -26,6 +26,7 @@ import FlagImage from '_assets/Flag.png';
 interface BaseProps {
   isVisible: boolean;
   closeModal: () => void;
+  reset: () => void;
 }
 type FinalFormProps = FieldRenderProps<string, any>;
 
@@ -86,6 +87,7 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
   };
 
   const handleCloseModal = () => {
+    onChange('');
     closeModal();
     setLoading(false);
     setSuggestions([]);
