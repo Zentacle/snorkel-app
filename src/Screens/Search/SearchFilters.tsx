@@ -123,7 +123,9 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
    */
   const resetFiltersFromNav = () => {
     navigation.setParams({
-      search: {},
+      search: {
+        location: passedInLocationValues.location, // keep location unchanged. Remove the rest
+      },
     });
     formRef.current?.reset();
   };
