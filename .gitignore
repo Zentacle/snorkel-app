@@ -30,6 +30,9 @@ local.properties
 *.iml
 *.hprof
 
+# signing config
+android/app/gradle.properties
+
 # node.js
 #
 node_modules/
