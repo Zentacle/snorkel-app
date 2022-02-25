@@ -3,7 +3,11 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
+    "android-dev": "ENVFILE=config/.env.dev react-native run-android",
+    "android-prod": "ENVFILE=config/.env.prod react-native run-android",
+    "android-test-dev-release": "ENVFILE=config/.env.dev react-native run-android --variant=release",
+    "android-test-release": "ENVFILE=config/.env.prod react-native run-android --variant=release",
+    "build-android-prod": "export ENVFILE=config/.env.prod && cd android && ./gradlew assembleRelease && cd ..",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",

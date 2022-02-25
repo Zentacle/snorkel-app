@@ -64,3 +64,4 @@ buck-out/
 
 # android env file 
 .env
+config/
