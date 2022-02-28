@@ -20,6 +20,13 @@ import GradientText from '_components/ui/GradientText';
 import DiveSiteComp from './components/DiveSite';
 import DiveShopComp from './components/DiveShop';
 import Footer from './components/DiveSiteFooter';
+import { useAppSelector } from '_redux/hooks';
+import {
+  selectDiveSiteById,
+  handleFetchNearby,
+  handleFetchDiveSite,
+  handleFetchReviews,
+} from '_redux/slices/dive-sites';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type {
@@ -31,6 +38,8 @@ import type {
   RootStackParamList,
   ExploreStackParamList,
 } from '_utils/interfaces';
+import type { Spot } from '_utils/interfaces/data/spot';
+import { Review } from '_utils/interfaces/data/review';
 
 import LocationImage from '_assets/Location.png';
 import { capitalize } from '_utils/functions';
@@ -70,12 +79,23 @@ const activities: Activity[] = [
 const WIDTH = Dimensions.get('window').width;
 
 const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
-  const currentSpot = route.params.diveSpot;
-  const navigateToDiveSite = () => {
-    navigation.navigate('ExploreStack', {
+  const currentSpotId = route.params.diveSpotId;
+  // const currentSpot = useAppSelector(selectDiveSiteById(currentSpotId));
+  const [nearby, setNearby] = React.useState<Spot[]>([]);
+  const [diveSite, setDiveSite] = React.useState<Spot>();
+  const [reviews, setReviews] = React.useState<Review[]>([]);
+
+  React.useEffect(() => {
+    handleFetchNearby(currentSpotId).then(results => setNearby(results));
+    handleFetchDiveSite(currentSpotId).then(result => setDiveSite(result));
+    handleFetchReviews(currentSpotId).then(results => setReviews(results));
+  }, [currentSpotId]);
+
+  const navigateToDiveSite = (diveSpot: Spot) => {
+    navigation.push('ExploreStack', {
       screen: 'DiveSite',
       params: {
-        diveSpot: currentSpot,
+        diveSpotId: diveSpot.id,
       },
     });
   };
@@ -96,15 +116,16 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   };
 
   const navigateToMap = () => {
-    navigation.navigate('ExploreStack', {
-      screen: 'Map',
-      params: {
-        coords: {
-          lat: currentSpot.latitude,
-          lng: currentSpot.longitude,
+    diveSite &&
+      navigation.navigate('ExploreStack', {
+        screen: 'Map',
+        params: {
+          coords: {
+            lat: diveSite.latitude,
+            lng: diveSite.longitude,
+          },
         },
-      },
-    });
+      });
   };
 
   const navigateBack = () => {
@@ -115,33 +136,35 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
     navigation.navigate('Reviews');
   };
 
+  if (!diveSite) return null;
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
         <ImageCarousel goBack={navigateBack} />
 
         <View style={styles.contentContainer}>
-          <Text style={styles.mainDescription}>{currentSpot.name}</Text>
+          <Text style={styles.mainDescription}>{diveSite.name}</Text>
           <View style={styles.locationContainer}>
             <Image source={LocationImage} />
-            <Text style={styles.locationText}>{currentSpot.location_city}</Text>
+            <Text style={styles.locationText}>{diveSite.location_city}</Text>
           </View>
           <View style={styles.ratingsContainer}>
             <Text style={styles.ratingsLevelText}>
-              {capitalize(currentSpot.difficulty) || 'Beginner'}
+              {capitalize(diveSite.difficulty) || 'Beginner'}
             </Text>
             <View style={styles.dot} />
             <Text style={styles.ratingsText}>
-              {Number(currentSpot.rating).toFixed(1)}
+              {Number(diveSite.rating).toFixed(1)}
             </Text>
             <Icon name="star" size={20} color="#aa00ff" />
-            <Text style={styles.ratingsCount}>({currentSpot.num_reviews})</Text>
+            <Text style={styles.ratingsCount}>({diveSite.num_reviews})</Text>
           </View>
 
           <DiveLocation
             coordinates={{
-              latitude: currentSpot.latitude,
-              longitude: currentSpot.longitude,
+              latitude: diveSite.latitude,
+              longitude: diveSite.longitude,
             }}
             navigateToMap={navigateToMap}
           />
@@ -161,7 +184,13 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
             </View>
           ))}
 
-          <DiveSiteReviews navigateToReviews={navigateToReviews} />
+          {!!diveSite.num_reviews && (
+            <DiveSiteReviews
+              diveSite={diveSite}
+              navigateToReviews={navigateToReviews}
+              reviews={reviews}
+            />
+          )}
         </View>
         <View style={styles.nearbySites}>
           <View style={styles.nearbySitesTextContainer}>
@@ -171,10 +200,10 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
             horizontal
             contentContainerStyle={styles.nearbySitesCardsContainer}
             showsHorizontalScrollIndicator={false}>
-            {[1, 2, 3].map((item, index) => (
+            {nearby.map((item, index) => (
               <DiveSiteComp
                 key={index}
-                site={currentSpot}
+                site={item}
                 containerStyle={styles.nearbySiteItemContainer}
                 imageContainerStyle={styles.nearbySiteItemContainer}
                 imageStyle={styles.nearbySiteItemImage}
@@ -274,7 +303,9 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     fontSize: 16,
   },
-  nearbySites: {},
+  nearbySites: {
+    marginTop: 20,
+  },
   nearbySiteItemContainer: {
     width: WIDTH * 0.8,
     marginRight: 15,

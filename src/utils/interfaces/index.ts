@@ -1,7 +1,6 @@
 import { NavigatorScreenParams } from '@react-navigation/native';
 
 import type { ViewStyle, TextStyle, ImageStyle } from 'react-native';
-import type { Spot } from './data/spot';
 import type { AdvancedFormInitialValues as DiveLog } from './data/logs';
 import type { InitialSearchValues as FullInitialValues } from './data/search';
 
@@ -22,8 +21,11 @@ export type OnboardingStackParamList = {
 
 export type ExploreStackParamList = {
   DiveSite: {
-    diveSpot: Spot;
+    diveSpotId: number;
   };
+  // DiveShop: {
+  //   diveShopId: number;
+  // };
   DiveShop: undefined;
   Map: {
     coords: {
@@ -31,7 +33,9 @@ export type ExploreStackParamList = {
       lng: number;
     };
   };
-  Reviews: undefined;
+  Reviews: {
+    diveSpotId: number;
+  };
 };
 
 export type ProfileStackParamList = {

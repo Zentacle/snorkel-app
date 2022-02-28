@@ -74,7 +74,7 @@ interface ExploreProps {
 
 const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
-  const diveSites = useAppSelector(selectAllDiveSites);
+  const diveSites = Object.values(useAppSelector(selectAllDiveSites) || []);
 
   // console.log('dive sites from store', diveSites);
   // const [diveSites, setDiveSites] = React.useState<Spot>([]);
@@ -86,7 +86,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
     navigation.navigate('ExploreStack', {
       screen: 'DiveSite',
       params: {
-        diveSpot,
+        diveSpotId: diveSpot.id,
       },
     });
   };

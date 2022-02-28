@@ -8,21 +8,32 @@ import Button from '_components/ui/Buttons/Button';
 
 import ProfileImage from '_assets/Profile.jpg';
 import { attachIcons } from '_utils/functions';
+import { Spot } from '_utils/interfaces/data/spot';
+import { Review } from '_utils/interfaces/data/review';
 
 interface DiveSiteReviewsProps {
   navigateToReviews: () => void;
+  diveSite: Spot;
+  reviews: Review[];
 }
 
 const DiveSiteReviews: FunctionComponent<DiveSiteReviewsProps> = ({
   navigateToReviews,
+  diveSite,
+  reviews,
 }) => {
+  const selectedReview = reviews[0];
   return (
     <View style={styles.reviewContainer}>
       <View style={styles.reviewLabelContainer}>
         <Icon name="star" size={20} color="#aa00ff" />
-        <Text style={styles.reviewRatingsLabelText}>3.5</Text>
+        <Text style={styles.reviewRatingsLabelText}>
+          {Number(diveSite.rating).toFixed(1)}
+        </Text>
         <View style={styles.reviewDot} />
-        <Text style={styles.reviewRatingsCount}>52 reviews</Text>
+        <Text style={styles.reviewRatingsCount}>
+          {diveSite.num_reviews} reviews
+        </Text>
       </View>
       <View style={styles.reviewCardsContainer}>
         <View style={styles.review}>
@@ -30,22 +41,18 @@ const DiveSiteReviews: FunctionComponent<DiveSiteReviewsProps> = ({
             <View style={styles.profile}>
               <Image source={ProfileImage} style={styles.profileImage} />
               <View style={styles.nameSourceContainer}>
-                <Text style={styles.profileName}>Akari</Text>
+                <Text style={styles.profileName}>
+                  {selectedReview.user.first_name}
+                </Text>
                 <Text style={styles.reviewSource}>Snorkel</Text>
               </View>
             </View>
             <View style={styles.ratingsIconsContainer}>
-              {attachIcons(4, 20)}
+              {attachIcons(selectedReview.rating, 20)}
             </View>
           </View>
           <View style={styles.reviewBodyContainer}>
-            <Text style={styles.reviewBodyText}>
-              Love this site! There are plenty to see and too much of then to
-              fill in one dives so everyoneLove this site! There are plenty to
-              see and too much of then to fill in one much of then to fill in
-              one. There are plenty to see and too much of then to fill in one.
-              There are plenty to see and too much of then to fill in one.
-            </Text>
+            <Text style={styles.reviewBodyText}>{selectedReview.text}</Text>
           </View>
         </View>
         <View style={styles.reviewCardShadow1} />
@@ -76,7 +83,7 @@ const DiveSiteReviews: FunctionComponent<DiveSiteReviewsProps> = ({
 
 const styles = StyleSheet.create({
   reviewContainer: {
-    marginVertical: 20,
+    marginTop: 20,
   },
   reviewLabelContainer: {
     flexDirection: 'row',
