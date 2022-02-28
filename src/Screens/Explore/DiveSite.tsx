@@ -20,13 +20,17 @@ import GradientText from '_components/ui/GradientText';
 import DiveSiteComp from './components/DiveSite';
 import DiveShopComp from './components/DiveShop';
 import Footer from './components/DiveSiteFooter';
-import { useAppSelector } from '_redux/hooks';
+import { useAppSelector, useAppDispatch } from '_redux/hooks';
 import {
   selectDiveSiteById,
   handleFetchNearby,
   handleFetchDiveSite,
-  handleFetchReviews,
 } from '_redux/slices/dive-sites';
+import {
+  handleFetchReviews,
+  selectreviewById,
+  isReviewInState,
+} from '_redux/slices/reviews';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type {
@@ -83,13 +87,19 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   // const currentSpot = useAppSelector(selectDiveSiteById(currentSpotId));
   const [nearby, setNearby] = React.useState<Spot[]>([]);
   const [diveSite, setDiveSite] = React.useState<Spot>();
-  const [reviews, setReviews] = React.useState<Review[]>([]);
+  const reviewInState = useAppSelector(isReviewInState(currentSpotId));
+
+  const reviewObj = useAppSelector(selectreviewById(currentSpotId));
+  const reviews = reviewInState ? Object.values(reviewObj) : [];
+  const dispatch = useAppDispatch();
 
   React.useEffect(() => {
     handleFetchNearby(currentSpotId).then(results => setNearby(results));
     handleFetchDiveSite(currentSpotId).then(result => setDiveSite(result));
-    handleFetchReviews(currentSpotId).then(results => setReviews(results));
-  }, [currentSpotId]);
+    if (!reviewInState) {
+      dispatch(handleFetchReviews(currentSpotId));
+    }
+  }, [currentSpotId, dispatch, reviewInState]);
 
   const navigateToDiveSite = (diveSpot: Spot) => {
     navigation.push('ExploreStack', {
@@ -133,7 +143,9 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   };
 
   const navigateToReviews = () => {
-    navigation.navigate('Reviews');
+    navigation.navigate('Reviews', {
+      diveSpotId: currentSpotId,
+    });
   };
 
   if (!diveSite) return null;

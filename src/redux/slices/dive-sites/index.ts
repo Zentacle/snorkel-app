@@ -1,12 +1,7 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-import {
-  fetchDiveSites,
-  fetchNearby,
-  fetchDiveSite,
-  fetchReviews,
-} from './api';
+import { fetchDiveSites, fetchNearby, fetchDiveSite } from './api';
 import { Spot } from '_utils/interfaces/data/spot';
 import { AppThunk, RootState } from '../../store';
 
@@ -67,15 +62,6 @@ export const handleFetchDiveSite = async (id: number) => {
   try {
     const diveSite = await fetchDiveSite(id);
     return diveSite.data;
-  } catch (err) {
-    throw err;
-  }
-};
-
-export const handleFetchReviews = async (id: number) => {
-  try {
-    const review = await fetchReviews(id);
-    return review.data;
   } catch (err) {
     throw err;
   }
