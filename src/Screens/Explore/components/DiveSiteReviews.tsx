@@ -23,6 +23,9 @@ const DiveSiteReviews: FunctionComponent<DiveSiteReviewsProps> = ({
   reviews,
 }) => {
   const selectedReview = reviews[0];
+  if (!selectedReview) {
+    return null;
+  }
   return (
     <View style={styles.reviewContainer}>
       <View style={styles.reviewLabelContainer}>

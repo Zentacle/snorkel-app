@@ -25,6 +25,7 @@ import {
   selectDiveSiteById,
   handleFetchNearby,
   handleFetchDiveSite,
+  isDiveSiteinState,
 } from '_redux/slices/dive-sites';
 import {
   handleFetchReviews,
@@ -86,20 +87,27 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   const currentSpotId = route.params.diveSpotId;
   // const currentSpot = useAppSelector(selectDiveSiteById(currentSpotId));
   const [nearby, setNearby] = React.useState<Spot[]>([]);
-  const [diveSite, setDiveSite] = React.useState<Spot>();
+  // const [diveSite, setDiveSite] = React.useState<Spot>();
+
+  const diveSiteInState = useAppSelector(isDiveSiteinState(currentSpotId));
   const reviewInState = useAppSelector(isReviewInState(currentSpotId));
 
   const reviewObj = useAppSelector(selectreviewById(currentSpotId));
   const reviews = reviewInState ? Object.values(reviewObj) : [];
+  const diveSite = useAppSelector(selectDiveSiteById(currentSpotId));
   const dispatch = useAppDispatch();
+
+  console.log('DIVE SITE', diveSite);
 
   React.useEffect(() => {
     handleFetchNearby(currentSpotId).then(results => setNearby(results));
-    handleFetchDiveSite(currentSpotId).then(result => setDiveSite(result));
     if (!reviewInState) {
       dispatch(handleFetchReviews(currentSpotId));
     }
-  }, [currentSpotId, dispatch, reviewInState]);
+    if (!diveSiteInState) {
+      dispatch(handleFetchDiveSite(currentSpotId));
+    }
+  }, [currentSpotId, dispatch, reviewInState, diveSiteInState]);
 
   const navigateToDiveSite = (diveSpot: Spot) => {
     navigation.push('ExploreStack', {

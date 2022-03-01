@@ -23,6 +23,9 @@ export const diveSitesSlice = createSlice({
     getAllDiveSites: (state, action: PayloadAction<Spot[]>) => {
       state.diveSpots = normalizeData(action.payload);
     },
+    getDiveSite: (state, action: PayloadAction<Spot>) => {
+      state.diveSpots[action.payload.id] = action.payload;
+    },
   },
 });
 
@@ -34,7 +37,7 @@ const normalizeData = (data: Spot[]) => {
   return normalizedObj;
 };
 
-const { getAllDiveSites } = diveSitesSlice.actions;
+const { getAllDiveSites, getDiveSite } = diveSitesSlice.actions;
 
 export const selectAllDiveSites = (state: RootState) =>
   state.dive_sites.diveSpots;
@@ -58,13 +61,23 @@ export const handleFetchDiveSites =
     }
   };
 
-export const handleFetchDiveSite = async (id: number) => {
-  try {
-    const diveSite = await fetchDiveSite(id);
-    return diveSite.data;
-  } catch (err) {
-    throw err;
-  }
+export const handleFetchDiveSite =
+  (id: number): AppThunk =>
+  async (dispatch, _getState) => {
+    try {
+      const diveSite = await fetchDiveSite(id);
+      // add divesite to dive sites object in state so we needen't make
+      // network calls if a dive site exists in state
+      dispatch(getDiveSite(diveSite.data));
+    } catch (err) {
+      throw err;
+    }
+  };
+
+export const isDiveSiteinState = (id: number) => {
+  return createSelector([selectAllDiveSites], selectedDiveSites =>
+    Boolean(selectedDiveSites[id]),
+  );
 };
 
 export const handleFetchNearby = async (id: number) => {
