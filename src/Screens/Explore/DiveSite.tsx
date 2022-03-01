@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   Dimensions,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
@@ -26,6 +27,7 @@ import {
   handleFetchNearby,
   handleFetchDiveSite,
   isDiveSiteDetailinState,
+  selectLoadingState,
 } from '_redux/slices/dive-sites';
 import {
   handleFetchReviews,
@@ -90,7 +92,9 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   const diveSiteInState = useAppSelector(
     isDiveSiteDetailinState(currentSpotId),
   );
+
   const reviewInState = useAppSelector(isReviewInState(currentSpotId));
+  const isLoading = useAppSelector(selectLoadingState);
 
   const reviewObj = useAppSelector(selectReviewById(currentSpotId));
   const reviews = reviewInState ? Object.values(reviewObj) : [];
@@ -157,7 +161,9 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
     });
   };
 
-  if (!diveSite) return null;
+  if (isLoading) {
+    return <ActivityIndicator style={{ flex: 1 }} size="large" color="grey" />;
+  }
 
   return (
     <SafeAreaView style={styles.container}>

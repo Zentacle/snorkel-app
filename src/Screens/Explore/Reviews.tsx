@@ -6,6 +6,7 @@ import {
   ScrollView,
   Image,
   SafeAreaView,
+  ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import MUIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -30,31 +31,9 @@ import {
   handleFetchReviews,
   isReviewInState,
   selectReviewById,
+  selectLoadingState,
 } from '_redux/slices/reviews';
 import { selectDiveSiteById } from '_redux/slices/dive-sites';
-
-const ratings: { level: number; count: number }[] = [
-  {
-    level: 5,
-    count: 7,
-  },
-  {
-    level: 4,
-    count: 6,
-  },
-  {
-    level: 3,
-    count: 3,
-  },
-  {
-    level: 2,
-    count: 12,
-  },
-  {
-    level: 1,
-    count: 4,
-  },
-];
 
 function calculatePercentage(count: number, total: number): string {
   const percentage = (count / total) * 80; // factor width offset into calc
@@ -80,6 +59,7 @@ const Reviews: FunctionComponent<ReviewProps> = ({ navigation, route }) => {
   const reviewObj = useAppSelector(selectReviewById(currentSpotId));
   const reviews = reviewInState ? Object.values(reviewObj) : [];
   const diveSite = useAppSelector(selectDiveSiteById(currentSpotId));
+  const isLoading = useAppSelector(selectLoadingState);
 
   React.useEffect(() => {
     if (!reviewInState) {
@@ -91,9 +71,10 @@ const Reviews: FunctionComponent<ReviewProps> = ({ navigation, route }) => {
     navigation.goBack();
   };
 
-  console.log(reviews, diveSite.ratings);
+  if (isLoading) {
+    return <ActivityIndicator style={{ flex: 1 }} size="large" color="grey" />;
+  }
 
-  if (!reviews) return null;
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.backButtonContainer}>
