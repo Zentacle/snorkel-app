@@ -10,21 +10,35 @@ interface NormalizedObj {
 }
 interface DiveSpotState {
   diveSpots: NormalizedObj;
+  loading: boolean;
+  error: {
+    status: boolean;
+  };
 }
 
 const initialState: DiveSpotState = {
   diveSpots: {},
+  loading: false,
+  error: {
+    status: false,
+  },
 };
 
 export const diveSitesSlice = createSlice({
   name: 'dive-sites',
   initialState: initialState,
   reducers: {
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
     getAllDiveSites: (state, action: PayloadAction<Spot[]>) => {
       state.diveSpots = normalizeData(action.payload);
     },
     getDiveSite: (state, action: PayloadAction<Spot>) => {
       state.diveSpots[action.payload.id] = action.payload;
+    },
+    setError: (state, action: PayloadAction<boolean>) => {
+      state.error.status = action.payload;
     },
   },
 });
@@ -37,7 +51,8 @@ const normalizeData = (data: Spot[]) => {
   return normalizedObj;
 };
 
-const { getAllDiveSites, getDiveSite } = diveSitesSlice.actions;
+const { getAllDiveSites, getDiveSite, setLoading, setError } =
+  diveSitesSlice.actions;
 
 export const selectAllDiveSites = (state: RootState) =>
   state.dive_sites.diveSpots;
@@ -51,12 +66,21 @@ export const selectDiveSiteById = (id: number) => {
   return selectedDiveSite;
 };
 
+export const selectLoadingState = (state: RootState) =>
+  state.dive_sites.loading;
+
+export const selectErrorState = (state: RootState) => state.dive_sites.error;
+
 export const handleFetchDiveSites =
   (): AppThunk => async (dispatch, _getState) => {
     try {
+      dispatch(setLoading(true));
       const diveSites = await fetchDiveSites();
       dispatch(getAllDiveSites(diveSites.data));
+      dispatch(setLoading(false));
+      dispatch(setError(false));
     } catch (err) {
+      dispatch(setError(true));
       throw err;
     }
   };
@@ -65,11 +89,15 @@ export const handleFetchDiveSite =
   (id: number): AppThunk =>
   async (dispatch, _getState) => {
     try {
+      dispatch(setLoading(true));
       const diveSite = await fetchDiveSite(id);
       // add divesite to dive sites object in state so we needen't make
       // network calls if a dive site exists in state
       dispatch(getDiveSite(diveSite.data));
+      dispatch(setLoading(false));
+      dispatch(setError(false));
     } catch (err) {
+      dispatch(setError(true));
       throw err;
     }
   };
