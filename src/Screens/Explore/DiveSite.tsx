@@ -25,11 +25,11 @@ import {
   selectDiveSiteById,
   handleFetchNearby,
   handleFetchDiveSite,
-  isDiveSiteinState,
+  isDiveSiteDetailinState,
 } from '_redux/slices/dive-sites';
 import {
   handleFetchReviews,
-  selectreviewById,
+  selectReviewById,
   isReviewInState,
 } from '_redux/slices/reviews';
 
@@ -44,7 +44,6 @@ import type {
   ExploreStackParamList,
 } from '_utils/interfaces';
 import type { Spot } from '_utils/interfaces/data/spot';
-import { Review } from '_utils/interfaces/data/review';
 
 import LocationImage from '_assets/Location.png';
 import { capitalize } from '_utils/functions';
@@ -88,10 +87,12 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
 
   const [nearby, setNearby] = React.useState<Spot[]>([]);
 
-  const diveSiteInState = useAppSelector(isDiveSiteinState(currentSpotId));
+  const diveSiteInState = useAppSelector(
+    isDiveSiteDetailinState(currentSpotId),
+  );
   const reviewInState = useAppSelector(isReviewInState(currentSpotId));
 
-  const reviewObj = useAppSelector(selectreviewById(currentSpotId));
+  const reviewObj = useAppSelector(selectReviewById(currentSpotId));
   const reviews = reviewInState ? Object.values(reviewObj) : [];
   const diveSite = useAppSelector(selectDiveSiteById(currentSpotId));
 

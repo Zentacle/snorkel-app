@@ -74,9 +74,9 @@ export const handleFetchDiveSite =
     }
   };
 
-export const isDiveSiteinState = (id: number) => {
+export const isDiveSiteDetailinState = (id: number) => {
   return createSelector([selectAllDiveSites], selectedDiveSites =>
-    Boolean(selectedDiveSites[id]),
+    Boolean(selectedDiveSites[id].ratings),
   );
 };
 

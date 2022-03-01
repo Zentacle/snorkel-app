@@ -26,4 +26,7 @@ export interface Spot {
   tags: string[];
   url: string;
   sd_url: string;
+  ratings?: {
+    [rating: string]: number;
+  };
 }
