@@ -85,9 +85,8 @@ const WIDTH = Dimensions.get('window').width;
 
 const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   const currentSpotId = route.params.diveSpotId;
-  // const currentSpot = useAppSelector(selectDiveSiteById(currentSpotId));
+
   const [nearby, setNearby] = React.useState<Spot[]>([]);
-  // const [diveSite, setDiveSite] = React.useState<Spot>();
 
   const diveSiteInState = useAppSelector(isDiveSiteinState(currentSpotId));
   const reviewInState = useAppSelector(isReviewInState(currentSpotId));
@@ -95,12 +94,13 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   const reviewObj = useAppSelector(selectreviewById(currentSpotId));
   const reviews = reviewInState ? Object.values(reviewObj) : [];
   const diveSite = useAppSelector(selectDiveSiteById(currentSpotId));
-  const dispatch = useAppDispatch();
 
-  console.log('DIVE SITE', diveSite);
+  const dispatch = useAppDispatch();
 
   React.useEffect(() => {
     handleFetchNearby(currentSpotId).then(results => setNearby(results));
+    // only fetch dive site and reviews if they don't already exist
+    // in their respective redux slices.
     if (!reviewInState) {
       dispatch(handleFetchReviews(currentSpotId));
     }
