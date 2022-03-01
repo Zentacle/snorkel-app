@@ -103,8 +103,10 @@ export const handleFetchDiveSite =
   };
 
 export const isDiveSiteDetailinState = (id: number) => {
-  return createSelector([selectAllDiveSites], selectedDiveSites =>
-    Boolean(selectedDiveSites[id].ratings),
+  return createSelector(
+    [selectAllDiveSites],
+    selectedDiveSites =>
+      Boolean(selectedDiveSites[id]) && Boolean(selectedDiveSites[id].ratings),
   );
 };
 

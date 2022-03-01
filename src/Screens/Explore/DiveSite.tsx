@@ -165,6 +165,10 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
     return <ActivityIndicator style={{ flex: 1 }} size="large" color="grey" />;
   }
 
+  if (!diveSiteInState) {
+    return null;
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollContainer}>

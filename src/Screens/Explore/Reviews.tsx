@@ -75,6 +75,10 @@ const Reviews: FunctionComponent<ReviewProps> = ({ navigation, route }) => {
     return <ActivityIndicator style={{ flex: 1 }} size="large" color="grey" />;
   }
 
+  if (!reviewInState) {
+    return null;
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.backButtonContainer}>
