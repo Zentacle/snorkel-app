@@ -25,6 +25,14 @@ import RatingsGradient from '_components/ui/RatingsGradient';
 import { attachIcons } from '_utils/functions';
 import ProfileImage from '_assets/Profile.jpg';
 
+import { useAppSelector, useAppDispatch } from '_redux/hooks';
+import {
+  handleFetchReviews,
+  isReviewInState,
+  selectReviewById,
+} from '_redux/slices/reviews';
+import { selectDiveSiteById } from '_redux/slices/dive-sites';
+
 const ratings: { level: number; count: number }[] = [
   {
     level: 5,
@@ -65,10 +73,27 @@ interface ReviewProps {
   route: ReviewRouteProps;
 }
 
-const Reviews: FunctionComponent<ReviewProps> = ({ navigation }) => {
+const Reviews: FunctionComponent<ReviewProps> = ({ navigation, route }) => {
+  const currentSpotId = route.params.diveSpotId;
+  const dispatch = useAppDispatch();
+  const reviewInState = useAppSelector(isReviewInState(currentSpotId));
+  const reviewObj = useAppSelector(selectReviewById(currentSpotId));
+  const reviews = reviewInState ? Object.values(reviewObj) : [];
+  const diveSite = useAppSelector(selectDiveSiteById(currentSpotId));
+
+  React.useEffect(() => {
+    if (!reviewInState) {
+      dispatch(handleFetchReviews(currentSpotId));
+    }
+  }, [currentSpotId, dispatch, reviewInState]);
+
   const goBack = () => {
     navigation.goBack();
   };
+
+  console.log(reviews, diveSite.ratings);
+
+  if (!reviews) return null;
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.backButtonContainer}>
@@ -77,46 +102,61 @@ const Reviews: FunctionComponent<ReviewProps> = ({ navigation }) => {
       <ScrollView contentContainerStyle={styles.mainContent}>
         <View style={styles.reviewLabelContainer}>
           <MUIcon name="star" size={20} color="#aa00ff" />
-          <Text style={styles.reviewRatingsLabelText}>3.5</Text>
+          <Text style={styles.reviewRatingsLabelText}>
+            {Number(diveSite.rating).toFixed(1)}
+          </Text>
           <View style={styles.reviewDot} />
-          <Text style={styles.reviewRatingsCount}>32 reviews</Text>
+          <Text style={styles.reviewRatingsCount}>
+            {diveSite.num_reviews} reviews
+          </Text>
         </View>
         <View style={styles.ratingsContainer}>
-          {ratings.map((rating, index) => (
-            <View key={index} style={styles.ratingItemContainer}>
-              <View style={styles.ratingItemStarContainer}>
-                <Text style={styles.ratingItemStarLabel}>{rating.level}</Text>
-                <MUIcon name="star" size={18} color="#aa00ff" />
+          {diveSite.ratings &&
+            Object.entries(diveSite.ratings).map(([level, count], index) => (
+              <View key={index} style={styles.ratingItemContainer}>
+                <View style={styles.ratingItemStarContainer}>
+                  <Text style={styles.ratingItemStarLabel}>{level}</Text>
+                  <MUIcon name="star" size={18} color="#aa00ff" />
+                </View>
+                <RatingsGradient
+                  width={calculatePercentage(
+                    count,
+                    parseInt(diveSite.num_reviews),
+                  )}
+                />
+                <Text style={styles.ratingItemCount}>{count}</Text>
               </View>
-              <RatingsGradient width={calculatePercentage(rating.count, 32)} />
-              <Text style={styles.ratingItemCount}>{rating.count}</Text>
-            </View>
-          ))}
+            ))}
         </View>
         <View style={styles.reviews}>
-          {[1, 2, 3, 4, 5].map((_item, index) => (
+          {reviews.map((item, index) => (
             <View style={styles.review} key={index}>
               <View style={styles.reviewHeaderContainer}>
                 <View style={styles.profile}>
-                  <Image source={ProfileImage} style={styles.profileImage} />
+                  {item.user.profile_pic ? (
+                    <Image
+                      source={{ uri: item.user.profile_pic }}
+                      style={styles.profileImage}
+                    />
+                  ) : (
+                    <Image source={ProfileImage} style={styles.profileImage} />
+                  )}
+
                   <View style={styles.nameSourceContainer}>
-                    <Text style={styles.profileName}>Akari</Text>
-                    <Text style={styles.reviewSource}>Snorkel</Text>
+                    <Text style={styles.profileName}>
+                      {item.user.first_name}
+                    </Text>
+                    <Text style={styles.reviewSource}>
+                      {item.shorediving_data ? 'Shore Diving' : 'Snorkel'}
+                    </Text>
                   </View>
                 </View>
                 <View style={styles.ratingsIconsContainer}>
-                  {attachIcons(4, 20)}
+                  {attachIcons(item.rating, 20)}
                 </View>
               </View>
               <View style={styles.reviewBodyContainer}>
-                <Text style={styles.reviewBodyText}>
-                  Love this site! There are plenty to see and too much of then
-                  to fill in one dives so everyoneLove this site! There are
-                  plenty to see and too much of then to fill in one much of then
-                  to fill in one. There are plenty to see and too much of then
-                  to fill in one. There are plenty to see and too much of then
-                  to fill in one.
-                </Text>
+                <Text style={styles.reviewBodyText}>{item.text}</Text>
               </View>
             </View>
           ))}

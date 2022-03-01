@@ -35,7 +35,7 @@ const { getAllReviews } = reviewSlice.actions;
 
 export const selectAllReviews = (state: RootState) => state.reviews.reviews;
 
-export const selectreviewById = (id: number) => {
+export const selectReviewById = (id: number) => {
   const selectedreview = createSelector(
     [selectAllReviews],
     reviews => reviews[id],

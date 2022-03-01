@@ -42,12 +42,21 @@ const DiveSiteReviews: FunctionComponent<DiveSiteReviewsProps> = ({
         <View style={styles.review}>
           <View style={styles.reviewHeaderContainer}>
             <View style={styles.profile}>
-              <Image source={ProfileImage} style={styles.profileImage} />
+              {selectedReview.user.profile_pic ? (
+                <Image
+                  source={{ uri: selectedReview.user.profile_pic }}
+                  style={styles.profileImage}
+                />
+              ) : (
+                <Image source={ProfileImage} style={styles.profileImage} />
+              )}
               <View style={styles.nameSourceContainer}>
                 <Text style={styles.profileName}>
                   {selectedReview.user.first_name}
                 </Text>
-                <Text style={styles.reviewSource}>Snorkel</Text>
+                <Text style={styles.reviewSource}>
+                  {selectedReview.shorediving_data ? 'Shore Diving' : 'Snorkel'}
+                </Text>
               </View>
             </View>
             <View style={styles.ratingsIconsContainer}>
