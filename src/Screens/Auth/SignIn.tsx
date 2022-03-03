@@ -11,6 +11,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Form, Field } from 'react-final-form';
 import validate from 'validate.js';
+import { FORM_ERROR } from 'final-form';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -21,8 +22,9 @@ import SMButton from '_components/ui/Buttons/SM-Logins';
 import Button from '_components/ui/Buttons/Button';
 import Input from '_components/ui/FormManagementInput';
 import { actionButtons } from './utils';
-import { useAppDispatch, useAppSelector } from '_redux/hooks';
-import { loginUser, selectUser } from '_redux/slices/user';
+import { useAppDispatch } from '_redux/hooks';
+import { loginUser } from '_redux/slices/user';
+import type { User } from '_utils/interfaces/data/user';
 
 const HEIGHT = Dimensions.get('window').width;
 
@@ -42,6 +44,7 @@ interface InitialValues {
 
 const SignIn: FunctionComponent<SignInProps> = props => {
   const dispatch = useAppDispatch();
+
   const navigateBack = () => {
     props.navigation.goBack();
   };
@@ -52,14 +55,29 @@ const SignIn: FunctionComponent<SignInProps> = props => {
     });
   };
 
-  const constraints = {};
+  const constraints = {
+    email: {
+      email: true,
+      presence: true,
+    },
+    password: {
+      presence: true,
+    },
+  };
   const initialValues: InitialValues = {};
 
-  // :any is deliberate
-  const submitForm = (values: any) => {
-    console.log('login values', values);
-    dispatch(loginUser(values));
-    // navigateToOnboarding();
+  const submitForm = async (values: User) => {
+    const response = await dispatch(loginUser(values));
+    if (loginUser.fulfilled.match(response)) {
+      navigateToOnboarding();
+    } else {
+      return {
+        [FORM_ERROR]:
+          typeof response.payload === 'string'
+            ? response.payload
+            : 'There was an error logginng in, please try again.',
+      };
+    }
   };
 
   return (
@@ -81,8 +99,14 @@ const SignIn: FunctionComponent<SignInProps> = props => {
           validate={values => validate(values, constraints)}
           onSubmit={submitForm}
           initialValues={initialValues}
-          keepDirtyOnReinitialize
-          render={({ handleSubmit }) => {
+          render={({
+            handleSubmit,
+            submitError,
+            submitFailed,
+            submitting,
+            invalid,
+            dirtySinceLastSubmit,
+          }) => {
             return (
               <>
                 <View>
@@ -105,6 +129,8 @@ const SignIn: FunctionComponent<SignInProps> = props => {
                 </View>
                 <View style={styles.buttonsContainer}>
                   <Button
+                    loading={submitting}
+                    disabled={invalid && !dirtySinceLastSubmit}
                     onPress={handleSubmit}
                     gradient
                     gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
@@ -132,6 +158,11 @@ const SignIn: FunctionComponent<SignInProps> = props => {
                     }}>
                     Log in
                   </Button>
+                  {submitFailed && !!submitError && (
+                    <View style={styles.errorContainer}>
+                      <Text style={styles.errorText}>{submitError}</Text>
+                    </View>
+                  )}
                   <View style={styles.altDirContainer}>
                     <Text style={styles.altDirText}>OR</Text>
                   </View>
@@ -252,6 +283,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 25,
     borderColor: 'whitesmoke',
     borderWidth: StyleSheet.hairlineWidth,
+  },
+  errorContainer: {
+    marginTop: 5,
+    marginBottom: 10,
+  },
+  errorText: {
+    textAlign: 'center',
+    color: 'red',
   },
 });
 

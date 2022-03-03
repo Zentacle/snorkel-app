@@ -11,18 +11,20 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Form, Field } from 'react-final-form';
 import validate from 'validate.js';
+import { FORM_ERROR } from 'final-form';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
 import type { FunctionComponent } from 'react';
 import type { RootStackParamList, AuthtackParamList } from '_utils/interfaces';
+import type { User } from '_utils/interfaces/data/user';
 
 import SMButton from '_components/ui/Buttons/SM-Logins';
 import Button from '_components/ui/Buttons/Button';
 import Input from '_components/ui/FormManagementInput';
 import { actionButtons } from './utils';
 import { useAppDispatch, useAppSelector } from '_redux/hooks';
-import { registerUser, selectUser } from '_redux/slices/user';
+import { registerUser, isLoggedIn, selectErrorState } from '_redux/slices/user';
 
 const HEIGHT = Dimensions.get('window').height;
 
@@ -44,9 +46,8 @@ interface InitialValues {
 
 const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector(selectUser);
-
-  console.log('user', user);
+  const loggedIn = useAppSelector(isLoggedIn);
+  const errorState = useAppSelector(selectErrorState);
 
   const navigateBack = () => {
     props.navigation.goBack();
@@ -62,14 +63,35 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
     });
   };
 
-  // :any is deliberate
-  const submitForm = (values: any) => {
-    console.log(values);
-    dispatch(registerUser(values));
-    // navigateToOnboarding();
+  const submitForm = async (values: User) => {
+    const response = await dispatch(registerUser(values));
+    if (registerUser.fulfilled.match(response)) {
+      navigateToOnboarding();
+    } else {
+      return {
+        [FORM_ERROR]:
+          typeof response.payload === 'string'
+            ? response.payload
+            : 'There was an error logginng in, please try again.',
+      };
+    }
   };
 
-  const constraints = {};
+  const constraints = {
+    email: {
+      email: true,
+      presence: true,
+    },
+    password: {
+      presence: true,
+    },
+    first_name: {
+      presence: true,
+    },
+    last_name: {
+      presence: true,
+    },
+  };
   const initialValues: InitialValues = {};
 
   return (
@@ -91,8 +113,15 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
           validate={values => validate(values, constraints)}
           onSubmit={submitForm}
           initialValues={initialValues}
-          keepDirtyOnReinitialize
-          render={({ handleSubmit }) => {
+          // keepDirtyOnReinitialize
+          render={({
+            handleSubmit,
+            submitError,
+            submitFailed,
+            submitting,
+            invalid,
+            dirtySinceLastSubmit,
+          }) => {
             return (
               <>
                 <View>
@@ -131,6 +160,8 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
                 </View>
                 <View style={styles.buttonsContainer}>
                   <Button
+                    loading={submitting}
+                    disabled={invalid && !dirtySinceLastSubmit}
                     onPress={handleSubmit}
                     gradient
                     gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
@@ -158,6 +189,11 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
                     }}>
                     Sign Up
                   </Button>
+                  {submitFailed && !!submitError && (
+                    <View style={styles.errorContainer}>
+                      <Text style={styles.errorText}>{submitError}</Text>
+                    </View>
+                  )}
                   <View style={styles.altDirContainer}>
                     <Text style={styles.altDirText}>OR</Text>
                   </View>
@@ -278,6 +314,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 25,
     borderColor: 'whitesmoke',
     borderWidth: StyleSheet.hairlineWidth,
+  },
+  errorContainer: {
+    marginTop: 5,
+    marginBottom: 10,
+  },
+  errorText: {
+    textAlign: 'center',
+    color: 'red',
   },
 });
 

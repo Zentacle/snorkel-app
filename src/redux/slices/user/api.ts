@@ -5,11 +5,13 @@ interface Auth {
   auth_token: string;
   message: string;
   status: string;
+  msg?: string; // failed
 }
 
 interface LoginResponse {
   data: Auth;
   user: User;
+  msg?: string; // failed login
 }
 
 export async function handleRegister(body: User): Promise<Auth> {
