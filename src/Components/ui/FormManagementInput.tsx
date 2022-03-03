@@ -34,7 +34,6 @@ type FilteredFormManagementInputProps = Omit<
 const Input: FunctionComponent<FormManagementInputProps> = (
   props,
 ): JSX.Element => {
-  // props.meta.invalid dirty
   const [secureTextEntry, setSecureTextEntry] = React.useState<boolean>(true);
   if (props.passwordType) {
     return (
@@ -51,6 +50,8 @@ const Input: FunctionComponent<FormManagementInputProps> = (
         <TextInput
           style={[styles.input, props.style]}
           secureTextEntry={secureTextEntry}
+          onFocus={props.input.onFocus as any}
+          onBlur={props.input.onBlur as any}
           {...(props as unknown as FilteredFormManagementInputProps)}
           value={props.input.value}
           onChangeText={(text: string) =>
@@ -80,6 +81,8 @@ const Input: FunctionComponent<FormManagementInputProps> = (
         style={[styles.input, props.style]}
         {...(props as unknown as FilteredFormManagementInputProps)}
         value={props.input.value}
+        onFocus={props.input.onFocus as any}
+        onBlur={props.input.onBlur as any}
         onChangeText={(text: string) =>
           props.input.onChange && props.input.onChange(text)
         }
