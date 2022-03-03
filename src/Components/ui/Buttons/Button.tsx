@@ -14,6 +14,7 @@ interface ButtonProps {
   };
   disabled?: boolean;
   inactiveColor?: string;
+  loading?: boolean;
 }
 
 type GradientProps =
@@ -60,44 +61,20 @@ export const Button: FunctionComponent<ButtonProps & GradientProps> = (
   props,
 ): JSX.Element => {
   let textComp = (
-    <Text
-      style={[
-        styles.text,
-        props.style?.text,
-        props.disabled && styles.disabledText,
-      ]}>
-      {props.children}
-    </Text>
+    <Text style={[styles.text, props.style?.text]}>{props.children}</Text>
   );
 
   if (props.textGradient) {
     textComp = (
       <MaskedView
         maskElement={
-          <Text
-            style={[
-              styles.text,
-              props.style?.text,
-              props.disabled && {
-                color: 'grey',
-              },
-            ]}>
-            {props.children}
-          </Text>
+          <Text style={[styles.text, props.style?.text]}>{props.children}</Text>
         }>
         <LinearGradient
           start={props.start}
           end={props.end}
           colors={props.gradientColors}>
-          <Text
-            style={[
-              styles.text,
-              props.style?.text,
-              props.disabled && {
-                color: 'grey',
-              },
-              { opacity: 0 },
-            ]}>
+          <Text style={[styles.text, props.style?.text, { opacity: 0 }]}>
             {props.children}
           </Text>
         </LinearGradient>
@@ -110,8 +87,10 @@ export const Button: FunctionComponent<ButtonProps & GradientProps> = (
         styles.container,
         props.style?.container,
         props.disabled && {
-          backgroundColor: props.inactiveColor || '#F4F4F4',
-          elevation: 1,
+          opacity: 0.5,
+        },
+        props.loading && {
+          opacity: 0.7,
         },
       ]}>
       {textComp}
@@ -128,9 +107,11 @@ export const Button: FunctionComponent<ButtonProps & GradientProps> = (
         style={[
           styles.container,
           props.style?.container,
+          props.loading && {
+            opacity: 0.7,
+          },
           props.disabled && {
-            backgroundColor: props.inactiveColor || '#F4F4F4',
-            elevation: 1,
+            opacity: 0.5,
           },
         ]}>
         {textComp}
