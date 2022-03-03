@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { Form, Field } from 'react-final-form';
+import validate from 'validate.js';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -17,8 +19,10 @@ import type { RootStackParamList, AuthtackParamList } from '_utils/interfaces';
 
 import SMButton from '_components/ui/Buttons/SM-Logins';
 import Button from '_components/ui/Buttons/Button';
-import Input from '_components/ui/Input';
+import Input from '_components/ui/FormManagementInput';
 import { actionButtons } from './utils';
+import { useAppDispatch, useAppSelector } from '_redux/hooks';
+import { loginUser, selectUser } from '_redux/slices/user';
 
 const HEIGHT = Dimensions.get('window').width;
 
@@ -31,7 +35,13 @@ interface SignInProps {
   navigation: LandingScreenNavigationProps;
 }
 
+interface InitialValues {
+  email?: string;
+  password?: string;
+}
+
 const SignIn: FunctionComponent<SignInProps> = props => {
+  const dispatch = useAppDispatch();
   const navigateBack = () => {
     props.navigation.goBack();
   };
@@ -40,6 +50,16 @@ const SignIn: FunctionComponent<SignInProps> = props => {
     props.navigation.navigate('OnBoarding', {
       screen: 'ChooseUserName',
     });
+  };
+
+  const constraints = {};
+  const initialValues: InitialValues = {};
+
+  // :any is deliberate
+  const submitForm = (values: any) => {
+    console.log('login values', values);
+    dispatch(loginUser(values));
+    // navigateToOnboarding();
   };
 
   return (
@@ -56,73 +76,92 @@ const SignIn: FunctionComponent<SignInProps> = props => {
         <View style={styles.introTextContainer}>
           <Text style={styles.introText}>Welcome Back</Text>
         </View>
-        <View>
-          <Input
-            placeholder="Email"
-            placeholderTextColor="#BFBFBF"
-            containerStyle={styles.inputContainer}
-          />
-          <Input
-            placeholder="Password"
-            placeholderTextColor="#BFBFBF"
-            containerStyle={styles.inputContainer}
-            passwordType
-          />
-        </View>
-        <View style={styles.buttonsContainer}>
-          <Button
-            onPress={navigateToOnboarding}
-            gradient
-            gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-            gradientLocations={[0.01, 1, 1]}
-            start={{
-              x: 0,
-              y: 0,
-            }}
-            end={{
-              x: 0.06,
-              y: 2.2,
-            }}
-            style={{
-              container: {
-                backgroundColor: 'white',
-                borderRadius: 12,
-                padding: HEIGHT < 400 ? 12 : 16,
-                marginVertical: HEIGHT < 400 ? 10 : 20,
-              },
-              text: {
-                color: '#FFF',
-                fontSize: 16,
-                fontWeight: '800',
-              },
-            }}>
-            Log in
-          </Button>
-          <View style={styles.altDirContainer}>
-            <Text style={styles.altDirText}>OR</Text>
-          </View>
-          {actionButtons.map((actionButton, index) => (
-            <SMButton
-              key={index}
-              onPress={actionButton.action}
-              imageSource={actionButton.imageSource}
-              style={{
-                container: {
-                  backgroundColor: 'white',
-                  borderRadius: 10,
-                  marginVertical: HEIGHT < 400 ? 5 : 10,
-                  padding: HEIGHT < 400 ? 12 : 16,
-                },
-                text: {
-                  color: 'black',
-                  fontSize: 16,
-                  fontWeight: '800',
-                },
-              }}>
-              Continue with {actionButton.name}
-            </SMButton>
-          ))}
-        </View>
+
+        <Form
+          validate={values => validate(values, constraints)}
+          onSubmit={submitForm}
+          initialValues={initialValues}
+          keepDirtyOnReinitialize
+          render={({ handleSubmit }) => {
+            return (
+              <>
+                <View>
+                  <Field
+                    name="email"
+                    component={Input}
+                    placeholder="Email"
+                    placeholderTextColor="#BFBFBF"
+                    // style={styles.input}
+                    containerStyle={styles.inputContainer}
+                  />
+                  <Field
+                    name="password"
+                    component={Input}
+                    placeholder="Password"
+                    placeholderTextColor="#BFBFBF"
+                    containerStyle={styles.inputContainer}
+                    passwordType
+                  />
+                </View>
+                <View style={styles.buttonsContainer}>
+                  <Button
+                    onPress={handleSubmit}
+                    gradient
+                    gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+                    gradientLocations={[0.01, 1, 1]}
+                    start={{
+                      x: 0,
+                      y: 0,
+                    }}
+                    end={{
+                      x: 0.06,
+                      y: 2.2,
+                    }}
+                    style={{
+                      container: {
+                        backgroundColor: 'white',
+                        borderRadius: 12,
+                        padding: HEIGHT < 400 ? 12 : 16,
+                        marginVertical: HEIGHT < 400 ? 10 : 20,
+                      },
+                      text: {
+                        color: '#FFF',
+                        fontSize: 16,
+                        fontWeight: '800',
+                      },
+                    }}>
+                    Log in
+                  </Button>
+                  <View style={styles.altDirContainer}>
+                    <Text style={styles.altDirText}>OR</Text>
+                  </View>
+                  {actionButtons.map((actionButton, index) => (
+                    <SMButton
+                      key={index}
+                      onPress={actionButton.action}
+                      imageSource={actionButton.imageSource}
+                      style={{
+                        container: {
+                          backgroundColor: 'white',
+                          borderRadius: 10,
+                          marginVertical: HEIGHT < 400 ? 5 : 10,
+                          padding: HEIGHT < 400 ? 12 : 16,
+                        },
+                        text: {
+                          color: 'black',
+                          fontSize: 16,
+                          fontWeight: '800',
+                        },
+                      }}>
+                      Continue with {actionButton.name}
+                    </SMButton>
+                  ))}
+                </View>
+              </>
+            );
+          }}
+        />
+
         <View style={styles.privacyContainer}>
           <Text style={styles.privacyText}>
             By proceeding, you agree to our&nbsp;

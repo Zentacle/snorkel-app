@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { Form, Field } from 'react-final-form';
+import validate from 'validate.js';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -17,10 +19,12 @@ import type { RootStackParamList, AuthtackParamList } from '_utils/interfaces';
 
 import SMButton from '_components/ui/Buttons/SM-Logins';
 import Button from '_components/ui/Buttons/Button';
-import Input from '_components/ui/Input';
+import Input from '_components/ui/FormManagementInput';
 import { actionButtons } from './utils';
+import { useAppDispatch, useAppSelector } from '_redux/hooks';
+import { registerUser, selectUser } from '_redux/slices/user';
 
-const HEIGHT = Dimensions.get('window').width;
+const HEIGHT = Dimensions.get('window').height;
 
 type EmailSignUpScreenNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<AuthtackParamList, 'EmailSignUp'>,
@@ -31,7 +35,19 @@ interface EmailSignUpProps {
   navigation: EmailSignUpScreenNavigationProps;
 }
 
+interface InitialValues {
+  email?: string;
+  password?: string;
+  first_name?: string;
+  last_name?: string;
+}
+
 const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
+
+  console.log('user', user);
+
   const navigateBack = () => {
     props.navigation.goBack();
   };
@@ -45,6 +61,16 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
       screen: 'ChooseUserName',
     });
   };
+
+  // :any is deliberate
+  const submitForm = (values: any) => {
+    console.log(values);
+    dispatch(registerUser(values));
+    // navigateToOnboarding();
+  };
+
+  const constraints = {};
+  const initialValues: InitialValues = {};
 
   return (
     <SafeAreaView style={styles.container}>
@@ -60,73 +86,108 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
         <View style={styles.introTextContainer}>
           <Text style={styles.introText}>Become a Zentacle member.</Text>
         </View>
-        <View>
-          <Input
-            placeholder="Email"
-            placeholderTextColor="#BFBFBF"
-            containerStyle={styles.inputContainer}
-          />
-          <Input
-            placeholder="Password"
-            placeholderTextColor="#BFBFBF"
-            containerStyle={styles.inputContainer}
-            passwordType
-          />
-        </View>
-        <View style={styles.buttonsContainer}>
-          <Button
-            onPress={navigateToOnboarding}
-            gradient
-            gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-            gradientLocations={[0.01, 1, 1]}
-            start={{
-              x: 0,
-              y: 0,
-            }}
-            end={{
-              x: 0.06,
-              y: 2.2,
-            }}
-            style={{
-              container: {
-                backgroundColor: 'white',
-                borderRadius: 12,
-                padding: HEIGHT < 400 ? 12 : 16,
-                marginVertical: HEIGHT < 400 ? 10 : 20,
-              },
-              text: {
-                color: '#FFF',
-                fontSize: 16,
-                fontWeight: '800',
-              },
-            }}>
-            Sign Up
-          </Button>
-          <View style={styles.altDirContainer}>
-            <Text style={styles.altDirText}>OR</Text>
-          </View>
-          {actionButtons.map((actionButton, index) => (
-            <SMButton
-              key={index}
-              onPress={actionButton.action}
-              imageSource={actionButton.imageSource}
-              style={{
-                container: {
-                  backgroundColor: 'white',
-                  borderRadius: 10,
-                  marginVertical: HEIGHT < 400 ? 5 : 10,
-                  padding: HEIGHT < 400 ? 12 : 16,
-                },
-                text: {
-                  color: 'black',
-                  fontSize: 16,
-                  fontWeight: '800',
-                },
-              }}>
-              Continue with {actionButton.name}
-            </SMButton>
-          ))}
-        </View>
+
+        <Form
+          validate={values => validate(values, constraints)}
+          onSubmit={submitForm}
+          initialValues={initialValues}
+          keepDirtyOnReinitialize
+          render={({ handleSubmit }) => {
+            return (
+              <>
+                <View>
+                  <Field
+                    name="first_name"
+                    component={Input}
+                    placeholder="First Name"
+                    placeholderTextColor="#BFBFBF"
+                    // style={styles.input}
+                    containerStyle={styles.inputContainer}
+                  />
+                  <Field
+                    name="last_name"
+                    component={Input}
+                    placeholder="Last Name"
+                    placeholderTextColor="#BFBFBF"
+                    // style={styles.input}
+                    containerStyle={styles.inputContainer}
+                  />
+                  <Field
+                    name="email"
+                    component={Input}
+                    placeholder="Email"
+                    placeholderTextColor="#BFBFBF"
+                    // style={styles.input}
+                    containerStyle={styles.inputContainer}
+                  />
+                  <Field
+                    name="password"
+                    component={Input}
+                    placeholder="Password"
+                    placeholderTextColor="#BFBFBF"
+                    containerStyle={styles.inputContainer}
+                    passwordType
+                  />
+                </View>
+                <View style={styles.buttonsContainer}>
+                  <Button
+                    onPress={handleSubmit}
+                    gradient
+                    gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+                    gradientLocations={[0.01, 1, 1]}
+                    start={{
+                      x: 0,
+                      y: 0,
+                    }}
+                    end={{
+                      x: 0.06,
+                      y: 2.2,
+                    }}
+                    style={{
+                      container: {
+                        backgroundColor: 'white',
+                        borderRadius: 12,
+                        padding: HEIGHT < 400 ? 12 : 16,
+                        marginVertical: HEIGHT < 400 ? 10 : 20,
+                      },
+                      text: {
+                        color: '#FFF',
+                        fontSize: 16,
+                        fontWeight: '800',
+                      },
+                    }}>
+                    Sign Up
+                  </Button>
+                  <View style={styles.altDirContainer}>
+                    <Text style={styles.altDirText}>OR</Text>
+                  </View>
+                  {actionButtons.map((actionButton, index) => (
+                    <SMButton
+                      key={index}
+                      onPress={actionButton.action}
+                      imageSource={actionButton.imageSource}
+                      style={{
+                        container: {
+                          backgroundColor: 'white',
+                          borderRadius: 10,
+                          marginVertical: HEIGHT < 400 ? 5 : 10,
+                          padding: HEIGHT < 400 ? 12 : 16,
+                        },
+                        text: {
+                          color: 'black',
+                          fontSize: 16,
+                          fontWeight: '800',
+                        },
+                      }}>
+                      Continue with {actionButton.name}
+                    </SMButton>
+                  ))}
+                </View>
+              </>
+            );
+          }}
+        />
+
         <View style={styles.privacyContainer}>
           <Text style={styles.privacyText}>
             By proceeding, you agree to our&nbsp;
@@ -167,8 +228,8 @@ const styles = StyleSheet.create({
   },
   introTextContainer: {
     marginHorizontal: 25,
-    marginTop: HEIGHT < 400 ? HEIGHT * 0.07 : HEIGHT * 0.12,
-    marginBottom: HEIGHT < 400 ? HEIGHT * 0.07 : HEIGHT * 0.12,
+    marginTop: HEIGHT < 750 ? HEIGHT * 0.02 : HEIGHT * 0.035,
+    marginBottom: HEIGHT < 750 ? HEIGHT * 0.02 : HEIGHT * 0.035,
   },
   introText: {
     fontSize: 32,
@@ -177,7 +238,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   buttonsContainer: {
-    marginTop: HEIGHT * 0.05,
+    marginTop: HEIGHT * 0.015,
     marginHorizontal: 15,
   },
   altDirContainer: {
@@ -201,7 +262,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   signInContainer: {
-    marginTop: HEIGHT < 400 ? 10 : 20,
+    marginTop: HEIGHT < 750 ? 10 : 20,
   },
   signInText: {
     textAlign: 'center',

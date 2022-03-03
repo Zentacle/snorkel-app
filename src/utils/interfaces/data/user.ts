@@ -3,7 +3,10 @@ export interface User {
   first_name: string;
   last_name: string;
   id: number;
-  profile_pic: string;
+  profile_pic?: string;
   registered_on: Date;
   username: string;
+  password: string;
+  admin: boolean;
+  hometown: string;
 }
