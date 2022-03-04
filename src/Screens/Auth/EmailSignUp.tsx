@@ -23,8 +23,8 @@ import SMButton from '_components/ui/Buttons/SM-Logins';
 import Button from '_components/ui/Buttons/Button';
 import Input from '_components/ui/FormManagementInput';
 import { actionButtons } from './utils';
-import { useAppDispatch, useAppSelector } from '_redux/hooks';
-import { registerUser, isLoggedIn, selectErrorState } from '_redux/slices/user';
+import { useAppDispatch } from '_redux/hooks';
+import { registerUser } from '_redux/slices/user';
 
 const HEIGHT = Dimensions.get('window').height;
 
@@ -46,8 +46,6 @@ interface InitialValues {
 
 const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
   const dispatch = useAppDispatch();
-  const loggedIn = useAppSelector(isLoggedIn);
-  const errorState = useAppSelector(selectErrorState);
 
   const navigateBack = () => {
     props.navigation.goBack();
