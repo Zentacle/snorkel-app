@@ -10,3 +10,11 @@ export interface User {
   admin: boolean;
   hometown: string;
 }
+
+export interface CookieHeaders {
+  access_token_cookie: string;
+  csrf_access_token: string;
+  refresh_token_cookie: string;
+  csrf_refresh_token: string;
+  expiry: string;
+}
