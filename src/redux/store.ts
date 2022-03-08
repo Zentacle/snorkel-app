@@ -4,6 +4,7 @@ import diveSitesReducer from './slices/dive-sites';
 import diveLogsReducer from './slices/dive-logs';
 import reviewReducer from './slices/reviews';
 import userReducer from './slices/user';
+import settingsReducer from './slices/settings';
 
 import type { ThunkAction, Action } from '@reduxjs/toolkit';
 
@@ -13,6 +14,7 @@ const store = configureStore({
     dive_logs: diveLogsReducer,
     reviews: reviewReducer,
     user: userReducer,
+    settings: settingsReducer,
   },
 });
 

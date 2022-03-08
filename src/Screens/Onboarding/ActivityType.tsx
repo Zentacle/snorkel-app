@@ -20,6 +20,8 @@ import type {
 import GradientCircle from '_components/ui/GradientCircle';
 import ActivityImage from '_assets/Activity.png';
 import GradientText from '_components/ui/GradientText';
+import { useAppDispatch } from '_redux/hooks';
+import { updateSettings } from '_redux/slices/settings';
 
 const WIDTH = Dimensions.get('window').width;
 
@@ -49,10 +51,20 @@ const activityTypes: ActivityTypes[] = [
 ];
 
 const ActivityType: FunctionComponent<ActivityTypeProps> = ({ navigation }) => {
+  const dispatch = useAppDispatch();
   const navigateToApp = () => {
     navigation.navigate('App', {
       screen: 'Explore',
     });
+  };
+
+  const submitForm = (val: string) => {
+    dispatch(
+      updateSettings({
+        activityType: val,
+      }),
+    );
+    navigateToApp();
   };
 
   return (
@@ -88,7 +100,9 @@ const ActivityType: FunctionComponent<ActivityTypeProps> = ({ navigation }) => {
       </View>
       <View style={styles.selectionContainer}>
         {activityTypes.map((activityType, index) => (
-          <TouchableWithoutFeedback key={index} onPress={navigateToApp}>
+          <TouchableWithoutFeedback
+            key={index}
+            onPress={() => submitForm(activityType.name)}>
             <View style={styles.selection}>
               <GradientText
                 gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}

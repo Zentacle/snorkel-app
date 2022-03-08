@@ -8,6 +8,7 @@ import {
   Image,
   TouchableWithoutFeedback,
 } from 'react-native';
+import { Form, Field } from 'react-final-form';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -20,6 +21,9 @@ import type {
 import GradientCircle from '_components/ui/GradientCircle';
 import MeasurementImage from '_assets/Measurement.png';
 import GradientText from '_components/ui/GradientText';
+import { useAppDispatch } from '_redux/hooks';
+import { updateSettings } from '_redux/slices/settings';
+import { capitalize } from '_utils/functions';
 
 const WIDTH = Dimensions.get('window').width;
 
@@ -32,11 +36,36 @@ interface MeasurementTypeProps {
   navigation: MeasurementTypeNavigationProps;
 }
 
+interface InitialValues {
+  measurementType?: string;
+}
+
 const MeasurementType: FunctionComponent<MeasurementTypeProps> = ({
   navigation,
 }) => {
+  const dispatch = useAppDispatch();
   const navigateToActivityType = () => {
     navigation.navigate('ActivityType');
+  };
+
+  const measurementTypes = [
+    {
+      name: 'imperial',
+      types: ['ft', 'lb', 'psi', 'f'],
+    },
+    {
+      name: 'metric',
+      types: ['m', 'kg', 'bar', 'C'],
+    },
+  ];
+
+  const submitForm = (val: string) => {
+    dispatch(
+      updateSettings({
+        measurementType: val,
+      }),
+    );
+    navigateToActivityType();
   };
 
   return (
@@ -65,48 +94,31 @@ const MeasurementType: FunctionComponent<MeasurementTypeProps> = ({
         </View>
       </View>
       <View style={styles.selectionContainer}>
-        <TouchableWithoutFeedback onPress={navigateToActivityType}>
-          <View style={styles.selection}>
-            <GradientText
-              gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-              start={{
-                x: 0,
-                y: 0,
-              }}
-              end={{
-                x: 0.06,
-                y: 1.8,
-              }}
-              gradientLocations={[0.01, 1, 1]}
-              style={styles.selectionText}>
-              Imperial
-            </GradientText>
-            <Text style={styles.selectionLabel}>
-              ft&nbsp;&nbsp;lb&nbsp;&nbsp;psi&nbsp;&nbsp;F
-            </Text>
-          </View>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={navigateToActivityType}>
-          <View style={styles.selection}>
-            <GradientText
-              gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-              start={{
-                x: 0,
-                y: 0,
-              }}
-              end={{
-                x: 0.06,
-                y: 1.8,
-              }}
-              gradientLocations={[0.01, 1, 1]}
-              style={styles.selectionText}>
-              Metric
-            </GradientText>
-            <Text style={styles.selectionLabel}>
-              m&nbsp;&nbsp;kg&nbsp;&nbsp;bar&nbsp;&nbsp;C
-            </Text>
-          </View>
-        </TouchableWithoutFeedback>
+        {measurementTypes.map((measurement, index) => (
+          <TouchableWithoutFeedback
+            onPress={() => submitForm(measurement.name)}
+            key={index}>
+            <View style={styles.selection}>
+              <GradientText
+                gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+                start={{
+                  x: 0,
+                  y: 0,
+                }}
+                end={{
+                  x: 0.06,
+                  y: 1.8,
+                }}
+                gradientLocations={[0.01, 1, 1]}
+                style={styles.selectionText}>
+                {capitalize(measurement.name)}
+              </GradientText>
+              <Text style={styles.selectionLabel}>
+                {measurement.types.map(type => `${type} `)}
+              </Text>
+            </View>
+          </TouchableWithoutFeedback>
+        ))}
       </View>
     </SafeAreaView>
   );
