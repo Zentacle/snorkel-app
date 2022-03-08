@@ -8,7 +8,6 @@ import {
   Image,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { Form, Field } from 'react-final-form';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -34,10 +33,6 @@ type MeasurementTypeNavigationProps = CompositeNavigationProp<
 
 interface MeasurementTypeProps {
   navigation: MeasurementTypeNavigationProps;
-}
-
-interface InitialValues {
-  measurementType?: string;
 }
 
 const MeasurementType: FunctionComponent<MeasurementTypeProps> = ({

@@ -1,11 +1,10 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import AsyncStorage from '@react-native-community/async-storage';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AppThunk, RootState } from '../../store';
 
 interface SettingsState {
   measurementType?: string;
-  diveActivity?: string;
+  activityType?: string;
 }
 
 const initialState: SettingsState = {};
