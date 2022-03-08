@@ -41,7 +41,7 @@ const Input: FunctionComponent<FormManagementInputProps> = (
         style={[
           styles.container,
           props.containerStyle,
-          { flexDirection: 'row', justifyContent: 'space-between' },
+          // { flexDirection: 'row', justifyContent: 'space-between' },
           props.meta.touched &&
             props.meta.invalid && {
               borderColor: 'red',
@@ -60,8 +60,12 @@ const Input: FunctionComponent<FormManagementInputProps> = (
         />
         <TouchableWithoutFeedback
           onPress={() => setSecureTextEntry(!secureTextEntry)}>
-          <View style={{ justifyContent: 'center', width: 30 }}>
-            {secureTextEntry && <Image source={PasswordImage} />}
+          <View
+            style={[
+              styles.passwordImage,
+              { opacity: secureTextEntry ? 1 : 0 },
+            ]}>
+            <Image source={PasswordImage} />
           </View>
         </TouchableWithoutFeedback>
       </View>
@@ -104,6 +108,13 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     color: 'black',
+  },
+  passwordImage: {
+    justifyContent: 'center',
+    width: 30,
+    position: 'absolute',
+    right: 10,
+    top: 5,
   },
 });
 
