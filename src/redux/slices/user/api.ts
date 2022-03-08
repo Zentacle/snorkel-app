@@ -1,17 +1,24 @@
 import config from 'react-native-config';
 import { User } from '_utils/interfaces/data/user';
+import { makeCookieHeaders } from '_utils/functions';
 
 interface Auth {
   auth_token: string;
   message: string;
   status: string;
   msg?: string; // failed
+  cookie_header: string;
 }
 
 interface LoginResponse {
   data: Auth;
   user: User;
   msg?: string; // failed login
+  cookie_header: string;
+}
+
+interface UpdateUserReturn extends User {
+  msg?: string;
 }
 
 export async function handleRegister(body: User): Promise<Auth> {
@@ -23,7 +30,13 @@ export async function handleRegister(body: User): Promise<Auth> {
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then(res => res.json());
+    }).then(async res => {
+      const data = await res.json();
+      return {
+        ...data,
+        cookie_header: res.headers.get('set-cookie'),
+      };
+    });
     return response;
   } catch (err) {
     throw err;
@@ -36,6 +49,48 @@ export async function handleLogin(body: User): Promise<LoginResponse> {
     const response = fetch(url, {
       method: 'POST',
       body: JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then(async res => {
+      const data = await res.json();
+      return {
+        ...data,
+        cookie_header: res.headers.get('set-cookie'),
+      };
+    });
+    return response;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function handleUpdateUser(
+  body: User,
+  auth_cookie: string,
+): Promise<UpdateUserReturn> {
+  try {
+    const csrf_token = makeCookieHeaders(auth_cookie).csrf_access_token;
+    const url = `${config.API_ENDPOINT}/user/patch`;
+    const response = fetch(url, {
+      method: 'PATCH',
+      body: JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': csrf_token,
+      },
+    }).then(res => res.json());
+    return response;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function handleGetUser(username: string) {
+  try {
+    const url = `${config.API_ENDPOINT}/user/get?username=${username}`;
+    const response = fetch(url, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
