@@ -9,6 +9,9 @@ buildscript {
         ndkVersion = "21.4.7075529"
     }
     repositories {
+      dependencies {
+        classpath 'com.google.gms:google-services:4.3.10'
+      }
         google()
         mavenCentral()
     }
