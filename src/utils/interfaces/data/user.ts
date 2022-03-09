@@ -18,3 +18,31 @@ export interface CookieHeaders {
   csrf_refresh_token: string;
   expiry: string;
 }
+
+export interface AuthData {
+  auth_token: string;
+  message: string;
+  status: string;
+}
+
+export interface Auth extends AuthData {
+  msg?: string; // failed
+  cookie_header: string;
+}
+
+export interface LoginResponse {
+  data: Auth;
+  user: User;
+  msg?: string; // failed login
+  cookie_header: string;
+}
+
+export interface UpdateUserReturn extends User {
+  msg?: string;
+}
+
+export interface GoogleLoginResponse {
+  data: AuthData;
+  user: User;
+  cookie_header: string;
+}

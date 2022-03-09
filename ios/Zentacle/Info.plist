@@ -2,18 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Zentacle wants to use your location to show dive locations near you</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Zentacle wants to use your location to show dive locations near you</string>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>Zentacle wants to use your media library to take update your profile and add dive images.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Zentacle wants to use your microphone to record videos of your dive.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Zentacle wants to use your camera to take update your profile and add dive images.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Zentacle wants to use your photo library to take update your profile and add dive images.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -35,9 +23,19 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fbAPP-ID</string>
+				<string>fb$(FACEBOOK_APP_ID)</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.64877585196-h668tr8635lrovj9150oga6kbqrunlu8</string>
 			</array>
 		</dict>
 	</array>
@@ -80,8 +78,20 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Zentacle wants to use your media library to take update your profile and add dive images.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Zentacle wants to use your camera to take update your profile and add dive images.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Zentacle wants to use your location to show dive locations near you</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Zentacle wants to use your location to show dive locations near you</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Zentacle wants to use your microphone to record videos of your dive.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Zentacle wants to use your photo library to take update your profile and add dive images.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

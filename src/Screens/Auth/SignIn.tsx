@@ -55,6 +55,18 @@ const SignIn: FunctionComponent<SignInProps> = props => {
     });
   };
 
+  const navigateToCameraPermissions = () => {
+    props.navigation.navigate('OnBoarding', {
+      screen: 'CameraPermissions',
+    });
+  };
+
+  const navigateToApp = () => {
+    props.navigation.navigate('App', {
+      screen: 'Explore',
+    });
+  };
+
   const constraints = {
     email: {
       email: true,
@@ -69,7 +81,20 @@ const SignIn: FunctionComponent<SignInProps> = props => {
   const submitForm = async (values: User) => {
     const response = await dispatch(loginUser(values));
     if (loginUser.fulfilled.match(response)) {
-      navigateToOnboarding();
+      // assume user has filled onBoarding if username and profile_pic exist
+      const userPreviouslyFilledOnBoardingData = !!(
+        response.payload.user.username && response.payload.user.profile_pic
+      );
+      if (userPreviouslyFilledOnBoardingData) {
+        navigateToApp();
+      } else if (
+        response.payload.user.username &&
+        !response.payload.user.profile_pic
+      ) {
+        navigateToCameraPermissions();
+      } else {
+        navigateToOnboarding();
+      }
     } else {
       return {
         [FORM_ERROR]:

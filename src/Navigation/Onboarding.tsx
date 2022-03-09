@@ -3,6 +3,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import type { OnboardingStackParamList } from '_utils/interfaces';
 
+import { useAppSelector } from '_redux/hooks';
+import { selectUser } from '_redux/slices/user';
+
 import ChooseUserName from '_screens/Onboarding/ChooseUserName';
 import ChooseAvatar from '_screens/Onboarding/ChooseAvatar';
 import CameraPermissions from '_screens/Onboarding/CameraPermissions';
@@ -11,6 +14,10 @@ import MeasurementType from '_screens/Onboarding/MeasurementType';
 import ActivityType from '_screens/Onboarding/ActivityType';
 
 const OnboardingNavigator: React.FC = () => {
+  const user = useAppSelector(selectUser);
+  const userHasUsername = user && user.username;
+  const userHasProfilePic = user && user.profile_pic;
+
   const OnboardingStack =
     createNativeStackNavigator<OnboardingStackParamList>();
   return (

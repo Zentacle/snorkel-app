@@ -9,7 +9,11 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import { LoginManager } from 'react-native-fbsdk-next';
+import {
+  LoginManager,
+  AccessToken,
+  AuthenticationToken,
+} from 'react-native-fbsdk-next';
 
 import AppleLogo from '_assets/logos/apple-logo/AppleLogo.png';
 import FacebookLogo from '_assets/logos/facebook-logo/FacebookLogo.png';
@@ -26,14 +30,20 @@ async function onAppleButtonPressIOS() {
 
     // get current authentication state for user
     // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
-    const credentialState = await appleAuth.getCredentialStateForUser(
-      appleAuthRequestResponse.user,
+    // const credentialState = await appleAuth.getCredentialStateForUser(
+    //   appleAuthRequestResponse.user,
+    // );
+
+    console.log(
+      'auth response ios apple',
+      appleAuthRequestResponse,
+      // credentialState,
     );
 
     // use credentialState response to ensure the user is authenticated
-    if (credentialState === appleAuth.State.AUTHORIZED) {
-      // user is authenticated
-    }
+    // if (credentialState === appleAuth.State.AUTHORIZED) {
+    //   // user is authenticated
+    // }
   } catch (err) {
     console.log('error', err);
   }
@@ -52,7 +62,7 @@ async function onAppleButtonPressAndroid() {
 
       // Return URL added to your Apple dev console. We intercept this redirect, but it must still match
       // the URL you provided to Apple. It can be an empty route on your backend as it's never called.
-      redirectUri: 'https://example.com/auth/callback',
+      redirectUri: 'https://zentacle.com/api/signinwithapple',
 
       // The type of response requested - code, id_token, or both.
       responseType: appleAuthAndroid.ResponseType.ALL,
@@ -70,6 +80,8 @@ async function onAppleButtonPressAndroid() {
     // Open the browser window for user sign in
     const response = await appleAuthAndroid.signIn();
 
+    console.log('android', response);
+
     // Send the authorization code to your backend for verification
   } catch (err) {
     console.log('error', err);
@@ -79,9 +91,12 @@ async function onAppleButtonPressAndroid() {
 async function googleSignIn() {
   try {
     const isExisting = await GoogleSignin.hasPlayServices();
-    console.log('running and in func', isExisting);
-
-    const userInfo = await GoogleSignin.signIn();
+    if (isExisting) {
+      const userInfo = await GoogleSignin.signIn();
+      return {
+        credential: userInfo.idToken,
+      };
+    }
   } catch (err: any) {
     console.log(err);
     if (err.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -98,16 +113,24 @@ async function googleSignIn() {
 
 function facebookAuth() {
   // Attempt a login using the Facebook login dialog asking for default permissions.
-  LoginManager.logInWithPermissions(['public_profile']).then(
-    function (result) {
+  return LoginManager.logInWithPermissions(['public_profile']).then(
+    async function (result) {
       if (result.isCancelled) {
-        console.log('Login cancelled');
+        return;
       } else {
-        console.log(
-          'Login success with permissions: ' +
-            (result.grantedPermissions as string[]).toString(),
-        );
       }
+
+      let fbAuthToken;
+      if (Platform.OS === 'ios') {
+        const response = await AuthenticationToken.getAuthenticationTokenIOS();
+        fbAuthToken = response?.authenticationToken;
+      } else {
+        const response = await AccessToken.getCurrentAccessToken();
+        fbAuthToken = response?.accessToken;
+      }
+      return {
+        credential: fbAuthToken,
+      };
     },
     function (error) {
       console.log('Login fail with error: ' + error);

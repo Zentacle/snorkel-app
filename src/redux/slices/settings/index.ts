@@ -14,7 +14,12 @@ export const settingsSlice = createSlice({
   initialState: initialState,
   reducers: {
     update: (state, action: PayloadAction<SettingsState>) => {
-      state = { ...state, ...action.payload };
+      if (action.payload.activityType) {
+        state.activityType = action.payload.activityType;
+      }
+      if (action.payload.measurementType) {
+        state.measurementType = action.payload.measurementType;
+      }
     },
   },
 });

@@ -1,25 +1,12 @@
 import config from 'react-native-config';
-import { User } from '_utils/interfaces/data/user';
+import {
+  User,
+  Auth,
+  LoginResponse,
+  UpdateUserReturn,
+  GoogleLoginResponse,
+} from '_utils/interfaces/data/user';
 import { makeCookieHeaders } from '_utils/functions';
-
-interface Auth {
-  auth_token: string;
-  message: string;
-  status: string;
-  msg?: string; // failed
-  cookie_header: string;
-}
-
-interface LoginResponse {
-  data: Auth;
-  user: User;
-  msg?: string; // failed login
-  cookie_header: string;
-}
-
-interface UpdateUserReturn extends User {
-  msg?: string;
-}
 
 export async function handleRegister(body: User): Promise<Auth> {
   try {
@@ -95,6 +82,34 @@ export async function handleGetUser(username: string) {
         'Content-Type': 'application/json',
       },
     }).then(res => res.json());
+    return response;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function handleGoogleregister(body: {
+  credential: string;
+}): Promise<GoogleLoginResponse> {
+  try {
+    const url = `${config.API_ENDPOINT}/user/google_register`;
+    const response = fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(async res => {
+        const data = await res.json();
+        return {
+          ...data,
+          cookie_header: res.headers.get('set-cookie'),
+        };
+      })
+      .catch(err => {
+        console.log(err);
+      });
     return response;
   } catch (err) {
     throw err;

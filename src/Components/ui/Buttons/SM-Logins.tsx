@@ -22,6 +22,7 @@ interface ButtonProps {
   disabled?: boolean;
   inactiveColor?: string;
   imageSource: ImageSourcePropType;
+  loading?: boolean;
 }
 
 export const Button: FunctionComponent<ButtonProps> = (props): JSX.Element => {
@@ -40,6 +41,7 @@ export const Button: FunctionComponent<ButtonProps> = (props): JSX.Element => {
         </Text>
       }>
       <LinearGradient
+        style={[props.loading && { opacity: 0.3 }]}
         start={{
           x: 0.003,
           y: 3.75,

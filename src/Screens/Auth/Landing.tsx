@@ -3,7 +3,6 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  // useColorScheme,
   View,
   ImageBackground,
   Dimensions,
@@ -19,6 +18,10 @@ import SMButton from '_components/ui/Buttons/SM-Logins';
 import Button from '_components/ui/Buttons/Button';
 import CoverImage from '_assets/main-screen.png';
 import { actionButtons } from './utils';
+import type { ActionButtons } from './utils/interfaces';
+import { useAppDispatch, useAppSelector } from '_redux/hooks';
+import { googleRegister, selectLoadingState } from '_redux/slices/user';
+import { GoogleLoginResponse } from '_utils/interfaces/data/user';
 
 const HEIGHT = Dimensions.get('window').width;
 
@@ -32,12 +35,72 @@ interface LandingProps {
 }
 
 const Landing: FunctionComponent<LandingProps> = props => {
+  type SelectedLogin = 'Facebook' | 'Google' | 'Apple' | '';
+  const [selectedLogin, setSelectedLogin] = React.useState<SelectedLogin>('');
+  const dispatch = useAppDispatch();
+  const loadingState = useAppSelector(selectLoadingState);
+
   const navigateToSignIn = () => {
     props.navigation.navigate('SignIn');
   };
 
   const navigateToEmailRegister = () => {
     props.navigation.navigate('EmailSignUp');
+  };
+
+  const navigateToOnBoarding = () => {
+    props.navigation.navigate('OnBoarding', {
+      screen: 'ChooseUserName',
+    });
+  };
+
+  const navigateToApp = () => {
+    props.navigation.navigate('App', {
+      screen: 'Explore',
+    });
+  };
+
+  const handleSocialAuth = async (actionButton: ActionButtons) => {
+    setSelectedLogin(actionButton.name as SelectedLogin);
+    switch (actionButton.name) {
+      case 'Google':
+        {
+          const credentialObj = await actionButton.action();
+          if (credentialObj?.credential) {
+            const response = await dispatch(
+              googleRegister(credentialObj as { credential: string }),
+            );
+
+            // assume user has filled onBoarding if username and profile_pic exist
+            const userPreviouslyFilledOnBoardingData = !!(
+              (response.payload as GoogleLoginResponse).user.username &&
+              (response.payload as GoogleLoginResponse).user.profile_pic
+            );
+
+            if (googleRegister.fulfilled.match(response)) {
+              if (userPreviouslyFilledOnBoardingData) {
+                navigateToApp();
+              } else {
+                navigateToOnBoarding();
+              }
+            }
+          }
+        }
+        break;
+      case 'Facebook':
+        {
+          const credentialObj = await actionButton.action();
+          console.log('credentials facebook', credentialObj);
+        }
+        break;
+      case 'Apple':
+        {
+          // not yet implemented. Need to test on real device and fix android
+        }
+        break;
+      default:
+        return;
+    }
   };
 
   return (
@@ -50,27 +113,32 @@ const Landing: FunctionComponent<LandingProps> = props => {
             </Text>
           </View>
           <View style={styles.buttonsContainer}>
-            {actionButtons.map((actionButton, index) => (
-              <SMButton
-                key={index}
-                onPress={actionButton.action}
-                imageSource={actionButton.imageSource}
-                style={{
-                  container: {
-                    backgroundColor: 'white',
-                    borderRadius: 10,
-                    marginVertical: HEIGHT < 400 ? 5 : 10,
-                    padding: HEIGHT < 400 ? 12 : 16,
-                  },
-                  text: {
-                    color: 'black',
-                    fontSize: 16,
-                    fontWeight: '800',
-                  },
-                }}>
-                Continue with {actionButton.name}
-              </SMButton>
-            ))}
+            {actionButtons.map((actionButton, index) => {
+              const buttonIsLoading =
+                loadingState && actionButton.name === selectedLogin;
+              return (
+                <SMButton
+                  loading={buttonIsLoading}
+                  key={index}
+                  onPress={() => handleSocialAuth(actionButton)}
+                  imageSource={actionButton.imageSource}
+                  style={{
+                    container: {
+                      backgroundColor: 'white',
+                      borderRadius: 10,
+                      marginVertical: HEIGHT < 400 ? 5 : 10,
+                      padding: HEIGHT < 400 ? 12 : 16,
+                    },
+                    text: {
+                      color: 'black',
+                      fontSize: 16,
+                      fontWeight: '800',
+                    },
+                  }}>
+                  Continue with {actionButton.name}
+                </SMButton>
+              );
+            })}
             <View style={styles.altDirContainer}>
               <Text style={styles.altDirText}>OR</Text>
             </View>

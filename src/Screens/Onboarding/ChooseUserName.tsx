@@ -15,8 +15,8 @@ import type { User } from '_utils/interfaces/data/user';
 
 import Input from '_components/ui/FormManagementInput';
 import Button from '_components/ui/Buttons/Button';
-import { useAppDispatch } from '_redux/hooks';
-import { updateUser } from '_redux/slices/user';
+import { useAppDispatch, useAppSelector } from '_redux/hooks';
+import { updateUser, selectUser } from '_redux/slices/user';
 
 const HEIGHT = Dimensions.get('window').width;
 
@@ -35,6 +35,7 @@ interface InitialValues {
 
 const ChooseUserName: FunctionComponent<ChooseUserNameProps> = props => {
   const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
 
   const navigateToCameraPermissions = () => {
     props.navigation.navigate('CameraPermissions');
@@ -59,7 +60,9 @@ const ChooseUserName: FunctionComponent<ChooseUserNameProps> = props => {
       presence: true,
     },
   };
-  const initialValues: InitialValues = {};
+  const initialValues: InitialValues = {
+    username: user?.username || '',
+  };
 
   return (
     <SafeAreaView style={styles.container}>
