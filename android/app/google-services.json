@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "64877585196",
+    "project_id": "zentacle-temporary",
+    "storage_bucket": "zentacle-temporary.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:64877585196:android:1f9661b692ee15904a8289",
+        "android_client_info": {
+          "package_name": "com.zentacle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "64877585196-sj4ksdsnlugff312kj3hiqtt5v5digsj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zentacle",
+            "certificate_hash": "6f4dee9d8c213653f993faaa345571a678882940"
+          }
+        },
+        {
+          "client_id": "64877585196-sp8qj7g2gg9689sa9v98qq3r3mt5r3jt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zentacle",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "64877585196-dk4n69eevqedi5aj6hjhknueh48539s3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYs9bQZ9fRs53gKjR2ekADBOToWDOg3hY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "64877585196-dk4n69eevqedi5aj6hjhknueh48539s3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "64877585196-h668tr8635lrovj9150oga6kbqrunlu8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.Zentacle"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
