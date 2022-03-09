@@ -38,7 +38,7 @@ const Navigator: React.FC = () => {
     dispatch(autoAuth()).then(() => {
       SplashScreen.hide();
     });
-    dispatch(logoutUser());
+    // dispatch(logoutUser());
   }, [dispatch]);
 
   const loadingState = useAppSelector(selectAutoAuthLoadingState);

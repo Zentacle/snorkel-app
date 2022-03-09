@@ -22,7 +22,9 @@ const OnboardingNavigator: React.FC = () => {
     createNativeStackNavigator<OnboardingStackParamList>();
   return (
     <OnboardingStack.Navigator
-      initialRouteName="ChooseUserName"
+      initialRouteName={
+        userHasUsername ? 'CameraPermissions' : 'ChooseUserName'
+      }
       screenOptions={{
         headerShown: false,
       }}>
