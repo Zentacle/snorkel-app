@@ -60,6 +60,12 @@ const Landing: FunctionComponent<LandingProps> = props => {
     });
   };
 
+  const navigateToCameraPermissions = () => {
+    props.navigation.navigate('OnBoarding', {
+      screen: 'CameraPermissions',
+    });
+  };
+
   const handleSocialAuth = async (actionButton: ActionButtons) => {
     setSelectedLogin(actionButton.name as SelectedLogin);
     switch (actionButton.name) {
@@ -80,6 +86,10 @@ const Landing: FunctionComponent<LandingProps> = props => {
             if (googleRegister.fulfilled.match(response)) {
               if (userPreviouslyFilledOnBoardingData) {
                 navigateToApp();
+              } else if (
+                (response.payload as GoogleLoginResponse).user.username
+              ) {
+                navigateToCameraPermissions();
               } else {
                 navigateToOnBoarding();
               }
