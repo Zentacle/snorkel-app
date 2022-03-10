@@ -21,6 +21,7 @@ import {
   handleFetchDiveSites,
   selectAllDiveSites,
 } from '_redux/slices/dive-sites';
+import { selectUser } from '_redux/slices/user';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
@@ -75,6 +76,7 @@ interface ExploreProps {
 const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
   const diveSites = Object.values(useAppSelector(selectAllDiveSites) || []);
+  const user = useAppSelector(selectUser);
 
   // console.log('dive sites from store', diveSites);
   // const [diveSites, setDiveSites] = React.useState<Spot>([]);
@@ -100,7 +102,9 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.contentContainer}>
-        <Text style={styles.welcomeText}>Welcome, David!</Text>
+        <Text style={styles.welcomeText}>
+          Welcome,&nbsp;{user?.first_name}!
+        </Text>
         <Form
           onSubmit={() => {}}
           initialValues={{}}
