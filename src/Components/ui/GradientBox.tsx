@@ -22,16 +22,20 @@ const GradientBox: FunctionComponent<GradientBoxProps> = props => {
   return (
     <LinearGradient
       style={[styles.container, props.style]}
-      colors={['#AA00FF', '#00E0FF', '#00E0FF']}
-      locations={[0.002, 1, 1]}
-      start={{
-        x: 0,
-        y: 0,
-      }}
-      end={{
-        x: 1.06,
-        y: 1.2,
-      }}>
+      colors={props.gradientColors || ['#AA00FF', '#00E0FF', '#00E0FF']}
+      locations={props.gradientLocations || [0.002, 1, 1]}
+      start={
+        props.start || {
+          x: 0,
+          y: 0,
+        }
+      }
+      end={
+        props.end || {
+          x: 1.06,
+          y: 1.2,
+        }
+      }>
       {props.children}
     </LinearGradient>
   );
