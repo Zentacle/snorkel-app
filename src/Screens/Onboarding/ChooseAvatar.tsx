@@ -19,6 +19,9 @@ import type {
   OnboardingStackParamList,
 } from '_utils/interfaces';
 
+import { useAppSelector } from '_redux/hooks';
+import { selectSettings } from '_redux/slices/settings';
+
 import Button from '_components/ui/Buttons/Button';
 import UploadAvatarIcon from '_assets/UploadAvatarIcon.png';
 
@@ -34,6 +37,7 @@ interface ChooseAvatarProps {
 }
 
 const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
+  const settings = useAppSelector(selectSettings);
   const [cameraImage, setCameraImage] = React.useState('');
   const navigateBack = () => {
     props.navigation.goBack();
@@ -41,6 +45,12 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
 
   const navigateToLovationPermissions = () => {
     props.navigation.navigate('LocationPermissions');
+  };
+
+  const navigateToApp = () => {
+    props.navigation.navigate('App', {
+      screen: 'Explore',
+    });
   };
 
   const handleLaunchCamera = async () => {
@@ -86,7 +96,13 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
 
       <View style={styles.footer}>
         <Button
-          onPress={navigateToLovationPermissions}
+          onPress={
+            // if measuremennt type is set, assume user has gone through the
+            // rest of this section and navigate to app
+            settings.measurementType
+              ? navigateToLovationPermissions
+              : navigateToApp
+          }
           gradient
           gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
           gradientLocations={[0.0, 1, 1]}
