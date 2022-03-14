@@ -42,6 +42,18 @@ export type ProfileStackParamList = {
   // Profile: undefined;
 };
 
+export type SettingStackParamList = {
+  Settings: undefined;
+  ProfileSettings: undefined;
+  ChangePassword: undefined;
+  TypeUnits: undefined;
+  DiveActivities: undefined;
+  TermsAndConditions: undefined;
+  PrivacyPolicy: undefined;
+  HelpCenter: undefined;
+  Language: undefined;
+};
+
 export type SearchStackParamList = {
   SearchResults: {
     search: FullInitialValues;
@@ -82,6 +94,7 @@ export type RootStackParamList = {
   SearchStack: NavigatorScreenParams<SearchStackParamList>;
   LogsStack: NavigatorScreenParams<LogsStackParamList>;
   LogsFormStack: NavigatorScreenParams<LogsFormStackParamList>;
+  SettingsStack: NavigatorScreenParams<SettingStackParamList>;
 };
 
 export type NamedStyles = ViewStyle | TextStyle | ImageStyle;

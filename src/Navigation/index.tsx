@@ -2,7 +2,6 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
-// import { ImageBackground, StyleSheet } from 'react-native';
 
 import type { RootStackParamList } from '_utils/interfaces';
 
@@ -12,8 +11,8 @@ import AppTabsNavigator from './App';
 import ExploreNavigator from './App/Explore';
 import SearchNavigator from './App/Search';
 import LogsNavigator from './App/Logs';
-import ProfileNavigator from './App/Profile';
 import LogsFormNavigator from './App/DiveLogsForm';
+import SettingsNavigator from './Settings';
 
 import { useAppDispatch, useAppSelector } from '_redux/hooks';
 import { handleFetchDiveSites } from '_redux/slices/dive-sites';
@@ -24,12 +23,8 @@ import {
   logoutUser,
   selectAutoAuthLoadingState,
 } from '_redux/slices/user';
-// import { User } from '_utils/interfaces/data/user';
-// import CoverImage from '_assets/main-screen.png';
 
 const Navigator: React.FC = () => {
-  // const [loaded, setLoaded] = React.useState(false);
-  // const [userObj, setUserObj] = React.useState<User>();
   const dispatch = useAppDispatch();
   React.useEffect(() => {
     // handle fetching of dive sites and logs here
@@ -52,18 +47,9 @@ const Navigator: React.FC = () => {
     userHasUsername && userHasProfilePic
   );
 
-  // if (!loadingState)
-  //   return (
-  //     <ImageBackground style={styles.backgroundImage} source={CoverImage} />
-  //   );
-
   if (loadingState) {
     return null;
   }
-
-  // if (loaded) {
-  //   // SplashScreen.hide();
-  // }
 
   const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -71,25 +57,11 @@ const Navigator: React.FC = () => {
     return (
       <NavigationContainer>
         <Stack.Navigator
-          // initialRouteName={
-          //   loggedInState
-          //     ? userPreviouslyFilledOnBoardingData
-          //       ? 'App'
-          //       : 'OnBoarding'
-          //     : 'Auth'
-          // }
           initialRouteName="Auth"
           screenOptions={{
             headerShown: false,
           }}>
           <Stack.Screen name="Auth" component={AuthNavigator} />
-          {/* <Stack.Screen name="OnBoarding" component={OnboardingNavigator} />
-          <Stack.Screen name="App" component={AppTabsNavigator} />
-          <Stack.Screen name="ExploreStack" component={ExploreNavigator} />
-          <Stack.Screen name="ProfileStack" component={ProfileNavigator} />
-          <Stack.Screen name="SearchStack" component={SearchNavigator} />
-          <Stack.Screen name="LogsStack" component={LogsNavigator} />
-          <Stack.Screen name="LogsFormStack" component={LogsFormNavigator} /> */}
         </Stack.Navigator>
       </NavigationContainer>
     );
@@ -98,38 +70,22 @@ const Navigator: React.FC = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        // initialRouteName={
-        //   loggedInState
-        //     ? userPreviouslyFilledOnBoardingData
-        //       ? 'App'
-        //       : 'OnBoarding'
-        //     : 'Auth'
-        // }
         initialRouteName={
           userPreviouslyFilledOnBoardingData ? 'App' : 'OnBoarding'
         }
         screenOptions={{
           headerShown: false,
         }}>
-        {/* <Stack.Screen name="Auth" component={AuthNavigator} /> */}
         <Stack.Screen name="OnBoarding" component={OnboardingNavigator} />
         <Stack.Screen name="App" component={AppTabsNavigator} />
         <Stack.Screen name="ExploreStack" component={ExploreNavigator} />
-        <Stack.Screen name="ProfileStack" component={ProfileNavigator} />
         <Stack.Screen name="SearchStack" component={SearchNavigator} />
         <Stack.Screen name="LogsStack" component={LogsNavigator} />
         <Stack.Screen name="LogsFormStack" component={LogsFormNavigator} />
+        <Stack.Screen name="SettingsStack" component={SettingsNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
-
-// const styles = StyleSheet.create({
-//   backgroundImage: {
-//     flex: 1,
-//     opacity: 1,
-//     zIndex: 0,
-//   },
-// });
 
 export default Navigator;

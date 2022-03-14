@@ -39,12 +39,23 @@ interface ProfileProps {
 }
 
 const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
+  const navigateToSettings = () => {
+    navigation.navigate('SettingsStack', {
+      screen: 'Settings',
+    });
+  };
+
   const user = useAppSelector(selectUser);
   const diveLogs = Object.values(useAppSelector(selectAllDiveLogs));
-  console.log(!!diveLogs.length);
+
   return (
     <SafeAreaView style={styles.container}>
-      <Icon style={styles.optionsIcon} name="options-outline" size={30} />
+      <Icon
+        style={styles.optionsIcon}
+        onPress={navigateToSettings}
+        name="options-outline"
+        size={30}
+      />
       <ScrollView
         style={styles.contentContainer}
         showsVerticalScrollIndicator={false}>
