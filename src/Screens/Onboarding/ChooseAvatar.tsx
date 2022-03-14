@@ -100,8 +100,8 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
             // if measuremennt type is set, assume user has gone through the
             // rest of this section and navigate to app
             settings.measurementType
-              ? navigateToLovationPermissions
-              : navigateToApp
+              ? navigateToApp
+              : navigateToLovationPermissions
           }
           gradient
           gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
