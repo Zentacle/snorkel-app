@@ -11,8 +11,8 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import MUIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { useAppSelector } from '_redux/hooks';
-import { selectUser } from '_redux/slices/user';
+import { useAppSelector, useAppDispatch } from '_redux/hooks';
+import { selectUser, getCurrentUser } from '_redux/slices/user';
 import { selectAllDiveLogs } from '_redux/slices/dive-logs';
 import GradientBox from '_components/ui/GradientBox';
 import GradientCircle from '_components/ui/GradientCircle';
@@ -39,6 +39,12 @@ interface ProfileProps {
 }
 
 const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
+  const dispatch = useAppDispatch();
+
+  React.useEffect(() => {
+    dispatch(getCurrentUser());
+  }, [dispatch]);
+
   const navigateToSettings = () => {
     navigation.navigate('SettingsStack', {
       screen: 'Settings',

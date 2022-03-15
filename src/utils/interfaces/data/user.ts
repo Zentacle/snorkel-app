@@ -9,6 +9,7 @@ export interface User {
   password: string;
   admin: boolean;
   hometown: string;
+  email?: string;
 }
 
 export interface CookieHeaders {
