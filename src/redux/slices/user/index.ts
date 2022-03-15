@@ -6,6 +6,8 @@ import {
   handleLogin,
   handleUpdateUser,
   handleGoogleregister,
+  handleGetUser,
+  handleGetCurrentUser,
 } from './api';
 import { User, GoogleLoginResponse } from '_utils/interfaces/data/user';
 import { AppThunk, RootState } from '../../store';
@@ -100,6 +102,26 @@ export const updateUser = createAsyncThunk(
       }
       return thunkApi.rejectWithValue(response.msg);
     }
+
+    return response;
+  },
+);
+
+export const getCurrentUser = createAsyncThunk(
+  'user/me',
+  async (_, thunkApi) => {
+    const { user } = (await thunkApi.getState()) as { user: UserState };
+    // only request to update user if loggedIn because it wouldn't work otherwise anyway
+    if (!user.auth_cookie) {
+      return;
+    }
+    const response = await handleGetCurrentUser(user.auth_cookie);
+    console.log('response', response);
+    // if (response.msg) {
+    //   if (response.msg === 'token has expired') {
+    //   }
+    //   return thunkApi.rejectWithValue(response.msg);
+    // }
 
     return response;
   },
