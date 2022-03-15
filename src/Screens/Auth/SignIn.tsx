@@ -100,7 +100,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
         [FORM_ERROR]:
           typeof response.payload === 'string'
             ? response.payload
-            : 'There was an error logginng in, please try again.',
+            : 'There was an error logging in, please try again.',
       };
     }
   };
