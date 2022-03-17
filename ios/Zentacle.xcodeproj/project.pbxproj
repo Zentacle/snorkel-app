@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* ZentacleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ZentacleTests.m */; };
+		0E0E8CB727E3813A002D79ED /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0E0E8CB627E3813A002D79ED /* GoogleService-Info.plist */; };
 		0E35FE66278F3E8D0080B9BF /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E35FE65278F3E8D0080B9BF /* Launch Screen.storyboard */; };
 		0E9C3D25279A4D410020D871 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9C3D24279A4D410020D871 /* File.swift */; };
 		0E9C3D38279A8D690020D871 /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 0E9C3D37279A8D690020D871 /* FacebookLogin */; };
@@ -38,6 +39,7 @@
 		00E356EE1AD99517003FC87E /* ZentacleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZentacleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* ZentacleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZentacleTests.m; sourceTree = "<group>"; };
+		0E0E8CB627E3813A002D79ED /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0E35FE65278F3E8D0080B9BF /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		0E4642132799D6E400EE1D9F /* Zentacle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Zentacle.entitlements; path = Zentacle/Zentacle.entitlements; sourceTree = "<group>"; };
 		0E9C3D24279A4D410020D871 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 			children = (
 				0E9C3D24279A4D410020D871 /* File.swift */,
 				0ED8D8F3279A1E2F00944708 /* Zentacle-Bridging-Header.h */,
+				0E0E8CB627E3813A002D79ED /* GoogleService-Info.plist */,
 				0E35FE65278F3E8D0080B9BF /* Launch Screen.storyboard */,
 				13B07FAE1A68108700A75B9A /* Zentacle */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -276,6 +279,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E35FE66278F3E8D0080B9BF /* Launch Screen.storyboard in Resources */,
+				0E0E8CB727E3813A002D79ED /* GoogleService-Info.plist in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
