@@ -10,7 +10,6 @@
 		00E356F31AD99517003FC87E /* ZentacleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ZentacleTests.m */; };
 		0E35FE66278F3E8D0080B9BF /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E35FE65278F3E8D0080B9BF /* Launch Screen.storyboard */; };
 		0E9C3D25279A4D410020D871 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9C3D24279A4D410020D871 /* File.swift */; };
-		0E9C3D35279A5A8D0020D871 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0E9C3D34279A5A8D0020D871 /* GoogleService-Info.plist */; };
 		0E9C3D38279A8D690020D871 /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 0E9C3D37279A8D690020D871 /* FacebookLogin */; };
 		0E9C3D3A279A8D690020D871 /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 0E9C3D39279A8D690020D871 /* FacebookCore */; };
 		0E9C3D3C279A8D690020D871 /* FacebookAEM in Frameworks */ = {isa = PBXBuildFile; productRef = 0E9C3D3B279A8D690020D871 /* FacebookAEM */; };
@@ -42,7 +41,6 @@
 		0E35FE65278F3E8D0080B9BF /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		0E4642132799D6E400EE1D9F /* Zentacle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Zentacle.entitlements; path = Zentacle/Zentacle.entitlements; sourceTree = "<group>"; };
 		0E9C3D24279A4D410020D871 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
-		0E9C3D34279A5A8D0020D871 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0ED8D8F3279A1E2F00944708 /* Zentacle-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Zentacle-Bridging-Header.h"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Zentacle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zentacle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Zentacle/AppDelegate.h; sourceTree = "<group>"; };
@@ -138,7 +136,6 @@
 			isa = PBXGroup;
 			children = (
 				0E9C3D24279A4D410020D871 /* File.swift */,
-				0E9C3D34279A5A8D0020D871 /* GoogleService-Info.plist */,
 				0ED8D8F3279A1E2F00944708 /* Zentacle-Bridging-Header.h */,
 				0E35FE65278F3E8D0080B9BF /* Launch Screen.storyboard */,
 				13B07FAE1A68108700A75B9A /* Zentacle */,
@@ -279,7 +276,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E35FE66278F3E8D0080B9BF /* Launch Screen.storyboard in Resources */,
-				0E9C3D35279A5A8D0020D871 /* GoogleService-Info.plist in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);

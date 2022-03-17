@@ -32,6 +32,7 @@ local.properties
 
 # signing config
 android/app/gradle.properties
+android/app/google-services.json
 
 # node.js
 #
@@ -61,6 +62,8 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+
+/ios/GoogleServices-info.plist
 
 # android env file 
 .env
