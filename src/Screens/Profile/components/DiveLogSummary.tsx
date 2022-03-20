@@ -1,0 +1,82 @@
+import React from 'react';
+import { View, Text, StyleSheet, Image } from 'react-native';
+
+import GradientBox from '_components/ui/GradientBox';
+
+import LogColor from '_assets/log-color-lar.png';
+import Location from '_assets/location-lar.png';
+import Clock from '_assets/clock-lar.png';
+
+const DiveLogSummary = () => {
+  return (
+    <View style={styles.container}>
+      <GradientBox style={styles.diveLogSummaryGradient}>
+        <View style={styles.diveLogSummaryBox}>
+          <View style={styles.summary}>
+            <View style={styles.summaryItem}>
+              <Image
+                style={{ width: 25, height: 25, marginBottom: 5 }}
+                source={Clock}
+              />
+              <Text style={styles.summaryValue}>1:33:00</Text>
+              <Text style={styles.summaryLabel}>Total Dive Time</Text>
+            </View>
+            <View style={styles.summaryItem}>
+              <Image
+                style={{ width: 25, height: 25, marginBottom: 5 }}
+                source={LogColor}
+              />
+              <Text style={styles.summaryValue}>12</Text>
+              <Text style={styles.summaryLabel}>Dive Logs</Text>
+            </View>
+            <View style={styles.summaryItem}>
+              <Image
+                style={{ width: 20, height: 25, marginBottom: 5 }}
+                source={Location}
+              />
+              <Text style={styles.summaryValue}>8</Text>
+              <Text style={styles.summaryLabel}>Visited Sites</Text>
+            </View>
+          </View>
+        </View>
+      </GradientBox>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {},
+  diveLogSummaryGradient: {
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 1.5,
+    paddingHorizontal: 1.5,
+  },
+  diveLogSummaryBox: {
+    backgroundColor: 'white',
+    width: '100%',
+    borderRadius: 12,
+    // height: '100%',
+  },
+  summary: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    marginHorizontal: 25,
+    marginVertical: 20,
+  },
+  summaryItem: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  summaryLabel: {
+    marginVertical: 3,
+  },
+  summaryValue: {
+    fontWeight: '600',
+    fontSize: 18,
+    marginVertical: 3,
+  },
+});
+
+export default DiveLogSummary;
