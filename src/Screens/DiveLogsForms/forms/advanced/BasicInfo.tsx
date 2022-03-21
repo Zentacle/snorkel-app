@@ -16,6 +16,13 @@ import RatingsInputComp from '_components/ui/RatingsInputComp';
 import LocationImage from '_assets/Location.png';
 import LogImage from '_assets/log-color.png';
 
+import type { FunctionComponent } from 'react';
+import type { AdvancedFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
+
+interface BasicInfoProps {
+  values: InitialValues;
+}
+
 const ActiveLevelComponent = (level: string) => (
   <View style={styles.selectedShadow}>
     <GradientBox style={styles.selectedLevel}>
@@ -35,9 +42,7 @@ const InactiveLevelComponent = (level: string) => (
   </View>
 );
 
-const BasicInfo = () => {
-  const coordinates = { latitude: -8.409518, longitude: 115.188919 };
-
+const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
   const levels = ['Beginner', 'Intermediate', 'Advanced'];
 
   return (
@@ -45,24 +50,26 @@ const BasicInfo = () => {
       <View>
         <Text style={styles.headerLabel}>Dive Site Location</Text>
         <View style={styles.mapContainer}>
-          <MapView
-            provider="google"
-            style={styles.map}
-            scrollEnabled={false}
-            liteMode={true}
-            initialRegion={{
-              latitude: coordinates.latitude,
-              longitude: coordinates.longitude,
-              latitudeDelta: 0.0121,
-              longitudeDelta: 0.2122,
-            }}>
-            <Marker
-              coordinate={{
-                latitude: coordinates.latitude,
-                longitude: coordinates.longitude,
-              }}
-            />
-          </MapView>
+          {values.location && (
+            <MapView
+              provider="google"
+              style={styles.map}
+              scrollEnabled={false}
+              liteMode={true}
+              initialRegion={{
+                latitude: values.location.lat,
+                longitude: values.location.lng,
+                latitudeDelta: 0.0121,
+                longitudeDelta: 0.2122,
+              }}>
+              <Marker
+                coordinate={{
+                  latitude: values.location.lat,
+                  longitude: values.location.lng,
+                }}
+              />
+            </MapView>
+          )}
           <View />
           <View style={styles.mapDescriptionContainer}>
             <View style={styles.mapTextContainer}>
@@ -76,7 +83,7 @@ const BasicInfo = () => {
                 <View style={styles.mapTextImageContainer}>
                   <Image source={LocationImage} />
                 </View>
-                <Text style={styles.mapText}>East Bali Lighthouse</Text>
+                <Text style={styles.mapText}>{values.location?.desc}</Text>
               </View>
             </View>
             <View style={styles.mapIconContainer}>

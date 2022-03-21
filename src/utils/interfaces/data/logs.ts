@@ -4,6 +4,11 @@ export interface SimpleFormInitialValues {
   difficulty: string;
   name?: string;
   note?: string;
+  location?: {
+    lat: number;
+    lng: number;
+    desc: string;
+  };
 }
 
 export interface AdvancedFormInitialValues extends SimpleFormInitialValues {

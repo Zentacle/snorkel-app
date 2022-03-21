@@ -247,7 +247,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
                   marginBottom: Platform.OS === 'android' ? 114 : 80,
                 },
               ]}>
-              {page === 0 && <BasicInfo />}
+              {page === 0 && <BasicInfo values={values as InitialValues} />}
               {page === 1 && <DateTimeDepth />}
               {page === 2 && <WaterOnshore />}
               {page === 3 && <WearGear />}

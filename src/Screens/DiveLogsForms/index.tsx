@@ -127,6 +127,7 @@ const SimpleDiveLogsForms: FunctionComponent<
     rating: 0,
     // @ts-ignore
     difficulty: 'Beginner',
+    location: undefined,
     ...passedInLog,
   };
 
@@ -146,7 +147,12 @@ const SimpleDiveLogsForms: FunctionComponent<
   ): boolean => {
     switch (currentPage) {
       case 0:
-        return true;
+        return !!(
+          values.location &&
+          values.location.lat &&
+          values.location.lng &&
+          values.location.desc
+        );
       case 1:
         return !!(values.rating && values.difficulty);
       case 2:
@@ -178,6 +184,7 @@ const SimpleDiveLogsForms: FunctionComponent<
       keepDirtyOnReinitialize
       render={({ values, form }) => {
         formRef.current = form;
+        console.log('location values', values.location);
 
         return (
           <SafeAreaView style={styles.container}>
@@ -243,7 +250,7 @@ const SimpleDiveLogsForms: FunctionComponent<
                 />
               )}
 
-              {page === 0 && <Location />}
+              {page === 0 && <Location location={values.location} />}
               {page === 1 && <Rating />}
               {page === 2 && <Name />}
               {page === 3 && <Notes />}
