@@ -74,7 +74,7 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = props => {
   };
 
   const [focusedImageIndex, setFocusedImageIndex] = React.useState(0);
-  if (props.images) {
+  if (props.images && props.images.length) {
     return (
       <View style={styles.header}>
         <ScrollView
