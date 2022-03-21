@@ -18,10 +18,7 @@ import type {
 } from 'react-native';
 import type { FunctionComponent } from 'react';
 
-import DiveSite1 from '_assets/DiveSite.jpg';
-import DiveSite2 from '_assets/DiveSite2.jpg';
-import DiveSite3 from '_assets/DiveSite3.jpg';
-import DiveSite4 from '_assets/DiveSite4.jpg';
+import DivingPlaceholder from '_assets/diving-placeholder.jpeg';
 
 const WIDTH = Dimensions.get('window').width;
 
@@ -35,23 +32,19 @@ interface Images {
   source: ImageSourcePropType;
 }
 
-const images: Images[] = [
+const defaultImages: Images[] = [
   {
-    source: DiveSite1,
-  },
-  {
-    source: DiveSite2,
-  },
-  {
-    source: DiveSite3,
-  },
-  {
-    source: DiveSite4,
+    source: DivingPlaceholder,
   },
 ];
 
 interface ImageCarouselProps {
   goBack: () => void;
+  images?: {
+    uri: string;
+    type?: string;
+    name: string;
+  }[];
 }
 
 const ImageCarousel: FunctionComponent<ImageCarouselProps> = props => {
@@ -81,6 +74,59 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = props => {
   };
 
   const [focusedImageIndex, setFocusedImageIndex] = React.useState(0);
+  if (props.images) {
+    return (
+      <View style={styles.header}>
+        <ScrollView
+          horizontal
+          pagingEnabled
+          onScroll={handleScroll}
+          showsHorizontalScrollIndicator={false}>
+          {props.images.map((image, index) => (
+            <Image
+              key={index}
+              style={styles.headerImage}
+              source={{ uri: image.uri }}
+            />
+          ))}
+        </ScrollView>
+        <View style={styles.headerIconsContainer}>
+          <TouchableWithoutFeedback onPress={props.goBack}>
+            <View style={styles.headerIcon}>
+              <FEIcon name="chevron-left" color="black" size={25} />
+            </View>
+          </TouchableWithoutFeedback>
+          <TouchableWithoutFeedback>
+            <View style={styles.headerIcon}>
+              <FEIcon name="share" color="black" size={25} />
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+        <View style={styles.headerBottomContainer}>
+          <View style={styles.photoDots}>
+            {props.images.map((_dot, index) => {
+              return (
+                <View
+                  key={index}
+                  style={
+                    index === focusedImageIndex
+                      ? styles.whitePhotoDot
+                      : styles.blackPhotoDot
+                  }
+                />
+              );
+            })}
+          </View>
+          <View style={styles.imageCountContainer}>
+            <Icon name="image-outline" size={18} color="#FFF" />
+            <Text style={styles.imageCountText}>{`${focusedImageIndex + 1}/${
+              props.images.length
+            }`}</Text>
+          </View>
+        </View>
+      </View>
+    );
+  }
   return (
     <View style={styles.header}>
       <ScrollView
@@ -88,10 +134,9 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = props => {
         pagingEnabled
         onScroll={handleScroll}
         showsHorizontalScrollIndicator={false}>
-        <Image style={styles.headerImage} source={DiveSite1} />
-        <Image style={styles.headerImage} source={DiveSite2} />
-        <Image style={styles.headerImage} source={DiveSite3} />
-        <Image style={styles.headerImage} source={DiveSite4} />
+        {defaultImages.map((image, index) => (
+          <Image key={index} style={styles.headerImage} source={image.source} />
+        ))}
       </ScrollView>
       <View style={styles.headerIconsContainer}>
         <TouchableWithoutFeedback onPress={props.goBack}>
@@ -107,7 +152,7 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = props => {
       </View>
       <View style={styles.headerBottomContainer}>
         <View style={styles.photoDots}>
-          {images.map((_dot, index) => {
+          {defaultImages.map((_dot, index) => {
             return (
               <View
                 key={index}
@@ -123,7 +168,7 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = props => {
         <View style={styles.imageCountContainer}>
           <Icon name="image-outline" size={18} color="#FFF" />
           <Text style={styles.imageCountText}>{`${focusedImageIndex + 1}/${
-            images.length
+            defaultImages.length
           }`}</Text>
         </View>
       </View>

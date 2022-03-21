@@ -95,7 +95,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <ImageCarousel goBack={navigateBack} />
+        <ImageCarousel goBack={navigateBack} images={diveLog.images} />
 
         <View style={styles.contentContainer}>
           <Text style={styles.mainDescription}>{diveLog.name}</Text>
@@ -105,7 +105,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
           </View>
           <View style={styles.locationContainer}>
             <Image source={LocationImage} />
-            <Text style={styles.locationText}>East Bali, Indonesia</Text>
+            <Text style={styles.locationText}>{diveLog.location?.desc}</Text>
           </View>
           <View style={styles.ratingsContainer}>
             <Text style={styles.ratingsLevelText}>{diveLog.difficulty}</Text>
