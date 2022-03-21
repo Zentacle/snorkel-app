@@ -24,6 +24,7 @@ import { selectSettings } from '_redux/slices/settings';
 
 import Button from '_components/ui/Buttons/Button';
 import UploadAvatarIcon from '_assets/UploadAvatarIcon.png';
+import ImagePickerModal from '_components/reusables/ImagePickerModal';
 
 const HEIGHT = Dimensions.get('window').width;
 
@@ -36,11 +37,28 @@ interface ChooseAvatarProps {
   navigation: ChooseAvatarScreenNavigationProps;
 }
 
+interface PhotoOptions {
+  name: string;
+  action: () => Promise<void>;
+}
+
 const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
   const settings = useAppSelector(selectSettings);
   const [cameraImage, setCameraImage] = React.useState('');
   const navigateBack = () => {
     props.navigation.goBack();
+  };
+
+  const [cameralModalIsVisible, setCameraModalVisibility] =
+    React.useState(false);
+
+  const openCameraModal = () => {
+    console.log('triggered');
+    setCameraModalVisibility(true);
+  };
+
+  const closeCameraModal = () => {
+    setCameraModalVisibility(false);
   };
 
   const navigateToLovationPermissions = () => {
@@ -58,10 +76,35 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
       mediaType: 'photo',
       // includeBase64: true,
     });
+
+    closeCameraModal();
     if (result.assets && result.assets[0].uri) {
       setCameraImage(result.assets[0].uri);
     }
   };
+
+  const handleLaunchPhotoLibrary = async () => {
+    const result = await launchImageLibrary({
+      mediaType: 'photo',
+      // includeBase64: true,
+    });
+
+    closeCameraModal();
+    if (result.assets && result.assets[0].uri) {
+      setCameraImage(result.assets[0].uri);
+    }
+  };
+
+  const photoOptions: PhotoOptions[] = [
+    {
+      name: 'Camera',
+      action: handleLaunchCamera,
+    },
+    {
+      name: 'Photo Library',
+      action: handleLaunchPhotoLibrary,
+    },
+  ];
 
   return (
     <SafeAreaView style={styles.container}>
@@ -87,7 +130,7 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
               source={{ uri: cameraImage }}
             />
           ) : (
-            <TouchableWithoutFeedback onPress={handleLaunchCamera}>
+            <TouchableWithoutFeedback onPress={openCameraModal}>
               <Image source={UploadAvatarIcon} />
             </TouchableWithoutFeedback>
           )}
@@ -131,6 +174,12 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
           Continue
         </Button>
       </View>
+
+      <ImagePickerModal
+        modalIsVisible={cameralModalIsVisible}
+        closeModal={closeCameraModal}
+        photoOptions={photoOptions}
+      />
     </SafeAreaView>
   );
 };
