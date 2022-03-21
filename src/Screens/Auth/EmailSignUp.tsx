@@ -146,6 +146,7 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
                     placeholderTextColor="#BFBFBF"
                     // style={styles.input}
                     containerStyle={styles.inputContainer}
+                    keyboardType="email-address"
                   />
                   <Field
                     name="password"
