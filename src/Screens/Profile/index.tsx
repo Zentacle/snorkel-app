@@ -48,6 +48,15 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
     });
   };
 
+  const navigateToDiveLog = (diveLogId: number) => {
+    navigation.navigate('LogsStack', {
+      screen: 'LogDetail',
+      params: {
+        diveLogId,
+      },
+    });
+  };
+
   const user = useAppSelector(selectUser);
   const diveLogs = Object.values(useAppSelector(selectAllDiveLogs));
 
@@ -74,7 +83,7 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
         </View>
         <Text style={styles.displayName}>{user?.display_name}</Text>
 
-        <DiveLogSummary />
+        <DiveLogSummary diveLogs={diveLogs} />
         <SubscriptionBox />
 
         <View>
@@ -82,8 +91,14 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
             {!!diveLogs.length ? 'Dive Log Photos' : 'No Dive Logs'}
           </Text>
           <View style={styles.photosContainer}>
-            {diveLogs.map((_, index) => {
-              return <DiveLogDisplay key={index} />;
+            {diveLogs.map((diveLog, index) => {
+              return (
+                <DiveLogDisplay
+                  diveLog={diveLog}
+                  key={index}
+                  navigateToDiveLog={navigateToDiveLog}
+                />
+              );
             })}
           </View>
         </View>

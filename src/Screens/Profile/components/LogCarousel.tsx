@@ -20,6 +20,7 @@ import DiveSite1 from '_assets/DiveSite.jpg';
 import DiveSite2 from '_assets/DiveSite2.jpg';
 import DiveSite3 from '_assets/DiveSite3.jpg';
 import DiveSite4 from '_assets/DiveSite4.jpg';
+import DivingPlaceholder from '_assets/diving-placeholder.jpeg';
 
 const WIDTH = Dimensions.get('window').width;
 
@@ -33,24 +34,21 @@ interface Images {
   source: ImageSourcePropType;
 }
 
-const images: Images[] = [
+const defaultImages: Images[] = [
   {
-    source: DiveSite1,
-  },
-  {
-    source: DiveSite2,
-  },
-  {
-    source: DiveSite3,
-  },
-  {
-    source: DiveSite4,
+    source: DivingPlaceholder,
   },
 ];
 
-interface ImageCarouselProps {}
+interface ImageCarouselProps {
+  images?: {
+    uri: string;
+    type?: string;
+    name: string;
+  }[];
+}
 
-const LogCarousel: FunctionComponent<ImageCarouselProps> = () => {
+const LogCarousel: FunctionComponent<ImageCarouselProps> = ({ images }) => {
   const [isSwiping, setIsSwiping] = React.useState(false);
   const [focusedImageIndex, setFocusedImageIndex] = React.useState(0);
 
@@ -83,6 +81,53 @@ const LogCarousel: FunctionComponent<ImageCarouselProps> = () => {
     setFocusedImageIndex(focusedIndex);
   };
 
+  if (images && images.length) {
+    return (
+      <View style={styles.header}>
+        <ScrollView
+          horizontal
+          pagingEnabled
+          onScroll={handleScroll}
+          showsHorizontalScrollIndicator={false}>
+          {images.map((image, index) => {
+            return (
+              <Image
+                key={index}
+                style={[
+                  styles.headerImage,
+                  { borderRadius: isSwiping ? 0 : 12 },
+                ]}
+                source={{ uri: image.uri }}
+              />
+            );
+          })}
+        </ScrollView>
+        <View style={styles.headerBottomContainer}>
+          <View style={styles.photoDots}>
+            {images.map((_dot, index) => {
+              return (
+                <View
+                  key={index}
+                  style={
+                    index === focusedImageIndex
+                      ? styles.whitePhotoDot
+                      : styles.blackPhotoDot
+                  }
+                />
+              );
+            })}
+          </View>
+          <View style={styles.imageCountContainer}>
+            <Icon name="image-outline" size={18} color="#FFF" />
+            <Text style={styles.imageCountText}>{`${focusedImageIndex + 1}/${
+              images.length
+            }`}</Text>
+          </View>
+        </View>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.header}>
       <ScrollView
@@ -90,7 +135,7 @@ const LogCarousel: FunctionComponent<ImageCarouselProps> = () => {
         pagingEnabled
         onScroll={handleScroll}
         showsHorizontalScrollIndicator={false}>
-        {images.map((image, index) => {
+        {defaultImages.map((image, index) => {
           return (
             <Image
               key={index}
@@ -102,7 +147,7 @@ const LogCarousel: FunctionComponent<ImageCarouselProps> = () => {
       </ScrollView>
       <View style={styles.headerBottomContainer}>
         <View style={styles.photoDots}>
-          {images.map((_dot, index) => {
+          {defaultImages.map((_dot, index) => {
             return (
               <View
                 key={index}
@@ -118,7 +163,7 @@ const LogCarousel: FunctionComponent<ImageCarouselProps> = () => {
         <View style={styles.imageCountContainer}>
           <Icon name="image-outline" size={18} color="#FFF" />
           <Text style={styles.imageCountText}>{`${focusedImageIndex + 1}/${
-            images.length
+            defaultImages.length
           }`}</Text>
         </View>
       </View>

@@ -1,17 +1,31 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 
 import LogCarousel from './LogCarousel';
 
-const DiveLogDisplay = () => {
+import type { FunctionComponent } from 'react';
+import { AdvancedFormInitialValues } from '_utils/interfaces/data/logs';
+
+interface DiveLogDisplayProps {
+  diveLog: AdvancedFormInitialValues;
+  navigateToDiveLog: (diveLogId: number) => void;
+}
+
+const DiveLogDisplay: FunctionComponent<DiveLogDisplayProps> = ({
+  diveLog,
+  navigateToDiveLog,
+}) => {
+  const handleNavigateToDiveLog = () => navigateToDiveLog(diveLog.id as number);
   return (
     <View style={styles.container}>
-      <LogCarousel />
-      <Text style={styles.diveLogLabel}>USS liberty Wreck on Coral Beach</Text>
+      <LogCarousel images={diveLog.images} />
+      <Text style={styles.diveLogLabel}>{diveLog.name}</Text>
       <View style={styles.diveLogLinkContainer}>
-        <Text style={styles.diveLogLink}>View Dive Log</Text>
+        <TouchableWithoutFeedback onPress={handleNavigateToDiveLog}>
+          <Text style={styles.diveLogLink}>View Dive Log</Text>
+        </TouchableWithoutFeedback>
         <View style={styles.diveLogDot} />
-        <Text style={styles.diveLogDate}>21 Nov 2021</Text>
+        <Text style={styles.diveLogDate}>{diveLog.startDate}</Text>
       </View>
     </View>
   );

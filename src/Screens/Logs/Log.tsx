@@ -30,6 +30,10 @@ import { attachIcons } from '_utils/functions';
 import ProfileImage from '_assets/Profile.jpg';
 import GradientBox from '_components/ui/GradientBox';
 
+import { useAppSelector } from '_redux/hooks';
+import { selectDiveLogById } from '_redux/slices/dive-logs';
+import { AdvancedFormInitialValues } from '_utils/interfaces/data/logs';
+
 type LogNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<LogsStackParamList, 'LogDetail'>,
   NativeStackNavigationProp<RootStackParamList>
@@ -43,7 +47,12 @@ interface LogProps {
 }
 
 const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
-  const diveLog = route.params.diveLog;
+  const diveLog: AdvancedFormInitialValues = useAppSelector(
+    selectDiveLogById(route.params.diveLogId),
+  );
+
+  if (!diveLog) return null;
+
   const isAdvancedLog = !!(diveLog.timeInWater && diveLog.maxDepth);
   const coords = {
     latitude: -8.409518,

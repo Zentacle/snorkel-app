@@ -65,7 +65,7 @@ export type SearchStackParamList = {
 
 export type LogsStackParamList = {
   LogDetail: {
-    diveLog: DiveLog;
+    diveLogId: number;
   };
 };
 

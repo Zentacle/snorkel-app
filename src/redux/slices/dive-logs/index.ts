@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { AppThunk, RootState } from '../../store';
@@ -34,10 +34,15 @@ export const diveLogsSlice = createSlice({
 
 export const { saveDiveLog, editDiveLog } = diveLogsSlice.actions;
 
-export const selectAllDiveLogs = (state: RootState) =>
-  Object.values(state.dive_logs.diveLogs);
+export const selectAllDiveLogs = (state: RootState) => state.dive_logs.diveLogs;
 
-export const selectDiveLog = (state: RootState, id: number) =>
-  state.dive_logs.diveLogs[id];
+export const selectDiveLogById = (id: number) => {
+  const selectedDiveLog = createSelector(
+    [selectAllDiveLogs],
+    diveLogs => diveLogs[id],
+  );
+
+  return selectedDiveLog;
+};
 
 export default diveLogsSlice.reducer;

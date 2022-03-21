@@ -71,14 +71,11 @@ const SimpleDiveLogsForms: FunctionComponent<
     toggleModal(true);
   };
 
-  const goToLog = (formvalues: InitialValues) => {
+  const goToLog = () => {
     props.navigation.navigate('LogsStack', {
       screen: 'LogDetail',
       params: {
-        diveLog: {
-          ...formvalues,
-          id: savedDiveLogId,
-        },
+        diveLogId: savedDiveLogId,
       },
     });
   };
@@ -190,8 +187,6 @@ const SimpleDiveLogsForms: FunctionComponent<
       keepDirtyOnReinitialize
       render={({ values, form }) => {
         formRef.current = form;
-        console.log('values', values);
-
         return (
           <SafeAreaView style={styles.container}>
             <ExitModal
@@ -231,9 +226,7 @@ const SimpleDiveLogsForms: FunctionComponent<
                 </Text>
                 <TouchableWithoutFeedback
                   onPress={
-                    page === stages.length
-                      ? () => goToLog(values as InitialValues)
-                      : openModal
+                    page === stages.length ? () => goToLog() : openModal
                   }>
                   <Icon
                     style={styles.back}

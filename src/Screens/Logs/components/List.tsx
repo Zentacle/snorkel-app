@@ -7,7 +7,7 @@ import type { AdvancedFormInitialValues as DiveLog } from '_utils/interfaces/dat
 import LogItem from './LogItem';
 
 interface LogListProps {
-  navigateToDetail: (diveLog: DiveLog) => void;
+  navigateToDetail: (diveLogId: number) => void;
   diveLogs: DiveLog[];
 }
 const LogsList: FunctionComponent<LogListProps> = ({
@@ -19,7 +19,7 @@ const LogsList: FunctionComponent<LogListProps> = ({
       {diveLogs.map(diveLog => (
         <TouchableOpacity
           key={diveLog.id}
-          onPress={() => navigateToDetail(diveLog)}>
+          onPress={() => navigateToDetail(diveLog.id as number)}>
           <LogItem diveLog={diveLog} />
         </TouchableOpacity>
       ))}

@@ -14,7 +14,6 @@ import type { CompositeNavigationProp } from '@react-navigation/native';
 import type { FunctionComponent } from 'react';
 
 import type { RootStackParamList, AppTabsParamList } from '_utils/interfaces';
-import type { AdvancedFormInitialValues as DiveLog } from '_utils/interfaces/data/logs';
 
 import { useAppSelector } from '_redux/hooks';
 import { selectAllDiveLogs } from '_redux/slices/dive-logs';
@@ -32,12 +31,12 @@ interface LogsProps {
 }
 
 const Logs: FunctionComponent<LogsProps> = ({ navigation }) => {
-  const diveLogs = useAppSelector(selectAllDiveLogs);
-  const navigateToLogDetail = (diveLog: DiveLog) => {
+  const diveLogs = Object.values(useAppSelector(selectAllDiveLogs));
+  const navigateToLogDetail = (diveLogId: number) => {
     navigation.navigate('LogsStack', {
       screen: 'LogDetail',
       params: {
-        diveLog,
+        diveLogId,
       },
     });
   };

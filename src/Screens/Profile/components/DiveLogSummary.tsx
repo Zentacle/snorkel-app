@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
+import formatDuration from 'format-duration';
 
 import GradientBox from '_components/ui/GradientBox';
 
@@ -7,7 +8,28 @@ import LogColor from '_assets/log-color-lar.png';
 import Location from '_assets/location-lar.png';
 import Clock from '_assets/clock-lar.png';
 
-const DiveLogSummary = () => {
+import type { FunctionComponent } from 'react';
+import { AdvancedFormInitialValues } from '_utils/interfaces/data/logs';
+
+interface DiveLogSummaryProps {
+  diveLogs: AdvancedFormInitialValues[];
+}
+
+function calculateTotalDiveTime(diveLogs: AdvancedFormInitialValues[]) {
+  let total = 0;
+  for (let log of diveLogs) {
+    if (log.timeInWater) {
+      total += log.timeInWater;
+    }
+  }
+
+  if (!total) return 0;
+  return formatDuration(total * 60000);
+}
+
+const DiveLogSummary: FunctionComponent<DiveLogSummaryProps> = ({
+  diveLogs,
+}) => {
   return (
     <View style={styles.container}>
       <GradientBox style={styles.diveLogSummaryGradient}>
@@ -18,7 +40,9 @@ const DiveLogSummary = () => {
                 style={{ width: 25, height: 25, marginBottom: 5 }}
                 source={Clock}
               />
-              <Text style={styles.summaryValue}>1:33:00</Text>
+              <Text style={styles.summaryValue}>
+                {calculateTotalDiveTime(diveLogs) || '0:00:00'}
+              </Text>
               <Text style={styles.summaryLabel}>Total Dive Time</Text>
             </View>
             <View style={styles.summaryItem}>
@@ -26,7 +50,7 @@ const DiveLogSummary = () => {
                 style={{ width: 25, height: 25, marginBottom: 5 }}
                 source={LogColor}
               />
-              <Text style={styles.summaryValue}>12</Text>
+              <Text style={styles.summaryValue}>{diveLogs.length}</Text>
               <Text style={styles.summaryLabel}>Dive Logs</Text>
             </View>
             <View style={styles.summaryItem}>
