@@ -54,7 +54,7 @@ const Review: FunctionComponent<ReviewProps> = ({
             <View style={styles.imageCountContainer}>
               <Icon name="image-outline" size={18} color="#FFF" />
               <Text style={styles.imageCountText}>
-                {formValues.images.length || 0}
+                {formValues.images.length}
               </Text>
             </View>
           </>
@@ -63,9 +63,7 @@ const Review: FunctionComponent<ReviewProps> = ({
             <Image style={styles.image} source={DivingPlaceholder} />
             <View style={styles.imageCountContainer}>
               <Icon name="image-outline" size={18} color="#FFF" />
-              <Text style={styles.imageCountText}>
-                {formValues.images.length || 0}
-              </Text>
+              <Text style={styles.imageCountText}>0</Text>
             </View>
           </>
         )}
@@ -80,7 +78,7 @@ const Review: FunctionComponent<ReviewProps> = ({
         <View style={styles.locationContainer}>
           <Image source={LocationImage} />
           <Text style={styles.locationText}>{formValues.location?.desc}</Text>
-          <View style={styles.dot} />
+          {/* <View style={styles.dot} /> */}
           <Text style={styles.locationTimestamp}>
             {new Date().toDateString()}
           </Text>
@@ -216,6 +214,7 @@ const styles = StyleSheet.create({
   locationText: {
     marginLeft: 5,
     fontSize: 15,
+    maxWidth: '50%',
   },
   locationTimestamp: {
     color: 'grey',

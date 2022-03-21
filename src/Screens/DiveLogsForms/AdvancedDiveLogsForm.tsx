@@ -63,7 +63,8 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
 }) => {
   const [page, switchPage] = React.useState(1);
   const [modalIsOpen, toggleModal] = React.useState(false);
-  const today = new Date();
+  const [logDate, setLogDate] = React.useState<Date>();
+
   let formRef = React.useRef<FormApi<InitialValues, Partial<InitialValues>>>();
   let scrollContainerRef = React.useRef<ScrollView | null>();
   const dispatch = useAppDispatch();
@@ -85,6 +86,10 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   const previous = () => {
     switchPage(page - 1);
   };
+
+  React.useEffect(() => {
+    setLogDate(new Date());
+  }, []);
 
   React.useEffect(() => {
     scrollContainerRef.current?.scrollTo({
@@ -129,8 +134,8 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     dispatch(
       editDiveLog({
         ...values,
-        startDate: new Date(values.startDate ?? today).toDateString(),
-        startTime: new Date(values.startTime ?? today).toTimeString(),
+        startDate: (values.startDate as Date).toDateString(),
+        startTime: (values.startTime as Date).toTimeString(),
       }),
     );
   };
@@ -156,8 +161,10 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     visibility: 'Poor',
     diveActivity: 'Scuba',
     entry: 'Shore',
-    // startDate: new Date(), // removed because they were for some re
-    // startTime: new Date(),
+    // @ts-ignore
+    startDate: logDate,
+    // @ts-ignore
+    startTime: logDate,
     weight: 5,
     airTankStart: 40,
     airTankEnd: 40,

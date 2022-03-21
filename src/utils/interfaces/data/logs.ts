@@ -17,8 +17,8 @@ export interface SimpleFormInitialValues {
 }
 
 export interface AdvancedFormInitialValues extends SimpleFormInitialValues {
-  startDate?: Date | string; // date type for form, string type for redux. Will handle api value types later
-  startTime?: Date | string; // date type for form, string type for redux. Will handle api value types later
+  startDate: Date | string; // date type for form, string type for redux. Will handle api value types later
+  startTime: Date | string; // date type for form, string type for redux. Will handle api value types later
   timeInWater?: number;
   maxDepth?: number;
   waterTemp?: number;
