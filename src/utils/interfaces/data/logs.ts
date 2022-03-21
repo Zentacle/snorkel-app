@@ -9,6 +9,11 @@ export interface SimpleFormInitialValues {
     lng: number;
     desc: string;
   };
+  images: {
+    uri: string;
+    type?: string;
+    name: string;
+  }[];
 }
 
 export interface AdvancedFormInitialValues extends SimpleFormInitialValues {

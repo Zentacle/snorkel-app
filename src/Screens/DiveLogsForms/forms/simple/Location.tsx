@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import IOIcon from 'react-native-vector-icons/Ionicons';
 import { Field } from 'react-final-form';
+import { FieldArray } from 'react-final-form-arrays';
 
 import GradientText from '_components/ui/GradientText';
 import GradientCircle from '_components/ui/GradientCircle';
@@ -9,6 +10,7 @@ import LocationAutocompleteModal from '_screens/DiveLogsForms/components/Locatio
 import SimpleFormDiveLocation from '_screens/DiveLogsForms/components/SimpleFormDiveLocation';
 
 import type { FunctionComponent } from 'react';
+import ImagePickerArray from '_screens/DiveLogsForms/components/ImagePickerArray';
 
 interface LocationAndImageProps {
   location?: {
@@ -39,71 +41,31 @@ const Location: FunctionComponent<LocationAndImageProps> = ({ location }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <>
+      <Field
+        name="location"
+        isVisible={autocompleteModalOpen}
+        component={LocationAutocompleteModal}
+        closeModal={closeLocationModal}
+      />
+
+      {isValidLocation ? (
+        <SimpleFormDiveLocation
+          coordinates={{
+            latitude: location.lat,
+            longitude: location.lng,
+          }}
+          desc={location.desc}
+          onClickEdit={openLocationModal}
+        />
+      ) : (
         <View>
-          <Field
-            name="location"
-            isVisible={autocompleteModalOpen}
-            component={LocationAutocompleteModal}
-            closeModal={closeLocationModal}
-          />
-          {/* <Field
-                  name="location"
-                  component={SearchInput}
-                  containerStyle={styles.searchInputContainer}
-                  withFilterIcon
-                  handleInputFocus={handleInputFocus}
-                  onClickFilterIcon={() => navigateToFilters(values)}
-                /> */}
-        </View>
-
-        {isValidLocation ? (
-          <SimpleFormDiveLocation
-            coordinates={{
-              latitude: location.lat,
-              longitude: location.lng,
-            }}
-            desc={location.desc}
-            onClickEdit={openLocationModal}
-          />
-        ) : (
-          <View>
-            <Text style={styles.headerLabel}>Dive Location</Text>
-            <View style={styles.subContainer}>
-              <Pressable onPress={openLocationModal}>
-                <GradientCircle style={styles.iconContainer}>
-                  <IOIcon name="location-outline" size={25} color="white" />
-                </GradientCircle>
-              </Pressable>
-              <GradientText
-                gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-                start={{
-                  x: 0,
-                  y: 0,
-                }}
-                end={{
-                  x: 0.06,
-                  y: 1.8,
-                }}
-                gradientLocations={[0.01, 1, 1]}
-                style={styles.actionText}>
-                Add Location
-              </GradientText>
-            </View>
-          </View>
-        )}
-
-        <View style={styles.mediaContainer}>
-          <View style={styles.mediaContentLabel}>
-            <Text style={styles.headerLabel}>Photos and Videos</Text>
-            <View style={styles.optionalContainer}>
-              <Text style={styles.optionaltext}>Optional</Text>
-            </View>
-          </View>
+          <Text style={styles.headerLabel}>Dive Location</Text>
           <View style={styles.subContainer}>
-            <GradientCircle style={styles.iconContainer}>
-              <IOIcon name="add-outline" size={30} color="white" />
-            </GradientCircle>
+            <Pressable onPress={openLocationModal}>
+              <GradientCircle style={styles.iconContainer}>
+                <IOIcon name="location-outline" size={25} color="white" />
+              </GradientCircle>
+            </Pressable>
             <GradientText
               gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
               start={{
@@ -116,11 +78,20 @@ const Location: FunctionComponent<LocationAndImageProps> = ({ location }) => {
               }}
               gradientLocations={[0.01, 1, 1]}
               style={styles.actionText}>
-              Add Photos or Videos
+              Add Location
             </GradientText>
           </View>
         </View>
-      </>
+      )}
+
+      <FieldArray
+        name="images"
+        component={ImagePickerArray}
+        // containerStyle={styles.searchInputContainer}
+        // withFilterIcon
+        // handleInputFocus={handleInputFocus}
+        // onClickFilterIcon={() => navigateToFilters(values)}
+      />
     </ScrollView>
   );
 };
@@ -152,19 +123,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 17,
     fontWeight: '600',
-  },
-  mediaContainer: {
-    marginTop: 30,
-    marginBottom: 30,
-  },
-  optionalContainer: {},
-  optionaltext: {
-    color: '#aa00ff',
-  },
-  mediaContentLabel: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
   },
 });
 

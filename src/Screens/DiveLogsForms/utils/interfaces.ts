@@ -7,3 +7,8 @@ export enum DateTimeMode {
   date = 'date',
   time = 'time',
 }
+
+export interface PhotoOptions {
+  name: string;
+  action: () => Promise<void>;
+}

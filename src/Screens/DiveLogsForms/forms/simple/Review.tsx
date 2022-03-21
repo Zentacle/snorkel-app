@@ -18,7 +18,7 @@ import type { FunctionComponent } from 'react';
 
 import type { SimpleFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
 
-import DiveSiteImg from '_assets/DiveSite3.jpg';
+import DivingPlaceholder from '_assets/diving-placeholder.jpeg';
 import LocationImage from '_assets/Location.png';
 import DescIcon from '_assets/DescIcon.png';
 import CopyIcon from '_assets/CopySimple.png';
@@ -45,11 +45,30 @@ const Review: FunctionComponent<ReviewProps> = ({
       </Text>
 
       <View style={styles.imageContainer}>
-        <Image style={styles.image} source={DiveSiteImg} />
-        <View style={styles.imageCountContainer}>
-          <Icon name="image-outline" size={18} color="#FFF" />
-          <Text style={styles.imageCountText}>24</Text>
-        </View>
+        {formValues.images && formValues.images.length ? (
+          <>
+            <Image
+              style={styles.image}
+              source={{ uri: formValues.images[0].uri }}
+            />
+            <View style={styles.imageCountContainer}>
+              <Icon name="image-outline" size={18} color="#FFF" />
+              <Text style={styles.imageCountText}>
+                {formValues.images.length || 0}
+              </Text>
+            </View>
+          </>
+        ) : (
+          <>
+            <Image style={styles.image} source={DivingPlaceholder} />
+            <View style={styles.imageCountContainer}>
+              <Icon name="image-outline" size={18} color="#FFF" />
+              <Text style={styles.imageCountText}>
+                {formValues.images.length || 0}
+              </Text>
+            </View>
+          </>
+        )}
       </View>
 
       <View style={styles.details}>

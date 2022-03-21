@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Form } from 'react-final-form';
 import validate from 'validate.js';
 import get from 'lodash/get';
+import arrayMutators from 'final-form-arrays';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
@@ -128,6 +129,8 @@ const SimpleDiveLogsForms: FunctionComponent<
     // @ts-ignore
     difficulty: 'Beginner',
     location: undefined,
+    // @ts-ignore
+    // images: [],
     ...passedInLog,
   };
 
@@ -181,10 +184,13 @@ const SimpleDiveLogsForms: FunctionComponent<
       validate={values => validate(values, constraints)}
       onSubmit={() => {}}
       initialValues={initialValues}
+      mutators={{
+        ...arrayMutators,
+      }}
       keepDirtyOnReinitialize
       render={({ values, form }) => {
         formRef.current = form;
-        console.log('location values', values.location);
+        console.log('values', values);
 
         return (
           <SafeAreaView style={styles.container}>

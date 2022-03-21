@@ -4,6 +4,7 @@ import IOIcon from 'react-native-vector-icons/Ionicons';
 import MAIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MapView, { Marker } from 'react-native-maps';
 import { Field } from 'react-final-form';
+import { FieldArray } from 'react-final-form-arrays';
 
 import GradientText from '_components/ui/GradientText';
 import GradientCircle from '_components/ui/GradientCircle';
@@ -12,6 +13,7 @@ import GradientBox from '_components/ui/GradientBox';
 import FormManagementInput from '_components/ui/FormManagementInput';
 import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
 import RatingsInputComp from '_components/ui/RatingsInputComp';
+import ImagePickerArray from '_screens/DiveLogsForms/components/ImagePickerArray';
 
 import LocationImage from '_assets/Location.png';
 import LogImage from '_assets/log-color.png';
@@ -94,31 +96,7 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
       </View>
 
       <View style={styles.mediaContainer}>
-        <View style={styles.mediaContentLabel}>
-          <Text style={styles.headerLabel}>Photos and Videos</Text>
-          <View style={styles.optionalContainer}>
-            <Text style={styles.optionaltext}>Not Necessary</Text>
-          </View>
-        </View>
-        <View style={styles.subContainer}>
-          <GradientCircle style={styles.iconContainer}>
-            <IOIcon name="add-outline" size={30} color="white" />
-          </GradientCircle>
-          <GradientText
-            gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-            start={{
-              x: 0,
-              y: 0,
-            }}
-            end={{
-              x: 0.06,
-              y: 1.8,
-            }}
-            gradientLocations={[0.01, 1, 1]}
-            style={styles.actionText}>
-            Add Photos or Videos
-          </GradientText>
-        </View>
+        <FieldArray name="images" component={ImagePickerArray} />
       </View>
 
       <View style={styles.nameContainer}>

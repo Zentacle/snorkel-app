@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Form } from 'react-final-form';
 import validate from 'validate.js';
 import get from 'lodash/get';
+import arrayMutators from 'final-form-arrays';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type {
@@ -187,6 +188,9 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
       onSubmit={submitLog}
       initialValues={initialValues}
       keepDirtyOnReinitialize
+      mutators={{
+        ...arrayMutators,
+      }}
       render={({ values, handleSubmit, form }) => {
         formRef.current = form;
 
