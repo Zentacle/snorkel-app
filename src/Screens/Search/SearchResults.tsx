@@ -55,7 +55,7 @@ const SearchResults: FunctionComponent<SearchResultsProps> = ({
   route,
 }) => {
   const dispatch = useAppDispatch();
-  const diveSites = useAppSelector(selectAllDiveSites);
+  const diveSites = Object.values(useAppSelector(selectAllDiveSites));
   const [sortModalIsOpen, toggleSortModal] = React.useState(false);
   let formRef = React.useRef<FormApi>();
   const searchValues: InitialSearchValues = get(route, 'params.search', {});
