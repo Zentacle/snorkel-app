@@ -10,6 +10,7 @@ module.exports = {
           _components: './src/Components',
           _screens: './src/Screens',
           _utils: './src/utils',
+          _redux: './src/redux',
         },
       },
     ],

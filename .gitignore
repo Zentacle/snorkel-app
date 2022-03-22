@@ -30,6 +30,10 @@ local.properties
 *.iml
 *.hprof
 
+# signing config
+android/app/gradle.properties
+android/app/google-services.json
+
 # node.js
 #
 node_modules/
@@ -58,3 +62,12 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+
+/ios/GoogleService-info.plist
+
+# react-native-config codegen
+ios/tmp.xcconfig
+
+# android env file 
+.env
+config/
