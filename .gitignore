@@ -65,6 +65,9 @@ buck-out/
 
 /ios/GoogleService-info.plist
 
+# react-native-config codegen
+ios/tmp.xcconfig
+
 # android env file 
 .env
 config/
