@@ -17,6 +17,8 @@ interface LogItemProps {
 
 const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
   const isAdvancedLog = !!(diveLog.timeInWater && diveLog.maxDepth);
+  const logLat = diveLog.location?.lat || -8.409518;
+  const logLng = diveLog.location?.lng || 115.188919;
   return (
     <View style={styles.container}>
       <View style={styles.mapRatingsContainer}>
@@ -27,8 +29,8 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
             scrollEnabled={false}
             liteMode={true}
             initialRegion={{
-              latitude: -8.409518,
-              longitude: 115.188919,
+              latitude: logLat,
+              longitude: logLng,
               latitudeDelta: 0.0421,
               longitudeDelta: 0.6922,
             }}
@@ -51,11 +53,11 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
           <Text style={styles.detailsTitle}>{diveLog.name}</Text>
           <View style={styles.descContainer}>
             <Image source={DescIcon} />
-            <Text style={styles.descText}>USS Liberty wreck on beach</Text>
+            <Text style={styles.descText}>{diveLog.name}</Text>
           </View>
           <View style={styles.locationContainer}>
             <Image source={LocationImage} />
-            <Text style={styles.locationText}>East bali, Indonesia</Text>
+            <Text style={styles.locationText}>{diveLog.location?.desc}</Text>
           </View>
         </View>
         {isAdvancedLog && (
@@ -133,6 +135,7 @@ const styles = StyleSheet.create({
   detailsTitle: {
     fontSize: 16,
     fontWeight: '600',
+    color: 'black',
   },
   descContainer: {
     flexDirection: 'row',
@@ -141,6 +144,7 @@ const styles = StyleSheet.create({
   descText: {
     marginLeft: 5,
     fontSize: 15,
+    color: 'black',
   },
   locationContainer: {
     flexDirection: 'row',
@@ -150,6 +154,7 @@ const styles = StyleSheet.create({
   locationText: {
     marginLeft: 5,
     fontSize: 15,
+    color: 'black',
   },
   timeDepthContainer: {
     flexDirection: 'row',
@@ -174,6 +179,7 @@ const styles = StyleSheet.create({
   timeDepthText: {
     fontSize: 18,
     fontWeight: '500',
+    color: 'black',
   },
   timeDepthLabel: {
     color: 'gray',

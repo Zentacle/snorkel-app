@@ -27,6 +27,22 @@ function calculateTotalDiveTime(diveLogs: AdvancedFormInitialValues[]) {
   return formatDuration(total * 60000);
 }
 
+function calculateVisitedSites(diveLogs: AdvancedFormInitialValues[]): number {
+  let locationHashMap: { [key: string]: string } = {};
+  let total = 0;
+
+  for (let log of diveLogs) {
+    if (log.location?.desc) {
+      if (!locationHashMap[log.location?.desc]) {
+        locationHashMap[log.location.desc] = log.location.desc;
+        total += 1;
+      }
+    }
+  }
+
+  return total;
+}
+
 const DiveLogSummary: FunctionComponent<DiveLogSummaryProps> = ({
   diveLogs,
 }) => {
@@ -58,8 +74,14 @@ const DiveLogSummary: FunctionComponent<DiveLogSummaryProps> = ({
                 style={{ width: 20, height: 25, marginBottom: 5 }}
                 source={Location}
               />
-              <Text style={styles.summaryValue}>8</Text>
-              <Text style={styles.summaryLabel}>Visited Sites</Text>
+              <Text style={styles.summaryValue}>
+                {calculateVisitedSites(diveLogs)}
+              </Text>
+              <Text style={styles.summaryLabel}>
+                {calculateVisitedSites(diveLogs) === 1
+                  ? 'Visited Site'
+                  : 'Visited Sites'}
+              </Text>
             </View>
           </View>
         </View>
@@ -95,11 +117,13 @@ const styles = StyleSheet.create({
   },
   summaryLabel: {
     marginVertical: 3,
+    color: 'black',
   },
   summaryValue: {
     fontWeight: '600',
     fontSize: 18,
     marginVertical: 3,
+    color: 'black',
   },
 });
 

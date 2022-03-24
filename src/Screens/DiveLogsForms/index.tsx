@@ -120,7 +120,7 @@ const SimpleDiveLogsForms: FunctionComponent<
   const initialValues: InitialValues = {
     // ignore overwritten propertied error
     // @ts-ignore
-    id: 0,
+    // id: 0,
     // @ts-ignore
     rating: 0,
     // @ts-ignore
@@ -259,6 +259,7 @@ const SimpleDiveLogsForms: FunctionComponent<
                     handleNavigateToAdvancedDiveLog(values as InitialValues)
                   }
                   formValues={values as InitialValues}
+                  id={savedDiveLogId}
                 />
               )}
             </ScrollView>

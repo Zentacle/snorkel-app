@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
     marginRight: 25,
     marginLeft: 15,
     marginBottom: 10,
+    color: 'black',
   },
   normalLevelCircle: {
     width: 20,

@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#EFF6F9',
+    paddingBottom: 20,
   },
   contentContainer: {
     marginHorizontal: 25,
@@ -120,6 +121,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 24,
     fontWeight: '700',
+    color: 'black',
   },
   terms: {
     marginTop: 30,
@@ -128,11 +130,13 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     fontWeight: '700',
     fontSize: 17,
+    color: 'black',
   },
   textBody: {
     marginTop: 10,
     fontSize: 16,
     fontWeight: '500',
+    color: 'black',
   },
   scrollContainer: {
     paddingBottom: 30,

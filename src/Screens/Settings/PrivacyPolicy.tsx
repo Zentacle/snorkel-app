@@ -168,6 +168,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 24,
     fontWeight: '700',
+    color: 'black',
   },
   privacy: {
     marginTop: 30,
@@ -175,11 +176,13 @@ const styles = StyleSheet.create({
   privacyHeader: {
     fontWeight: '700',
     fontSize: 17,
+    color: 'black',
   },
   textBody: {
     marginTop: 10,
     fontSize: 16,
     fontWeight: '500',
+    color: 'black',
   },
   scrollContainer: {
     paddingBottom: 30,
@@ -187,6 +190,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     fontWeight: '500',
+    color: 'black',
   },
 });
 

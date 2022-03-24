@@ -159,6 +159,7 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
             size={30}
             style={{ marginRight: 10 }}
             onPress={handleCloseModal}
+            color="black"
           />
           <PlainSearchInput
             onChange={handleTextChange}

@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
   starLabel: {
     fontSize: 18,
     fontWeight: '500',
+    color: 'black',
   },
 });
 

@@ -67,6 +67,7 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
         onPress={navigateToSettings}
         name="options-outline"
         size={30}
+        color="black"
       />
       <ScrollView
         style={styles.contentContainer}
@@ -140,11 +141,13 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 25,
     marginVertical: 15,
+    color: 'black',
   },
   diveLogsLabel: {
     fontWeight: '500',
     fontSize: 18,
     marginTop: 10,
+    color: 'black',
   },
   photosContainer: {
     marginBottom: 10,

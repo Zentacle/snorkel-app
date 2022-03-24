@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
   descText: {
     marginLeft: 5,
     fontSize: 15,
+    color: 'black',
   },
   locationContainer: {
     flexDirection: 'row',
@@ -124,6 +125,7 @@ const styles = StyleSheet.create({
   locationText: {
     marginLeft: 5,
     fontSize: 15,
+    color: 'black',
   },
 });
 

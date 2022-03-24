@@ -6,6 +6,9 @@ import {
   ScrollView,
   Image,
   Dimensions,
+  TouchableWithoutFeedback,
+  Share,
+  Alert,
 } from 'react-native';
 import IoIcon from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -23,16 +26,48 @@ import LocationImage from '_assets/Location.png';
 import DescIcon from '_assets/DescIcon.png';
 import CopyIcon from '_assets/CopySimple.png';
 import UploadIcon from '_assets/UploadSimple.png';
+import { useAppSelector } from '_redux/hooks';
+import { selectUser } from '_redux/slices/user';
 
 interface ReviewProps {
   navigateToAdvancedDiveForm: () => void;
   formValues: InitialValues;
+  id: number;
 }
 
 const Review: FunctionComponent<ReviewProps> = ({
   navigateToAdvancedDiveForm,
   formValues,
+  id,
 }) => {
+  const activeUser = useAppSelector(selectUser);
+  const onShare = async () => {
+    console.log('active user', activeUser);
+    const url = `zentacle://dive-log/${id}`;
+    try {
+      const result = await Share.share({
+        message: url,
+        title: `${activeUser?.username} wants to share their dive log with you`,
+        url,
+      });
+      console.log(result);
+
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of type result.activity type
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (err) {
+      interface CaughtErr {
+        message: string;
+      }
+      Alert.alert((err as CaughtErr).message);
+    }
+  };
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.gradientContainer}>
@@ -86,23 +121,25 @@ const Review: FunctionComponent<ReviewProps> = ({
       </View>
 
       <View style={styles.shareContainer}>
-        <View style={styles.shareItems}>
-          <Image style={styles.shareIcon} source={UploadIcon} />
-          <GradientText
-            gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-            start={{
-              x: 0,
-              y: 0,
-            }}
-            end={{
-              x: 0.06,
-              y: 1.8,
-            }}
-            gradientLocations={[0.01, 1, 1]}
-            style={styles.shareText}>
-            Share
-          </GradientText>
-        </View>
+        <TouchableWithoutFeedback onPress={onShare}>
+          <View style={styles.shareItems}>
+            <Image style={styles.shareIcon} source={UploadIcon} />
+            <GradientText
+              gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+              start={{
+                x: 0,
+                y: 0,
+              }}
+              end={{
+                x: 0.06,
+                y: 1.8,
+              }}
+              gradientLocations={[0.01, 1, 1]}
+              style={styles.shareText}>
+              Share
+            </GradientText>
+          </View>
+        </TouchableWithoutFeedback>
         <View style={styles.shareItems}>
           <Image style={styles.shareIcon} source={CopyIcon} />
           <GradientText
@@ -197,6 +234,7 @@ const styles = StyleSheet.create({
   detailsTitle: {
     fontSize: 16,
     fontWeight: '600',
+    color: 'black',
   },
   descContainer: {
     flexDirection: 'row',
@@ -205,6 +243,7 @@ const styles = StyleSheet.create({
   descText: {
     marginLeft: 5,
     fontSize: 15,
+    color: 'black',
   },
   locationContainer: {
     flexDirection: 'row',
@@ -215,6 +254,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     fontSize: 15,
     maxWidth: '50%',
+    color: 'black',
   },
   locationTimestamp: {
     color: 'grey',
@@ -227,6 +267,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#828993',
     marginLeft: 10,
     marginTop: 4,
+    color: 'black',
   },
   shareContainer: {
     marginTop: 50,

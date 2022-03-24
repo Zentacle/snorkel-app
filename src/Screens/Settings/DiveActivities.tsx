@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 24,
     fontWeight: '700',
+    color: 'black',
   },
   descriptionContainer: {
     marginTop: WIDTH < 400 ? WIDTH * 0.07 : WIDTH * 0.08,
@@ -182,6 +183,7 @@ const styles = StyleSheet.create({
     marginTop: WIDTH * 0.15,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 10,
   },
   selectedShadow: {
     borderRadius: 12,
@@ -202,9 +204,11 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   activityText: {
-    marginRight: 25,
+    marginRight: WIDTH < 380 ? 10 : 25,
     marginLeft: 15,
     marginBottom: 10,
+    color: 'black',
+    fontSize: WIDTH < 380 ? 13 : 14,
   },
   normalActivityCircle: {
     width: 20,

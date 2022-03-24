@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { Field } from 'react-final-form';
 
 import SliderComp from '_components/ui/Slider';
@@ -10,6 +10,7 @@ import GradientCircle from '_components/ui/GradientCircle';
 
 const levels = ['Scuba', 'Freediving', 'Snorkel'];
 const entries = ['Shore', 'Boat'];
+const WIDTH = Dimensions.get('window').width;
 
 const DiveActiveComp = (level: string) => (
   <View style={styles.selectedShadow}>
@@ -169,9 +170,11 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   activityText: {
-    marginRight: 25,
+    marginRight: WIDTH < 380 ? 10 : 25,
     marginLeft: 15,
     marginBottom: 10,
+    color: 'black',
+    fontSize: WIDTH < 380 ? 13 : 14,
   },
   normalActivityCircle: {
     width: 20,

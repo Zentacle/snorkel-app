@@ -146,6 +146,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 24,
     fontWeight: '700',
+    color: 'black',
   },
   profileImageContainer: {
     alignItems: 'center',
@@ -169,10 +170,12 @@ const styles = StyleSheet.create({
   },
   nameText: {
     fontSize: 16,
+    color: 'black',
   },
   nameLabel: {
     fontWeight: '600',
     fontSize: 18,
+    color: 'black',
   },
   footer: {
     marginHorizontal: 25,

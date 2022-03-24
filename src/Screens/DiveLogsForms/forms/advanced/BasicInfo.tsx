@@ -184,6 +184,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 17,
     fontWeight: '600',
+    color: 'black',
   },
   mediaContainer: {
     marginTop: 30,
@@ -235,6 +236,7 @@ const styles = StyleSheet.create({
   },
   mapText: {
     marginLeft: 10,
+    color: 'black',
   },
   mapIconContainer: {
     marginRight: 20,
@@ -259,6 +261,7 @@ const styles = StyleSheet.create({
   nameInput: {
     height: 45,
     fontSize: 16,
+    color: 'black',
   },
   notesContainer: {
     marginTop: 30,
@@ -268,6 +271,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingTop: 12,
     paddingBottom: 5,
+    color: 'black',
   },
   ratingContentContainner: {
     marginTop: 30,
@@ -282,6 +286,7 @@ const styles = StyleSheet.create({
   starLabel: {
     fontSize: 18,
     fontWeight: '500',
+    color: 'black',
   },
   levelContentContainer: {
     marginVertical: 40,
@@ -323,6 +328,7 @@ const styles = StyleSheet.create({
     marginRight: 25,
     marginLeft: 15,
     marginBottom: 10,
+    color: 'black',
   },
   normalLevelCircle: {
     width: 20,

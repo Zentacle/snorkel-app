@@ -56,7 +56,12 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
-        <Icon name="chevron-back-outline" size={30} onPress={navigateBack} />
+        <Icon
+          name="chevron-back-outline"
+          color="black"
+          size={30}
+          onPress={navigateBack}
+        />
         <Text style={styles.headerText}>Settings</Text>
         <View />
       </View>
@@ -168,6 +173,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 30,
     fontWeight: '700',
+    color: 'black',
   },
   subscriptionContainer: {
     marginVertical: 20,
@@ -200,6 +206,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: 20,
     marginTop: 5,
+    color: 'black',
   },
   pageContainer: {
     flexDirection: 'row',
@@ -214,6 +221,7 @@ const styles = StyleSheet.create({
   pageLabel: {
     fontSize: 17,
     marginLeft: 10,
+    color: 'black',
   },
   buttonContainer: {
     backgroundColor: 'white',

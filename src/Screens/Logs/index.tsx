@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: '800',
     marginHorizontal: 25,
+    color: 'black',
   },
 });
 

@@ -64,8 +64,8 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
 
   const isAdvancedLog = !!(diveLog.timeInWater && diveLog.maxDepth);
   const coords = {
-    latitude: -8.409518,
-    longitude: 115.188919,
+    latitude: diveLog.location?.lat || -8.409518,
+    longitude: diveLog.location?.lng || 115.188919,
   };
 
   const navigateToMap = () => {
@@ -530,7 +530,9 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: 'black',
   },
-  airTankTypetext: {},
+  airTankTypetext: {
+    color: 'black',
+  },
   divingGearItemContainer: {
     marginVertical: 20,
   },
@@ -581,6 +583,7 @@ const styles = StyleSheet.create({
     textDecorationStyle: 'dotted',
     fontSize: 15,
     marginLeft: 10,
+    color: 'black',
   },
 });
 

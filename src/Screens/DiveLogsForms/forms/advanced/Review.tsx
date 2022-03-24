@@ -18,6 +18,8 @@ import UploadIcon from '_assets/UploadSimple.png';
 import DepthArrow from '_assets/ArrowsDownUp.png';
 import DiveTimeClock from '_assets/ClockClockwise.png';
 
+const WIDTH = Dimensions.get('window').width;
+
 interface ReviewProps {
   navigateToDiveLogs: () => void;
   formValues: InitialValues;
@@ -219,6 +221,7 @@ const styles = StyleSheet.create({
   detailsTitle: {
     fontSize: 16,
     fontWeight: '600',
+    color: 'black',
   },
   descContainer: {
     flexDirection: 'row',
@@ -227,6 +230,7 @@ const styles = StyleSheet.create({
   descText: {
     marginLeft: 5,
     fontSize: 15,
+    color: 'black',
   },
   locationContainer: {
     flexDirection: 'row',
@@ -237,6 +241,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     fontSize: 15,
     maxWidth: '50%',
+    color: 'black',
   },
   locationTimestamp: {
     color: 'grey',
@@ -303,6 +308,7 @@ const styles = StyleSheet.create({
   timeDepthText: {
     fontSize: 18,
     fontWeight: '500',
+    color: 'black',
   },
   timeDepthLabel: {
     color: 'gray',

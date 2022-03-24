@@ -62,7 +62,7 @@ const HelpCenter: FunctionComponent<HelpCenterTypeProps> = ({ navigation }) => {
         <View style={styles.supportContainer}>
           {support.map((item, index) => (
             <View style={styles.support} key={index}>
-              <MUIcon name={item.icon} size={30} />
+              <MUIcon name={item.icon} size={30} color="black" />
               <Text style={styles.supportLink}>{item.support}</Text>
             </View>
           ))}
@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 24,
     fontWeight: '700',
+    color: 'black',
   },
   helpBody: {
     marginTop: 30,
@@ -97,6 +98,7 @@ const styles = StyleSheet.create({
   helpText: {
     fontSize: 16,
     lineHeight: 22,
+    color: 'black',
   },
   supportContainer: {
     marginTop: 30,
@@ -109,6 +111,7 @@ const styles = StyleSheet.create({
   supportLink: {
     marginLeft: 20,
     fontSize: 17,
+    color: 'black',
   },
 });
 

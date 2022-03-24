@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
   input: {
     height: 45,
     fontSize: 16,
+    color: 'black',
   },
 });
 
