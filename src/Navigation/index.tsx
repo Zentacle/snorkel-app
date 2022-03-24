@@ -13,6 +13,7 @@ import SearchNavigator from './App/Search';
 import LogsNavigator from './App/Logs';
 import LogsFormNavigator from './App/DiveLogsForm';
 import SettingsNavigator from './Settings';
+import NotFound from '_screens/NotFound';
 
 import { useAppDispatch, useAppSelector } from '_redux/hooks';
 import { handleFetchDiveSites } from '_redux/slices/dive-sites';
@@ -23,6 +24,7 @@ import {
   selectAutoAuthLoadingState,
 } from '_redux/slices/user';
 import { autoHydrateSettings } from '_redux/slices/settings';
+import { linking } from '_utils/functions/linking';
 
 const Navigator: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -55,20 +57,21 @@ const Navigator: React.FC = () => {
 
   if (!loggedInState) {
     return (
-      <NavigationContainer>
+      <NavigationContainer linking={linking}>
         <Stack.Navigator
           initialRouteName="Auth"
           screenOptions={{
             headerShown: false,
           }}>
           <Stack.Screen name="Auth" component={AuthNavigator} />
+          <Stack.Screen name="NotFound" component={NotFound} />
         </Stack.Navigator>
       </NavigationContainer>
     );
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
       <Stack.Navigator
         initialRouteName={
           userPreviouslyFilledOnBoardingData ? 'App' : 'OnBoarding'
@@ -83,6 +86,7 @@ const Navigator: React.FC = () => {
         <Stack.Screen name="LogsStack" component={LogsNavigator} />
         <Stack.Screen name="LogsFormStack" component={LogsFormNavigator} />
         <Stack.Screen name="SettingsStack" component={SettingsNavigator} />
+        <Stack.Screen name="NotFound" component={NotFound} />
       </Stack.Navigator>
     </NavigationContainer>
   );
