@@ -43,7 +43,7 @@ const Review: FunctionComponent<ReviewProps> = ({
   const activeUser = useAppSelector(selectUser);
   const onShare = async () => {
     console.log('active user', activeUser);
-    const url = `zentacle://dive-log/${id}`;
+    const url = `https://zentacle.com/dive-log/${id}`;
     try {
       const result = await Share.share({
         message: url,
