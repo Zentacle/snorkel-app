@@ -33,6 +33,7 @@ import GradientBox from '_components/ui/GradientBox';
 import { useAppSelector } from '_redux/hooks';
 import { selectDiveLogById } from '_redux/slices/dive-logs';
 import { AdvancedFormInitialValues } from '_utils/interfaces/data/logs';
+import NoLog from './components/NoLog';
 
 type LogNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<LogsStackParamList, 'LogDetail'>,
@@ -51,18 +52,22 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
     selectDiveLogById(route.params.diveLogId),
   );
 
-  if (!diveLog) return null;
+  const navigateBack = () => {
+    navigation.navigate('App', {
+      screen: 'Logs',
+    });
+  };
+
+  if (!diveLog) {
+    return <NoLog goBack={navigateBack} />;
+  }
 
   const isAdvancedLog = !!(diveLog.timeInWater && diveLog.maxDepth);
   const coords = {
     latitude: -8.409518,
     longitude: 115.188919,
   };
-  const navigateBack = () => {
-    navigation.navigate('App', {
-      screen: 'Logs',
-    });
-  };
+
   const navigateToMap = () => {
     navigation.navigate('ExploreStack', {
       screen: 'Map',
