@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import ImageCarousel from '_components/reusables/ImageCarousel';
+import ImageCarousel from '_components/reusables/DiveLogImageCarousel';
 import DiveLocation from './components/DiveLocation';
 import { capitalize } from '_utils/functions';
 
@@ -109,7 +109,11 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <ImageCarousel goBack={navigateBack} images={diveLog.images} />
+        <ImageCarousel
+          goBack={navigateBack}
+          images={diveLog.images}
+          shareUrl={`https://zentacle.com/dive-log/${diveLog.id}`}
+        />
 
         <View style={styles.contentContainer}>
           <Text style={styles.mainDescription}>{diveLog.name}</Text>
