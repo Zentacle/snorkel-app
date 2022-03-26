@@ -1,7 +1,17 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Dimensions,
+  TouchableWithoutFeedback,
+  Share,
+  Alert,
+} from 'react-native';
 import IoIcon from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 import GradientCircle from '_components/ui/GradientCircle';
 import GradientText from '_components/ui/GradientText';
@@ -18,6 +28,9 @@ import UploadIcon from '_assets/UploadSimple.png';
 import DepthArrow from '_assets/ArrowsDownUp.png';
 import DiveTimeClock from '_assets/ClockClockwise.png';
 
+import { useAppSelector } from '_redux/hooks';
+import { selectUser } from '_redux/slices/user';
+
 const WIDTH = Dimensions.get('window').width;
 
 interface ReviewProps {
@@ -29,6 +42,44 @@ const Review: FunctionComponent<ReviewProps> = ({
   navigateToDiveLogs,
   formValues,
 }) => {
+  const [copyMessageSet, setCopymessage] = React.useState(false);
+  const activeUser = useAppSelector(selectUser);
+  const onShare = async () => {
+    const url = `https://zentacle.com/dive-log/${formValues.id}`;
+    try {
+      const result = await Share.share({
+        message: url,
+        title: `${activeUser?.username} wants to share their dive log with you`,
+        url,
+      });
+      console.log(result);
+
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of type result.activity type
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (err) {
+      interface CaughtErr {
+        message: string;
+      }
+      Alert.alert((err as CaughtErr).message);
+    }
+  };
+
+  const onCopyToClipboard = () => {
+    const url = `https://zentacle.com/dive-log/${id}`;
+    Clipboard.setString(url);
+    setCopymessage(true);
+    setTimeout(() => {
+      setCopymessage(false);
+    }, 1000);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.gradientContainer}>
@@ -104,40 +155,44 @@ const Review: FunctionComponent<ReviewProps> = ({
       </View>
 
       <View style={styles.shareContainer}>
-        <View style={styles.shareItems}>
-          <Image style={styles.shareIcon} source={UploadIcon} />
-          <GradientText
-            gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-            start={{
-              x: 0,
-              y: 0,
-            }}
-            end={{
-              x: 0.06,
-              y: 1.8,
-            }}
-            gradientLocations={[0.01, 1, 1]}
-            style={styles.shareText}>
-            Share
-          </GradientText>
-        </View>
-        <View style={styles.shareItems}>
-          <Image style={styles.shareIcon} source={CopyIcon} />
-          <GradientText
-            gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-            start={{
-              x: 0,
-              y: 0,
-            }}
-            end={{
-              x: 0.06,
-              y: 1.8,
-            }}
-            gradientLocations={[0.01, 1, 1]}
-            style={styles.shareText}>
-            Copy Link
-          </GradientText>
-        </View>
+        <TouchableWithoutFeedback onPress={onShare}>
+          <View style={styles.shareItems}>
+            <Image style={styles.shareIcon} source={UploadIcon} />
+            <GradientText
+              gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+              start={{
+                x: 0,
+                y: 0,
+              }}
+              end={{
+                x: 0.06,
+                y: 1.8,
+              }}
+              gradientLocations={[0.01, 1, 1]}
+              style={styles.shareText}>
+              Share
+            </GradientText>
+          </View>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={onCopyToClipboard}>
+          <View style={styles.shareItems}>
+            <Image style={styles.shareIcon} source={CopyIcon} />
+            <GradientText
+              gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+              start={{
+                x: 0,
+                y: 0,
+              }}
+              end={{
+                x: 0.06,
+                y: 1.8,
+              }}
+              gradientLocations={[0.01, 1, 1]}
+              style={styles.shareText}>
+              {copyMessageSet ? 'Copied' : 'Copy Link'}
+            </GradientText>
+          </View>
+        </TouchableWithoutFeedback>
       </View>
 
       <View>
