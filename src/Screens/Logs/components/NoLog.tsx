@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
   message: {
     fontWeight: '600',
     fontSize: 18,
+    color: 'black',
   },
   image: {
     width: 200,

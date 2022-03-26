@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     lineHeight: 30,
+    color: 'black',
   },
   image: {
     width: 200,
