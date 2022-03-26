@@ -440,6 +440,8 @@ PODS:
     - React-Core
   - RNCAsyncStorage (1.12.1):
     - React-Core
+  - RNCClipboard (1.8.5):
+    - React-Core
   - RNCMaskedView (0.2.6):
     - React-Core
   - RNGoogleSignin (7.0.4):
@@ -531,6 +533,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
+  - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNPermissions (from `../node_modules/react-native-permissions`)
@@ -665,6 +668,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@invertase/react-native-apple-authentication"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
+  RNCClipboard:
+    :path: "../node_modules/@react-native-clipboard/clipboard"
   RNCMaskedView:
     :path: "../node_modules/@react-native-masked-view/masked-view"
   RNGoogleSignin:
@@ -752,6 +757,7 @@ SPEC CHECKSUMS:
   ReactCommon: 57b69f6383eafcbd7da625bfa6003810332313c4
   RNAppleAuthentication: 63c2127ace11985b94f852fc480eb84145653712
   RNCAsyncStorage: cb9a623793918c6699586281f0b51cbc38f046f9
+  RNCClipboard: 471860adba60079ac22058c663c91b3a875a7609
   RNCMaskedView: d367b2a8df3992114e31b32b091a0c00dc800827
   RNGoogleSignin: aeb29e549e6748da3e5847516fdd1327c85894c5
   RNPermissions: bf844d392fe0ecbfbd2e4ae2b88cc32f2f09b369
