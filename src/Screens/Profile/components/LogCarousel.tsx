@@ -16,10 +16,6 @@ import type {
 } from 'react-native';
 import type { FunctionComponent } from 'react';
 
-import DiveSite1 from '_assets/DiveSite.jpg';
-import DiveSite2 from '_assets/DiveSite2.jpg';
-import DiveSite3 from '_assets/DiveSite3.jpg';
-import DiveSite4 from '_assets/DiveSite4.jpg';
 import DivingPlaceholder from '_assets/diving-placeholder.jpeg';
 
 const WIDTH = Dimensions.get('window').width;
@@ -162,9 +158,7 @@ const LogCarousel: FunctionComponent<ImageCarouselProps> = ({ images }) => {
         </View>
         <View style={styles.imageCountContainer}>
           <Icon name="image-outline" size={18} color="#FFF" />
-          <Text style={styles.imageCountText}>{`${focusedImageIndex + 1}/${
-            defaultImages.length
-          }`}</Text>
+          <Text style={styles.imageCountText}>0/0</Text>
         </View>
       </View>
     </View>
