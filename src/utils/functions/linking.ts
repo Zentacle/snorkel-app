@@ -18,6 +18,6 @@ const config = {
 };
 
 export const linking: LinkingOptions<RootStackParamList> = {
-  prefixes: ['zentacle://', 'https://zentacle.com'],
+  prefixes: ['zentacle://', 'https://www.zentacle.com/'],
   config,
 };
