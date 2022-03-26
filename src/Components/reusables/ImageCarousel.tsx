@@ -7,6 +7,8 @@ import {
   Dimensions,
   ScrollView,
   TouchableWithoutFeedback,
+  Share,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FEIcon from 'react-native-vector-icons/Feather';
@@ -18,7 +20,10 @@ import type {
 } from 'react-native';
 import type { FunctionComponent } from 'react';
 
-import DivingPlaceholder from '_assets/diving-placeholder.jpeg';
+import DiveSite1 from '_assets/DiveSite.jpg';
+import DiveSite2 from '_assets/DiveSite2.jpg';
+import DiveSite3 from '_assets/DiveSite3.jpg';
+import DiveSite4 from '_assets/DiveSite4.jpg';
 
 const WIDTH = Dimensions.get('window').width;
 
@@ -34,7 +39,16 @@ interface Images {
 
 const defaultImages: Images[] = [
   {
-    source: DivingPlaceholder,
+    source: DiveSite1,
+  },
+  {
+    source: DiveSite2,
+  },
+  {
+    source: DiveSite3,
+  },
+  {
+    source: DiveSite4,
   },
 ];
 
@@ -45,6 +59,7 @@ interface ImageCarouselProps {
     type?: string;
     name: string;
   }[];
+  shareUrl?: string;
 }
 
 const ImageCarousel: FunctionComponent<ImageCarouselProps> = props => {
@@ -73,6 +88,29 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = props => {
     setFocusedImageIndex(focusedIndex);
   };
 
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: props.shareUrl as string,
+      });
+
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of type result.activity type
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (err) {
+      interface CaughtErr {
+        message: string;
+      }
+      Alert.alert((err as CaughtErr).message);
+    }
+  };
+
   const [focusedImageIndex, setFocusedImageIndex] = React.useState(0);
   if (props.images && props.images.length) {
     return (
@@ -96,11 +134,19 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = props => {
               <FEIcon name="chevron-left" color="black" size={25} />
             </View>
           </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback>
-            <View style={styles.headerIcon}>
-              <FEIcon name="share" color="black" size={25} />
-            </View>
-          </TouchableWithoutFeedback>
+          {props.shareUrl ? (
+            <TouchableWithoutFeedback onPress={onShare}>
+              <View style={styles.headerIcon}>
+                <FEIcon name="share" color="black" size={25} />
+              </View>
+            </TouchableWithoutFeedback>
+          ) : (
+            <TouchableWithoutFeedback>
+              <View style={styles.headerIcon}>
+                <FEIcon name="share" color="black" size={25} />
+              </View>
+            </TouchableWithoutFeedback>
+          )}
         </View>
         <View style={styles.headerBottomContainer}>
           <View style={styles.photoDots}>
@@ -144,11 +190,19 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = props => {
             <FEIcon name="chevron-left" color="black" size={25} />
           </View>
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback>
-          <View style={styles.headerIcon}>
-            <FEIcon name="share" color="black" size={25} />
-          </View>
-        </TouchableWithoutFeedback>
+        {props.shareUrl ? (
+          <TouchableWithoutFeedback onPress={onShare}>
+            <View style={styles.headerIcon}>
+              <FEIcon name="share" color="black" size={25} />
+            </View>
+          </TouchableWithoutFeedback>
+        ) : (
+          <TouchableWithoutFeedback>
+            <View style={styles.headerIcon}>
+              <FEIcon name="share" color="black" size={25} />
+            </View>
+          </TouchableWithoutFeedback>
+        )}
       </View>
       <View style={styles.headerBottomContainer}>
         <View style={styles.photoDots}>
