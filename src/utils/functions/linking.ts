@@ -13,6 +13,16 @@ const config = {
         LogDetail: 'dive-log/:diveLogId',
       },
     },
+    App: {
+      screens: {
+        Explore: 'Beach',
+      },
+    },
+    ExploreStack: {
+      screens: {
+        DiveSite: 'Beach/:diveSpotId',
+      },
+    },
     NotFound: '*',
   },
 };
