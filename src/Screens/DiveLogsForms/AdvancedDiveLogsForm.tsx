@@ -41,7 +41,10 @@ import ExitModal from './components/ExitModal';
 import type { AdvancedFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
 import { useAppDispatch } from '_redux/hooks';
 import { editDiveLog } from '_redux/slices/dive-logs';
-import { isBelowWidthThreshold } from '_utils/constants';
+import {
+  isBelowHeightThreshold,
+  isBelowWidthThreshold,
+} from '_utils/constants';
 
 type AdvancedDiveLogsFormsNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<LogsFormStackParamList, 'AdvancedDiveLogsForm'>,
@@ -256,7 +259,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
               style={[
                 styles.scrollContainer,
                 page !== stages.length && {
-                  marginBottom: Platform.OS === 'android' ? 114 : 80,
+                  marginBottom: isBelowHeightThreshold ? 80 : 80,
                 },
               ]}>
               {page === 0 && <BasicInfo values={values as InitialValues} />}
