@@ -83,6 +83,7 @@ const activities: Activity[] = [
 ];
 
 const WIDTH = Dimensions.get('window').width;
+const HEIGHT = Dimensions.get('screen').height;
 
 const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   const currentSpotId = route.params.diveSpotId;
@@ -172,7 +173,10 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
-        <ImageCarousel goBack={navigateBack} />
+        <ImageCarousel
+          goBack={navigateBack}
+          shareUrl={`https://zentacle.com/Beach/${diveSite.id}`}
+        />
 
         <View style={styles.contentContainer}>
           <Text style={styles.mainDescription}>{diveSite.name}</Text>
