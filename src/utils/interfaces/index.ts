@@ -34,7 +34,7 @@ export type ExploreStackParamList = {
     };
   };
   Reviews: {
-    diveSpotId: number;
+    id: number;
   };
 };
 
