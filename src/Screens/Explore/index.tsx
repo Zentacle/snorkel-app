@@ -35,7 +35,12 @@ import Popular from '_assets/tags/popular.png';
 import TopRating from '_assets/tags/top-rating.png';
 import type { Spot } from '_utils/interfaces/data/spot';
 
-const WIDTH = Dimensions.get('window').width;
+import {
+  WIDTH,
+  HEIGHT,
+  isBelowHeightThreshold,
+  isBelowWidthThreshold,
+} from '_utils/constants';
 
 interface TagInterface {
   name: string;
@@ -235,7 +240,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#EFF6F9',
   },
   contentContainer: {
-    marginBottom: Platform.OS === 'android' ? 100 : 65,
+    marginBottom: HEIGHT < 780 ? 80 : 65,
     paddingBottom: 50,
   },
   welcomeText: {
@@ -249,14 +254,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   nearbySiteItemContainer: {
-    width: WIDTH * 0.8,
+    width: isBelowWidthThreshold ? WIDTH * 0.75 : WIDTH * 0.8,
     marginRight: 15,
   },
   nearbySiteItemImageContainer: {
-    width: WIDTH * 0.8,
+    width: isBelowWidthThreshold ? WIDTH * 0.75 : WIDTH * 0.8,
   },
   nearbySiteItemImage: {
-    width: WIDTH * 0.8,
+    width: isBelowWidthThreshold ? WIDTH * 0.75 : WIDTH * 0.8,
   },
   nearbySitesTextContainer: {
     flexDirection: 'row',
