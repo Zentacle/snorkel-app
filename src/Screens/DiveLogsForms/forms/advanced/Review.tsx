@@ -30,8 +30,11 @@ import DiveTimeClock from '_assets/ClockClockwise.png';
 
 import { useAppSelector } from '_redux/hooks';
 import { selectUser } from '_redux/slices/user';
-
-const WIDTH = Dimensions.get('window').width;
+import {
+  isBelowHeightThreshold,
+  isBelowWidthThreshold,
+  WIDTH,
+} from '_utils/constants';
 
 interface ReviewProps {
   navigateToDiveLogs: () => void;
@@ -84,7 +87,7 @@ const Review: FunctionComponent<ReviewProps> = ({
     <View style={styles.container}>
       <View style={styles.gradientContainer}>
         <GradientCircle style={styles.gradient}>
-          <IoIcon name="checkmark-outline" size={50} color="#fff" />
+          <IoIcon name="checkmark-outline" size={40} color="#fff" />
         </GradientCircle>
       </View>
       <Text style={styles.mainText}>
@@ -227,7 +230,7 @@ const styles = StyleSheet.create({
   },
   mainText: {
     color: 'black',
-    fontSize: 20,
+    fontSize: isBelowHeightThreshold ? 18 : 20,
     fontWeight: '500',
     textAlign: 'center',
     marginTop: 30,
@@ -238,19 +241,20 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   gradient: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: isBelowHeightThreshold ? 80 : 100,
+    height: isBelowHeightThreshold ? 80 : 100,
+    borderRadius: isBelowHeightThreshold ? 40 : 50,
   },
   diveDetailsContainer: {
     backgroundColor: '#fff',
-    width: Dimensions.get('window').width * 0.9,
+    width: isBelowWidthThreshold ? WIDTH * 0.85 : WIDTH * 0.9,
     marginTop: 30,
     borderRadius: 20,
   },
   imageContainer: {},
   image: {
-    width: Dimensions.get('window').width * 0.9,
+    width: isBelowWidthThreshold ? WIDTH * 0.85 : WIDTH * 0.9,
+    alignSelf: 'center',
     height: 210,
     borderRadius: 20,
   },

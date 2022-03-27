@@ -41,6 +41,7 @@ import ExitModal from './components/ExitModal';
 import type { AdvancedFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
 import { useAppDispatch } from '_redux/hooks';
 import { editDiveLog } from '_redux/slices/dive-logs';
+import { isBelowWidthThreshold } from '_utils/constants';
 
 type AdvancedDiveLogsFormsNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<LogsFormStackParamList, 'AdvancedDiveLogsForm'>,
@@ -307,7 +308,7 @@ const styles = StyleSheet.create({
   },
   header: {
     color: 'black',
-    fontSize: 22,
+    fontSize: isBelowWidthThreshold ? 20 : 22,
     fontWeight: '700',
     textAlign: 'center',
     alignSelf: 'center',

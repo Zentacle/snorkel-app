@@ -6,6 +6,7 @@ import GradientCircle from '_components/ui/GradientCircle';
 import GradientBox from '_components/ui/GradientBox';
 import RatingsInputComp from '_components/ui/RatingsInputComp';
 import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
+import { isBelowWidthThreshold } from '_utils/constants';
 
 const Rating = () => {
   const levels = ['Beginner', 'Intermediate', 'Advanced'];
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   levelText: {
-    marginRight: 25,
+    marginRight: isBelowWidthThreshold ? 15 : 25,
     marginLeft: 15,
     marginBottom: 10,
     color: 'black',

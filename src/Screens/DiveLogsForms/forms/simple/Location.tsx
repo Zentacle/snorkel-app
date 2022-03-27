@@ -11,6 +11,7 @@ import SimpleFormDiveLocation from '_screens/DiveLogsForms/components/SimpleForm
 
 import type { FunctionComponent } from 'react';
 import ImagePickerArray from '_screens/DiveLogsForms/components/ImagePickerArray';
+import { isBelowHeightThreshold } from '_utils/constants';
 
 interface LocationAndImageProps {
   location?: {
@@ -100,6 +101,7 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 30,
     marginHorizontal: 25,
+    marginBottom: isBelowHeightThreshold ? 30 : 0,
   },
   headerLabel: {
     color: 'black',

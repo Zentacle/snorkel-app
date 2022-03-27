@@ -18,6 +18,7 @@ import GradientCircle from '_components/ui/GradientCircle';
 
 import type { FunctionComponent } from 'react';
 import { PhotoOptions } from '../utils/interfaces';
+import { isBelowHeightThreshold } from '_utils/constants';
 
 interface ImageType {
   uri: string;
@@ -54,7 +55,7 @@ const ImagePickerArray: FunctionComponent<ImagePickerArrayProps> = ({
     closeCameraModal();
 
     if (result.assets && result.assets[0].uri && result.assets[0].fileName) {
-      fields.unshift({
+      fields.push({
         uri: result.assets[0].uri,
         type: result.assets[0].type,
         name: result.assets[0].fileName,
@@ -209,8 +210,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   mediaContainer: {
-    marginTop: 30,
-    marginBottom: 30,
+    marginTop: isBelowHeightThreshold ? 20 : 30,
+    marginBottom: isBelowHeightThreshold ? 15 : 25,
   },
   optionalContainer: {},
   optionaltext: {
