@@ -15,13 +15,16 @@ const SearchMainView = () => {
     <View style={styles.mainBody}>
       <View style={styles.recentSearchesContainer}>
         <Text style={styles.headerLabel}>Recent Searches</Text>
-        <View style={styles.recentSearches}>
+        <ScrollView
+          style={styles.recentSearches}
+          horizontal
+          showsHorizontalScrollIndicator={false}>
           {recentSearches.map((item, index) => (
             <View style={styles.recentSearch} key={index}>
               <Text style={styles.recentSearchesText}>{item}</Text>
             </View>
           ))}
-        </View>
+        </ScrollView>
       </View>
 
       <View style={styles.destinationsContainer}>
@@ -164,10 +167,12 @@ const styles = StyleSheet.create({
   },
   recentSearches: {
     flexDirection: 'row',
-    marginLeft: 25,
+    paddingLeft: 25,
     marginTop: 15,
   },
-  recentSearchesText: {},
+  recentSearchesText: {
+    color: 'black',
+  },
   recentSearch: {
     backgroundColor: '#fff',
     paddingVertical: 10,

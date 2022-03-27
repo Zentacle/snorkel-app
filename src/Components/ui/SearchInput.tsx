@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
   input: {
     width: '90%',
     height: 40,
+    color: 'black',
   },
   icon: {
     width: 30,

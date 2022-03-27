@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-  Platform,
-} from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import { Form, Field } from 'react-final-form';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -18,6 +11,7 @@ import type { LocationSearchInitialValues } from '_utils/interfaces/data/search'
 import SearchInput from '_components/ui/SearchInput';
 import AutocompleteModal from './components/AutocompleteModal';
 import SearchMainView from './components/SearchMainView';
+import { isBelowHeightThreshold } from '_utils/constants';
 
 type SearchNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<AppTabsParamList, 'Search'>,
@@ -93,7 +87,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#EFF6F9',
   },
   contentContainer: {
-    marginBottom: Platform.OS === 'android' ? 100 : 65,
+    marginBottom: isBelowHeightThreshold ? 80 : 65,
     paddingBottom: 50,
   },
   headerText: {
@@ -101,12 +95,12 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: '700',
     marginHorizontal: 25,
-    marginTop: 30,
+    marginTop: isBelowHeightThreshold ? 15 : 30,
   },
   headerContainer: {
     borderBottomColor: 'grey',
     borderBottomWidth: StyleSheet.hairlineWidth,
-    paddingBottom: 20,
+    paddingBottom: isBelowHeightThreshold ? 10 : 20,
   },
   searchInputContainer: {
     paddingVertical: 5,

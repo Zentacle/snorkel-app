@@ -21,8 +21,7 @@ import Profile from '_assets/tab-icons/profile.png';
 import ProfileActive from '_assets/tab-icons/profile-active.png';
 import Search from '_assets/tab-icons/search.png';
 import SearchActive from '_assets/tab-icons/search-active.png';
-
-const HEIGHT = Dimensions.get('screen').height;
+import { isBelowHeightThreshold } from '_utils/constants';
 
 const AppTabsNavigator: React.FC = () => {
   const AppTabs = createBottomTabNavigator<AppTabsParamList>();
@@ -104,7 +103,7 @@ const AppTabsNavigator: React.FC = () => {
 
 const styles = StyleSheet.create({
   tabBarStyle: {
-    height: HEIGHT < 780 ? 80 : 100,
+    height: isBelowHeightThreshold ? 80 : 100,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
     position: 'absolute',
