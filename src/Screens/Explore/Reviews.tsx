@@ -53,7 +53,7 @@ interface ReviewProps {
 }
 
 const Reviews: FunctionComponent<ReviewProps> = ({ navigation, route }) => {
-  const currentSpotId = route.params.diveSpotId;
+  const currentSpotId = route.params.id;
   const dispatch = useAppDispatch();
   const reviewInState = useAppSelector(isReviewInState(currentSpotId));
   const reviewObj = useAppSelector(selectReviewById(currentSpotId));
