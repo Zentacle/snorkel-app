@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   Share,
   Alert,
+  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FEIcon from 'react-native-vector-icons/Feather';
@@ -220,7 +221,7 @@ const styles = StyleSheet.create({
   header: {},
   headerIconsContainer: {
     position: 'absolute',
-    top: 20,
+    top: Platform.OS === 'ios' ? 40 : 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',

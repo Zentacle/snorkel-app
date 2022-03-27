@@ -8,6 +8,8 @@ import {
   SafeAreaView,
   TouchableWithoutFeedback,
   ActivityIndicator,
+  Platform,
+  StatusBar,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
@@ -167,7 +169,8 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+      {/* {Platform.OS === 'ios' && <StatusBar barStyle={'light-content'} />} */}
       <ScrollView style={styles.scrollContainer}>
         <ImageCarousel
           goBack={navigateBack}
@@ -278,7 +281,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
         </View>
       </ScrollView>
       <Footer navigateToDiveLogForm={navigateToDiveLogForm} />
-    </SafeAreaView>
+    </View>
   );
 };
 

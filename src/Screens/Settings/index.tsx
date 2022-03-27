@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableWithoutFeedback,
+  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MUIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -55,7 +56,7 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.headerContainer}>
         <Icon
           name="chevron-back-outline"
@@ -157,7 +158,7 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
           Log Out
         </Button>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginHorizontal: 25,
-    marginTop: 30,
+    marginTop: Platform.OS === 'ios' ? 50 : 30,
   },
   headerText: {
     textAlign: 'center',

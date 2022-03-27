@@ -7,6 +7,7 @@ import {
   Image,
   SafeAreaView,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import MUIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -80,7 +81,7 @@ const Reviews: FunctionComponent<ReviewProps> = ({ navigation, route }) => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.backButtonContainer}>
         <Icon name="chevron-left" color="black" size={25} onPress={goBack} />
       </View>
@@ -147,7 +148,7 @@ const Reviews: FunctionComponent<ReviewProps> = ({ navigation, route }) => {
           ))}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -161,7 +162,7 @@ const styles = StyleSheet.create({
   },
   backButtonContainer: {
     marginHorizontal: 20,
-    marginTop: 20,
+    marginTop: Platform.OS === 'ios' ? 40 : 20,
     paddingBottom: 10,
   },
   mainContent: {

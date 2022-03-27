@@ -107,7 +107,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <ImageCarousel
           goBack={navigateBack}
@@ -330,7 +330,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 

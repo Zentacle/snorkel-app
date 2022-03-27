@@ -67,12 +67,12 @@ const HelpCenter: FunctionComponent<HelpCenterTypeProps> = ({ navigation }) => {
       Linking.openURL(`tel:${item.support}`);
     }
 
-    if (item.type === 'website') {
-      navigation.navigate('HelpWebview', {
-        source: item.support,
-      });
-      // return <HelpWebview source={item.support} />;
-    }
+    // if (item.type === 'website') {
+    //   navigation.navigate('HelpWebview', {
+    //     source: item.support,
+    //   });
+    //   // return <HelpWebview source={item.support} />;
+    // }
   };
 
   return (
