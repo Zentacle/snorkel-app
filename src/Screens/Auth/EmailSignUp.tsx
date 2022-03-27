@@ -263,8 +263,8 @@ const styles = StyleSheet.create({
   },
   introTextContainer: {
     marginHorizontal: 25,
-    marginTop: HEIGHT < 750 ? HEIGHT * 0.02 : HEIGHT * 0.035,
-    marginBottom: HEIGHT < 750 ? HEIGHT * 0.02 : HEIGHT * 0.035,
+    marginTop: HEIGHT < 780 ? HEIGHT * 0.02 : HEIGHT * 0.035,
+    marginBottom: HEIGHT < 780 ? HEIGHT * 0.02 : HEIGHT * 0.035,
   },
   introText: {
     fontSize: 32,
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
   },
   privacyContainer: {
     marginHorizontal: 10,
-    marginTop: HEIGHT < 400 ? 5 : 15,
+    marginTop: HEIGHT < 780 ? 10 : 15,
   },
   privacyText: {
     textAlign: 'center',
@@ -297,7 +297,8 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   signInContainer: {
-    marginTop: HEIGHT < 750 ? 10 : 20,
+    marginTop: HEIGHT < 780 ? 10 : 20,
+    marginBottom: 20,
   },
   signInText: {
     textAlign: 'center',
