@@ -26,7 +26,7 @@ import { useAppDispatch } from '_redux/hooks';
 import { loginUser } from '_redux/slices/user';
 import type { User } from '_utils/interfaces/data/user';
 
-const HEIGHT = Dimensions.get('window').width;
+import { isBelowHeightThreshold, HEIGHT } from '_utils/constants';
 
 type LandingScreenNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<AuthtackParamList, 'SignIn'>,
@@ -173,8 +173,8 @@ const SignIn: FunctionComponent<SignInProps> = props => {
                       container: {
                         backgroundColor: 'white',
                         borderRadius: 12,
-                        padding: HEIGHT < 400 ? 12 : 16,
-                        marginVertical: HEIGHT < 400 ? 10 : 20,
+                        padding: isBelowHeightThreshold ? 12 : 16,
+                        marginVertical: isBelowHeightThreshold ? 10 : 20,
                       },
                       text: {
                         color: '#FFF',
@@ -201,8 +201,8 @@ const SignIn: FunctionComponent<SignInProps> = props => {
                         container: {
                           backgroundColor: 'white',
                           borderRadius: 10,
-                          marginVertical: HEIGHT < 400 ? 5 : 10,
-                          padding: HEIGHT < 400 ? 12 : 16,
+                          marginVertical: isBelowHeightThreshold ? 5 : 10,
+                          padding: isBelowHeightThreshold ? 12 : 16,
                         },
                         text: {
                           color: 'black',
@@ -259,8 +259,8 @@ const styles = StyleSheet.create({
   },
   introTextContainer: {
     marginHorizontal: 25,
-    marginTop: HEIGHT < 400 ? HEIGHT * 0.07 : HEIGHT * 0.12,
-    marginBottom: HEIGHT < 400 ? HEIGHT * 0.07 : HEIGHT * 0.12,
+    marginTop: isBelowHeightThreshold ? HEIGHT * 0.03 : HEIGHT * 0.05,
+    marginBottom: isBelowHeightThreshold ? HEIGHT * 0.03 : HEIGHT * 0.05,
   },
   introText: {
     fontSize: 32,
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
   },
   privacyContainer: {
     marginHorizontal: 10,
-    marginTop: HEIGHT < 400 ? 5 : 15,
+    marginTop: isBelowHeightThreshold ? 5 : 15,
   },
   privacyText: {
     textAlign: 'center',
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   signInContainer: {
-    marginTop: HEIGHT < 400 ? 10 : 20,
+    marginTop: isBelowHeightThreshold ? 10 : 20,
   },
   signInText: {
     textAlign: 'center',
