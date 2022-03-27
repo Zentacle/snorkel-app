@@ -10,6 +10,7 @@ import LocationImage from '_assets/Location.png';
 import DescIcon from '_assets/DescIcon.png';
 import DepthArrow from '_assets/ArrowsDownUp.png';
 import DiveTimeClock from '_assets/ClockClockwise.png';
+import { isBelowHeightThreshold } from '_utils/constants';
 
 interface LogItemProps {
   diveLog: DiveLog;
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
     borderRadius: 22,
-    marginBottom: 30,
+    marginBottom: isBelowHeightThreshold ? 20 : 30,
   },
   mapRatingsContainer: {
     margin: 20,

@@ -20,6 +20,7 @@ import { selectAllDiveLogs } from '_redux/slices/dive-logs';
 
 import EmptyList from './components/EmptyList';
 import LogsList from './components/List';
+import { isBelowHeightThreshold } from '_utils/constants';
 
 type LogsNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<AppTabsParamList, 'Logs'>,
@@ -72,10 +73,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#EFF6F9',
-    marginBottom: Platform.OS === 'android' ? 100 : 95,
+    marginBottom: isBelowHeightThreshold ? 80 : 95,
   },
   scrollContainer: {
-    marginTop: 20,
+    marginTop: isBelowHeightThreshold ? 10 : 20,
     marginHorizontal: 25,
     paddingBottom: 20,
   },
