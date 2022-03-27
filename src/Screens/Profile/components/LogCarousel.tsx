@@ -17,8 +17,7 @@ import type {
 import type { FunctionComponent } from 'react';
 
 import DivingPlaceholder from '_assets/diving-placeholder.jpeg';
-
-const WIDTH = Dimensions.get('window').width;
+import { isBelowHeightThreshold, WIDTH } from '_utils/constants';
 
 enum Directions {
   initial = 'initial',
@@ -169,12 +168,12 @@ const styles = StyleSheet.create({
   header: {},
   headerImage: {
     width: WIDTH - 50,
-    height: 350,
+    height: isBelowHeightThreshold ? 300 : 350,
     borderRadius: 12,
   },
   headerBottomContainer: {
     position: 'absolute',
-    bottom: 20,
+    bottom: isBelowHeightThreshold ? 10 : 20,
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
