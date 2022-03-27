@@ -115,7 +115,14 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
           initialValues={{}}
           keepDirtyOnReinitialize
           render={({ values, form }) => {
-            return <Field name="search" component={SearchInput} />;
+            return (
+              <Field
+                name="search"
+                placeholder="Search For a location"
+                placeholderTextColor="#BFBFBF"
+                component={SearchInput}
+              />
+            );
           }}
         />
         <ScrollView
