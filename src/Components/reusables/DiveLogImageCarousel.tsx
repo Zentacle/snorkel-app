@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   Image,
-  Dimensions,
   ScrollView,
   TouchableWithoutFeedback,
   Share,
@@ -21,8 +20,7 @@ import type {
 import type { FunctionComponent } from 'react';
 
 import DivingPlaceholder from '_assets/diving-placeholder.jpeg';
-
-const WIDTH = Dimensions.get('window').width;
+import { isBelowHeightThreshold, WIDTH } from '_utils/constants';
 
 enum Directions {
   initial = 'initial',
@@ -238,7 +236,7 @@ const styles = StyleSheet.create({
   },
   headerImage: {
     width: WIDTH,
-    height: 300,
+    height: isBelowHeightThreshold ? 260 : 300,
   },
   headerBottomContainer: {
     position: 'absolute',

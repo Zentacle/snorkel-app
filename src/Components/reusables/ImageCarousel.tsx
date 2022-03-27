@@ -24,8 +24,7 @@ import DiveSite1 from '_assets/DiveSite.jpg';
 import DiveSite2 from '_assets/DiveSite2.jpg';
 import DiveSite3 from '_assets/DiveSite3.jpg';
 import DiveSite4 from '_assets/DiveSite4.jpg';
-
-const WIDTH = Dimensions.get('window').width;
+import { isBelowHeightThreshold, WIDTH } from '_utils/constants';
 
 enum Directions {
   initial = 'initial',
@@ -250,7 +249,7 @@ const styles = StyleSheet.create({
   },
   headerImage: {
     width: WIDTH,
-    height: 300,
+    height: isBelowHeightThreshold ? 260 : 300,
   },
   headerBottomContainer: {
     position: 'absolute',
