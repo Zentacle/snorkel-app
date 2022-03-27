@@ -75,7 +75,12 @@ const ChangePassword: FunctionComponent<ChangePasswordTypeProps> = ({
     <SafeAreaView style={styles.container}>
       <View style={styles.contentContainer}>
         <View style={styles.headerContainer}>
-          <Icon name="chevron-back-outline" size={30} onPress={navigateBack} />
+          <Icon
+            name="chevron-back-outline"
+            size={30}
+            color="black"
+            onPress={navigateBack}
+          />
           <Text style={styles.headerText}>Change Password</Text>
           <View />
         </View>

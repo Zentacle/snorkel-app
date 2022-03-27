@@ -30,7 +30,12 @@ const TermsAndConditions: FunctionComponent<TermsAndConditionsTypeProps> = ({
     <SafeAreaView style={styles.container}>
       <View style={styles.contentContainer}>
         <View style={styles.headerContainer}>
-          <Icon name="chevron-back-outline" size={30} onPress={navigateBack} />
+          <Icon
+            name="chevron-back-outline"
+            size={30}
+            color="black"
+            onPress={navigateBack}
+          />
           <Text style={styles.headerText}>Terms &amp; Conditions</Text>
           <View />
         </View>
@@ -137,6 +142,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
     color: 'black',
+    textAlign: 'justify',
   },
   scrollContainer: {
     paddingBottom: 30,

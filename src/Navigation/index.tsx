@@ -14,6 +14,7 @@ import LogsNavigator from './App/Logs';
 import LogsFormNavigator from './App/DiveLogsForm';
 import SettingsNavigator from './Settings';
 import NotFound from '_screens/NotFound';
+import HelpWebview from '_screens/HelpWebsite';
 
 import { useAppDispatch, useAppSelector } from '_redux/hooks';
 import { handleFetchDiveSites } from '_redux/slices/dive-sites';
@@ -87,6 +88,7 @@ const Navigator: React.FC = () => {
         <Stack.Screen name="LogsFormStack" component={LogsFormNavigator} />
         <Stack.Screen name="SettingsStack" component={SettingsNavigator} />
         <Stack.Screen name="NotFound" component={NotFound} />
+        <Stack.Screen name="HelpWebview" component={HelpWebview} />
       </Stack.Navigator>
     </NavigationContainer>
   );

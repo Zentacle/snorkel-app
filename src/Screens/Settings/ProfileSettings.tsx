@@ -62,7 +62,12 @@ const ProfileSettings: FunctionComponent<ProfileSettingsTypeProps> = ({
       />
       <View style={styles.contentContainer}>
         <View style={styles.headerContainer}>
-          <Icon name="chevron-back-outline" size={30} onPress={navigateBack} />
+          <Icon
+            name="chevron-back-outline"
+            size={30}
+            color="black"
+            onPress={navigateBack}
+          />
           <Text style={styles.headerText}>Profile Settings</Text>
           <View />
         </View>

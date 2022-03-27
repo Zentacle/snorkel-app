@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  Pressable,
+  Linking,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MUIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -20,18 +27,29 @@ interface HelpCenterTypeProps {
   navigation: HelpCenterTypeNavigationProps;
 }
 
-const support = [
+type SupportType = 'email' | 'phone' | 'website';
+
+interface Support {
+  icon: string;
+  support: string;
+  type: SupportType;
+}
+
+const support: Support[] = [
   {
     icon: 'email-outline',
     support: 'support@zentacle.com',
+    type: 'email',
   },
   {
     icon: 'phone-in-talk-outline',
     support: '+182312321323113123',
+    type: 'phone',
   },
   {
     icon: 'link-variant',
-    support: 'www.zentacle.com',
+    support: 'https://zentacle.com',
+    type: 'website',
   },
 ];
 
@@ -40,11 +58,33 @@ const HelpCenter: FunctionComponent<HelpCenterTypeProps> = ({ navigation }) => {
     navigation.goBack();
   };
 
+  const handleClick = (item: Support) => {
+    if (item.type === 'email') {
+      Linking.openURL(`mailto:${item.support}`);
+    }
+
+    if (item.type === 'phone') {
+      Linking.openURL(`tel:${item.support}`);
+    }
+
+    if (item.type === 'website') {
+      navigation.navigate('HelpWebview', {
+        source: item.support,
+      });
+      // return <HelpWebview source={item.support} />;
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.contentContainer}>
         <View style={styles.headerContainer}>
-          <Icon name="chevron-back-outline" size={30} onPress={navigateBack} />
+          <Icon
+            name="chevron-back-outline"
+            size={30}
+            color="black"
+            onPress={navigateBack}
+          />
           <Text style={styles.headerText}>Help Center</Text>
           <View />
         </View>
@@ -61,10 +101,12 @@ const HelpCenter: FunctionComponent<HelpCenterTypeProps> = ({ navigation }) => {
 
         <View style={styles.supportContainer}>
           {support.map((item, index) => (
-            <View style={styles.support} key={index}>
-              <MUIcon name={item.icon} size={30} color="black" />
-              <Text style={styles.supportLink}>{item.support}</Text>
-            </View>
+            <Pressable key={index} onPress={() => handleClick(item)}>
+              <View style={styles.support}>
+                <MUIcon name={item.icon} size={30} color="black" />
+                <Text style={styles.supportLink}>{item.support}</Text>
+              </View>
+            </Pressable>
           ))}
         </View>
       </View>

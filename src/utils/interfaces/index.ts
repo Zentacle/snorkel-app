@@ -96,6 +96,9 @@ export type RootStackParamList = {
   LogsFormStack: NavigatorScreenParams<LogsFormStackParamList>;
   SettingsStack: NavigatorScreenParams<SettingStackParamList>;
   NotFound: undefined;
+  HelpWebview: {
+    source: string;
+  };
 };
 
 export type NamedStyles = ViewStyle | TextStyle | ImageStyle;
