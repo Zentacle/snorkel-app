@@ -71,7 +71,12 @@ const TypeUnits: FunctionComponent<TypeUnitsTypeProps> = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.contentContainer}>
         <View style={styles.headerContainer}>
-          <Icon name="chevron-back-outline" size={30} onPress={navigateBack} />
+          <Icon
+            name="chevron-back-outline"
+            size={30}
+            color="black"
+            onPress={navigateBack}
+          />
           <Text style={styles.headerText}>Type Units</Text>
           <View />
         </View>
@@ -183,6 +188,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 24,
     fontWeight: '700',
+    color: 'black',
   },
   mainContainer: {
     marginHorizontal: 55,
@@ -210,6 +216,7 @@ const styles = StyleSheet.create({
     marginTop: WIDTH * 0.15,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 10,
   },
   selection: {
     width: (WIDTH - 60) / 2,

@@ -7,7 +7,6 @@ import {
   ScrollView,
   SafeAreaView,
   Image,
-  Dimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import get from 'lodash/get';
@@ -103,7 +102,7 @@ const SearchResults: FunctionComponent<SearchResultsProps> = ({
     navigation.navigate('ExploreStack', {
       screen: 'DiveSite',
       params: {
-        diveSpot,
+        diveSpotId: diveSpot.id,
       },
     });
   };
@@ -186,7 +185,6 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     marginHorizontal: 25,
-    marginBottom: 50,
   },
   headerContainer: {
     flexDirection: 'row',
@@ -202,9 +200,11 @@ const styles = StyleSheet.create({
   headerMainText: {
     fontSize: 28,
     fontWeight: '800',
+    color: 'black',
   },
   headerRightText: {
     fontSize: 18,
+    color: 'black',
   },
   searchContainer: {
     marginTop: 0,
@@ -230,8 +230,6 @@ const styles = StyleSheet.create({
   },
   diveSitesCardsContainer: {
     marginTop: 30,
-    paddingBottom: 50,
-    // flexGrow: 1,
   },
   diveSitesHeaderContainer: {
     flexDirection: 'row',
@@ -242,10 +240,12 @@ const styles = StyleSheet.create({
   },
   diveSitesListContainer: {
     alignItems: 'center',
+    marginBottom: 130,
   },
   diveSitesHeaderCount: {
     fontWeight: '600',
     fontSize: 20,
+    color: 'black',
   },
   diveSitesSortContainer: {
     flexDirection: 'row',
@@ -255,6 +255,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
     marginRight: 5,
+    color: 'black',
   },
 });
 

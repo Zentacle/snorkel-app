@@ -30,7 +30,12 @@ const TermsAndConditions: FunctionComponent<TermsAndConditionsTypeProps> = ({
     <SafeAreaView style={styles.container}>
       <View style={styles.contentContainer}>
         <View style={styles.headerContainer}>
-          <Icon name="chevron-back-outline" size={30} onPress={navigateBack} />
+          <Icon
+            name="chevron-back-outline"
+            size={30}
+            color="black"
+            onPress={navigateBack}
+          />
           <Text style={styles.headerText}>Terms &amp; Conditions</Text>
           <View />
         </View>
@@ -105,6 +110,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#EFF6F9',
+    paddingBottom: 20,
   },
   contentContainer: {
     marginHorizontal: 25,
@@ -120,6 +126,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 24,
     fontWeight: '700',
+    color: 'black',
   },
   terms: {
     marginTop: 30,
@@ -128,11 +135,14 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     fontWeight: '700',
     fontSize: 17,
+    color: 'black',
   },
   textBody: {
     marginTop: 10,
     fontSize: 16,
     fontWeight: '500',
+    color: 'black',
+    textAlign: 'justify',
   },
   scrollContainer: {
     paddingBottom: 30,

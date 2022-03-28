@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { Image, StyleSheet, Platform, Dimensions } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -21,6 +21,7 @@ import Profile from '_assets/tab-icons/profile.png';
 import ProfileActive from '_assets/tab-icons/profile-active.png';
 import Search from '_assets/tab-icons/search.png';
 import SearchActive from '_assets/tab-icons/search-active.png';
+import { isBelowHeightThreshold } from '_utils/constants';
 
 const AppTabsNavigator: React.FC = () => {
   const AppTabs = createBottomTabNavigator<AppTabsParamList>();
@@ -102,15 +103,15 @@ const AppTabsNavigator: React.FC = () => {
 
 const styles = StyleSheet.create({
   tabBarStyle: {
-    height: 100,
+    height: isBelowHeightThreshold ? 80 : 100,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
     position: 'absolute',
     paddingBottom: 10,
   },
   tabBarLabelStyle: {
-    marginTop: -15,
-    marginBottom: 20,
+    marginTop: Platform.OS === 'ios' ? -15 : -20,
+    marginBottom: Platform.OS === 'ios' ? 10 : 0,
     fontSize: 12,
     fontWeight: '400',
   },

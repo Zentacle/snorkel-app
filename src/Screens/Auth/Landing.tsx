@@ -5,7 +5,6 @@ import {
   Text,
   View,
   ImageBackground,
-  Dimensions,
   TouchableWithoutFeedback,
 } from 'react-native';
 
@@ -23,7 +22,7 @@ import { useAppDispatch, useAppSelector } from '_redux/hooks';
 import { googleRegister, selectLoadingState } from '_redux/slices/user';
 import { GoogleLoginResponse } from '_utils/interfaces/data/user';
 
-const HEIGHT = Dimensions.get('window').width;
+import { isBelowHeightThreshold, HEIGHT } from '_utils/constants';
 
 type LandingScreenNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<AuthtackParamList, 'Landing'>,
@@ -136,8 +135,8 @@ const Landing: FunctionComponent<LandingProps> = props => {
                     container: {
                       backgroundColor: 'white',
                       borderRadius: 10,
-                      marginVertical: HEIGHT < 400 ? 5 : 10,
-                      padding: HEIGHT < 400 ? 12 : 16,
+                      marginVertical: isBelowHeightThreshold ? 5 : 10,
+                      padding: isBelowHeightThreshold ? 12 : 16,
                     },
                     text: {
                       color: 'black',
@@ -169,8 +168,8 @@ const Landing: FunctionComponent<LandingProps> = props => {
                 container: {
                   backgroundColor: 'white',
                   borderRadius: 12,
-                  padding: HEIGHT < 400 ? 12 : 16,
-                  marginVertical: HEIGHT < 400 ? 10 : 20,
+                  padding: isBelowHeightThreshold ? 12 : 16,
+                  marginVertical: isBelowHeightThreshold ? 10 : 20,
                 },
                 text: {
                   color: '#FFF',
@@ -223,7 +222,7 @@ const styles = StyleSheet.create({
   introTextContainer: {
     marginHorizontal: 15,
     alignItems: 'center',
-    marginTop: HEIGHT < 400 ? HEIGHT * 0.38 : HEIGHT * 0.44,
+    marginTop: isBelowHeightThreshold ? HEIGHT * 0.18 : HEIGHT * 0.2,
   },
   introText: {
     fontSize: 32,
@@ -231,7 +230,7 @@ const styles = StyleSheet.create({
     color: '#FFF',
   },
   buttonsContainer: {
-    marginTop: HEIGHT < 400 ? HEIGHT * 0.06 : HEIGHT * 0.15,
+    marginTop: isBelowHeightThreshold ? HEIGHT * 0.06 : HEIGHT * 0.12,
     marginHorizontal: 15,
   },
   altDirContainer: {
@@ -244,7 +243,7 @@ const styles = StyleSheet.create({
   },
   privacyContainer: {
     marginHorizontal: 10,
-    marginTop: HEIGHT < 400 ? 5 : 15,
+    marginTop: isBelowHeightThreshold ? 5 : 15,
   },
   privacyText: {
     textAlign: 'center',
@@ -255,7 +254,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   signInContainer: {
-    marginTop: HEIGHT < 400 ? 10 : 20,
+    marginTop: isBelowHeightThreshold ? 10 : 20,
   },
   signInText: {
     textAlign: 'center',

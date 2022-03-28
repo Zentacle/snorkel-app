@@ -40,6 +40,10 @@ import { useAppDispatch } from '_redux/hooks';
 import { saveDiveLog } from '_redux/slices/dive-logs';
 
 import type { SimpleFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
+import {
+  isBelowHeightThreshold,
+  isBelowWidthThreshold,
+} from '_utils/constants';
 
 type SimpleDiveLogsFormsNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<AppTabsParamList, 'LogsForm'>,
@@ -120,7 +124,7 @@ const SimpleDiveLogsForms: FunctionComponent<
   const initialValues: InitialValues = {
     // ignore overwritten propertied error
     // @ts-ignore
-    id: 0,
+    // id: 0,
     // @ts-ignore
     rating: 0,
     // @ts-ignore
@@ -201,7 +205,7 @@ const SimpleDiveLogsForms: FunctionComponent<
               style={[
                 styles.scrollContainer,
                 page !== stages.length && {
-                  marginBottom: Platform.OS === 'android' ? 114 : 80,
+                  marginBottom: isBelowHeightThreshold ? 100 : 80,
                 },
               ]}>
               <View style={styles.headerContainer}>
@@ -259,6 +263,7 @@ const SimpleDiveLogsForms: FunctionComponent<
                     handleNavigateToAdvancedDiveLog(values as InitialValues)
                   }
                   formValues={values as InitialValues}
+                  id={savedDiveLogId}
                 />
               )}
             </ScrollView>
@@ -301,7 +306,7 @@ const styles = StyleSheet.create({
   },
   header: {
     color: 'black',
-    fontSize: 22,
+    fontSize: isBelowWidthThreshold ? 20 : 22,
     fontWeight: '700',
     textAlign: 'center',
     alignSelf: 'center',

@@ -25,6 +25,7 @@ import ProfileDefault from '_assets/profile-placeholder.png';
 import DiveLogSummary from './components/DiveLogSummary';
 import SubscriptionBox from './components/SubscriptionBox';
 import DiveLogDisplay from './components/DiveLogDisplay';
+import { isBelowHeightThreshold } from '_utils/constants';
 
 type ProfileNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<AppTabsParamList, 'Profile'>,
@@ -67,6 +68,7 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
         onPress={navigateToSettings}
         name="options-outline"
         size={30}
+        color="black"
       />
       <ScrollView
         style={styles.contentContainer}
@@ -115,36 +117,39 @@ const styles = StyleSheet.create({
   contentContainer: {
     marginHorizontal: 25,
     marginTop: 20,
-    marginBottom: Platform.OS === 'android' ? 100 : 65,
+    marginBottom: isBelowHeightThreshold ? 80 : 65,
     paddingBottom: 50,
   },
   text: {
     color: 'black',
-    fontSize: 18,
+    fontSize: isBelowHeightThreshold ? 17 : 18,
   },
   profileImageContainer: {
     alignItems: 'center',
-    marginTop: 40,
+    marginTop: isBelowHeightThreshold ? 20 : 40,
   },
   profileImage: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
+    width: isBelowHeightThreshold ? 100 : 120,
+    height: isBelowHeightThreshold ? 100 : 120,
+    borderRadius: isBelowHeightThreshold ? 50 : 60,
   },
   optionsIcon: {
     alignSelf: 'flex-end',
     marginRight: 25,
+    marginTop: isBelowHeightThreshold ? 10 : 5,
   },
   displayName: {
     textAlign: 'center',
     fontWeight: '500',
     fontSize: 25,
     marginVertical: 15,
+    color: 'black',
   },
   diveLogsLabel: {
     fontWeight: '500',
     fontSize: 18,
     marginTop: 10,
+    color: 'black',
   },
   photosContainer: {
     marginBottom: 10,

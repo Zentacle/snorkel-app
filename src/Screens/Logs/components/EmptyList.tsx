@@ -5,9 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import GradientCircle from '_components/ui/GradientCircle';
 
 import EmptyListImage from '_assets/no-logs.png';
-
-const HEIGHT = Dimensions.get('window').height;
-const WIDTH = Dimensions.get('window').width;
+import { isBelowHeightThreshold, WIDTH, HEIGHT } from '_utils/constants';
 
 const EmptyList = () => {
   return (
@@ -41,7 +39,7 @@ const EmptyList = () => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    marginTop: HEIGHT * 0.05,
+    marginTop: isBelowHeightThreshold ? HEIGHT * 0.03 : HEIGHT * 0.05,
   },
   gradientContainer: {
     height: 110,
@@ -69,7 +67,7 @@ const styles = StyleSheet.create({
     lineHeight: 30,
   },
   directionsContainer: {
-    marginTop: HEIGHT * 0.18,
+    marginTop: isBelowHeightThreshold ? HEIGHT * 0.06 : HEIGHT * 0.18,
     marginHorizontal: WIDTH * 0.12,
     alignItems: 'center',
   },

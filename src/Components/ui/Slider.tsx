@@ -53,7 +53,13 @@ const SliderComp: FunctionComponent<ComponentProps> = ({
           }}
         />
         {typeof trackInBench !== 'undefined' ? (
-          <Text style={{ position: 'absolute', top: 30, textAlign: 'center' }}>
+          <Text
+            style={{
+              position: 'absolute',
+              top: 30,
+              color: 'black',
+              textAlign: 'center',
+            }}>
             {trackMarks[index]}
           </Text>
         ) : (

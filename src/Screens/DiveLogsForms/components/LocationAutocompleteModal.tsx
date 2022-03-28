@@ -21,6 +21,7 @@ import type { FieldRenderProps } from 'react-final-form';
 import PlainSearchInput from '_components/ui/PlainSearchInput';
 
 import LocationImage from '_assets/LocationLargish.png';
+import { isBelowHeightThreshold } from '_utils/constants';
 
 interface BaseProps {
   isVisible: boolean;
@@ -159,6 +160,7 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
             size={30}
             style={{ marginRight: 10 }}
             onPress={handleCloseModal}
+            color="black"
           />
           <PlainSearchInput
             onChange={handleTextChange}
@@ -202,7 +204,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#A9BEBF',
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderStyle: 'solid',
-    paddingHorizontal: 25,
+    paddingHorizontal: isBelowHeightThreshold ? 15 : 25,
     paddingBottom: 20,
   },
   inputCompContainer: {
@@ -217,7 +219,7 @@ const styles = StyleSheet.create({
   search: {
     color: 'black',
     fontSize: 16,
-    minWidth: '75%',
+    minWidth: isBelowHeightThreshold ? '70%' : '75%',
   },
   countryContainer: {
     flexDirection: 'row',

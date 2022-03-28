@@ -25,12 +25,13 @@ import type {
 } from '_utils/interfaces';
 
 import DiveLocation from './components/DiveLocation';
-import DiveSiteReviews from './components/DiveSiteReviews';
+import DiveShopReviews from './components/DiveShopReviews';
 import GradientText from '_components/ui/GradientText';
 import DiveShopComp from './components/DiveShop';
 import Footer from './components/DiveShopFooter';
 
 import LocationImage from '_assets/Location.png';
+import { isBelowHeightThreshold } from '_utils/constants';
 
 type DiveShopNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<ExploreStackParamList, 'DiveShop'>,
@@ -78,7 +79,9 @@ const DiveShop: FunctionComponent<DiveShopProps> = ({ navigation }) => {
   };
 
   const navigateToReviews = () => {
-    navigation.navigate('Reviews');
+    // navigation.navigate('ExploreStack', {
+    //   screen: 'Reviews',
+    // });
   };
 
   const navigateToWebsite = () => {};
@@ -134,7 +137,7 @@ const DiveShop: FunctionComponent<DiveShopProps> = ({ navigation }) => {
             </View>
           ))}
 
-          <DiveSiteReviews navigateToReviews={navigateToReviews} />
+          <DiveShopReviews navigateToReviews={navigateToReviews} />
         </View>
 
         <View style={styles.diveShops}>
@@ -182,7 +185,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#EFF6F9',
   },
   scrollContainer: {
-    marginBottom: Platform.OS === 'android' ? 114 : 80,
+    marginBottom: isBelowHeightThreshold ? 100 : 80,
   },
   headerIconsContainer: {
     flexDirection: 'row',

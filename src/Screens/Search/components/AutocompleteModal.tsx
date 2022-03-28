@@ -22,6 +22,7 @@ import PlainSearchInput from '_components/ui/PlainSearchInput';
 
 import LocationImage from '_assets/LocationLargish.png';
 import FlagImage from '_assets/Flag.png';
+import { isBelowHeightThreshold } from '_utils/constants';
 
 interface BaseProps {
   isVisible: boolean;
@@ -120,6 +121,7 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
             containerStyle={styles.inputCompContainer}
             style={styles.search}
             placeholder="Search"
+            placeholderTextColor="#BFBFBF"
           />
           <TouchableWithoutFeedback onPress={handleCloseModal}>
             <Text style={styles.searchLabel}>Cancel</Text>
@@ -174,7 +176,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   inputCompContainer: {
-    paddingVertical: 10,
+    paddingVertical: isBelowHeightThreshold ? 5 : 10,
     borderRadius: 18,
   },
   searchLabel: {

@@ -62,7 +62,12 @@ const ProfileSettings: FunctionComponent<ProfileSettingsTypeProps> = ({
       />
       <View style={styles.contentContainer}>
         <View style={styles.headerContainer}>
-          <Icon name="chevron-back-outline" size={30} onPress={navigateBack} />
+          <Icon
+            name="chevron-back-outline"
+            size={30}
+            color="black"
+            onPress={navigateBack}
+          />
           <Text style={styles.headerText}>Profile Settings</Text>
           <View />
         </View>
@@ -146,6 +151,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 24,
     fontWeight: '700',
+    color: 'black',
   },
   profileImageContainer: {
     alignItems: 'center',
@@ -169,10 +175,12 @@ const styles = StyleSheet.create({
   },
   nameText: {
     fontSize: 16,
+    color: 'black',
   },
   nameLabel: {
     fontWeight: '600',
     fontSize: 18,
+    color: 'black',
   },
   footer: {
     marginHorizontal: 25,

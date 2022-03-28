@@ -4,7 +4,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Dimensions,
   TouchableWithoutFeedback,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -25,8 +24,7 @@ import Input from '_components/ui/FormManagementInput';
 import { actionButtons } from './utils';
 import { useAppDispatch } from '_redux/hooks';
 import { registerUser } from '_redux/slices/user';
-
-const HEIGHT = Dimensions.get('window').height;
+import { isBelowHeightThreshold, HEIGHT } from '_utils/constants';
 
 type EmailSignUpScreenNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<AuthtackParamList, 'EmailSignUp'>,
@@ -177,8 +175,8 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
                       container: {
                         backgroundColor: 'white',
                         borderRadius: 12,
-                        padding: HEIGHT < 400 ? 12 : 16,
-                        marginVertical: HEIGHT < 400 ? 10 : 20,
+                        padding: isBelowHeightThreshold ? 12 : 16,
+                        marginVertical: isBelowHeightThreshold ? 10 : 20,
                       },
                       text: {
                         color: '#FFF',
@@ -205,8 +203,8 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
                         container: {
                           backgroundColor: 'white',
                           borderRadius: 10,
-                          marginVertical: HEIGHT < 400 ? 5 : 10,
-                          padding: HEIGHT < 400 ? 12 : 16,
+                          marginVertical: isBelowHeightThreshold ? 5 : 10,
+                          padding: isBelowHeightThreshold ? 12 : 16,
                         },
                         text: {
                           color: 'black',
@@ -263,8 +261,8 @@ const styles = StyleSheet.create({
   },
   introTextContainer: {
     marginHorizontal: 25,
-    marginTop: HEIGHT < 750 ? HEIGHT * 0.02 : HEIGHT * 0.035,
-    marginBottom: HEIGHT < 750 ? HEIGHT * 0.02 : HEIGHT * 0.035,
+    marginTop: isBelowHeightThreshold ? HEIGHT * 0.02 : HEIGHT * 0.035,
+    marginBottom: isBelowHeightThreshold ? HEIGHT * 0.02 : HEIGHT * 0.035,
   },
   introText: {
     fontSize: 32,
@@ -286,7 +284,7 @@ const styles = StyleSheet.create({
   },
   privacyContainer: {
     marginHorizontal: 10,
-    marginTop: HEIGHT < 400 ? 5 : 15,
+    marginTop: isBelowHeightThreshold ? 10 : 15,
   },
   privacyText: {
     textAlign: 'center',
@@ -297,7 +295,8 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
   signInContainer: {
-    marginTop: HEIGHT < 750 ? 10 : 20,
+    marginTop: isBelowHeightThreshold ? 10 : 20,
+    marginBottom: 20,
   },
   signInText: {
     textAlign: 'center',

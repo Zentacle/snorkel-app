@@ -34,7 +34,7 @@ export type ExploreStackParamList = {
     };
   };
   Reviews: {
-    diveSpotId: number;
+    id: number;
   };
 };
 
@@ -95,6 +95,10 @@ export type RootStackParamList = {
   LogsStack: NavigatorScreenParams<LogsStackParamList>;
   LogsFormStack: NavigatorScreenParams<LogsFormStackParamList>;
   SettingsStack: NavigatorScreenParams<SettingStackParamList>;
+  NotFound: undefined;
+  HelpWebview: {
+    source: string;
+  };
 };
 
 export type NamedStyles = ViewStyle | TextStyle | ImageStyle;

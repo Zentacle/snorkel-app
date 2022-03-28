@@ -30,6 +30,7 @@ import GradientBox from '_components/ui/GradientBox';
 import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
 import SliderComp from '_components/ui/Slider';
 import Button from '_components/ui/Buttons/Button';
+import { isBelowWidthThreshold } from '_utils/constants';
 
 type SearchFiltersNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<SearchStackParamList, 'SearchFilters'>,
@@ -260,9 +261,11 @@ const styles = StyleSheet.create({
   headerMainText: {
     fontSize: 28,
     fontWeight: '800',
+    color: 'black',
   },
   headerRightText: {
     fontSize: 18,
+    color: 'black',
   },
   formBodyContainer: {
     marginTop: 40,
@@ -306,9 +309,10 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   levelText: {
-    marginRight: 25,
+    marginRight: isBelowWidthThreshold ? 10 : 25,
     marginLeft: 15,
     marginBottom: 10,
+    color: 'black',
   },
   normalLevelCircle: {
     width: 20,

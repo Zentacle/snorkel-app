@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableWithoutFeedback,
+  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MUIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -26,6 +27,7 @@ import type {
   SettingStackParamList,
 } from '_utils/interfaces';
 import type { Page } from './utils';
+import { isBelowHeightThreshold } from '_utils/constants';
 
 type SettingsTypeNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<SettingStackParamList, 'Settings'>,
@@ -54,9 +56,14 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <Icon name="chevron-back-outline" size={30} onPress={navigateBack} />
+        <Icon
+          name="chevron-back-outline"
+          color="black"
+          size={30}
+          onPress={navigateBack}
+        />
         <Text style={styles.headerText}>Settings</Text>
         <View />
       </View>
@@ -98,7 +105,11 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
                     <MUIcon name={account.icon} size={30} color="black" />
                     <Text style={styles.pageLabel}>{account.label}</Text>
                   </View>
-                  <Icon name="chevron-forward-outline" size={30} />
+                  <Icon
+                    name="chevron-forward-outline"
+                    color="black"
+                    size={30}
+                  />
                 </View>
               </TouchableWithoutFeedback>
             ))}
@@ -117,7 +128,11 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
                     <MUIcon name={page.icon} size={30} color="black" />
                     <Text style={styles.pageLabel}>{page.label}</Text>
                   </View>
-                  <Icon name="chevron-forward-outline" size={30} />
+                  <Icon
+                    name="chevron-forward-outline"
+                    color="black"
+                    size={30}
+                  />
                 </View>
               </TouchableWithoutFeedback>
             ))}
@@ -143,7 +158,7 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
           Log Out
         </Button>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -162,15 +177,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginHorizontal: 25,
-    marginTop: 30,
+    marginTop: Platform.OS === 'ios' ? 50 : 30,
   },
   headerText: {
     textAlign: 'center',
     fontSize: 30,
     fontWeight: '700',
+    color: 'black',
   },
   subscriptionContainer: {
-    marginVertical: 20,
+    marginVertical: isBelowHeightThreshold ? 10 : 20,
   },
   subscriptionBox: {
     flexDirection: 'row',
@@ -192,14 +208,15 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   pagesSectionContainer: {
-    marginTop: 15,
-    marginBottom: 10,
+    marginTop: isBelowHeightThreshold ? 10 : 15,
+    marginBottom: isBelowHeightThreshold ? 8 : 10,
   },
   pagesLabel: {
     fontSize: 19,
     fontWeight: '600',
     marginBottom: 20,
     marginTop: 5,
+    color: 'black',
   },
   pageContainer: {
     flexDirection: 'row',
@@ -209,11 +226,12 @@ const styles = StyleSheet.create({
   pageLabelContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 15,
+    marginVertical: isBelowHeightThreshold ? 10 : 15,
   },
   pageLabel: {
     fontSize: 17,
     marginLeft: 10,
+    color: 'black',
   },
   buttonContainer: {
     backgroundColor: 'white',

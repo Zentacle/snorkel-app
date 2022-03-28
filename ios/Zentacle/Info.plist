@@ -38,9 +38,15 @@
 				<string>com.googleusercontent.apps.609299692665-83hea99m4uic1lu4rkoo7aeffr9ovhk5</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>zentacle</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FacebookAppID</key>
 	<string>$(FACEBOOK_APP_ID)</string>
 	<key>FacebookClientToken</key>

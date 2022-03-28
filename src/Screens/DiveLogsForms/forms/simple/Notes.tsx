@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Platform } from 'react-native';
 import { Field } from 'react-final-form';
 
 import FMInput from '_components/ui/FormManagementInput';
@@ -56,12 +56,15 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     backgroundColor: '#FFF',
     borderRadius: 8,
+    justifyContent: 'flex-start',
   },
   input: {
-    minHeight: 90,
+    minHeight: Platform.OS === 'android' ? 40 : 90,
     fontSize: 16,
-    paddingTop: 12,
+    paddingTop: Platform.OS === 'android' ? 5 : 12,
     paddingBottom: 5,
+    color: 'black',
+    justifyContent: 'flex-start',
   },
 });
 

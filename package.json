@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@invertase/react-native-apple-authentication": "^2.1.5",
+    "@react-native-clipboard/clipboard": "^1.8.5",
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-google-signin/google-signin": "^7.0.4",
     "@react-native-masked-view/masked-view": "^0.2.6",
@@ -47,6 +48,7 @@
     "react-native-screens": "^3.10.1",
     "react-native-splash-screen": "^3.3.0",
     "react-native-vector-icons": "^8.1.0",
+    "react-native-webview": "^11.17.2",
     "react-redux": "^7.2.6",
     "uuid": "^8.3.2",
     "validate.js": "^0.13.1"

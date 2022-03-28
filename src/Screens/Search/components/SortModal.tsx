@@ -6,6 +6,7 @@ import Button from '_components/ui/Buttons/Button';
 import type { FunctionComponent } from 'react';
 
 import { capitalize } from '_utils/functions';
+import { isBelowHeightThreshold } from '_utils/constants';
 
 interface SortModalProps {
   modalIsVisible: boolean;
@@ -66,6 +67,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     marginHorizontal: 0,
     borderRadius: 15,
+    paddingVertical: isBelowHeightThreshold ? 5 : 10,
   },
   buttonText: {
     color: 'black',
@@ -74,16 +76,18 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   sortByContainer: {
-    paddingVertical: 20,
+    paddingVertical: isBelowHeightThreshold ? 12 : 20,
     alignItems: 'center',
   },
   sortByMainText: {
     fontSize: 18,
     fontWeight: '700',
+    color: 'black',
   },
   sortBySubtext: {
     fontSize: 15,
     marginTop: 5,
+    color: 'black',
   },
   optionContainer: {
     alignItems: 'center',
@@ -94,7 +98,7 @@ const styles = StyleSheet.create({
   optionText: {
     color: 'black',
     fontSize: 20,
-    marginVertical: 20,
+    marginVertical: isBelowHeightThreshold ? 15 : 20,
     fontWeight: '500',
   },
 });

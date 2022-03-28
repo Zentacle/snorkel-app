@@ -4,6 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import type { FunctionComponent } from 'react';
 
 import Button from '_components/ui/Buttons/Button';
+import { isBelowHeightThreshold } from '_utils/constants';
 
 interface DiveSiteFooterProps {
   navigateToDiveLogForm: () => void;
@@ -41,14 +42,14 @@ const DiveSiteFooter: FunctionComponent<DiveSiteFooterProps> = props => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 114,
+    height: isBelowHeightThreshold ? 100 : 114,
     backgroundColor: '#FFF',
     position: 'absolute',
     bottom: 0,
     width: '100%',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
-    paddingVertical: 15,
+    paddingVertical: isBelowHeightThreshold ? 10 : 15,
     paddingHorizontal: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',

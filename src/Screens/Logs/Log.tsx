@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import ImageCarousel from '_components/reusables/ImageCarousel';
+import ImageCarousel from '_components/reusables/DiveLogImageCarousel';
 import DiveLocation from './components/DiveLocation';
 import { capitalize } from '_utils/functions';
 
@@ -33,6 +33,7 @@ import GradientBox from '_components/ui/GradientBox';
 import { useAppSelector } from '_redux/hooks';
 import { selectDiveLogById } from '_redux/slices/dive-logs';
 import { AdvancedFormInitialValues } from '_utils/interfaces/data/logs';
+import NoLog from './components/NoLog';
 
 type LogNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<LogsStackParamList, 'LogDetail'>,
@@ -51,18 +52,22 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
     selectDiveLogById(route.params.diveLogId),
   );
 
-  if (!diveLog) return null;
-
-  const isAdvancedLog = !!(diveLog.timeInWater && diveLog.maxDepth);
-  const coords = {
-    latitude: -8.409518,
-    longitude: 115.188919,
-  };
   const navigateBack = () => {
     navigation.navigate('App', {
       screen: 'Logs',
     });
   };
+
+  if (!diveLog) {
+    return <NoLog goBack={navigateBack} />;
+  }
+
+  const isAdvancedLog = !!(diveLog.timeInWater && diveLog.maxDepth);
+  const coords = {
+    latitude: diveLog.location?.lat || -8.409518,
+    longitude: diveLog.location?.lng || 115.188919,
+  };
+
   const navigateToMap = () => {
     navigation.navigate('ExploreStack', {
       screen: 'Map',
@@ -102,9 +107,13 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <ImageCarousel goBack={navigateBack} images={diveLog.images} />
+        <ImageCarousel
+          goBack={navigateBack}
+          images={diveLog.images}
+          shareUrl={`https://zentacle.com/dive-log/${diveLog.id}`}
+        />
 
         <View style={styles.contentContainer}>
           <Text style={styles.mainDescription}>{diveLog.name}</Text>
@@ -321,7 +330,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -525,7 +534,9 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: 'black',
   },
-  airTankTypetext: {},
+  airTankTypetext: {
+    color: 'black',
+  },
   divingGearItemContainer: {
     marginVertical: 20,
   },
@@ -576,6 +587,7 @@ const styles = StyleSheet.create({
     textDecorationStyle: 'dotted',
     fontSize: 15,
     marginLeft: 10,
+    color: 'black',
   },
 });
 

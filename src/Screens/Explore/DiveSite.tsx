@@ -7,9 +7,9 @@ import {
   ScrollView,
   SafeAreaView,
   TouchableWithoutFeedback,
-  Dimensions,
-  Platform,
   ActivityIndicator,
+  Platform,
+  StatusBar,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
@@ -49,6 +49,7 @@ import type { Spot } from '_utils/interfaces/data/spot';
 
 import LocationImage from '_assets/Location.png';
 import { capitalize } from '_utils/functions';
+import { isBelowHeightThreshold, WIDTH } from '_utils/constants';
 
 type DiveSiteNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<ExploreStackParamList, 'DiveSite'>,
@@ -81,8 +82,6 @@ const activities: Activity[] = [
     values: ['Beach', 'Coral', 'Dive Party'],
   },
 ];
-
-const WIDTH = Dimensions.get('window').width;
 
 const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   const currentSpotId = route.params.diveSpotId;
@@ -157,7 +156,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
 
   const navigateToReviews = () => {
     navigation.navigate('Reviews', {
-      diveSpotId: currentSpotId,
+      id: currentSpotId,
     });
   };
 
@@ -170,9 +169,13 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+      {/* {Platform.OS === 'ios' && <StatusBar barStyle={'light-content'} />} */}
       <ScrollView style={styles.scrollContainer}>
-        <ImageCarousel goBack={navigateBack} />
+        <ImageCarousel
+          goBack={navigateBack}
+          shareUrl={`https://zentacle.com/Beach/${diveSite.id}`}
+        />
 
         <View style={styles.contentContainer}>
           <Text style={styles.mainDescription}>{diveSite.name}</Text>
@@ -278,13 +281,13 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
         </View>
       </ScrollView>
       <Footer navigateToDiveLogForm={navigateToDiveLogForm} />
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    marginBottom: Platform.OS === 'android' ? 114 : 80,
+    marginBottom: isBelowHeightThreshold ? 100 : 80,
   },
   container: {
     flex: 1,

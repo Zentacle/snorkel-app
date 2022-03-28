@@ -1,11 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { Field } from 'react-final-form';
 
 import SliderComp from '_components/ui/Slider';
 import GradientCircle from '_components/ui/GradientCircle';
 import GradientBox from '_components/ui/GradientBox';
 import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
+
+const WIDTH = Dimensions.get('window').width;
 
 const NitroxActiveComponent = (nitrox: string) => (
   <View style={styles.selectedShadow}>
@@ -136,8 +138,9 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   levelText: {
-    marginRight: 25,
-    marginLeft: 15,
+    marginLeft: WIDTH < 380 ? 5 : 10,
+    color: 'black',
+    fontSize: WIDTH < 380 ? 13 : 14,
   },
   normalLevelCircle: {
     width: 20,

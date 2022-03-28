@@ -30,7 +30,12 @@ const PrivacyPolicy: FunctionComponent<PrivacyPolicyTypeProps> = ({
     <SafeAreaView style={styles.container}>
       <View style={styles.contentContainer}>
         <View style={styles.headerContainer}>
-          <Icon name="chevron-back-outline" size={30} onPress={navigateBack} />
+          <Icon
+            name="chevron-back-outline"
+            size={30}
+            color="black"
+            onPress={navigateBack}
+          />
           <Text style={styles.headerText}>Privacy Policy</Text>
           <View />
         </View>
@@ -168,18 +173,23 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 24,
     fontWeight: '700',
+    color: 'black',
   },
   privacy: {
-    marginTop: 30,
+    marginTop: 10,
+    marginBottom: 10,
   },
   privacyHeader: {
     fontWeight: '700',
     fontSize: 17,
+    color: 'black',
   },
   textBody: {
     marginTop: 10,
     fontSize: 16,
     fontWeight: '500',
+    color: 'black',
+    textAlign: 'justify',
   },
   scrollContainer: {
     paddingBottom: 30,
@@ -187,6 +197,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     fontWeight: '500',
+    color: 'black',
   },
 });
 

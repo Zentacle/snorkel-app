@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 
 import type { FunctionComponent } from 'react';
@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 18,
     fontWeight: '600',
+    marginBottom: Platform.OS === 'android' ? 10 : 0,
   },
 });
 

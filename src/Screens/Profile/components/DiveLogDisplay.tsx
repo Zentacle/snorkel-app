@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     fontSize: 17,
     marginTop: 15,
+    color: 'black',
   },
   diveLogLinkContainer: {
     marginTop: 10,

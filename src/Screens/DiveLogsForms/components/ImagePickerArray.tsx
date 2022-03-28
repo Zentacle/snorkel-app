@@ -6,6 +6,7 @@ import {
   Pressable,
   Image,
   ScrollView,
+  Platform,
 } from 'react-native';
 import IOIcon from 'react-native-vector-icons/Ionicons';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
@@ -17,6 +18,7 @@ import GradientCircle from '_components/ui/GradientCircle';
 
 import type { FunctionComponent } from 'react';
 import { PhotoOptions } from '../utils/interfaces';
+import { isBelowHeightThreshold } from '_utils/constants';
 
 interface ImageType {
   uri: string;
@@ -53,7 +55,7 @@ const ImagePickerArray: FunctionComponent<ImagePickerArrayProps> = ({
     closeCameraModal();
 
     if (result.assets && result.assets[0].uri && result.assets[0].fileName) {
-      fields.unshift({
+      fields.push({
         uri: result.assets[0].uri,
         type: result.assets[0].type,
         name: result.assets[0].fileName,
@@ -141,7 +143,7 @@ const ImagePickerArray: FunctionComponent<ImagePickerArrayProps> = ({
                     fields.remove(index);
                   }}>
                   <View style={styles.deleteIcon}>
-                    <IOIcon name="close-outline" size={25} />
+                    <IOIcon name="close-outline" size={25} color="black" />
                   </View>
                 </Pressable>
                 <Image style={styles.image} source={{ uri: item.uri }} />
@@ -208,8 +210,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   mediaContainer: {
-    marginTop: 30,
-    marginBottom: 30,
+    marginTop: isBelowHeightThreshold ? 20 : 30,
+    marginBottom: isBelowHeightThreshold ? 15 : 25,
   },
   optionalContainer: {},
   optionaltext: {
@@ -226,6 +228,8 @@ const styles = StyleSheet.create({
   imageContainer: {
     marginRight: 20,
     position: 'relative',
+    paddingVertical: 10,
+    marginBottom: Platform.OS === 'android' ? 15 : 5,
   },
   image: {
     width: 150,
@@ -239,7 +243,7 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     backgroundColor: 'white',
-    zIndex: 3,
+    zIndex: 5,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
