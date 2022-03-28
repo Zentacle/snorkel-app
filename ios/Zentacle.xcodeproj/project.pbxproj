@@ -451,27 +451,21 @@
 		};
 		0E992F9A27E925F60043CDB2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			productRef = 0E992F9927E925F60043CDB2;
 		};
 		0E992F9C27E925F60043CDB2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			productRef = 0E992F9B27E925F60043CDB2;
 		};
 		0E992F9E27E925F60043CDB2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			productRef = 0E992F9D27E925F60043CDB2;
 		};
 		0E992FA027E925F60043CDB2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			productRef = 0E992F9F27E925F60043CDB2;
 		};
 		0E992FA227E925F60043CDB2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			productRef = 0E992FA127E925F60043CDB2;
 		};
 		0E992FA427E925F60043CDB2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			productRef = 0E992FA327E925F60043CDB2;
 		};
 /* End PBXTargetDependency section */
 
@@ -538,7 +532,7 @@
 				CODE_SIGN_ENTITLEMENTS = Zentacle/Zentacle.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 9C8EQ3DGNG;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Zentacle/Info.plist;
@@ -546,7 +540,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2;
+				MARKETING_VERSION = 0.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -572,14 +566,14 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 9C8EQ3DGNG;
 				INFOPLIST_FILE = Zentacle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2;
+				MARKETING_VERSION = 0.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
