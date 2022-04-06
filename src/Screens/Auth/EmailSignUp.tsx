@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Form, Field } from 'react-final-form';
 import validate from 'validate.js';
 import { FORM_ERROR } from 'final-form';
+import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -44,6 +45,7 @@ interface InitialValues {
 
 const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   const navigateBack = () => {
     props.navigation.goBack();
@@ -68,7 +70,7 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
         [FORM_ERROR]:
           typeof response.payload === 'string'
             ? response.payload
-            : 'There was an error logginng in, please try again.',
+            : t('LOG_IN_ERROR'),
       };
     }
   };
@@ -102,7 +104,9 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
           />
         </View>
         <View style={styles.introTextContainer}>
-          <Text style={styles.introText}>Become a Zentacle member.</Text>
+          <Text style={styles.introText}>
+            {t('email_signup.INTRO_TEXT', { name: 'Zentacle' })}
+          </Text>
         </View>
 
         <Form
@@ -124,7 +128,7 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
                   <Field
                     name="first_name"
                     component={Input}
-                    placeholder="First Name"
+                    placeholder={t('FIRST_NAME')}
                     placeholderTextColor="#BFBFBF"
                     // style={styles.input}
                     containerStyle={styles.inputContainer}
@@ -132,7 +136,7 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
                   <Field
                     name="last_name"
                     component={Input}
-                    placeholder="Last Name"
+                    placeholder={t('LAST_NAME')}
                     placeholderTextColor="#BFBFBF"
                     // style={styles.input}
                     containerStyle={styles.inputContainer}
@@ -140,7 +144,7 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
                   <Field
                     name="email"
                     component={Input}
-                    placeholder="Email"
+                    placeholder={t('EMAIL')}
                     placeholderTextColor="#BFBFBF"
                     // style={styles.input}
                     containerStyle={styles.inputContainer}
@@ -149,7 +153,7 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
                   <Field
                     name="password"
                     component={Input}
-                    placeholder="Password"
+                    placeholder={t('PASSWORD')}
                     placeholderTextColor="#BFBFBF"
                     containerStyle={styles.inputContainer}
                     passwordType
@@ -184,7 +188,7 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
                         fontWeight: '800',
                       },
                     }}>
-                    Sign Up
+                    {t('SIGN_UP')}
                   </Button>
                   {submitFailed && !!submitError && (
                     <View style={styles.errorContainer}>
@@ -192,7 +196,7 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
                     </View>
                   )}
                   <View style={styles.altDirContainer}>
-                    <Text style={styles.altDirText}>OR</Text>
+                    <Text style={styles.altDirText}>{t('OR')}</Text>
                   </View>
                   {actionButtons.map((actionButton, index) => (
                     <SMButton
@@ -212,7 +216,7 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
                           fontWeight: '800',
                         },
                       }}>
-                      Continue with {actionButton.name}
+                      {`${t('CONTINUE_WITH')} ${actionButton.name}`}
                     </SMButton>
                   ))}
                 </View>
@@ -223,23 +227,23 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
 
         <View style={styles.privacyContainer}>
           <Text style={styles.privacyText}>
-            By proceeding, you agree to our&nbsp;
-            <TouchableWithoutFeedback>
-              <Text style={styles.privacyLink}>Terms of Use </Text>
-            </TouchableWithoutFeedback>
-            and confirm that you have read our&nbsp;
+            {t('landing.privacy._1')}&nbsp;
             <TouchableWithoutFeedback>
               <Text style={styles.privacyLink}>
-                Privacy and Cookie Statement.
+                {t('landing.privacy._2')}&nbsp;
               </Text>
+            </TouchableWithoutFeedback>
+            {t('landing.privacy._3')}&nbsp;
+            <TouchableWithoutFeedback>
+              <Text style={styles.privacyLink}>{t('landing.privacy._4')}.</Text>
             </TouchableWithoutFeedback>
           </Text>
         </View>
         <View style={styles.signInContainer}>
           <Text style={styles.signInText}>
-            Have an Account? &nbsp;
+            {t('HAVE_ACCOUNT')} &nbsp;
             <TouchableWithoutFeedback onPress={navigateToSignIn}>
-              <Text style={styles.signInHighlight}>Sign in</Text>
+              <Text style={styles.signInHighlight}>{t('SIGN_IN')}</Text>
             </TouchableWithoutFeedback>
           </Text>
         </View>

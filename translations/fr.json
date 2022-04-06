@@ -1,0 +1,29 @@
+{
+  "landing": {
+    "INTRO": "Voir les sites de plongée et les avis partout dans le monde",
+    "privacy": {
+      "_1": "En poursuivant, vous acceptez nos",
+      "_2": "Conditions d'utilisation",
+      "_3": "et confirmez que vous avez lu notre",
+      "_4": "Déclaration de confidentialité et de cookies"
+    }
+  },
+  "OR": "OU",
+  "EMAIL": "E-mail",
+  "HAVE_ACCOUNT": "Avoir un compte?",
+  "SIGN_IN": "S'identifier",
+  "CONTINUE_WITH": "Continue avec",
+  "email_signup": {
+    "INTRO_TEXT": "Devenir un {{name}} membre."
+  },
+  "FIRST_NAME": "Prénom",
+  "LAST_NAME": "Nom de famille",
+  "PASSWORD": "Mot de passe",
+  "SIGN_UP": "S'inscrire",
+  "sign_in": {
+    "INTRO_TEXT": "Content de te revoir"
+  },
+  "LOG_IN": "Connexion",
+  "DONT_HAVE_ACCOUNT": "Vous n'avez pas de compte ?",
+  "LOG_IN_ERROR": "Une erreur s'est produite lors de la connexion, veuillez réessayer."
+}

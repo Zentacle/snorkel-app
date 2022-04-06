@@ -1,0 +1,29 @@
+{
+  "landing": {
+    "INTRO": "Ver ubicaciones de buceo y reseñas en todo el mundo",
+    "privacy": {
+      "_1": "Al proceder, usted acepta nuestro",
+      "_2": "Condiciones de uso",
+      "_3": "Y confirma que has leído nuestro",
+      "_4": "Declaración de privacidad y cookies"
+    }
+  },
+  "OR": "O",
+  "EMAIL": "Correo electrónico",
+  "HAVE_ACCOUNT": "¿Tener una cuenta?",
+  "SIGN_IN": "Iniciar sesión",
+  "CONTINUE_WITH": "Continua con",
+  "email_signup": {
+    "INTRO_TEXT": "Convertirse en un {{name}} miembro."
+  },
+  "FIRST_NAME": "Primer nombre",
+  "LAST_NAME": "Apellido",
+  "PASSWORD": "Clave",
+  "SIGN_UP": "Inscribirse",
+  "sign_in": {
+    "INTRO_TEXT": "Bienvenido de nuevo"
+  },
+  "LOG_IN": "Iniciar sesión",
+  "DONT_HAVE_ACCOUNT": "¿No tienes una cuenta?",
+  "LOG_IN_ERROR": "Hubo un error al iniciar sesión, inténtalo de nuevo."
+}

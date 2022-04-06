@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Form, Field } from 'react-final-form';
 import validate from 'validate.js';
 import { FORM_ERROR } from 'final-form';
+import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -44,6 +45,7 @@ interface InitialValues {
 
 const SignIn: FunctionComponent<SignInProps> = props => {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   const navigateBack = () => {
     props.navigation.goBack();
@@ -100,7 +102,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
         [FORM_ERROR]:
           typeof response.payload === 'string'
             ? response.payload
-            : 'There was an error logging in, please try again.',
+            : t('LOG_IN_ERROR'),
       };
     }
   };
@@ -117,7 +119,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
           />
         </View>
         <View style={styles.introTextContainer}>
-          <Text style={styles.introText}>Welcome Back</Text>
+          <Text style={styles.introText}>{t('sign_in.INTRO_TEXT')}</Text>
         </View>
 
         <Form
@@ -138,7 +140,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
                   <Field
                     name="email"
                     component={Input}
-                    placeholder="Email"
+                    placeholder={t('EMAIL')}
                     placeholderTextColor="#BFBFBF"
                     // style={styles.input}
                     containerStyle={styles.inputContainer}
@@ -147,7 +149,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
                   <Field
                     name="password"
                     component={Input}
-                    placeholder="Password"
+                    placeholder={t('PASSWORD')}
                     placeholderTextColor="#BFBFBF"
                     containerStyle={styles.inputContainer}
                     passwordType
@@ -182,7 +184,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
                         fontWeight: '800',
                       },
                     }}>
-                    Log in
+                    {t('LOG_IN')}
                   </Button>
                   {submitFailed && !!submitError && (
                     <View style={styles.errorContainer}>
@@ -190,7 +192,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
                     </View>
                   )}
                   <View style={styles.altDirContainer}>
-                    <Text style={styles.altDirText}>OR</Text>
+                    <Text style={styles.altDirText}>{t('OR')}</Text>
                   </View>
                   {actionButtons.map((actionButton, index) => (
                     <SMButton
@@ -210,7 +212,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
                           fontWeight: '800',
                         },
                       }}>
-                      Continue with {actionButton.name}
+                      {`${t('CONTINUE_WITH')} ${actionButton.name}`}
                     </SMButton>
                   ))}
                 </View>
@@ -221,23 +223,23 @@ const SignIn: FunctionComponent<SignInProps> = props => {
 
         <View style={styles.privacyContainer}>
           <Text style={styles.privacyText}>
-            By proceeding, you agree to our&nbsp;
-            <TouchableWithoutFeedback>
-              <Text style={styles.privacyLink}>Terms of Use </Text>
-            </TouchableWithoutFeedback>
-            and confirm that you have read our&nbsp;
+            {t('landing.privacy._1')}&nbsp;
             <TouchableWithoutFeedback>
               <Text style={styles.privacyLink}>
-                Privacy and Cookie Statement.
+                {t('landing.privacy._2')}&nbsp;
               </Text>
+            </TouchableWithoutFeedback>
+            {t('landing.privacy._3')}&nbsp;
+            <TouchableWithoutFeedback>
+              <Text style={styles.privacyLink}>{t('landing.privacy._4')}.</Text>
             </TouchableWithoutFeedback>
           </Text>
         </View>
         <View style={styles.signInContainer}>
           <Text style={styles.signInText}>
-            Don't have an Account? &nbsp;
+            {t('DONT_HAVE_ACCOUNT')} &nbsp;
             <TouchableWithoutFeedback onPress={navigateBack}>
-              <Text style={styles.signInHighlight}>Sign Up</Text>
+              <Text style={styles.signInHighlight}>{t('SIGN_UP')}</Text>
             </TouchableWithoutFeedback>
           </Text>
         </View>

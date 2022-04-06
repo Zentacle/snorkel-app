@@ -1,0 +1,28 @@
+{
+  "landing": {
+    "INTRO": "View dive locations and reviews all over the world",
+    "privacy": {
+      "_1": "By proceeding, you agree to our",
+      "_2": "Terms of Use",
+      "_3": "and confirm that you have read our",
+      "_4": "Privacy and Cookie Statement"
+    }
+  },
+  "OR": "OR",
+  "EMAIL": "Email",
+  "HAVE_ACCOUNT": "Have an Account?",
+  "SIGN_IN": "Sign In",
+  "CONTINUE_WITH": "Continue with",
+  "email_signup": {
+    "INTRO_TEXT": "Become a {{name}} member."
+  },
+  "FIRST_NAME": "First Name",
+  "LAST_NAME": "Last Name",
+  "PASSWORD": "Password",
+  "SIGN_UP": "Sign Up",
+  "sign_in": {
+    "INTRO_TEXT": "Welcome back"
+  },
+  "LOG_IN": "Log in",
+  "DONT_HAVE_ACCOUNT": "Don't Have an Account?"
+}

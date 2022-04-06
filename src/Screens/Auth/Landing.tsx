@@ -7,6 +7,7 @@ import {
   ImageBackground,
   TouchableWithoutFeedback,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -34,6 +35,7 @@ interface LandingProps {
 }
 
 const Landing: FunctionComponent<LandingProps> = props => {
+  const { t } = useTranslation();
   type SelectedLogin = 'Facebook' | 'Google' | 'Apple' | '';
   const [selectedLogin, setSelectedLogin] = React.useState<SelectedLogin>('');
   const dispatch = useAppDispatch();
@@ -117,9 +119,7 @@ const Landing: FunctionComponent<LandingProps> = props => {
       <ImageBackground style={styles.backgroundImage} source={CoverImage}>
         <View>
           <View style={styles.introTextContainer}>
-            <Text style={styles.introText}>
-              View dive locations and reviews all over the world
-            </Text>
+            <Text style={styles.introText}>{t('landing.INTRO')}</Text>
           </View>
           <View style={styles.buttonsContainer}>
             {actionButtons.map((actionButton, index) => {
@@ -144,12 +144,12 @@ const Landing: FunctionComponent<LandingProps> = props => {
                       fontWeight: '800',
                     },
                   }}>
-                  Continue with {actionButton.name}
+                  {`${t('CONTINUE_WITH')} ${actionButton.name}`}
                 </SMButton>
               );
             })}
             <View style={styles.altDirContainer}>
-              <Text style={styles.altDirText}>OR</Text>
+              <Text style={styles.altDirText}>{t('OR')}</Text>
             </View>
             <Button
               onPress={navigateToEmailRegister}
@@ -177,28 +177,30 @@ const Landing: FunctionComponent<LandingProps> = props => {
                   fontWeight: '800',
                 },
               }}>
-              Email
+              {t('EMAIL')}
             </Button>
           </View>
           <View style={styles.privacyContainer}>
             <Text style={styles.privacyText}>
-              By proceeding, you agree to our&nbsp;
-              <TouchableWithoutFeedback>
-                <Text style={styles.privacyLink}>Terms of Use </Text>
-              </TouchableWithoutFeedback>
-              and confirm that you have read our&nbsp;
+              {t('landing.privacy._1')}&nbsp;
               <TouchableWithoutFeedback>
                 <Text style={styles.privacyLink}>
-                  Privacy and Cookie Statement.
+                  {t('landing.privacy._2')}&nbsp;
+                </Text>
+              </TouchableWithoutFeedback>
+              {t('landing.privacy._3')}&nbsp;
+              <TouchableWithoutFeedback>
+                <Text style={styles.privacyLink}>
+                  {t('landing.privacy._4')}.
                 </Text>
               </TouchableWithoutFeedback>
             </Text>
           </View>
           <View style={styles.signInContainer}>
             <Text style={styles.signInText}>
-              Have an Account? &nbsp;
+              {t('HAVE_ACCOUNT')} &nbsp;
               <TouchableWithoutFeedback onPress={navigateToSignIn}>
-                <Text style={styles.signInHighlight}>Sign In</Text>
+                <Text style={styles.signInHighlight}>{t('SIGN_IN')}</Text>
               </TouchableWithoutFeedback>
             </Text>
           </View>
@@ -230,7 +232,7 @@ const styles = StyleSheet.create({
     color: '#FFF',
   },
   buttonsContainer: {
-    marginTop: isBelowHeightThreshold ? HEIGHT * 0.06 : HEIGHT * 0.12,
+    marginTop: isBelowHeightThreshold ? HEIGHT * 0.05 : HEIGHT * 0.08,
     marginHorizontal: 15,
   },
   altDirContainer: {
