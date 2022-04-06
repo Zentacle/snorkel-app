@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import config from 'react-native-config';
 
 import './src/validation';
+import './i18n.config';
 
 import Navigator from './src/Navigation';
 import store from '_redux/store';
