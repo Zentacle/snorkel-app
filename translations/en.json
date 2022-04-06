@@ -24,5 +24,6 @@
     "INTRO_TEXT": "Welcome back"
   },
   "LOG_IN": "Log in",
-  "DONT_HAVE_ACCOUNT": "Don't Have an Account?"
+  "DONT_HAVE_ACCOUNT": "Don't Have an Account?",
+  "LOG_IN_ERROR": "There was an error logging in, please try again."
 }
