@@ -1,23 +1,25 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Field } from 'react-final-form';
+import { useTranslation } from 'react-i18next';
 
 import FMInput from '_components/ui/FormManagementInput';
 
 const Name = () => {
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <View style={styles.nameContentLabel}>
-        <Text style={styles.headerLabel}>Enter Name</Text>
+        <Text style={styles.headerLabel}>{t('ENTER_NAME')}</Text>
         <View style={styles.optionalContainer}>
-          <Text style={styles.optionaltext}>Up to 40 Characters</Text>
+          <Text style={styles.optionaltext}>{t('UP_TO_40_CHARS')}</Text>
         </View>
       </View>
       <View>
         <Field
           name="name"
           component={FMInput}
-          placeholder="Write Title"
+          placeholder={t('WRITE_TITLE')}
           style={styles.input}
           containerStyle={styles.inputContainer}
           maxLength={40}

@@ -13,6 +13,7 @@ import {
 import IoIcon from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { useTranslation } from 'react-i18next';
 
 import GradientCircle from '_components/ui/GradientCircle';
 import GradientText from '_components/ui/GradientText';
@@ -46,6 +47,7 @@ const Review: FunctionComponent<ReviewProps> = ({
   formValues,
   id,
 }) => {
+  const { t } = useTranslation();
   const [copyMessageSet, setCopymessage] = React.useState(false);
   const activeUser = useAppSelector(selectUser);
   const onShare = async () => {
@@ -53,7 +55,9 @@ const Review: FunctionComponent<ReviewProps> = ({
     try {
       const result = await Share.share({
         message: url,
-        title: `${activeUser?.username} wants to share their dive log with you`,
+        title: `${activeUser?.username} ${t(
+          'diveLogForm.DIVE_LOG_SHARE_MESSAGE',
+        )}`,
         url,
       });
       console.log(result);
@@ -96,7 +100,7 @@ const Review: FunctionComponent<ReviewProps> = ({
         </GradientCircle>
       </View>
       <Text style={styles.mainText}>
-        Your dive log has been successfully created!
+        {t('diveLogForm.SIMPLE_LOG_CREATED_MSG')}
       </Text>
 
       <View style={styles.imageContainer}>
@@ -156,7 +160,7 @@ const Review: FunctionComponent<ReviewProps> = ({
               }}
               gradientLocations={[0.01, 1, 1]}
               style={styles.shareText}>
-              Share
+              {t('SHARE')}
             </GradientText>
           </View>
         </TouchableWithoutFeedback>
@@ -175,7 +179,7 @@ const Review: FunctionComponent<ReviewProps> = ({
               }}
               gradientLocations={[0.01, 1, 1]}
               style={styles.shareText}>
-              {copyMessageSet ? 'Copied' : 'Copy Link'}
+              {copyMessageSet ? t('COPIED') : t('COPY_LINK')}
             </GradientText>
           </View>
         </TouchableWithoutFeedback>
@@ -199,7 +203,7 @@ const Review: FunctionComponent<ReviewProps> = ({
             container: styles.buttonContainer,
             text: styles.buttonText,
           }}>
-          Add More Details
+          {t('ADD_MORE_DETAILS')}
         </Button>
       </View>
     </ScrollView>

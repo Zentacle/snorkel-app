@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { Field } from 'react-final-form';
+import { useTranslation } from 'react-i18next';
 
 import SliderComp from '_components/ui/Slider';
 import GradientCircle from '_components/ui/GradientCircle';
@@ -30,14 +31,15 @@ const NitroxInactiveComponent = (nitrox: string) => (
 );
 
 const WearGear = () => {
-  const nitroxTypes = ['Normal', 'EANx32', 'EANx36'];
+  const { t } = useTranslation();
+  const nitroxTypes = [t('NORMAL'), 'EANx32', 'EANx36'];
 
   return (
     <View style={styles.container}>
       <View style={{ marginTop: 30 }}>
         <Field
           name="weight"
-          label="Weight . kg"
+          label={`${t('WEIGHT')} . kg`}
           component={SliderComp}
           trackMarks={[0, 5, 10, 15, 20, 25, 30, 35, 40]}
           benchMarks={[0, 20, 40]}
@@ -48,13 +50,13 @@ const WearGear = () => {
 
       <View style={{ marginTop: 30, marginBottom: 20 }}>
         <View style={styles.labelTextContainer}>
-          <Text style={styles.labelText}>Air Tank</Text>
+          <Text style={styles.labelText}>{t('AIR_TANK')}</Text>
         </View>
       </View>
 
       <Field
         name="airTankStart"
-        label="Start . bar"
+        label={`${t('START')} . bar`}
         component={SliderComp}
         trackMarks={[0, 40, 80, 120, 160, 200, 240, 280, 320, 360, 400]}
         benchMarks={[0, 200, 400]}
@@ -64,7 +66,7 @@ const WearGear = () => {
 
       <Field
         name="airTankEnd"
-        label="End . bar"
+        label={`${t('END')} . bar`}
         component={SliderComp}
         trackMarks={[0, 40, 80, 120, 160, 200, 240, 280, 320, 360, 400]}
         benchMarks={[0, 200, 400]}

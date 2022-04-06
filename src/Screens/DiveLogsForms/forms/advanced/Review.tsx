@@ -12,6 +12,7 @@ import {
 import IoIcon from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { useTranslation } from 'react-i18next';
 
 import GradientCircle from '_components/ui/GradientCircle';
 import GradientText from '_components/ui/GradientText';
@@ -45,6 +46,7 @@ const Review: FunctionComponent<ReviewProps> = ({
   navigateToDiveLogs,
   formValues,
 }) => {
+  const { t } = useTranslation();
   const [copyMessageSet, setCopymessage] = React.useState(false);
   const activeUser = useAppSelector(selectUser);
   const onShare = async () => {
@@ -52,7 +54,9 @@ const Review: FunctionComponent<ReviewProps> = ({
     try {
       const result = await Share.share({
         message: url,
-        title: `${activeUser?.username} wants to share their dive log with you`,
+        title: `${activeUser?.username} ${t(
+          'diveLogForm.DIVE_LOG_SHARE_MESSAGE',
+        )}`,
         url,
       });
       console.log(result);
@@ -91,7 +95,7 @@ const Review: FunctionComponent<ReviewProps> = ({
         </GradientCircle>
       </View>
       <Text style={styles.mainText}>
-        Your dive log has been successfully recorded!
+        {t('diveLogForm.ADVANCED_LOG_CREATED_MSG')}
       </Text>
 
       <View style={styles.diveDetailsContainer}>
@@ -138,7 +142,7 @@ const Review: FunctionComponent<ReviewProps> = ({
             <View style={styles.timeDepthItem}>
               <Image source={DiveTimeClock} />
               <View style={styles.timeDepthTextContainer}>
-                <Text style={styles.timeDepthLabel}>Dive time</Text>
+                <Text style={styles.timeDepthLabel}>{t('DIVE_TIME')}</Text>
                 <Text style={styles.timeDepthText}>
                   {formValues.timeInWater} min
                 </Text>
@@ -147,7 +151,7 @@ const Review: FunctionComponent<ReviewProps> = ({
             <View style={styles.timeDepthItem}>
               <Image source={DepthArrow} />
               <View style={styles.timeDepthTextContainer}>
-                <Text style={styles.timeDepthLabel}>Max depth</Text>
+                <Text style={styles.timeDepthLabel}>{t('MAX_DEPTH')}</Text>
                 <Text style={styles.timeDepthText}>
                   {formValues.maxDepth} m
                 </Text>
@@ -173,7 +177,7 @@ const Review: FunctionComponent<ReviewProps> = ({
               }}
               gradientLocations={[0.01, 1, 1]}
               style={styles.shareText}>
-              Share
+              {t('SHARE')}
             </GradientText>
           </View>
         </TouchableWithoutFeedback>
@@ -192,7 +196,7 @@ const Review: FunctionComponent<ReviewProps> = ({
               }}
               gradientLocations={[0.01, 1, 1]}
               style={styles.shareText}>
-              {copyMessageSet ? 'Copied' : 'Copy Link'}
+              {copyMessageSet ? t('COPIED') : t('COPY_LINK')}
             </GradientText>
           </View>
         </TouchableWithoutFeedback>
@@ -216,7 +220,7 @@ const Review: FunctionComponent<ReviewProps> = ({
             container: styles.buttonContainer,
             text: styles.buttonText,
           }}>
-          Complete
+          {t('COMPLETE')}
         </Button>
       </View>
     </View>

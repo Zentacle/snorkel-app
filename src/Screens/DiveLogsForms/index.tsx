@@ -13,6 +13,7 @@ import { Form } from 'react-final-form';
 import validate from 'validate.js';
 import get from 'lodash/get';
 import arrayMutators from 'final-form-arrays';
+import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
@@ -28,7 +29,7 @@ import type { RootStackParamList, AppTabsParamList } from '_utils/interfaces';
 import FormStates from './components/FormStates';
 import Footer from './components/FormFooter';
 
-import { simpleformStages as stages } from './utils/utils';
+// import { simpleformStages as stages } from './utils/utils';
 import Location from './forms/simple/Location';
 import Rating from './forms/simple/Rating';
 import Name from './forms/simple/Name';
@@ -44,6 +45,7 @@ import {
   isBelowHeightThreshold,
   isBelowWidthThreshold,
 } from '_utils/constants';
+import { Stage } from './utils/interfaces';
 
 type SimpleDiveLogsFormsNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<AppTabsParamList, 'LogsForm'>,
@@ -60,12 +62,32 @@ interface SimpleDiveLogsFormsProps {
 const SimpleDiveLogsForms: FunctionComponent<
   SimpleDiveLogsFormsProps
 > = props => {
+  const { t } = useTranslation();
   const [page, switchPage] = React.useState(0);
   const [modalIsOpen, toggleModal] = React.useState(false);
   const [savedDiveLogId, saveDiveLogId] = React.useState(0);
   const passedInLog: InitialValues = get(props.route, 'params.diveLogs', {});
   let formRef = React.useRef<FormApi>();
   const dispatch = useAppDispatch();
+
+  const stages: Stage[] = [
+    {
+      id: 0,
+      name: t('simpleformStages._0'),
+    },
+    {
+      id: 1,
+      name: t('simpleformStages._1'),
+    },
+    {
+      id: 2,
+      name: t('simpleformStages._2'),
+    },
+    {
+      id: 3,
+      name: t('simpleformStages._3'),
+    },
+  ];
 
   const goBack = () => {
     props.navigation.goBack();
@@ -128,7 +150,7 @@ const SimpleDiveLogsForms: FunctionComponent<
     // @ts-ignore
     rating: 0,
     // @ts-ignore
-    difficulty: 'Beginner',
+    difficulty: t('BEGINNER'),
     location: undefined,
     // @ts-ignore
     // images: [],
@@ -194,12 +216,12 @@ const SimpleDiveLogsForms: FunctionComponent<
         return (
           <SafeAreaView style={styles.container}>
             <ExitModal
-              subtext="On exit, all dive log information you entered will be deleted."
+              subtext={t('diveLogForm.EXIT_MODAL_SUBTEXT_FOR_SIMPLE_FORM')}
               isVisible={modalIsOpen}
               modalAction={modalAction}
               modalCancelAction={modalCancelAction}
-              actionText="Exit"
-              cancelActionText="Cancel"
+              actionText={t('EXIT')}
+              cancelActionText={t('CANCEL')}
             />
             <ScrollView
               style={[
@@ -225,8 +247,8 @@ const SimpleDiveLogsForms: FunctionComponent<
                 <Text
                   style={[styles.header, page === 0 && { marginLeft: -20 }]}>
                   {page === stages.length
-                    ? 'Dive Log Created'
-                    : 'Create Dive Log'}
+                    ? t('DIVE_LOG_CREATED')
+                    : t('CREATE_DIVE_LOG')}
                 </Text>
                 <TouchableWithoutFeedback
                   onPress={
@@ -281,7 +303,9 @@ const SimpleDiveLogsForms: FunctionComponent<
                     : next
                 }
                 disabled={!canMoveToNextPage(page, values as InitialValues)}
-                text={page === stages.length - 1 ? 'Complete' : 'Continue'}
+                text={
+                  page === stages.length - 1 ? t('COMPLETE') : t('CONTINUE')
+                }
               />
             )}
           </SafeAreaView>

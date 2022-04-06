@@ -15,6 +15,7 @@ import {
 import debounce from 'lodash/debounce';
 import Config from 'react-native-config';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useTranslation } from 'react-i18next';
 
 import type { FunctionComponent } from 'react';
 import type { FieldRenderProps } from 'react-final-form';
@@ -56,6 +57,7 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
   closeModal,
   input: { onChange },
 }) => {
+  const { t } = useTranslation();
   const [text, changeText] = React.useState('');
   const [suggestions, setSuggestions] = React.useState<PlaceSuggestion[]>([]);
   const [loading, setLoading] = React.useState(false);
@@ -167,7 +169,7 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
             value={text}
             containerStyle={styles.inputCompContainer}
             style={styles.search}
-            placeholder="Location, site, diver"
+            placeholder={t('LOCATION_SITE_DIVER')}
           />
         </View>
         {loading ? (

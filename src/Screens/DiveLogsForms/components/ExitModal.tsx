@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 import IoIcon from 'react-native-vector-icons/Ionicons';
+import { useTranslation } from 'react-i18next';
 
 import GradientCircle from '_components/ui/GradientCircle';
 import Button from '_components/ui/Buttons/Button';
@@ -25,6 +26,7 @@ const ExitModal: FunctionComponent<ExitModalProps> = ({
   modalAction,
   modalCancelAction,
 }) => {
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <Modal isVisible={isVisible}>
@@ -34,7 +36,9 @@ const ExitModal: FunctionComponent<ExitModalProps> = ({
               <IoIcon name="close-outline" size={60} color="#fff" />
             </GradientCircle>
           </View>
-          <Text style={styles.mainText}>Are you sure you want to exit?</Text>
+          <Text style={styles.mainText}>
+            {t('diveLogForm.EXIT_MODAL_MAIN_TEXT')}
+          </Text>
           <View style={styles.subtextContainer}>
             <Text style={styles.subtext}>{subtext}</Text>
           </View>

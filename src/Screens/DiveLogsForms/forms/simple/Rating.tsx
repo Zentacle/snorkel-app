@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Field } from 'react-final-form';
+import { useTranslation } from 'react-i18next';
 
 import GradientCircle from '_components/ui/GradientCircle';
 import GradientBox from '_components/ui/GradientBox';
@@ -9,7 +10,8 @@ import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
 import { isBelowWidthThreshold } from '_utils/constants';
 
 const Rating = () => {
-  const levels = ['Beginner', 'Intermediate', 'Advanced'];
+  const { t } = useTranslation();
+  const levels = [t('BEGINNER'), t('INTERMEDIATE'), t('ADVANCED')];
 
   const ActiveComponent = (level: string) => (
     <View style={styles.selectedShadow}>
@@ -34,12 +36,12 @@ const Rating = () => {
   return (
     <ScrollView style={styles.container}>
       <View>
-        <Text style={styles.headerLabel}>Rating</Text>
+        <Text style={styles.headerLabel}>{t('RATING')}</Text>
         <Field name="rating" component={RatingsInputComp} />
       </View>
 
       <View style={styles.levelContentContainer}>
-        <Text style={styles.headerLabel}>Level of difficulty</Text>
+        <Text style={styles.headerLabel}>{t('LEVEL_OF_DIFFICULTY')}</Text>
         <Field
           name="difficulty"
           component={SelectWGradientBorder}

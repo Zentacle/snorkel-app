@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useTranslation } from 'react-i18next';
 
 import type { FunctionComponent } from 'react';
 
@@ -20,12 +21,15 @@ interface SimpleFormDiveLocationProps {
 const SimpleFormDiveLocation: FunctionComponent<
   SimpleFormDiveLocationProps
 > = ({ coordinates, onClickEdit, desc }) => {
+  const { t } = useTranslation();
   const canShowLocation = coordinates.latitude && coordinates.longitude;
   return (
     <View style={styles.diveLocationContainer}>
       {canShowLocation ? (
         <>
-          <Text style={styles.diveSiteLocationHeader}>Dive Site Location</Text>
+          <Text style={styles.diveSiteLocationHeader}>
+            {t('DIVE_SITE_LOCATION')}
+          </Text>
           <View style={styles.mapContainer}>
             <MapView
               provider="google"
@@ -50,7 +54,7 @@ const SimpleFormDiveLocation: FunctionComponent<
             <View>
               <View style={styles.descContainer}>
                 <Image source={DescIcon} />
-                <Text style={styles.descText}>Dive place</Text>
+                <Text style={styles.descText}>{t('DIVE_PLACE')}</Text>
               </View>
               <View style={styles.locationContainer}>
                 <Image source={LocationImage} />
