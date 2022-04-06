@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
+import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -36,6 +37,8 @@ interface LocationPermissionsProps {
 const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
   navigation,
 }) => {
+  const { t } = useTranslation();
+
   const navigateToMeasurementType = () => {
     navigation.navigate('MeasurementType');
   };
@@ -81,9 +84,11 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
           <Icon name="location-outline" size={40} />
         </GradientCircle>
         <View style={styles.descriptionContainer}>
-          <Text style={styles.descriptionMainText}>Enable Location</Text>
+          <Text style={styles.descriptionMainText}>
+            {t('location_permission.DESCRIPTION_MAIN_TEXT')}
+          </Text>
           <Text style={styles.descriptionSubText}>
-            Your location will be used to show dive locations near you
+            {t('location_permission.DESCRIPTION_SUB_TEXT')}
           </Text>
         </View>
       </View>
@@ -105,7 +110,7 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
             container: styles.buttonContainer,
             text: styles.buttonText,
           }}>
-          Enable
+          {t('ENABLE')}
         </Button>
         <Button
           onPress={() => {
@@ -125,11 +130,11 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
             container: styles.buttonContainer,
             text: styles.buttonText,
           }}>
-          Disable
+          {t('DISABLE')}
         </Button>
         <View style={styles.buttonsDescriptionContainer}>
           <Text style={styles.buttonsDescriptionText}>
-            Magically secured to make all security concerns go away
+            {t('MAGICALLY_SECURED')}
           </Text>
         </View>
       </View>

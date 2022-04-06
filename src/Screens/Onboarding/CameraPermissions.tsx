@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
+import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -37,6 +38,7 @@ interface CameraPermissionsProps {
 const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
   navigation,
 }) => {
+  const { t } = useTranslation();
   const navigateToAvatar = () => {
     navigation.navigate('ChooseAvatar');
   };
@@ -89,11 +91,10 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
         </GradientCircle>
         <View style={styles.descriptionContainer}>
           <Text style={styles.descriptionMainText}>
-            Enable access to your camera and gallery
+            {t('camera_permissions.DESCRIPTION_MAIN_TEXT')}
           </Text>
           <Text style={styles.descriptionSubText}>
-            Access is needed to upload images to the vents from your camera roll
-            and add photo to your profile
+            {t('camera_permissions.DESCRIPTION_SUB_TEXT')}
           </Text>
         </View>
       </View>
@@ -115,7 +116,7 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
             container: styles.buttonContainer,
             text: styles.buttonText,
           }}>
-          Enable
+          {t('ENABLE')}
         </Button>
         <Button
           onPress={() => {
@@ -135,11 +136,11 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
             container: styles.buttonContainer,
             text: styles.buttonText,
           }}>
-          Disable
+          {t('DISABLE')}
         </Button>
         <View style={styles.buttonsDescriptionContainer}>
           <Text style={styles.buttonsDescriptionText}>
-            Magically secured to make all security concerns go away
+            {t('MAGICALLY_SECURED')}
           </Text>
         </View>
       </View>

@@ -25,5 +25,44 @@
   },
   "LOG_IN": "Connexion",
   "DONT_HAVE_ACCOUNT": "Vous n'avez pas de compte ?",
-  "LOG_IN_ERROR": "Une erreur s'est produite lors de la connexion, veuillez réessayer."
+  "LOG_IN_ERROR": "Une erreur s'est produite lors de la connexion, veuillez réessayer.",
+  "activity_type": {
+    "DESCRIPTION_MAIN_TEXT": "Quelle activité pratiquez-vous habituellement ?",
+    "DESCRIPTION_SUB_TEXT": "Nous utiliserons par défaut votre journal pour cette activité, mais vous pourrez le modifier ultérieurement."
+  },
+  "SKIP": "Sauter",
+  "FREEDIVING": "Plongée libre",
+  "SCUBA": "Scaphandre autonome",
+  "SNORKEL": "Tuba",
+  "IMPERIAL": "impérial",
+  "METRIC": "métrique",
+  "measurement_type": {
+    "DESCRIPTION_MAIN_TEXT": "Unités impériales ou métriques ?",
+    "DESCRIPTION_SUB_TEXT": "Sélectionnez les unités pratiques à utiliser dans l'application"
+  },
+  "camera_permissions": {
+    "DESCRIPTION_MAIN_TEXT": "Autoriser l'accès à votre appareil photo et à votre galerie",
+    "DESCRIPTION_SUB_TEXT": "L'accès est nécessaire pour télécharger des images vers les évents à partir de votre pellicule et ajouter une photo à votre profil"
+  },
+  "ENABLE": "Permettre",
+  "DISABLE": "Désactiver",
+  "CAMERA": "Appareil photo",
+  "PHOTO_LIBRARY": "Galerie de photos",
+  "choose_avatar": {
+    "DESCRIPTION_MAIN_TEXT": "Choisissez votre avatar",
+    "DESCRIPTION_SUB_TEXT": "Téléchargez votre avatar pour continuer"
+  },
+  "CONTINUE": "Continuez",
+  "USER_UPDATE_ERROR": "Une erreur s'est produite lors de la mise à jour de l'utilisateur. Veuillez réessayer.",
+  "choose_username": {
+    "DESCRIPTION_MAIN_TEXT": "Quel est ton nom d'utilisateur?",
+    "DESCRIPTION_SUB_TEXT": "Comment vous apparaîtrez dans {{name}}"
+  },
+  "USERNAME": "Nom d'utilisateur",
+  "location_permission": {
+    "DESCRIPTION_MAIN_TEXT": "Location disponible",
+    "DESCRIPTION_SUB_TEXT": "Votre emplacement sera utilisé pour afficher les sites de plongée près de chez vous"
+  },
+  "MAGICALLY_SECURED": "Sécurisé par magie pour éliminer tous les problèmes de sécurité",
+  "ENTER_NAME": "Entrez le nom"
 }

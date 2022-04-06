@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -44,6 +45,7 @@ interface PhotoOptions {
 
 const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
   const settings = useAppSelector(selectSettings);
+  const { t } = useTranslation();
   const [cameraImage, setCameraImage] = React.useState('');
   const navigateBack = () => {
     props.navigation.goBack();
@@ -97,11 +99,11 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
 
   const photoOptions: PhotoOptions[] = [
     {
-      name: 'Camera',
+      name: t('CAMERA'),
       action: handleLaunchCamera,
     },
     {
-      name: 'Photo Library',
+      name: t('PHOTO_LIBRARY'),
       action: handleLaunchPhotoLibrary,
     },
   ];
@@ -118,9 +120,11 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
           />
         </View>
         <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>Choose your avatar</Text>
+          <Text style={styles.headerText}>
+            {t('choose_avatar.DESCRIPTION_MAIN_TEXT')}
+          </Text>
           <Text style={styles.headerSubtext}>
-            Upload your avatar to continue
+            {t('choose_avatar.DESCRIPTION_SUB_TEXT')}
           </Text>
         </View>
         <View style={styles.iconAddContainer}>
@@ -171,7 +175,7 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
               fontWeight: '800',
             },
           }}>
-          Continue
+          {t('CONTINUE')}
         </Button>
       </View>
 

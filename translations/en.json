@@ -25,5 +25,44 @@
   },
   "LOG_IN": "Log in",
   "DONT_HAVE_ACCOUNT": "Don't Have an Account?",
-  "LOG_IN_ERROR": "There was an error logging in, please try again."
+  "LOG_IN_ERROR": "There was an error logging in, please try again.",
+  "activity_type": {
+    "DESCRIPTION_MAIN_TEXT": "Which Activity do you normally do?",
+    "DESCRIPTION_SUB_TEXT": "We will default your log to this activity, but you can change it later."
+  },
+  "SKIP": "Skip",
+  "FREEDIVING": "Freediving",
+  "SCUBA": "Scuba",
+  "SNORKEL": "Snorkel",
+  "IMPERIAL": "imperial",
+  "METRIC": "metric",
+  "measurement_type": {
+    "DESCRIPTION_MAIN_TEXT": "Imperial Units or Metric?",
+    "DESCRIPTION_SUB_TEXT": "Select the convenient units to be used in the application"
+  },
+  "camera_permissions": {
+    "DESCRIPTION_MAIN_TEXT": "Enable access to your camera and gallery",
+    "DESCRIPTION_SUB_TEXT": "Access is needed to upload images to the vents from your camera roll and add photo to your profile"
+  },
+  "ENABLE": "Enable",
+  "DISABLE": "Disable",
+  "CAMERA": "Camera",
+  "PHOTO_LIBRARY": "Photo Library",
+  "choose_avatar": {
+    "DESCRIPTION_MAIN_TEXT": "Choose your avatar",
+    "DESCRIPTION_SUB_TEXT": "Upload your avatar to continue"
+  },
+  "CONTINUE": "Continue",
+  "USER_UPDATE_ERROR": "There was an error updating the user. Please try again.",
+  "choose_username": {
+    "DESCRIPTION_MAIN_TEXT": "What's your username?",
+    "DESCRIPTION_SUB_TEXT": "How you will appear in {{name}}"
+  },
+  "USERNAME": "Username",
+  "location_permission": {
+    "DESCRIPTION_MAIN_TEXT": "Enable Location",
+    "DESCRIPTION_SUB_TEXT": "Your location will be used to show dive locations near you"
+  },
+  "MAGICALLY_SECURED": "Magically secured to make all security concerns go away",
+  "ENTER_NAME": "Enter Name"
 }

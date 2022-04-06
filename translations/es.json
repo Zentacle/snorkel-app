@@ -25,5 +25,44 @@
   },
   "LOG_IN": "Iniciar sesión",
   "DONT_HAVE_ACCOUNT": "¿No tienes una cuenta?",
-  "LOG_IN_ERROR": "Hubo un error al iniciar sesión, inténtalo de nuevo."
+  "LOG_IN_ERROR": "Hubo un error al iniciar sesión, inténtalo de nuevo.",
+  "activity_type": {
+    "DESCRIPTION_MAIN_TEXT": "¿Qué Actividad haces normalmente?",
+    "DESCRIPTION_SUB_TEXT": "Predeterminaremos su registro a esta actividad, pero puede cambiarlo más tarde."
+  },
+  "SKIP": "Saltar",
+  "FREEDIVING": "Buceo libre",
+  "SCUBA": "Escafandra autónoma",
+  "SNORKEL": "Tubo respirador",
+  "IMPERIAL": "imperial",
+  "METRIC": "métrico",
+  "measurement_type": {
+    "DESCRIPTION_MAIN_TEXT": "¿Unidades imperiales o métricas?",
+    "DESCRIPTION_SUB_TEXT": "Seleccionar las unidades convenientes a utilizar en la aplicación"
+  },
+  "camera_permissions": {
+    "DESCRIPTION_MAIN_TEXT": "Habilita el acceso a tu cámara y galería",
+    "DESCRIPTION_SUB_TEXT": "Se necesita acceso para cargar imágenes a las rejillas de ventilación desde el rollo de su cámara y agregar una foto a su perfil"
+  },
+  "ENABLE": "Habilitar",
+  "DISABLE": "Desactivar",
+  "CAMERA": "Cámara",
+  "PHOTO_LIBRARY": "Librería fotográfica",
+  "choose_avatar": {
+    "DESCRIPTION_MAIN_TEXT": "Elige tu avatar",
+    "DESCRIPTION_SUB_TEXT": "Sube tu avatar para continuar"
+  },
+  "CONTINUE": "Continuar",
+  "USER_UPDATE_ERROR": "Hubo un error al actualizar el usuario. Inténtalo de nuevo.",
+  "choose_username": {
+    "DESCRIPTION_MAIN_TEXT": "¿Cual es tu nombre de usuario?",
+    "DESCRIPTION_SUB_TEXT": "Cómo aparecerás en {{name}}"
+  },
+  "USERNAME": "Nombre de usuario",
+  "location_permission": {
+    "DESCRIPTION_MAIN_TEXT": "Habilitar ubicación",
+    "DESCRIPTION_SUB_TEXT": "Tu ubicación se utilizará para mostrar ubicaciones de buceo cercanas a ti"
+  },
+  "MAGICALLY_SECURED": "Mágicamente asegurado para hacer que todas las preocupaciones de seguridad desaparezcan",
+  "ENTER_NAME": "Ingrese su nombre"
 }

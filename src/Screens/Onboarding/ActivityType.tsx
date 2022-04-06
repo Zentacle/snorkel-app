@@ -8,6 +8,7 @@ import {
   Image,
   TouchableWithoutFeedback,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -38,20 +39,22 @@ interface ActivityTypes {
   name: string;
 }
 
-const activityTypes: ActivityTypes[] = [
-  {
-    name: 'Freediving',
-  },
-  {
-    name: 'Scuba',
-  },
-  {
-    name: 'Snorkel',
-  },
-];
-
 const ActivityType: FunctionComponent<ActivityTypeProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
+
+  const activityTypes: ActivityTypes[] = [
+    {
+      name: t('FREEDIVING'),
+    },
+    {
+      name: t('SCUBA'),
+    },
+    {
+      name: t('SNORKEL'),
+    },
+  ];
+
   const navigateToApp = () => {
     navigation.navigate('App', {
       screen: 'Explore',
@@ -71,7 +74,7 @@ const ActivityType: FunctionComponent<ActivityTypeProps> = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <TouchableWithoutFeedback onPress={navigateToApp}>
         <View style={styles.skipContainer}>
-          <Text style={styles.skipText}>Skip</Text>
+          <Text style={styles.skipText}>{t('SKIP')}</Text>
         </View>
       </TouchableWithoutFeedback>
       <View style={styles.mainContainer}>
@@ -90,11 +93,10 @@ const ActivityType: FunctionComponent<ActivityTypeProps> = ({ navigation }) => {
         </GradientCircle>
         <View style={styles.descriptionContainer}>
           <Text style={styles.descriptionMainText}>
-            Which Activity do you normally do?
+            {t('activity_type.DESCRIPTION_MAIN_TEXT')}
           </Text>
           <Text style={styles.descriptionSubText}>
-            We will default your log to this activity, but you can change it
-            later.
+            {t('activity_type.DESCRIPTION_SUB_TEXT')}
           </Text>
         </View>
       </View>

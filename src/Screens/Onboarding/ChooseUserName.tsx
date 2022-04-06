@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Dimensions, SafeAreaView } from 'react-native';
 import { Form, Field } from 'react-final-form';
 import validate from 'validate.js';
 import { FORM_ERROR } from 'final-form';
+import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -35,6 +36,7 @@ interface InitialValues {
 
 const ChooseUserName: FunctionComponent<ChooseUserNameProps> = props => {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const user = useAppSelector(selectUser);
 
   const navigateToCameraPermissions = () => {
@@ -50,7 +52,7 @@ const ChooseUserName: FunctionComponent<ChooseUserNameProps> = props => {
         [FORM_ERROR]:
           typeof response.payload === 'string'
             ? response.payload
-            : 'There was an error updating the user. Please try again.',
+            : t('USER_UPDATE_ERROR'),
       };
     }
   };
@@ -83,17 +85,21 @@ const ChooseUserName: FunctionComponent<ChooseUserNameProps> = props => {
             <>
               <View style={styles.contentContainer}>
                 <View style={styles.headerContainer}>
-                  <Text style={styles.headerText}>What's your username?</Text>
+                  <Text style={styles.headerText}>
+                    {t('choose_username.DESCRIPTION_MAIN_TEXT')}
+                  </Text>
                   <Text style={styles.headerSubtext}>
-                    How you will appear in Zentacle
+                    {t('choose_username.DESCRIPTION_SUB_TEXT', {
+                      name: 'Zentacle',
+                    })}
                   </Text>
                 </View>
                 <View style={styles.inputContainer}>
-                  <Text style={styles.inputLabel}>Enter Name</Text>
+                  <Text style={styles.inputLabel}>{t('ENTER_NAME')}</Text>
                   <Field
                     name="username"
                     component={Input}
-                    placeholder="Username"
+                    placeholder={t('USERNAME')}
                     placeholderTextColor="#BFBFBF"
                     // style={styles.input}
                     containerStyle={styles.input}
