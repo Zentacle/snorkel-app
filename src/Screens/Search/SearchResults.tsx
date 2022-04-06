@@ -11,6 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import get from 'lodash/get';
 import { Form, Field } from 'react-final-form';
+import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type {
@@ -54,6 +55,7 @@ const SearchResults: FunctionComponent<SearchResultsProps> = ({
   route,
 }) => {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const diveSites = Object.values(useAppSelector(selectAllDiveSites));
   const [sortModalIsOpen, toggleSortModal] = React.useState(false);
   let formRef = React.useRef<FormApi>();
@@ -149,9 +151,9 @@ const SearchResults: FunctionComponent<SearchResultsProps> = ({
           contentContainerStyle={styles.diveSitesCardsContainer}
           showsVerticalScrollIndicator={false}>
           <View style={styles.diveSitesHeaderContainer}>
-            <Text style={styles.diveSitesHeaderCount}>58 Sites</Text>
+            <Text style={styles.diveSitesHeaderCount}>58 {t('SITES')}</Text>
             <View style={styles.diveSitesSortContainer}>
-              <Text style={styles.diveSitesSortText}>Sort by</Text>
+              <Text style={styles.diveSitesSortText}>{t('SORT_BY')}</Text>
               <Icon
                 onPress={handleToggleSortModal}
                 name="chevron-down-outline"

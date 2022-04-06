@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import GradientText from '_components/ui/GradientText';
 import DiveShopImage from '_assets/EcoCenter.jpeg';
@@ -9,12 +10,19 @@ import DiveSiteImage from '_assets/DiveSite5.jpeg';
 import { destinations } from '../utils';
 
 const SearchMainView = () => {
-  const recentSearches = ['beach', 'coral', 'dive', 'dive party', 'party'];
+  const { t } = useTranslation();
+  const recentSearches = [
+    t('BEACH'),
+    t('CORAL'),
+    t('DIVE'),
+    t('DIVE_PARTY'),
+    t('PARTY'),
+  ];
 
   return (
     <View style={styles.mainBody}>
       <View style={styles.recentSearchesContainer}>
-        <Text style={styles.headerLabel}>Recent Searches</Text>
+        <Text style={styles.headerLabel}>{t('RECENT_SEARCHES')}</Text>
         <ScrollView
           style={styles.recentSearches}
           horizontal
@@ -29,7 +37,7 @@ const SearchMainView = () => {
 
       <View style={styles.destinationsContainer}>
         <View style={styles.destinationLabelContainer}>
-          <Text style={styles.headerLabel}>Destination</Text>
+          <Text style={styles.headerLabel}>{t('DESTINATION')}</Text>
           <GradientText
             gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
             start={{
@@ -42,7 +50,7 @@ const SearchMainView = () => {
             }}
             gradientLocations={[0.01, 1, 1]}
             style={styles.headerLabelGradient}>
-            See All
+            {t('SEE_ALL')}
           </GradientText>
         </View>
         <ScrollView
@@ -70,7 +78,7 @@ const SearchMainView = () => {
 
       <View style={styles.diveShopsContainer}>
         <View style={styles.diveShopLabelContainer}>
-          <Text style={styles.headerLabel}>Destination</Text>
+          <Text style={styles.headerLabel}>{t('DESTINATION')}</Text>
           <GradientText
             gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
             start={{
@@ -83,7 +91,7 @@ const SearchMainView = () => {
             }}
             gradientLocations={[0.01, 1, 1]}
             style={styles.headerLabelGradient}>
-            See All
+            {t('SEE_ALL')}
           </GradientText>
         </View>
         <ScrollView
@@ -114,7 +122,7 @@ const SearchMainView = () => {
 
       <View style={styles.diveSitesContainer}>
         <View style={styles.diveSiteLabelContainer}>
-          <Text style={styles.headerLabel}>Popular Dive Sites</Text>
+          <Text style={styles.headerLabel}>{t('POPULAR_DIVE_SITES')}</Text>
           <GradientText
             gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
             start={{
@@ -127,7 +135,7 @@ const SearchMainView = () => {
             }}
             gradientLocations={[0.01, 1, 1]}
             style={styles.headerLabelGradient}>
-            See All
+            {t('SEE_ALL')}
           </GradientText>
         </View>
         <ScrollView

@@ -277,6 +277,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 20,
     fontWeight: '700',
+    width: '70%',
   },
   nearbySitesMapText: {
     fontSize: 18,
@@ -309,6 +310,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 20,
     fontWeight: '700',
+    width: '70%',
   },
   diveShopsMoreText: {
     fontSize: 18,

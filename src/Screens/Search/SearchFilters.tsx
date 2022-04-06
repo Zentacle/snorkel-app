@@ -10,6 +10,7 @@ import {
 import { Field, Form } from 'react-final-form';
 import Icon from 'react-native-vector-icons/Ionicons';
 import get from 'lodash/get';
+import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type {
@@ -44,10 +45,6 @@ interface SearchFiltersProps {
   route: SearchFiltersRouteProps;
 }
 
-const levels = ['Beginner', 'Intermediate', 'Advanced'];
-const preferences = ['Scuba', 'Free', 'Snorkel'];
-const entries = ['Shore', 'Boat'];
-
 const ActiveComponent = (level: string) => (
   <View style={styles.selectedShadow}>
     <GradientBox style={styles.selectedLevel}>
@@ -81,36 +78,40 @@ const EntryActiveComp = (entry: string) => (
   </View>
 );
 
-const EntryInctiveComp = (entry: string) => {
-  const index = entries.findIndex(item => item === entry);
-  return (
-    <View
-      style={[
-        styles.level,
-        index === 0 ? { marginRight: 15 } : { marginLeft: 15 },
-      ]}>
-      <View style={styles.normalLevelCircle}></View>
-      <Text style={styles.levelText}>{entry}</Text>
-    </View>
-  );
-};
-
 const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
   navigation,
   route,
 }) => {
+  const { t } = useTranslation();
+  const levels = [t('BEGINNER'), t('INTERMEDIATE'), t('ADVANCED')];
+  const preferences = [t('SCUBA'), t('FREE'), t('SNORKEL')];
+  const entries = [t('SHORE'), t('BOAT')];
   const passedInLocationValues: InitialSearchValues = get(
     route,
     'params.search',
     {},
   );
 
+  const EntryInctiveComp = (entry: string) => {
+    const index = entries.findIndex(item => item === entry);
+    return (
+      <View
+        style={[
+          styles.level,
+          index === 0 ? { marginRight: 15 } : { marginLeft: 15 },
+        ]}>
+        <View style={styles.normalLevelCircle}></View>
+        <Text style={styles.levelText}>{entry}</Text>
+      </View>
+    );
+  };
+
   let formRef = React.useRef<FormApi>();
 
   const initialValues: InitialSearchValues = {
-    difficulty: 'Beginner',
-    preference: 'Scuba',
-    entry: 'Shore',
+    difficulty: t('BEGINNER'),
+    preference: t('SCUBA'),
+    entry: t('SHORE'),
     maxDepth: 18,
     ...passedInLocationValues,
   };
@@ -160,15 +161,15 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
                   color="black"
                   size={30}
                 />
-                <Text style={styles.headerMainText}>Filter</Text>
+                <Text style={styles.headerMainText}>{t('FILTER')}</Text>
                 <TouchableWithoutFeedback onPress={resetFiltersFromNav}>
-                  <Text style={styles.headerRightText}>Reset</Text>
+                  <Text style={styles.headerRightText}>{t('RESET')}</Text>
                 </TouchableWithoutFeedback>
               </View>
               <View style={styles.formBodyContainer}>
                 <View style={styles.divePreferenceContentContainer}>
                   <Text style={styles.headerLabel}>
-                    Dive activity preferences
+                    {t('DIVE_ACTIVITY_PREFERENCES')}
                   </Text>
                   <Field
                     name="preference"
@@ -180,7 +181,9 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
                 </View>
 
                 <View style={styles.levelContentContainer}>
-                  <Text style={styles.headerLabel}>Level of difficulty</Text>
+                  <Text style={styles.headerLabel}>
+                    {t('LEVEL_OF_DIFFICULTY')}
+                  </Text>
                   <Field
                     name="difficulty"
                     component={SelectWGradientBorder}
@@ -191,7 +194,7 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
                 </View>
 
                 <View style={styles.diveActivityContentContainer}>
-                  <Text style={styles.headerLabel}>Entry</Text>
+                  <Text style={styles.headerLabel}>{t('ENTRY')}</Text>
                   <Field
                     name="entry"
                     component={SelectWGradientBorder}
@@ -205,7 +208,7 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
                 <View style={styles.maxDepthContainer}>
                   <Field
                     name="maxDepth"
-                    label="Max Depth. Ft"
+                    label={`${t('MAX_DEPTH')}. Ft`}
                     component={SliderComp}
                     trackMarks={[
                       0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500,
@@ -233,7 +236,7 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
                     container: styles.buttonContainer,
                     text: styles.buttonText,
                   }}>
-                  Show (32 results)
+                  {t('SHOW')} (32 {t('RESULTS')})
                 </Button>
               </View>
             </ScrollView>
@@ -284,6 +287,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     opacity: 0.5,
     minWidth: '30%',
+    maxWidth: '35%',
   },
   selectBox: {
     borderRadius: 12,
@@ -292,6 +296,7 @@ const styles = StyleSheet.create({
   },
   selectedShadow: {
     minWidth: '30%',
+    maxWidth: '35%',
     borderRadius: 12,
     shadowColor: 'black',
     shadowRadius: 4,

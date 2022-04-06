@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import { Form, Field } from 'react-final-form';
+import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -23,6 +24,7 @@ interface SearchProps {
 }
 
 const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
+  const { t } = useTranslation();
   const [autocompleteModalOpen, toggleAutocompleteModal] =
     React.useState(false);
 
@@ -44,7 +46,7 @@ const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>Search</Text>
+        <Text style={styles.headerText}>{t('SEARCH')}</Text>
       </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
