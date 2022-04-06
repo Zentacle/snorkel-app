@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useTranslation } from 'react-i18next';
 
 import type { FunctionComponent } from 'react';
 
@@ -18,13 +19,14 @@ const DiveSiteReviews: FunctionComponent<DiveSiteReviewsProps> = (
     // navigateToReviews,
   },
 ) => {
+  const { t } = useTranslation();
   return (
     <View style={styles.reviewContainer}>
       <View style={styles.reviewLabelContainer}>
         <Icon name="star" size={20} color="#aa00ff" />
         <Text style={styles.reviewRatingsLabelText}>3.5</Text>
         <View style={styles.reviewDot} />
-        <Text style={styles.reviewRatingsCount}>52 reviews</Text>
+        <Text style={styles.reviewRatingsCount}>52 {t('REVIEWS')}</Text>
       </View>
       <View style={styles.reviewCardsContainer}>
         <View style={styles.review}>
@@ -70,7 +72,7 @@ const DiveSiteReviews: FunctionComponent<DiveSiteReviewsProps> = (
           container: styles.showReviewsButtonContainer,
           text: styles.showReviewsButtonText,
         }}>
-        Show All Reviews
+        {t('SHOW_ALL_REVIEWS')}
       </Button>
     </View>
   );

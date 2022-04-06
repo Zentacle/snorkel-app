@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import debounce from 'lodash/debounce';
 import Config from 'react-native-config';
+import { useTranslation } from 'react-i18next';
 
 import type { FunctionComponent } from 'react';
 import type { FieldRenderProps } from 'react-final-form';
@@ -35,6 +36,7 @@ const HEIGHT = Dimensions.get('window').height;
 const Autocomplete: FunctionComponent<AutocompleteWfinalProps> = ({
   input: { onChange },
 }) => {
+  const { t } = useTranslation();
   const [text, changeText] = React.useState('');
   const [suggestions, setSuggestions] = React.useState<PlaceSuggestion[]>([]);
   const [loading, setLoading] = React.useState(false);
@@ -93,7 +95,7 @@ const Autocomplete: FunctionComponent<AutocompleteWfinalProps> = ({
           placeholder="Search"
         />
         <TouchableWithoutFeedback onPress={handleCloseModal}>
-          <Text style={styles.searchLabel}>Cancel</Text>
+          <Text style={styles.searchLabel}>{t('CANCEL')}</Text>
         </TouchableWithoutFeedback>
       </View>
       {loading ? (

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import type { FunctionComponent } from 'react';
 
@@ -11,11 +12,13 @@ interface DiveSiteFooterProps {
 }
 
 const DiveSiteFooter: FunctionComponent<DiveSiteFooterProps> = props => {
+  const { t } = useTranslation();
+
   return (
     <View style={styles.container}>
       <View style={styles.logContainer}>
         <Text style={styles.logCount}>463</Text>
-        <Text style={styles.logLabel}>Dive Logs</Text>
+        <Text style={styles.logLabel}>{t('DIVE_LOGS')}</Text>
       </View>
       <Button
         onPress={props.navigateToDiveLogForm}
@@ -34,7 +37,7 @@ const DiveSiteFooter: FunctionComponent<DiveSiteFooterProps> = props => {
           container: styles.buttonContainer,
           text: styles.buttonText,
         }}>
-        Log a Dive
+        {t('LOG_A_DIVE')}
       </Button>
     </View>
   );
@@ -55,7 +58,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  logContainer: {},
+  logContainer: {
+    width: '25%',
+  },
   logCount: {
     color: 'black',
     fontSize: 20,

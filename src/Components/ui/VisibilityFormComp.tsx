@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   Image,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import type { FunctionComponent } from 'react';
 import type { FieldRenderProps } from 'react-final-form';
@@ -23,12 +24,14 @@ type ComponentProps = VisibilityFormCompProps & FinalFormProps;
 const VisibilityFormComp: FunctionComponent<ComponentProps> = ({
   input: { value, onChange },
 }) => {
+  const { t } = useTranslation();
+
   const visibilityLevels = [
-    'Poor',
-    'Below Average',
-    'Average',
-    'Good',
-    'Amazing',
+    t('POOR'),
+    t('BELOW_AVERAGE'),
+    t('AVERAGE'),
+    t('GOOD'),
+    t('AMAZING'),
   ];
 
   const valueIndex = visibilityLevels.findIndex(vis => vis === value);
@@ -36,7 +39,7 @@ const VisibilityFormComp: FunctionComponent<ComponentProps> = ({
   return (
     <View style={styles.visibilityContentContainer}>
       <View style={styles.labelTextContainer}>
-        <Text style={styles.labelText}>Visibility</Text>
+        <Text style={styles.labelText}>{t('VISIBILITY')}</Text>
         <Text style={styles.labelText}>{value}</Text>
       </View>
       <View style={styles.visibility}>

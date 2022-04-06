@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   Image,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import type { FunctionComponent } from 'react';
 import type { FieldRenderProps } from 'react-final-form';
@@ -20,6 +21,7 @@ type ComponentProps = RatingsInputCompProps & FinalFormProps;
 const RatingsInputComp: FunctionComponent<ComponentProps> = ({
   input: { value, onChange },
 }) => {
+  const { t } = useTranslation();
   const ratings = [1, 2, 3, 4, 5];
 
   return (
@@ -32,7 +34,9 @@ const RatingsInputComp: FunctionComponent<ComponentProps> = ({
           />
         </TouchableWithoutFeedback>
       ))}
-      <Text style={styles.starLabel}>{value} of 5</Text>
+      <Text style={styles.starLabel}>
+        {value} {t('OF')} 5
+      </Text>
     </View>
   );
 };

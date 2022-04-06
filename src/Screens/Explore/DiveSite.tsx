@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
+import { useTranslation } from 'react-i18next';
 
 import ImageCarousel from '_components/reusables/ImageCarousel';
 import DiveLocation from './components/DiveLocation';
@@ -68,25 +69,25 @@ interface Activity {
   values: string[];
 }
 
-const activities: Activity[] = [
-  {
-    label: 'Activity',
-    values: ['Scuba', 'Snorkel', 'Free'],
-  },
-  {
-    label: 'Entry',
-    values: ['Shore', 'Water'],
-  },
-  {
-    label: 'Tags',
-    values: ['Beach', 'Coral', 'Dive Party'],
-  },
-];
-
 const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   const currentSpotId = route.params.diveSpotId;
-
+  const { t } = useTranslation();
   const [nearby, setNearby] = React.useState<Spot[]>([]);
+
+  const activities: Activity[] = [
+    {
+      label: t('ACTIVITY'),
+      values: [t('SCUBA'), t('SNORKEL'), t('FREE')],
+    },
+    {
+      label: t('ENTRY'),
+      values: [t('SHORE'), t('WATER')],
+    },
+    {
+      label: t('TAGS'),
+      values: [t('BEACH'), t('CORAL'), t('DIVE_PARTY')],
+    },
+  ];
 
   const diveSiteInState = useAppSelector(
     isDiveSiteDetailinState(currentSpotId),
@@ -185,7 +186,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
           </View>
           <View style={styles.ratingsContainer}>
             <Text style={styles.ratingsLevelText}>
-              {capitalize(diveSite.difficulty) || 'Beginner'}
+              {capitalize(diveSite.difficulty) || t('BEGINNER')}
             </Text>
             <View style={styles.dot} />
             <Text style={styles.ratingsText}>
@@ -228,7 +229,9 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
         </View>
         <View style={styles.nearbySites}>
           <View style={styles.nearbySitesTextContainer}>
-            <Text style={styles.nearbySitesMainText}>Nearby Locations</Text>
+            <Text style={styles.nearbySitesMainText}>
+              {t('NEARBY_LOCATIONS')}
+            </Text>
           </View>
           <ScrollView
             horizontal
@@ -248,7 +251,9 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
         </View>
         <View style={styles.diveShops}>
           <View style={styles.diveShopsTextContainer}>
-            <Text style={styles.diveShopsMainText}>Closest Dive Shops</Text>
+            <Text style={styles.diveShopsMainText}>
+              {t('CLOSEST_DIVE_SHOPS')}
+            </Text>
             <TouchableWithoutFeedback>
               <GradientText
                 gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
@@ -262,7 +267,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
                 }}
                 gradientLocations={[0.01, 1, 1]}
                 style={styles.diveShopsMoreText}>
-                Open More
+                {t('OPEN_MORE')}
               </GradientText>
             </TouchableWithoutFeedback>
           </View>
@@ -276,7 +281,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
           </ScrollView>
           <View style={styles.reportContainer}>
             <Ionicon name="flag-outline" color="black" size={22} />
-            <Text style={styles.reportText}>Report this location</Text>
+            <Text style={styles.reportText}>{t('REPORT_THIS_LOCATION')}</Text>
           </View>
         </View>
       </ScrollView>
@@ -287,7 +292,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    marginBottom: isBelowHeightThreshold ? 100 : 80,
+    marginBottom: isBelowHeightThreshold ? 100 : 95,
   },
   container: {
     flex: 1,
@@ -381,6 +386,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 20,
     fontWeight: '500',
+    width: '60%',
   },
   diveShopsMoreText: {
     fontSize: 18,
@@ -416,6 +422,7 @@ const styles = StyleSheet.create({
   activityValueContainer: {
     flexDirection: 'row',
     width: '75%',
+    flexWrap: 'wrap',
   },
   activityValue: {
     fontWeight: '500',
