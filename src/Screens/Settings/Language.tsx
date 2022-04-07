@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
 
@@ -10,6 +10,9 @@ import type {
   RootStackParamList,
   SettingStackParamList,
 } from '_utils/interfaces';
+import GradientCircle from '_components/ui/GradientCircle';
+import GradientText from '_components/ui/GradientText';
+import { languages, Language as LanguageType } from './utils';
 
 type LanguageTypeNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<SettingStackParamList, 'Language'>,
@@ -21,9 +24,13 @@ interface LanguageTypeProps {
 }
 
 const Language: FunctionComponent<LanguageTypeProps> = ({ navigation }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigateBack = () => {
     navigation.goBack();
+  };
+
+  const handleSelectLanguage = (language: LanguageType) => {
+    i18n.changeLanguage(language.name);
   };
 
   return (
@@ -33,6 +40,42 @@ const Language: FunctionComponent<LanguageTypeProps> = ({ navigation }) => {
           <Icon name="chevron-back-outline" size={30} onPress={navigateBack} />
           <Text style={styles.headerText}>{t('LANGUAGE')}</Text>
           <View />
+        </View>
+        <View style={styles.bodyContainer}>
+          {languages.map((language, index) => (
+            <Pressable
+              key={index}
+              onPress={() => handleSelectLanguage(language)}>
+              <View style={styles.languageContainer}>
+                {language.name === i18n.resolvedLanguage ? (
+                  <GradientText
+                    gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+                    start={{
+                      x: 0,
+                      y: 0,
+                    }}
+                    end={{
+                      x: 0.06,
+                      y: 1.8,
+                    }}
+                    gradientLocations={[0.01, 1, 1]}
+                    style={styles.languageText}>
+                    {language.label}
+                  </GradientText>
+                ) : (
+                  <Text style={styles.languageText}>{language.label}</Text>
+                )}
+
+                {language.name === i18n.resolvedLanguage ? (
+                  <GradientCircle style={styles.languageCircle}>
+                    <Icon name="checkmark-outline" size={18} color="#fff" />
+                  </GradientCircle>
+                ) : (
+                  <View style={styles.languageCircle} />
+                )}
+              </View>
+            </Pressable>
+          ))}
         </View>
       </View>
     </SafeAreaView>
@@ -56,6 +99,27 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 24,
     fontWeight: '700',
+  },
+  bodyContainer: {
+    marginTop: 30,
+    marginHorizontal: 25,
+  },
+  languageContainer: {
+    marginVertical: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  languageText: {
+    fontSize: 18,
+    fontWeight: '500',
+    color: 'black',
+  },
+  languageCircle: {
+    backgroundColor: '#fff',
+    width: 25,
+    height: 25,
+    borderRadius: 12.5,
   },
 });
 

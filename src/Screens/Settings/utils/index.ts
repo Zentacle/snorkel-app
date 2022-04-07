@@ -59,3 +59,23 @@ export function usePages() {
 
   return { accountPages, morePages };
 }
+
+export interface Language {
+  name: string;
+  label: string;
+}
+
+export const languages: Language[] = [
+  {
+    name: 'en',
+    label: 'English',
+  },
+  {
+    name: 'es',
+    label: 'Espanol',
+  },
+  {
+    name: 'fr',
+    label: 'Francais',
+  },
+];
