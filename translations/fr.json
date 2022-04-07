@@ -184,5 +184,15 @@
     "_1": "Date, heure et profondeur",
     "_2": "Eau & Onshore",
     "_3": "Vêtements et équipement"
+  },
+  "DIVING_DATA": "Données de plongée",
+  "DURATION": "Durée",
+  "USED": "Utilisé",
+  "LEFT": "gauche",
+  "diveLogs": {
+    "EMPTY_LIST_HEADER": "Vous n'avez pas de carnet de plongée",
+    "EMPTY_LIST_DESCRIPTION": "Vous pouvez créer des journaux de plongée manuellement ou en synchronisant votre ordinateur de plongée",
+    "EMPTY_LIST_DIRECTIONS": "Pour créer un nouveau carnet de plongée, cliquez sur le rond {{icon}} bouton ci-dessous",
+    "DIVE_LOG_NOT_EXIST": "Désolé, le journal de plongée que vous recherchez n'existe pas!"
   }
 }

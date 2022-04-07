@@ -9,6 +9,7 @@ import {
   Image,
 } from 'react-native';
 import FEIcon from 'react-native-vector-icons/Feather';
+import { useTranslation } from 'react-i18next';
 
 import type { FunctionComponent } from 'react';
 
@@ -19,6 +20,7 @@ interface NoLogProps {
 }
 
 const NoLog: FunctionComponent<NoLogProps> = ({ goBack }) => {
+  const { t } = useTranslation();
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.contentContainer}>
@@ -27,9 +29,7 @@ const NoLog: FunctionComponent<NoLogProps> = ({ goBack }) => {
         </TouchableWithoutFeedback>
         <View style={styles.messageContainer}>
           <Image style={styles.image} source={SadEmoji} />
-          <Text style={styles.message}>
-            Sorry, the Dive Log you are looking for does not exist!
-          </Text>
+          <Text style={styles.message}>{t('diveLogs.DIVE_LOG_NOT_EXIST')}</Text>
         </View>
       </View>
     </SafeAreaView>

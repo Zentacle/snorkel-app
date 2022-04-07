@@ -184,5 +184,15 @@
     "_1": "Fecha, hora y profundidad",
     "_2": "Agua y en tierra",
     "_3": "Desgaste y equipo"
+  },
+  "DIVING_DATA": "Datos de buceo",
+  "DURATION": "Duración",
+  "USED": "Usado",
+  "LEFT": "Izquierdo",
+  "diveLogs": {
+    "EMPTY_LIST_HEADER": "No tienes registros de buceo",
+    "EMPTY_LIST_DESCRIPTION": "Puedes crear registros de buceo manualmente o sincronizando tu computadora de buceo",
+    "EMPTY_LIST_DIRECTIONS": "Para crear un nuevo registro de buceo, haga clic en la ronda {{icon}} boton de abajo",
+    "DIVE_LOG_NOT_EXIST": "Lo sentimos, ¡el Dive Log que estás buscando no existe!"
   }
 }

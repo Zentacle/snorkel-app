@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useTranslation } from 'react-i18next';
 
 import GradientCircle from '_components/ui/GradientCircle';
 
@@ -8,6 +9,7 @@ import EmptyListImage from '_assets/no-logs.png';
 import { isBelowHeightThreshold, WIDTH, HEIGHT } from '_utils/constants';
 
 const EmptyList = () => {
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <View style={styles.noticeContainer}>
@@ -15,15 +17,17 @@ const EmptyList = () => {
           <Image source={EmptyListImage} />
         </GradientCircle>
         <View style={styles.noticeHeaderContainer}>
-          <Text style={styles.noticeHeader}> You have no dive logs</Text>
+          <Text style={styles.noticeHeader}>
+            {t('diveLogs.EMPTY_LIST_HEADER')}
+          </Text>
           <Text style={styles.noticeDescription}>
-            You can create dive logs manually or by syncing your dive computer
+            {t('diveLogs.EMPTY_LIST_DESCRIPTION')}
           </Text>
         </View>
       </View>
       <View style={styles.directionsContainer}>
         <Text style={styles.directionsText}>
-          To create a new dive log, click on the round "+" button below
+          {t('diveLogs.EMPTY_LIST_DIRECTIONS', { icon: '"+"' })}
         </Text>
         <Icon
           style={styles.directionsIcon}
@@ -67,7 +71,7 @@ const styles = StyleSheet.create({
     lineHeight: 30,
   },
   directionsContainer: {
-    marginTop: isBelowHeightThreshold ? HEIGHT * 0.06 : HEIGHT * 0.18,
+    marginTop: isBelowHeightThreshold ? HEIGHT * 0.05 : HEIGHT * 0.12,
     marginHorizontal: WIDTH * 0.12,
     alignItems: 'center',
   },
