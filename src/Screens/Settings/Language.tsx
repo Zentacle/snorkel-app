@@ -29,7 +29,7 @@ const Language: FunctionComponent<LanguageTypeProps> = ({ navigation }) => {
     navigation.goBack();
   };
 
-  const handleSelectLanguage = (language: LanguageType) => {
+  const handleSelectLanguage = async (language: LanguageType) => {
     i18n.changeLanguage(language.name);
   };
 

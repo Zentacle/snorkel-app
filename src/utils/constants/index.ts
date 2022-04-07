@@ -8,3 +8,5 @@ const widthThreshold = 380;
 
 export const isBelowHeightThreshold = HEIGHT < heightThreshold;
 export const isBelowWidthThreshold = WIDTH < widthThreshold;
+
+export const languageKey = 'PREFERRED_LANGUAGE';
