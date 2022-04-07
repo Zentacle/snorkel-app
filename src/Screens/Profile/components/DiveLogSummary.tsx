@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import formatDuration from 'format-duration';
+import { useTranslation } from 'react-i18next';
 
 import GradientBox from '_components/ui/GradientBox';
 
@@ -46,6 +47,7 @@ function calculateVisitedSites(diveLogs: AdvancedFormInitialValues[]): number {
 const DiveLogSummary: FunctionComponent<DiveLogSummaryProps> = ({
   diveLogs,
 }) => {
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <GradientBox style={styles.diveLogSummaryGradient}>
@@ -59,7 +61,7 @@ const DiveLogSummary: FunctionComponent<DiveLogSummaryProps> = ({
               <Text style={styles.summaryValue}>
                 {calculateTotalDiveTime(diveLogs) || '0:00:00'}
               </Text>
-              <Text style={styles.summaryLabel}>Total Dive Time</Text>
+              <Text style={styles.summaryLabel}>{t('TOTAL_DIVE_TIME')}</Text>
             </View>
             <View style={styles.summaryItem}>
               <Image
@@ -67,7 +69,7 @@ const DiveLogSummary: FunctionComponent<DiveLogSummaryProps> = ({
                 source={LogColor}
               />
               <Text style={styles.summaryValue}>{diveLogs.length}</Text>
-              <Text style={styles.summaryLabel}>Dive Logs</Text>
+              <Text style={styles.summaryLabel}>{t('DIVE_LOGS')}</Text>
             </View>
             <View style={styles.summaryItem}>
               <Image
@@ -79,8 +81,8 @@ const DiveLogSummary: FunctionComponent<DiveLogSummaryProps> = ({
               </Text>
               <Text style={styles.summaryLabel}>
                 {calculateVisitedSites(diveLogs) === 1
-                  ? 'Visited Site'
-                  : 'Visited Sites'}
+                  ? t('VISITED_SITE')
+                  : t('VISITED_SITES')}
               </Text>
             </View>
           </View>
@@ -114,16 +116,19 @@ const styles = StyleSheet.create({
   summaryItem: {
     alignItems: 'center',
     justifyContent: 'center',
+    width: '30%',
   },
   summaryLabel: {
     marginVertical: 3,
     color: 'black',
+    textAlign: 'center',
   },
   summaryValue: {
     fontWeight: '600',
     fontSize: 18,
     marginVertical: 3,
     color: 'black',
+    textAlign: 'center',
   },
 });
 

@@ -196,5 +196,13 @@
     "DIVE_LOG_NOT_EXIST": "Sorry, the Dive Log you are looking for does not exist!"
   },
   "SCREEN_NOT_FOUND": "Sorry, the Screen you are looking for does not exist!",
-  "EXPLORE": "Explore"
+  "EXPLORE": "Explore",
+  "DIVE_LOG_PHOTOS": "Dive Log Photos",
+  "NO_DIVE_LOGS": "No Dive Logs",
+  "VIEW_DIVE_LOG": "View Dive Log",
+  "TOTAL_DIVE_TIME": "Total Dive Time",
+  "VISITED_SITE": "Visited Site",
+  "VISITED_SITES": "Visited Sites",
+  "PREMIUM_MEMBERSHIP": "Premium Membership",
+  "UPGRADE_FOR_MORE": "Upgrade for more features"
 }

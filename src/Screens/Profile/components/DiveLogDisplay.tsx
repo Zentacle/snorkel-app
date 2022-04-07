@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import LogCarousel from './LogCarousel';
 
@@ -15,6 +16,7 @@ const DiveLogDisplay: FunctionComponent<DiveLogDisplayProps> = ({
   diveLog,
   navigateToDiveLog,
 }) => {
+  const { t } = useTranslation();
   const handleNavigateToDiveLog = () => navigateToDiveLog(diveLog.id as number);
   return (
     <View style={styles.container}>
@@ -22,7 +24,7 @@ const DiveLogDisplay: FunctionComponent<DiveLogDisplayProps> = ({
       <Text style={styles.diveLogLabel}>{diveLog.name}</Text>
       <View style={styles.diveLogLinkContainer}>
         <TouchableWithoutFeedback onPress={handleNavigateToDiveLog}>
-          <Text style={styles.diveLogLink}>View Dive Log</Text>
+          <Text style={styles.diveLogLink}>{t('VIEW_DIVE_LOG')}</Text>
         </TouchableWithoutFeedback>
         <View style={styles.diveLogDot} />
         <Text style={styles.diveLogDate}>{diveLog.startDate}</Text>

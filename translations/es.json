@@ -196,5 +196,13 @@
     "DIVE_LOG_NOT_EXIST": "Lo sentimos, ¡el Dive Log que estás buscando no existe!"
   },
   "SCREEN_NOT_FOUND": "¡Lo sentimos, la pantalla que buscas no existe!",
-  "EXPLORE": "Explorar"
+  "EXPLORE": "Explorar",
+  "DIVE_LOG_PHOTOS": "Registro de buceo Fotos",
+  "NO_DIVE_LOGS": "Sin registros de buceo",
+  "VIEW_DIVE_LOG": "Ver registro de buceo",
+  "TOTAL_DIVE_TIME": "Tiempo total de inmersión",
+  "VISITED_SITE": "Sitio visitado",
+  "VISITED_SITES": "Sitios Visitados",
+  "PREMIUM_MEMBERSHIP": "Membresia premium",
+  "UPGRADE_FOR_MORE": "Actualizar para obtener más funciones"
 }

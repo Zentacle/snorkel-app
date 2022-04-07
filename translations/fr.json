@@ -196,5 +196,13 @@
     "DIVE_LOG_NOT_EXIST": "Désolé, le journal de plongée que vous recherchez n'existe pas!"
   },
   "SCREEN_NOT_FOUND": "Désolé, l'écran que vous recherchez n'existe pas !",
-  "EXPLORE": "Explorer"
+  "EXPLORE": "Explorer",
+  "DIVE_LOG_PHOTOS": "Photos du carnet de plongée",
+  "NO_DIVE_LOGS": "Pas de journaux de plongée",
+  "VIEW_DIVE_LOG": "Afficher le journal de plongée",
+  "TOTAL_DIVE_TIME": "Temps total de plongée",
+  "VISITED_SITE": "Site visité",
+  "VISITED_SITES": "Sites visités",
+  "PREMIUM_MEMBERSHIP": "Adhésion Premium",
+  "UPGRADE_FOR_MORE": "Mise à niveau pour plus de fonctionnalités"
 }
