@@ -194,5 +194,7 @@
     "EMPTY_LIST_DESCRIPTION": "You can create dive logs manually or by syncing your dive computer",
     "EMPTY_LIST_DIRECTIONS": "To create a new dive log, click on the round {{icon}} button below",
     "DIVE_LOG_NOT_EXIST": "Sorry, the Dive Log you are looking for does not exist!"
-  }
+  },
+  "SCREEN_NOT_FOUND": "Sorry, the Screen you are looking for does not exist!",
+  "EXPLORE": "Explore"
 }

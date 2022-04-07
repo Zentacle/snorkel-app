@@ -8,6 +8,7 @@ import {
   Image,
   Pressable,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import { useAppSelector } from '_redux/hooks';
 import { selectLoggedInState } from '_redux/slices/user';
@@ -29,6 +30,7 @@ interface NotFoundProps {
 }
 
 const NotFound: FunctionComponent<NotFoundProps> = ({ navigation }) => {
+  const { t } = useTranslation();
   const loggedInState = useAppSelector(selectLoggedInState);
 
   const navigateToExplore = () => {
@@ -48,9 +50,7 @@ const NotFound: FunctionComponent<NotFoundProps> = ({ navigation }) => {
       <View style={styles.contentContainer}>
         <View style={styles.messageContainer}>
           <Image style={styles.image} source={SadEmoji} />
-          <Text style={styles.message}>
-            Sorry, the Screen you are looking for does not exist!
-          </Text>
+          <Text style={styles.message}>{t('SCREEN_NOT_FOUND')}</Text>
         </View>
         {loggedInState ? (
           <Pressable onPress={navigateToExplore}>
@@ -66,7 +66,7 @@ const NotFound: FunctionComponent<NotFoundProps> = ({ navigation }) => {
               }}
               gradientLocations={[0.01, 1, 1]}
               style={styles.actionText}>
-              Explore
+              {t('EXPLORE')}
             </GradientText>
           </Pressable>
         ) : (
@@ -83,7 +83,7 @@ const NotFound: FunctionComponent<NotFoundProps> = ({ navigation }) => {
               }}
               gradientLocations={[0.01, 1, 1]}
               style={styles.actionText}>
-              Log In
+              {t('LOG_IN')}
             </GradientText>
           </Pressable>
         )}

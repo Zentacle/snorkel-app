@@ -194,5 +194,7 @@
     "EMPTY_LIST_DESCRIPTION": "Puedes crear registros de buceo manualmente o sincronizando tu computadora de buceo",
     "EMPTY_LIST_DIRECTIONS": "Para crear un nuevo registro de buceo, haga clic en la ronda {{icon}} boton de abajo",
     "DIVE_LOG_NOT_EXIST": "Lo sentimos, ¡el Dive Log que estás buscando no existe!"
-  }
+  },
+  "SCREEN_NOT_FOUND": "¡Lo sentimos, la pantalla que buscas no existe!",
+  "EXPLORE": "Explorar"
 }
