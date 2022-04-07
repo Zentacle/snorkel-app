@@ -10,11 +10,12 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MUIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useTranslation } from 'react-i18next';
 
 import GradientBox from '_components/ui/GradientBox';
 import Button from '_components/ui/Buttons/Button';
 
-import { accountPages, morePages } from './utils';
+import { usePages } from './utils';
 
 import { useAppDispatch } from '_redux/hooks';
 import { logoutUser } from '_redux/slices/user';
@@ -39,7 +40,9 @@ interface SettingsTypeProps {
 }
 
 const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const { accountPages, morePages } = usePages();
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -64,7 +67,7 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
           size={30}
           onPress={navigateBack}
         />
-        <Text style={styles.headerText}>Settings</Text>
+        <Text style={styles.headerText}>{t('SETTINGS')}</Text>
         <View />
       </View>
       <ScrollView
@@ -85,16 +88,16 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
             }}>
             <View style={styles.subscriptionTextContainer}>
               <Text style={styles.subscriptionMainText}>
-                Premium Membership
+                {t('PREMIUM_MEMBERSHIP')}
               </Text>
               <Text style={styles.subscriptionSubtext}>
-                Upgrade for more features
+                {t('UPGRADE_FOR_MORE')}
               </Text>
             </View>
           </GradientBox>
         </View>
         <View style={styles.pagesSectionContainer}>
-          <Text style={styles.pagesLabel}>Account</Text>
+          <Text style={styles.pagesLabel}>{t('ACCOUNT')}</Text>
           <View>
             {accountPages.map((account, index) => (
               <TouchableWithoutFeedback
@@ -117,7 +120,7 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
         </View>
 
         <View style={styles.pagesSectionContainer}>
-          <Text style={styles.pagesLabel}>More</Text>
+          <Text style={styles.pagesLabel}>{t('MORE')}</Text>
           <View>
             {morePages.map((page, index) => (
               <TouchableWithoutFeedback
@@ -155,7 +158,7 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
             container: styles.buttonContainer,
             text: styles.buttonText,
           }}>
-          Log Out
+          {t('LOG_OUT')}
         </Button>
       </ScrollView>
     </View>

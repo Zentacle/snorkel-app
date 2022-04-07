@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useTranslation } from 'react-i18next';
 
 import { useAppSelector } from '_redux/hooks';
 import { selectUser } from '_redux/slices/user';
@@ -30,6 +31,7 @@ interface ProfileSettingsTypeProps {
 const ProfileSettings: FunctionComponent<ProfileSettingsTypeProps> = ({
   navigation,
 }) => {
+  const { t } = useTranslation();
   const [modalIsOpen, toggleModal] = React.useState(false);
   const user = useAppSelector(selectUser);
 
@@ -53,12 +55,12 @@ const ProfileSettings: FunctionComponent<ProfileSettingsTypeProps> = ({
   return (
     <SafeAreaView style={styles.container}>
       <DeleteModal
-        subtext="All your information will be saved and you can come back anytime!"
+        subtext={t('deleteModal.SUB_TEXT')}
         isVisible={modalIsOpen}
         modalAction={modalAction}
         modalCancelAction={modalCancelAction}
-        actionText="Delete Account"
-        cancelActionText="Cancel"
+        actionText={t('deleteModal.ACTION_TEXT')}
+        cancelActionText={t('CANCEL')}
       />
       <View style={styles.contentContainer}>
         <View style={styles.headerContainer}>
@@ -68,7 +70,7 @@ const ProfileSettings: FunctionComponent<ProfileSettingsTypeProps> = ({
             color="black"
             onPress={navigateBack}
           />
-          <Text style={styles.headerText}>Profile Settings</Text>
+          <Text style={styles.headerText}>{t('PROFILE_SETTINGS')}</Text>
           <View />
         </View>
 
@@ -84,12 +86,12 @@ const ProfileSettings: FunctionComponent<ProfileSettingsTypeProps> = ({
         </View>
 
         <View style={styles.namesContainer}>
-          <Text style={styles.nameLabel}>Full Name</Text>
+          <Text style={styles.nameLabel}>{t('FULL_NAME')}</Text>
           <View style={styles.nameContainer}>
             <Text style={styles.nameText}>{user?.display_name}</Text>
           </View>
 
-          <Text style={styles.nameLabel}>Email</Text>
+          <Text style={styles.nameLabel}>{t('EMAIL')}</Text>
           <View style={styles.nameContainer}>
             <Text style={styles.nameText}>email should be here</Text>
           </View>
@@ -125,7 +127,7 @@ const ProfileSettings: FunctionComponent<ProfileSettingsTypeProps> = ({
               fontWeight: '800',
             },
           }}>
-          Delete Account
+          {t('deleteModal.ACTION_TEXT')}
         </Button>
       </View>
     </SafeAreaView>

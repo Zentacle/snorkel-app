@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -20,6 +21,7 @@ interface LanguageTypeProps {
 }
 
 const Language: FunctionComponent<LanguageTypeProps> = ({ navigation }) => {
+  const { t } = useTranslation();
   const navigateBack = () => {
     navigation.goBack();
   };
@@ -29,7 +31,7 @@ const Language: FunctionComponent<LanguageTypeProps> = ({ navigation }) => {
       <View style={styles.contentContainer}>
         <View style={styles.headerContainer}>
           <Icon name="chevron-back-outline" size={30} onPress={navigateBack} />
-          <Text style={styles.headerText}>Language</Text>
+          <Text style={styles.headerText}>{t('LANGUAGE')}</Text>
           <View />
         </View>
       </View>

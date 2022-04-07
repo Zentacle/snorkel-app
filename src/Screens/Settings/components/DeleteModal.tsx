@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 import IoIcon from 'react-native-vector-icons/Ionicons';
+import { useTranslation } from 'react-i18next';
 
 import GradientCircle from '_components/ui/GradientCircle';
 import Button from '_components/ui/Buttons/Button';
@@ -25,6 +26,7 @@ const DeleteModal: FunctionComponent<DeleteModalProps> = ({
   modalAction,
   modalCancelAction,
 }) => {
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <Modal isVisible={isVisible}>
@@ -36,9 +38,7 @@ const DeleteModal: FunctionComponent<DeleteModalProps> = ({
               <IoIcon name="trash-outline" size={55} color="#fff" />
             </GradientCircle>
           </View>
-          <Text style={styles.mainText}>
-            Are you sure you want to delete account?
-          </Text>
+          <Text style={styles.mainText}>{t('deleteModal.MAIN_TEXT')}</Text>
           <View style={styles.subtextContainer}>
             <Text style={styles.subtext}>{subtext}</Text>
           </View>
