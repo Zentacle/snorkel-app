@@ -265,5 +265,7 @@
   "IMPERIAL_UNITS": "Unidades imperiales",
   "METRIC_UNITS": "Unidades metricas",
   "TYPE_UNITS_MAIN_TEXT": "¿Unidades imperiales o métricas?",
-  "TYPE_UNITS_SUB_TEXT": "Seleccionar las unidades convenientes a utilizar en la aplicación"
+  "TYPE_UNITS_SUB_TEXT": "Seleccionar las unidades convenientes a utilizar en la aplicación",
+  "LOGS": "Registros",
+  "PROFILE": "Perfil"
 }

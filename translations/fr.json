@@ -265,5 +265,7 @@
   "IMPERIAL_UNITS": "Unités impériales",
   "METRIC_UNITS": "Unités métriques",
   "TYPE_UNITS_MAIN_TEXT": "Unités impériales ou métriques ?",
-  "TYPE_UNITS_SUB_TEXT": "Sélectionnez les unités pratiques à utiliser dans l'application"
+  "TYPE_UNITS_SUB_TEXT": "Sélectionnez les unités pratiques à utiliser dans l'application",
+  "LOGS": "Journaux",
+  "PROFILE": "Profil"
 }

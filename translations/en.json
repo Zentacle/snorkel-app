@@ -265,5 +265,7 @@
   "IMPERIAL_UNITS": "Imperial Units",
   "METRIC_UNITS": "Metric Units",
   "TYPE_UNITS_MAIN_TEXT": "Imperial Units or Metric?",
-  "TYPE_UNITS_SUB_TEXT": "Select the convenient units to be used in the application"
+  "TYPE_UNITS_SUB_TEXT": "Select the convenient units to be used in the application",
+  "LOGS": "Logs",
+  "PROFILE": "Profile"
 }
