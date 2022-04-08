@@ -42,7 +42,7 @@
   },
   "camera_permissions": {
     "DESCRIPTION_MAIN_TEXT": "Habilita el acceso a tu cámara y galería",
-    "DESCRIPTION_SUB_TEXT": "Se necesita acceso para cargar imágenes a las rejillas de ventilación desde el rollo de su cámara y agregar una foto a su perfil"
+    "DESCRIPTION_SUB_TEXT": "Se necesita acceso para cargar imágenes a los eventos desde el carrete de su cámara y agregar una foto a su perfil"
   },
   "ENABLE": "Habilitar",
   "DISABLE": "Desactivar",
@@ -226,7 +226,7 @@
   "privacy_policy": {
     "_0": "Esta política de privacidad describe los datos personales recopilados o generados (procesados) cuando utiliza los sitios web ('Sitios') y las aplicaciones móviles ('Aplicaciones') de Zentacle. También explica cómo se utilizan, comparten y protegen sus datos personales, qué opciones tiene en relación con sus datos personales y cómo puede ponerse en contacto con nosotros.",
     "_1": "¿QUIÉN es el Responsable del Tratamiento de sus Datos Personales?",
-    "_2": "La entidad de la aplicación GlobalDiary responsable del procesamiento de sus datos personales dependerá de cómo interactúe con las aplicaciones y de dónde se encuentre en el mundo. La entidad GlobalDiary relevante se denomina 'GlobalDiary', 'nuestro', 'nosotros' o 'nosotros' en esta política de privacidad. Revise nuestra Lista de entidades locales para conocer el nombre de la entidad responsable de la aplicación y la información de contacto adecuada.",
+    "_2": "La entidad de la aplicación Zentacle responsable del procesamiento de sus datos personales dependerá de cómo interactúe con las aplicaciones y de dónde se encuentre en el mundo. La entidad Zentacle relevante se denomina 'Zentacle', 'nuestro', 'nosotros' o 'nosotros' en esta política de privacidad. Revise nuestra Lista de entidades locales para conocer el nombre de la entidad responsable de la aplicación y la información de contacto adecuada.",
     "_3": "¿QUÉ datos personales recopilamos y CUÁNDO?",
     "_4": "Le solicitamos ciertos datos personales para brindarle los productos o servicios que solicita. Por ejemplo, cuando realiza compras, se comunica con nuestros servicios al consumidor, solicita recibir comunicaciones, crea una cuenta, participa en nuestros eventos o concursos, o utiliza nuestros Sitios o Aplicaciones. Estos datos personales incluyen su:",
     "_5": "• datos de contacto que incluyen nombre, correo electrónico, número de teléfono y envío, dirección de facturación;",
@@ -237,7 +237,7 @@
     "_10": "• datos sobre características físicas, incluido el peso, la altura y las medidas corporales (como la zancada estimada y las medidas del calzado/pie o la talla de la ropa);",
     "_11": "• datos de actividad física proporcionados por usted o generados a través de nuestros Sitios o Aplicaciones (tiempo, duración, distancia, ubicación, conteo de calorías, ritmo/zancada); o",
     "_12": "• preferencias personales, incluida su lista de deseos, así como preferencias de marketing y cookies.",
-    "_13": "Recopilamos datos personales adicionales de usted para habilitar características particulares dentro de nuestros Sitios y Aplicaciones. Por ejemplo, solicitamos acceso a los datos de ubicación de su teléfono para registrar su ruta de carrera, sus contactos para permitirle interactuar con sus amigos, su calendario para programar un plan de entrenamiento o sus credenciales de redes sociales para publicar contenido desde una aplicación a una red social. . Estos datos personales incluyen su:",
+    "_13": "Recopilamos datos personales adicionales de usted para habilitar características particulares dentro de nuestros Sitios y Aplicaciones. Por ejemplo, solicitamos acceso a los datos de ubicación de su teléfono para registrar su ruta de buceo, sus contactos para permitirle interactuar con sus amigos, su calendario para programar un plan de entrenamiento o sus credenciales de redes sociales para publicar contenido desde una aplicación a una red social. . Estos datos personales incluyen su:",
     "_14": "• datos de movimiento del acelerómetro de su dispositivo;",
     "_15": "• fotos, audio, contactos e información de calendario;",
     "_16": "• datos del sensor, incluidos datos de ubicación (GPS) y frecuencia cardíaca; o",

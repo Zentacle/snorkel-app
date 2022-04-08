@@ -42,7 +42,7 @@
   },
   "camera_permissions": {
     "DESCRIPTION_MAIN_TEXT": "Enable access to your camera and gallery",
-    "DESCRIPTION_SUB_TEXT": "Access is needed to upload images to the vents from your camera roll and add photo to your profile"
+    "DESCRIPTION_SUB_TEXT": "Access is needed to upload images to the events from your camera roll and add photo to your profile"
   },
   "ENABLE": "Enable",
   "DISABLE": "Disable",
@@ -226,7 +226,7 @@
   "privacy_policy": {
     "_0": "This privacy policy describes the personal data collected or generated (processed) when you use Zentacle's websites (“Sites”) and mobile applications (“Apps”). It also explains how your personal data is used, shared and protected, what choices you have relating to your personal data and how you can contact us.",
     "_1": "WHO is Responsible for the Processing of Your Personal Data?",
-    "_2": "The GlobalDiary App entity responsible for the processing of your personal data will depend on how you interact with Apps and where you are located in the world. The relevant GlobalDiary entity are referred to as “GlobalDiary”, “our”, “we” or “us” in this privacy policy. Please review our List of Local Entities for the name of the App entity responsible and the appropriate contact information.",
+    "_2": "The Zentacle App entity responsible for the processing of your personal data will depend on how you interact with Apps and where you are located in the world. The relevant Zentacle entity are referred to as “Zentacle”, “our”, “we” or “us” in this privacy policy. Please review our List of Local Entities for the name of the App entity responsible and the appropriate contact information.",
     "_3": "WHAT Personal Data Do We Collect and WHEN?",
     "_4": "We ask you for certain personal data to provide you with the products or services you request. For example, when you make purchases, contact our consumer services, request to receive communications, create an account, participate in our events or contests, or use our Sites or Apps. This personal data includes your:",
     "_5": "• contact details including name, email, telephone number and shipping, billing address;",
@@ -237,7 +237,7 @@
     "_10": "• data on physical characteristics, including weight, height, and body measurements (such as estimated stride and shoe/foot measurements or apparel size);",
     "_11": "• fitness activity data provided by you or generated through our Sites or Apps (time, duration, distance, location, calorie count, pace/stride); or",
     "_12": "• personal preferences including your wish list as well as marketing and cookie preferences.",
-    "_13": "We collect additional personal data from you to enable particular features within our Sites and Apps. For example, we request access to your phone's location data to log your run route, your contacts to allow you to interact with your friends, your calendar to schedule a training plan or your social network credentials to post content from an App to a social network. This personal data includes your:",
+    "_13": "We collect additional personal data from you to enable particular features within our Sites and Apps. For example, we request access to your phone's location data to log your dive route, your contacts to allow you to interact with your friends, your calendar to schedule a training plan or your social network credentials to post content from an App to a social network. This personal data includes your:",
     "_14": "• movement data from your device's accelerometer;",
     "_15": "• photos, audio, contacts and calendar information;",
     "_16": "• sensor data, including heart rate and (GPS) location data; or",
