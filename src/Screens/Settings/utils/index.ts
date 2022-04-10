@@ -78,4 +78,37 @@ export const languages: Language[] = [
     name: 'fr',
     label: 'Francais',
   },
+  {
+    name: 'nl',
+    label: 'Deutsch',
+  },
+  {
+    name: 'it',
+    label: 'Italiano',
+  },
+  {
+    name: 'nn',
+    label: 'Nynorsk',
+  },
+  {
+    name: 'fi',
+    label: 'Suomi',
+  },
+  {
+    name: 'hu',
+    label: 'Magyar',
+  },
+
+  // {
+  //   name: 'tr',
+  //   label: 'Turkey',
+  // },
+  // {
+  //   name: 'pl',
+  //   label: 'Polski',
+  // },
+  // {
+  //   name: 'ro',
+  //   label: 'Romana',
+  // },
 ];
