@@ -9,6 +9,7 @@ import {
   Image,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useTranslation } from 'react-i18next';
 
 import { useAppSelector, useAppDispatch } from '_redux/hooks';
 import { selectUser, getCurrentUser } from '_redux/slices/user';
@@ -37,6 +38,7 @@ interface ProfileProps {
 }
 
 const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
@@ -90,7 +92,7 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
 
         <View>
           <Text style={styles.diveLogsLabel}>
-            {!!diveLogs.length ? 'Dive Log Photos' : 'No Dive Logs'}
+            {!!diveLogs.length ? t('DIVE_LOG_PHOTOS') : t('NO_DIVE_LOGS')}
           </Text>
           <View style={styles.photosContainer}>
             {diveLogs.map((diveLog, index) => {

@@ -1,0 +1,11 @@
+export { default as en } from './en.json';
+export { default as es } from './es.json';
+export { default as fr } from './fr.json';
+export { default as nl } from './nl.json';
+export { default as it } from './it.json';
+export { default as nn } from './nn.json';
+export { default as fi } from './fi.json';
+export { default as hu } from './hu.json';
+export { default as tr } from './tr.json';
+export { default as pl } from './pl.json';
+export { default as ro } from './ro.json';

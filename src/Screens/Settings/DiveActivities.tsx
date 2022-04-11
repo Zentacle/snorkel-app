@@ -9,6 +9,7 @@ import {
   Dimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -40,23 +41,24 @@ interface ActivityTypes {
   name: string;
 }
 
-const activityTypes: ActivityTypes[] = [
-  {
-    name: 'Freediving',
-  },
-  {
-    name: 'Scuba',
-  },
-  {
-    name: 'Snorkel',
-  },
-];
-
 const DiveActivities: FunctionComponent<DiveActivitiesTypeProps> = ({
   navigation,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const settings = useAppSelector(selectSettings);
+
+  const activityTypes: ActivityTypes[] = [
+    {
+      name: t('FREEDIVING'),
+    },
+    {
+      name: t('SCUBA'),
+    },
+    {
+      name: t('SNORKEL'),
+    },
+  ];
 
   const navigateBack = () => {
     navigation.goBack();
@@ -80,7 +82,7 @@ const DiveActivities: FunctionComponent<DiveActivitiesTypeProps> = ({
             color="black"
             onPress={navigateBack}
           />
-          <Text style={styles.headerText}>Dive Activities</Text>
+          <Text style={styles.headerText}>{t('DIVE_ACTIVITIES')}</Text>
           <View />
         </View>
 
@@ -100,10 +102,10 @@ const DiveActivities: FunctionComponent<DiveActivitiesTypeProps> = ({
           </GradientCircle>
           <View style={styles.descriptionContainer}>
             <Text style={styles.descriptionMainText}>
-              Which dive activity do you normally do?
+              {t('activity_type.DESCRIPTION_MAIN_TEXT')}
             </Text>
             <Text style={styles.descriptionSubText}>
-              Add an activity for displaying dive activities near you.
+              {t('ACTIVITY_TYPE_SETTINGS_SUBTEXT')}
             </Text>
           </View>
         </View>

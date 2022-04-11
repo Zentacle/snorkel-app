@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import { useTranslation } from 'react-i18next';
 
 import type { FunctionComponent } from 'react';
 import Button from '_components/ui/Buttons/Button';
@@ -17,12 +18,16 @@ const DiveLocation: FunctionComponent<DiveLocationProps> = ({
   navigateToMap,
   coordinates,
 }) => {
+  const { t } = useTranslation();
+
   const canShowLocation = coordinates.latitude && coordinates.longitude;
   return (
     <View style={styles.diveLocationContainer}>
       {canShowLocation ? (
         <>
-          <Text style={styles.diveSiteLocationHeader}>Dive Site Location</Text>
+          <Text style={styles.diveSiteLocationHeader}>
+            {t('DIVE_SITE_LOCATION')}
+          </Text>
           <View style={styles.mapContainer}>
             <MapView
               provider="google"
@@ -59,7 +64,7 @@ const DiveLocation: FunctionComponent<DiveLocationProps> = ({
               container: styles.viewMapButtonContainer,
               text: styles.viewMapButtonText,
             }}>
-            View Map
+            {t('VIEW_MAP')}
           </Button>
         </>
       ) : (

@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Form, Field } from 'react-final-form';
 import validate from 'validate.js';
 import { FORM_ERROR } from 'final-form';
+import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -28,6 +29,7 @@ interface ChangePasswordTypeProps {
 const ChangePassword: FunctionComponent<ChangePasswordTypeProps> = ({
   navigation,
 }) => {
+  const { t } = useTranslation();
   const navigateBack = () => {
     navigation.goBack();
   };
@@ -81,7 +83,7 @@ const ChangePassword: FunctionComponent<ChangePasswordTypeProps> = ({
             color="black"
             onPress={navigateBack}
           />
-          <Text style={styles.headerText}>Change Password</Text>
+          <Text style={styles.headerText}>{t('CHANGE_PASSWORD')}</Text>
           <View />
         </View>
       </View>
@@ -105,7 +107,7 @@ const ChangePassword: FunctionComponent<ChangePasswordTypeProps> = ({
                 <Field
                   name="password"
                   component={Input}
-                  placeholder="Password"
+                  placeholder={t('PASSWORD')}
                   placeholderTextColor="#BFBFBF"
                   containerStyle={styles.inputContainer}
                   passwordType
@@ -113,7 +115,7 @@ const ChangePassword: FunctionComponent<ChangePasswordTypeProps> = ({
                 <Field
                   name="confirmPassword"
                   component={Input}
-                  placeholder="Confirm Password"
+                  placeholder={t('CONFIRM_PASSWORD')}
                   placeholderTextColor="#BFBFBF"
                   // style={styles.input}
                   passwordType
@@ -129,7 +131,9 @@ const ChangePassword: FunctionComponent<ChangePasswordTypeProps> = ({
                 {valid && (
                   <View style={styles.validContainer}>
                     <Icon name="checkmark-outline" size={20} color="#1693D3" />
-                    <Text style={styles.validText}>Password matches</Text>
+                    <Text style={styles.validText}>
+                      {t('PASSWORD_MATCHES')}
+                    </Text>
                   </View>
                 )}
               </View>
@@ -163,7 +167,7 @@ const ChangePassword: FunctionComponent<ChangePasswordTypeProps> = ({
                       fontWeight: '800',
                     },
                   }}>
-                  Continue
+                  {t('CONTINUE')}
                 </Button>
               </View>
             </>

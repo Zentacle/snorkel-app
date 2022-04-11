@@ -10,6 +10,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useTranslation } from 'react-i18next';
 
 import ImageCarousel from '_components/reusables/DiveLogImageCarousel';
 import DiveLocation from './components/DiveLocation';
@@ -48,6 +49,7 @@ interface LogProps {
 }
 
 const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
+  const { t } = useTranslation();
   const diveLog: AdvancedFormInitialValues = useAppSelector(
     selectDiveLogById(route.params.diveLogId),
   );
@@ -158,70 +160,72 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
           {isAdvancedLog && (
             <View style={styles.advancedDiveLogDetailsContainer}>
               <View style={styles.entryContainer}>
-                <Text style={styles.entryLabel}>Entry</Text>
+                <Text style={styles.entryLabel}>{t('ENTRY')}</Text>
                 <Text style={styles.entryText}>{diveLog.entry}</Text>
               </View>
               <View style={styles.divingDataContainer}>
-                <Text style={styles.headerText}>Diving Data</Text>
+                <Text style={styles.headerText}>{t('DIVING_DATA')}</Text>
                 <View style={styles.divingDataBody}>
                   <View style={styles.itemContainer}>
                     <View style={styles.itemLabelContainer}>
                       <Text style={styles.itemText}>{diveLog.maxDepth}</Text>
                       <Text style={styles.measurement}>m</Text>
                     </View>
-                    <Text style={styles.itemLabel}>Max Depth</Text>
+                    <Text style={styles.itemLabel}>{t('MAX_DEPTH')}</Text>
                   </View>
                   <View style={styles.itemContainer}>
                     <View style={styles.itemLabelContainer}>
                       <Text style={styles.itemText}>{diveLog.timeInWater}</Text>
                       <Text style={styles.measurement}>min</Text>
                     </View>
-                    <Text style={styles.itemLabel}>Duration</Text>
+                    <Text style={styles.itemLabel}>{t('DURATION')}</Text>
                   </View>
                   <View style={styles.itemContainer}>
                     <View style={styles.itemLabelContainer}>
                       <Text style={styles.itemText}>{diveLog.weight}</Text>
                       <Text style={styles.measurement}>kg</Text>
                     </View>
-                    <Text style={styles.itemLabel}>Weight</Text>
+                    <Text style={styles.itemLabel}>{t('WEIGHT')}</Text>
                   </View>
                 </View>
               </View>
 
               <View style={styles.waterAirContainer}>
-                <Text style={styles.headerText}>Diving Data</Text>
+                <Text style={styles.headerText}>{t('DIVING_DATA')}</Text>
                 <View style={styles.waterAirBody}>
                   <View style={styles.itemContainer}>
                     <View style={styles.itemLabelContainer}>
                       <Text style={styles.itemText}>{diveLog.waterTemp}</Text>
                       <Text style={styles.measurement}>c</Text>
                     </View>
-                    <Text style={styles.itemLabel}>Water Temp</Text>
+                    <Text style={styles.itemLabel}>{t('WATER_TEMP')}</Text>
                   </View>
                   <View style={styles.itemContainer}>
                     <View style={styles.itemLabelContainer}>
                       <Text style={styles.itemText}>{diveLog.visibility}</Text>
                       <Text style={styles.measurement}></Text>
                     </View>
-                    <Text style={styles.itemLabel}>Visibility</Text>
+                    <Text style={styles.itemLabel}>{t('VISIBILITY')}</Text>
                   </View>
                   <View style={styles.itemContainer}>
                     <View style={styles.itemLabelContainer}>
                       <Text style={styles.itemText}>{diveLog.airTemp}</Text>
                       <Text style={styles.measurement}>c</Text>
                     </View>
-                    <Text style={styles.itemLabel}>Air Temp</Text>
+                    <Text style={styles.itemLabel}>{t('AIR_TEMP')}</Text>
                   </View>
                 </View>
               </View>
 
               <View style={styles.divingGearContainer}>
-                <Text style={styles.headerText}>Diving Data</Text>
+                <Text style={styles.headerText}>{t('DIVING_DATA')}</Text>
                 <View style={styles.divingGearBody}>
                   <View style={styles.divingGearItemContainer}>
                     <View style={styles.divingGearLabelContainer}>
                       <View style={styles.airTankLabelContainer}>
-                        <Text style={styles.airTankLabelText}>Air Tank 1</Text>
+                        <Text style={styles.airTankLabelText}>
+                          {t('AIR_TANK')} 1
+                        </Text>
                       </View>
                       <View style={styles.airTankMeasurementContainer}>
                         <Text style={styles.capacityText}>400 bar</Text>
@@ -247,14 +251,16 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                           {diveLog.airTankStart}&nbsp;bar
                         </Text>
                         <Text style={styles.divider}>|</Text>
-                        <Text style={styles.airTankUsedText}>Used</Text>
+                        <Text style={styles.airTankUsedText}>{t('USED')}</Text>
                       </View>
                       <View style={styles.airTankMeasurementContainer}>
                         <Text style={styles.airTankRemainderText}>
                           {400 - (diveLog.airTankStart || 0)}&nbsp;bar
                         </Text>
                         <Text style={styles.divider}>|</Text>
-                        <Text style={styles.airTankRemainderLabel}>Left</Text>
+                        <Text style={styles.airTankRemainderLabel}>
+                          {t('LEFT')}
+                        </Text>
                       </View>
                     </View>
                   </View>
@@ -262,7 +268,9 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                   <View style={styles.divingGearItemContainer}>
                     <View style={styles.divingGearLabelContainer}>
                       <View style={styles.airTankLabelContainer}>
-                        <Text style={styles.airTankLabelText}>Air Tank 2</Text>
+                        <Text style={styles.airTankLabelText}>
+                          {t('AIR_TANK')} 2
+                        </Text>
                       </View>
                       <View style={styles.airTankMeasurementContainer}>
                         <Text style={styles.capacityText}>400 bar</Text>
@@ -288,14 +296,16 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                           {diveLog.airTankEnd}&nbsp;bar
                         </Text>
                         <Text style={styles.divider}>|</Text>
-                        <Text style={styles.airTankUsedText}>Used</Text>
+                        <Text style={styles.airTankUsedText}>{t('USED')}</Text>
                       </View>
                       <View style={styles.airTankMeasurementContainer}>
                         <Text style={styles.airTankRemainderText}>
                           {400 - (diveLog.airTankEnd || 0)}&nbsp;bar
                         </Text>
                         <Text style={styles.divider}>|</Text>
-                        <Text style={styles.airTankRemainderLabel}>Left</Text>
+                        <Text style={styles.airTankRemainderLabel}>
+                          {t('LEFT')}
+                        </Text>
                       </View>
                     </View>
                   </View>

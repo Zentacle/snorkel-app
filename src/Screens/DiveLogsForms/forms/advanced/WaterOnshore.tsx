@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { Field } from 'react-final-form';
+import { useTranslation } from 'react-i18next';
 
 import SliderComp from '_components/ui/Slider';
 import VisibilityFormComp from '_components/ui/VisibilityFormComp';
@@ -8,8 +9,6 @@ import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
 import GradientBox from '_components/ui/GradientBox';
 import GradientCircle from '_components/ui/GradientCircle';
 
-const levels = ['Scuba', 'Freediving', 'Snorkel'];
-const entries = ['Shore', 'Boat'];
 const WIDTH = Dimensions.get('window').width;
 
 const DiveActiveComp = (level: string) => (
@@ -44,27 +43,31 @@ const EntryActiveComp = (entry: string) => (
     </GradientBox>
   </View>
 );
-const EntryInctiveComp = (entry: string) => {
-  const index = entries.findIndex(item => item === entry);
-  return (
-    <View
-      style={[
-        styles.activity,
-        index === 0 ? { marginRight: 15 } : { marginLeft: 15 },
-      ]}>
-      <View style={styles.normalActivityCircle}></View>
-      <Text style={styles.activityText}>{entry}</Text>
-    </View>
-  );
-};
 
 const WaterOnshore = () => {
+  const { t } = useTranslation();
+  const levels = [t('SCUBA'), t('FREEDIVING'), t('SNORKEL')];
+  const entries = [t('SHORE'), t('BOAT')];
+
+  const EntryInctiveComp = (entry: string) => {
+    const index = entries.findIndex(item => item === entry);
+    return (
+      <View
+        style={[
+          styles.activity,
+          index === 0 ? { marginRight: 15 } : { marginLeft: 15 },
+        ]}>
+        <View style={styles.normalActivityCircle}></View>
+        <Text style={styles.activityText}>{entry}</Text>
+      </View>
+    );
+  };
   return (
     <View style={styles.container}>
       <View style={{ marginTop: 30 }}>
         <Field
           name="waterTemp"
-          label="Water Temp . C"
+          label={`${t('WATER_TEMP')} . C`}
           component={SliderComp}
           trackMarks={[0, 10, 20, 30, 40, 50, 60]}
           benchMarks={[0, 30, 60]}
@@ -76,7 +79,7 @@ const WaterOnshore = () => {
       <View style={{ marginTop: 30, marginBottom: 20 }}>
         <Field
           name="airTemp"
-          label="Air Temp . C"
+          Vlabel={`${t('AIR_TEMP')} . C`}
           component={SliderComp}
           trackMarks={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
           benchMarks={[0, 50, 100]}
@@ -88,7 +91,7 @@ const WaterOnshore = () => {
       <Field name="visibility" component={VisibilityFormComp} />
 
       <View style={styles.activityContentContainer}>
-        <Text style={styles.labelText}>Dive Activity</Text>
+        <Text style={styles.labelText}>{t('DIVE_ACTIVITY')}</Text>
         <Field
           name="diveActivity"
           component={SelectWGradientBorder}
@@ -99,7 +102,7 @@ const WaterOnshore = () => {
       </View>
 
       <View style={styles.diveActivityContentContainer}>
-        <Text style={styles.labelText}>Entry</Text>
+        <Text style={styles.labelText}>{t('ENTRY')}</Text>
         <Field
           name="entry"
           component={SelectWGradientBorder}

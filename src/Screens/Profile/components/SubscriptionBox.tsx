@@ -1,11 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import MUIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useTranslation } from 'react-i18next';
 
 import GradientBox from '_components/ui/GradientBox';
 import GradientCircle from '_components/ui/GradientCircle';
 
 const SubscriptionBox = () => {
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <GradientBox
@@ -21,9 +23,11 @@ const SubscriptionBox = () => {
           y: 3.4,
         }}>
         <View style={styles.subscriptionTextContainer}>
-          <Text style={styles.subscriptionMainText}>Premium Membership</Text>
+          <Text style={styles.subscriptionMainText}>
+            {t('PREMIUM_MEMBERSHIP')}
+          </Text>
           <Text style={styles.subscriptionSubtext}>
-            Upgrade for more features
+            {t('UPGRADE_FOR_MORE')}
           </Text>
         </View>
         <View style={styles.subscriptionIconsContainer}>
@@ -91,7 +95,9 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 20,
   },
-  subscriptionTextContainer: {},
+  subscriptionTextContainer: {
+    width: '70%',
+  },
   subscriptionMainText: {
     textAlign: 'left',
     color: 'white',

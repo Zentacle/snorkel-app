@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import IOIcon from 'react-native-vector-icons/Ionicons';
 import { Field } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
+import { useTranslation } from 'react-i18next';
 
 import GradientText from '_components/ui/GradientText';
 import GradientCircle from '_components/ui/GradientCircle';
@@ -22,6 +23,7 @@ interface LocationAndImageProps {
 }
 
 const Location: FunctionComponent<LocationAndImageProps> = ({ location }) => {
+  const { t } = useTranslation();
   const [autocompleteModalOpen, toggleAutocompleteModal] =
     React.useState(false);
 
@@ -60,7 +62,7 @@ const Location: FunctionComponent<LocationAndImageProps> = ({ location }) => {
         />
       ) : (
         <View>
-          <Text style={styles.headerLabel}>Dive Location</Text>
+          <Text style={styles.headerLabel}>{t('DIVE_LOCATION')}</Text>
           <View style={styles.subContainer}>
             <Pressable onPress={openLocationModal}>
               <GradientCircle style={styles.iconContainer}>
@@ -79,7 +81,7 @@ const Location: FunctionComponent<LocationAndImageProps> = ({ location }) => {
               }}
               gradientLocations={[0.01, 1, 1]}
               style={styles.actionText}>
-              Add Location
+              {t('ADD_LOCATION')}
             </GradientText>
           </View>
         </View>

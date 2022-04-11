@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   Platform,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
@@ -32,6 +33,7 @@ interface LogsProps {
 }
 
 const Logs: FunctionComponent<LogsProps> = ({ navigation }) => {
+  const { t } = useTranslation();
   const diveLogs = Object.values(useAppSelector(selectAllDiveLogs));
   const navigateToLogDetail = (diveLogId: number) => {
     navigation.navigate('LogsStack', {
@@ -53,7 +55,7 @@ const Logs: FunctionComponent<LogsProps> = ({ navigation }) => {
             borderStyle: 'solid',
           },
         ]}>
-        <Text style={styles.headerText}>Dive Logs</Text>
+        <Text style={styles.headerText}>{t('DIVE_LOGS')}</Text>
       </View>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {diveLogs.length ? (

@@ -4,6 +4,7 @@ import MAIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MapView, { Marker } from 'react-native-maps';
 import { Field } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
+import { useTranslation } from 'react-i18next';
 
 import GradientCircle from '_components/ui/GradientCircle';
 import GradientBox from '_components/ui/GradientBox';
@@ -43,12 +44,13 @@ const InactiveLevelComponent = (level: string) => (
 );
 
 const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
-  const levels = ['Beginner', 'Intermediate', 'Advanced'];
+  const { t } = useTranslation();
+  const levels = [t('BEGINNER'), t('INTERMEDIATE'), t('ADVANCED')];
 
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.headerLabel}>Dive Site Location</Text>
+        <Text style={styles.headerLabel}>{t('DIVE_SITE_LOCATION')}</Text>
         <View style={styles.mapContainer}>
           {values.location && (
             <MapView
@@ -99,16 +101,16 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
 
       <View style={styles.nameContainer}>
         <View style={styles.inputContentLabel}>
-          <Text style={styles.headerLabel}>Enter Name</Text>
+          <Text style={styles.headerLabel}>{t('ENTER_NAME')}</Text>
           <View style={styles.optionalContainer}>
-            <Text style={styles.optionaltext}>Up to 40 Characters</Text>
+            <Text style={styles.optionaltext}>{t('UP_TO_40_CHARS')}</Text>
           </View>
         </View>
         <View>
           <Field
             name="name"
             component={FormManagementInput}
-            placeholder="Write Title"
+            placeholder={t('WRITE_TITLE')}
             style={styles.nameInput}
             containerStyle={styles.inputContainer}
             maxLength={40}
@@ -118,16 +120,16 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
 
       <View style={styles.notesContainer}>
         <View style={styles.inputContentLabel}>
-          <Text style={styles.headerLabel}>Note</Text>
+          <Text style={styles.headerLabel}>{t('NOTE')}</Text>
           <View style={styles.optionalContainer}>
-            <Text style={styles.optionaltext}>Up to 1000 Characters</Text>
+            <Text style={styles.optionaltext}>{t('UP_TO_100_CHARS')}</Text>
           </View>
         </View>
         <View>
           <Field
             name="note"
             component={FormManagementInput}
-            placeholder="Write Title"
+            placeholder={t('WRITE_NOTE')}
             style={styles.notesInput}
             containerStyle={styles.inputContainer}
             maxLength={1000}
@@ -137,14 +139,14 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
       </View>
 
       <View style={styles.ratingContentContainner}>
-        <Text style={styles.headerLabel}>Rating</Text>
+        <Text style={styles.headerLabel}>{t('RATING')}</Text>
         <View style={styles.ratingContainer}>
           <Field name="rating" component={RatingsInputComp} />
         </View>
       </View>
 
       <View style={styles.levelContentContainer}>
-        <Text style={styles.headerLabel}>Level of difficulty</Text>
+        <Text style={styles.headerLabel}>{t('LEVEL_OF_DIFFICULTY')}</Text>
         <Field
           name="difficulty"
           component={SelectWGradientBorder}

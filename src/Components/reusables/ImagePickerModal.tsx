@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
+import { useTranslation } from 'react-i18next';
+
 import Button from '_components/ui/Buttons/Button';
 
 import type { FunctionComponent } from 'react';
@@ -23,6 +25,7 @@ const ImagePickerModal: FunctionComponent<ImagePickerModalProps> = ({
   closeModal,
   photoOptions,
 }) => {
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <Modal isVisible={modalIsVisible} style={styles.modalView}>
@@ -41,7 +44,7 @@ const ImagePickerModal: FunctionComponent<ImagePickerModalProps> = ({
             container: styles.buttonContainer,
             text: styles.buttonText,
           }}>
-          Cancel
+          {t('CANCEL')}
         </Button>
       </Modal>
     </View>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -22,6 +23,7 @@ interface TermsAndConditionsTypeProps {
 const TermsAndConditions: FunctionComponent<TermsAndConditionsTypeProps> = ({
   navigation,
 }) => {
+  const { t } = useTranslation();
   const navigateBack = () => {
     navigation.goBack();
   };
@@ -36,69 +38,27 @@ const TermsAndConditions: FunctionComponent<TermsAndConditionsTypeProps> = ({
             color="black"
             onPress={navigateBack}
           />
-          <Text style={styles.headerText}>Terms &amp; Conditions</Text>
+          <Text style={styles.headerText}>{t('TERMS_AND_CONDITIONS')}</Text>
           <View />
         </View>
         <ScrollView
           contentContainerStyle={styles.scrollContainer}
           showsVerticalScrollIndicator={false}>
           <View style={styles.terms}>
-            <Text style={styles.termsHeader}>Agreement To Terms</Text>
-            <Text style={styles.textBody}>
-              These Terms and Conditions constitute a legally binding agreement
-              made between you, whether personally or on behalf of an entity
-              (“you”) and [business entity name] (“we,” “us” or “our”),
-              concerning your access to and use of the [website name.com]
-              website as well as any other media form, media channel, mobile
-              website or mobile application related, linked, or otherwise
-              connected thereto (collectively, the “Site”).
+            <Text style={styles.termsHeader}>
+              {t('terms_and_conditions._0')}
             </Text>
-            <Text style={styles.textBody}>
-              You agree that by accessing the Site, you have read, understood,
-              and agree to be bound by all of these Terms and Conditions. If you
-              do not agree with all of these Terms and Conditions, then you are
-              expressly prohibited from using the Site and you must discontinue
-              use immediately.
-            </Text>
-            <Text style={styles.textBody}>
-              Supplemental terms and conditions or documents that may be posted
-              on the Site from time to time are hereby expressly incorporated
-              herein by reference. We reserve the right, in our sole discretion,
-              to make changes or modifications to these Terms and Conditions at
-              any time and for any reason.
-            </Text>
+            <Text style={styles.textBody}>{t('terms_and_conditions._1')}</Text>
+            <Text style={styles.textBody}>{t('terms_and_conditions._2')}</Text>
+            <Text style={styles.textBody}>{t('terms_and_conditions._3')}</Text>
           </View>
           <View style={styles.terms}>
-            <Text style={styles.termsHeader}>Intellectual Property Rights</Text>
-            <Text style={styles.textBody}>
-              Unless otherwise indicated, the Site is our proprietary property
-              and all source code, databases, functionality, software, website
-              designs, audio, video, text, photographs, and graphics on the Site
-              (collectively, the “Content”) and the trademarks, service marks,
-              and logos contained therein (the “Marks”) are owned or controlled
-              by us or licensed to us, and are protected by copyright and
-              trademark laws and various other intellectual property rights and
-              unfair competition laws of the United States, foreign
-              jurisdictions, and international conventions.
+            <Text style={styles.termsHeader}>
+              {t('terms_and_conditions._4')}
             </Text>
-            <Text style={styles.textBody}>
-              The Content and the Marks are provided on the Site “AS IS” for
-              your information and personal use only. Except as expressly
-              provided in these Terms and Conditions, no part of the Site and no
-              Content or Marks may be copied, reproduced, aggregated,
-              republished, uploaded, posted, publicly displayed, encoded,
-              translated, transmitted, distributed, sold, licensed, or otherwise
-              exploited for any commercial purpose whatsoever, without our
-              express prior written permission.
-            </Text>
-            <Text style={styles.textBody}>
-              Provided that you are eligible to use the Site, you are granted a
-              limited license to access and use the Site and to download or
-              print a copy of any portion of the Content to which you have
-              properly gained access solely for your personal, non-commercial
-              use. We reserve all rights not expressly granted to you in and to
-              the Site, the Content and the Marks.
-            </Text>
+            <Text style={styles.textBody}>{t('terms_and_conditions._5')}</Text>
+            <Text style={styles.textBody}>{t('terms_and_conditions._6')}</Text>
+            <Text style={styles.textBody}>{t('terms_and_conditions._7')}</Text>
           </View>
         </ScrollView>
       </View>

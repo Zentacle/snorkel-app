@@ -1,23 +1,25 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Platform } from 'react-native';
 import { Field } from 'react-final-form';
+import { useTranslation } from 'react-i18next';
 
 import FMInput from '_components/ui/FormManagementInput';
 
 const Notes = () => {
+  const { t } = useTranslation();
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.notesContentLabel}>
-        <Text style={styles.headerLabel}>Note</Text>
+        <Text style={styles.headerLabel}>{t('NOTE')}</Text>
         <View style={styles.optionalContainer}>
-          <Text style={styles.optionaltext}>Up to 1000 Characters</Text>
+          <Text style={styles.optionaltext}>{t('UP_TO_100_CHARS')}</Text>
         </View>
       </View>
       <View>
         <Field
           name="note"
           component={FMInput}
-          placeholder="Write Title"
+          placeholder={t('WRITE_NOTE')}
           style={styles.input}
           containerStyle={styles.inputContainer}
           maxLength={1000}

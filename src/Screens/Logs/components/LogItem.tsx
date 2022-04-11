@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import MapView from 'react-native-maps';
+import { useTranslation } from 'react-i18next';
 
 import { attachIcons } from '_utils/functions';
 import type { FunctionComponent } from 'react';
@@ -17,6 +18,7 @@ interface LogItemProps {
 }
 
 const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
+  const { t } = useTranslation();
   const isAdvancedLog = !!(diveLog.timeInWater && diveLog.maxDepth);
   const logLat = diveLog.location?.lat || -8.409518;
   const logLng = diveLog.location?.lng || 115.188919;
@@ -66,7 +68,7 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
             <View style={styles.timeDepthItem}>
               <Image source={DiveTimeClock} />
               <View style={styles.timeDepthTextContainer}>
-                <Text style={styles.timeDepthLabel}>Dive time</Text>
+                <Text style={styles.timeDepthLabel}>{t('DIVE_TIME')}</Text>
                 <Text style={styles.timeDepthText}>
                   {diveLog.timeInWater}&nbsp;min
                 </Text>
@@ -75,7 +77,7 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
             <View style={styles.timeDepthItem}>
               <Image source={DepthArrow} />
               <View style={styles.timeDepthTextContainer}>
-                <Text style={styles.timeDepthLabel}>Max depth</Text>
+                <Text style={styles.timeDepthLabel}>{t('MAX_DEPTH')}</Text>
                 <Text style={styles.timeDepthText}>
                   {diveLog.maxDepth}&nbsp;m
                 </Text>

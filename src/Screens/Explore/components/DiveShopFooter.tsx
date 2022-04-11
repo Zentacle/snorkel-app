@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import type { FunctionComponent } from 'react';
 
@@ -13,6 +14,7 @@ interface DiveShopFooterProps {
 const DiveShopFooter: FunctionComponent<DiveShopFooterProps> = ({
   navigateToWebsite,
 }) => {
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <Button
@@ -32,7 +34,7 @@ const DiveShopFooter: FunctionComponent<DiveShopFooterProps> = ({
           container: styles.buttonContainer,
           text: styles.buttonText,
         }}>
-        View Website
+        {t('VIEW_WEBSITE')}
       </Button>
     </View>
   );

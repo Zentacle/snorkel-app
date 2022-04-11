@@ -12,6 +12,7 @@ import {
 import FEIcon from 'react-native-vector-icons/Feather';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
+import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type {
@@ -50,21 +51,22 @@ interface Activity {
   values: string[];
 }
 
-const activities: Activity[] = [
-  {
-    label: 'Items',
-    values: ['Wear', 'Gear', 'Equipment'],
-  },
-  {
-    label: 'Tags',
-    values: ['Beach', 'Coral', 'Dive Party'],
-  },
-];
-
 const DiveShop: FunctionComponent<DiveShopProps> = ({ navigation }) => {
+  const { t } = useTranslation();
   const goBack = () => {
     navigation.goBack();
   };
+
+  const activities: Activity[] = [
+    {
+      label: t('ITEMS'),
+      values: [t('WEAR'), t('GEAR'), t('EQUIPMENT')],
+    },
+    {
+      label: t('TAGS'),
+      values: [t('BEACH'), t('CORAL'), t('DIVE_PARTY')],
+    },
+  ];
 
   const navigateToMap = () => {
     navigation.navigate('ExploreStack', {
@@ -142,7 +144,9 @@ const DiveShop: FunctionComponent<DiveShopProps> = ({ navigation }) => {
 
         <View style={styles.diveShops}>
           <View style={styles.diveShopsTextContainer}>
-            <Text style={styles.diveShopsMainText}>Closest Dive Shops</Text>
+            <Text style={styles.diveShopsMainText}>
+              {t('CLOSEST_DIVE_SHOPS')}
+            </Text>
             <TouchableWithoutFeedback>
               <GradientText
                 gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
@@ -156,7 +160,7 @@ const DiveShop: FunctionComponent<DiveShopProps> = ({ navigation }) => {
                 }}
                 gradientLocations={[0.01, 1, 1]}
                 style={styles.diveShopsMoreText}>
-                Open More
+                {t('OPEN_MORE')}
               </GradientText>
             </TouchableWithoutFeedback>
           </View>
@@ -170,7 +174,7 @@ const DiveShop: FunctionComponent<DiveShopProps> = ({ navigation }) => {
           </ScrollView>
           <View style={styles.reportContainer}>
             <Ionicon name="flag-outline" color="black" size={22} />
-            <Text style={styles.reportText}>Report this post</Text>
+            <Text style={styles.reportText}>{t('REPORT_THIS_POST')}</Text>
           </View>
         </View>
       </ScrollView>
@@ -275,6 +279,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 20,
     fontWeight: '500',
+    width: '60%',
   },
   diveShopsMoreText: {
     fontSize: 18,

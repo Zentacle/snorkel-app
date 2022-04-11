@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useTranslation } from 'react-i18next';
 
 import type { FunctionComponent } from 'react';
 import type { ViewStyle, ImageStyle } from 'react-native';
@@ -26,6 +27,7 @@ interface DiveSiteProps {
 }
 
 const DiveSite: FunctionComponent<DiveSiteProps> = props => {
+  const { t } = useTranslation();
   const content = (
     <View style={[styles.container, props.containerStyle]}>
       <View style={[styles.imageContainer, props.imageContainerStyle]}>
@@ -57,7 +59,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = props => {
         </View>
         <View style={styles.ratingsContainer}>
           <Text style={styles.ratingsLevelText}>
-            {capitalize(props.site.difficulty) || 'Beginner'}
+            {capitalize(props.site.difficulty) || t('BEGINNER')}
           </Text>
           <View style={styles.dot} />
           <Text style={styles.ratingsText}>

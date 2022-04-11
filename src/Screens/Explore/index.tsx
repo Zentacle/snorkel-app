@@ -10,6 +10,7 @@ import {
   Platform,
 } from 'react-native';
 import { Form, Field } from 'react-final-form';
+import { useTranslation } from 'react-i18next';
 
 import SearchInput from '_components/ui/SearchInput';
 import Tag from '_components/ui/Tag';
@@ -46,28 +47,6 @@ interface TagInterface {
   name: string;
   imageIcon: ImageSourcePropType;
 }
-const tags: TagInterface[] = [
-  {
-    name: 'Popular',
-    imageIcon: Popular,
-  },
-  {
-    name: 'Newest',
-    imageIcon: Newest,
-  },
-  {
-    name: 'Top Rating',
-    imageIcon: TopRating,
-  },
-  {
-    name: 'Popular',
-    imageIcon: Popular,
-  },
-  {
-    name: 'Newest',
-    imageIcon: Newest,
-  },
-];
 
 type ExploreNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<AppTabsParamList, 'Explore'>,
@@ -80,8 +59,24 @@ interface ExploreProps {
 
 const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const diveSites = Object.values(useAppSelector(selectAllDiveSites) || []);
   const user = useAppSelector(selectUser);
+
+  const tags: TagInterface[] = [
+    {
+      name: t('POPULAR'),
+      imageIcon: Popular,
+    },
+    {
+      name: t('NEWEST'),
+      imageIcon: Newest,
+    },
+    {
+      name: t('TOP_RATING'),
+      imageIcon: TopRating,
+    },
+  ];
 
   // console.log('dive sites from store', diveSites);
   // const [diveSites, setDiveSites] = React.useState<Spot>([]);
@@ -108,7 +103,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.contentContainer}>
         <Text style={styles.welcomeText}>
-          Welcome,&nbsp;{user?.first_name}!
+          {t('WELCOME')},&nbsp;{user?.first_name}!
         </Text>
         <Form
           onSubmit={() => {}}
@@ -118,7 +113,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
             return (
               <Field
                 name="search"
-                placeholder="Search For a location"
+                placeholder={t('explore.SEARCH_PLACEHOLDER')}
                 placeholderTextColor="#BFBFBF"
                 component={SearchInput}
               />
@@ -137,7 +132,9 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
         </ScrollView>
         <View style={styles.nearbySites}>
           <View style={styles.nearbySitesTextContainer}>
-            <Text style={styles.nearbySitesMainText}>Dive Sites Nearby</Text>
+            <Text style={styles.nearbySitesMainText}>
+              {t('explore.NEARBY_SITES_MAIN_TEXT')}
+            </Text>
             <TouchableWithoutFeedback>
               <GradientText
                 gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
@@ -151,7 +148,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
                 }}
                 gradientLocations={[0.01, 1, 1]}
                 style={styles.nearbySitesMapText}>
-                View Map
+                {t('VIEW_MAP')}
               </GradientText>
             </TouchableWithoutFeedback>
           </View>
@@ -173,7 +170,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
         </View>
         <View style={styles.diveShops}>
           <View style={styles.diveShopsTextContainer}>
-            <Text style={styles.diveShopsMainText}>Dive Shops</Text>
+            <Text style={styles.diveShopsMainText}>{t('DIVE_SHOPS')}</Text>
             <TouchableWithoutFeedback>
               <GradientText
                 gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
@@ -187,7 +184,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
                 }}
                 gradientLocations={[0.01, 1, 1]}
                 style={styles.diveShopsMoreText}>
-                Open More
+                {t('OPEN_MORE')}
               </GradientText>
             </TouchableWithoutFeedback>
           </View>
@@ -203,7 +200,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
 
         <View style={styles.diveSites}>
           <View style={styles.diveSitesTextContainer}>
-            <Text style={styles.diveSitesMainText}>Recommended</Text>
+            <Text style={styles.diveSitesMainText}>{t('RECOMMENDED')}</Text>
             <TouchableWithoutFeedback>
               <GradientText
                 gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
@@ -217,7 +214,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
                 }}
                 gradientLocations={[0.01, 1, 1]}
                 style={styles.diveSitesMapText}>
-                View Map
+                {t('VIEW_MAP')}
               </GradientText>
             </TouchableWithoutFeedback>
           </View>
@@ -280,6 +277,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 20,
     fontWeight: '700',
+    width: '70%',
   },
   nearbySitesMapText: {
     fontSize: 18,
@@ -312,6 +310,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 20,
     fontWeight: '700',
+    width: '70%',
   },
   diveShopsMoreText: {
     fontSize: 18,

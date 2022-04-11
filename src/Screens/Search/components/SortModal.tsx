@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
+import { useTranslation } from 'react-i18next';
+
 import Button from '_components/ui/Buttons/Button';
 
 import type { FunctionComponent } from 'react';
@@ -17,7 +19,8 @@ const SortModal: FunctionComponent<SortModalProps> = ({
   modalIsVisible,
   closeModal,
 }) => {
-  const sortingOptions = ['rating', 'popularity'];
+  const { t } = useTranslation();
+  const sortingOptions = [t('RATING'), t('POPULARITY')];
   const handleClick = (_option: string) => {
     // do something with sort value
     closeModal();
@@ -27,7 +30,7 @@ const SortModal: FunctionComponent<SortModalProps> = ({
       <Modal isVisible={modalIsVisible} style={styles.modalView}>
         <View style={styles.sortOptionsContainer}>
           <View style={styles.sortByContainer}>
-            <Text style={styles.sortByMainText}>Sort By</Text>
+            <Text style={styles.sortByMainText}>{t('SORT_BY')}</Text>
             <Text style={styles.sortBySubtext}>Select sorting option</Text>
           </View>
           {sortingOptions.map((option, index) => (
@@ -44,7 +47,7 @@ const SortModal: FunctionComponent<SortModalProps> = ({
             container: styles.buttonContainer,
             text: styles.buttonText,
           }}>
-          Cancel
+          {t('CANCEL')}
         </Button>
       </Modal>
     </View>

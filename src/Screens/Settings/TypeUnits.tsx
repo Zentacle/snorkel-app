@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -39,6 +40,7 @@ interface TypeUnitsTypeProps {
 const WIDTH = Dimensions.get('window').width;
 
 const TypeUnits: FunctionComponent<TypeUnitsTypeProps> = ({ navigation }) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const settings = useAppSelector(selectSettings);
 
@@ -56,13 +58,13 @@ const TypeUnits: FunctionComponent<TypeUnitsTypeProps> = ({ navigation }) => {
 
   const measurementTypes = [
     {
-      name: 'imperial',
-      label: 'Imperial Units',
+      name: t('IMPERIAL'),
+      label: t('IMPERIAL_UNITS'),
       types: ['ft', 'lb', 'psi', 'f'],
     },
     {
-      name: 'metric',
-      label: 'Metric Units',
+      name: t('METRIC'),
+      label: t('METRIC_UNITS'),
       types: ['m', 'kg', 'bar', 'C'],
     },
   ];
@@ -77,7 +79,7 @@ const TypeUnits: FunctionComponent<TypeUnitsTypeProps> = ({ navigation }) => {
             color="black"
             onPress={navigateBack}
           />
-          <Text style={styles.headerText}>Type Units</Text>
+          <Text style={styles.headerText}>{t('TYPE_UNITS')}</Text>
           <View />
         </View>
 
@@ -97,10 +99,10 @@ const TypeUnits: FunctionComponent<TypeUnitsTypeProps> = ({ navigation }) => {
           </GradientCircle>
           <View style={styles.descriptionContainer}>
             <Text style={styles.descriptionMainText}>
-              Imperial Units or Metric?
+              {t('TYPE_UNITS_MAIN_TEXT')}
             </Text>
             <Text style={styles.descriptionSubText}>
-              Select the convenient units to be used in the application
+              {t('TYPE_UNITS_SUB_TEXT')}
             </Text>
           </View>
         </View>

@@ -11,6 +11,7 @@ import {
 import IOIcon from 'react-native-vector-icons/Ionicons';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { FieldArrayRenderProps } from 'react-final-form-arrays';
+import { useTranslation } from 'react-i18next';
 
 import ImagePickerModal from '_components/reusables/ImagePickerModal';
 import GradientText from '_components/ui/GradientText';
@@ -35,6 +36,7 @@ type ImagePickerArrayProps = BaseProps & FinalFormProps;
 const ImagePickerArray: FunctionComponent<ImagePickerArrayProps> = ({
   fields,
 }) => {
+  const { t } = useTranslation();
   const [cameralModalIsVisible, setCameraModalVisibility] =
     React.useState(false);
 
@@ -98,10 +100,10 @@ const ImagePickerArray: FunctionComponent<ImagePickerArrayProps> = ({
     <View style={styles.container}>
       <View style={styles.mediaContainer}>
         <View style={styles.mediaContentLabel}>
-          <Text style={styles.headerLabel}>Photos and Videos</Text>
+          <Text style={styles.headerLabel}>{t('PHOTOS_AND_VIDEOS')}</Text>
           <View style={styles.optionalContainer}>
             <Text style={styles.optionaltext}>
-              {fields.length ? '10 Files Max' : 'Optional'}
+              {fields.length ? t('10_FILES_MAX') : t('OPTIONAL')}
             </Text>
           </View>
         </View>
@@ -127,7 +129,7 @@ const ImagePickerArray: FunctionComponent<ImagePickerArrayProps> = ({
                 }}
                 gradientLocations={[0.01, 1, 1]}
                 style={styles.actionText}>
-                Add Photos or Videos
+                {t('ADD_PHOTOS_OR_VIDEOS')}
               </GradientText>
             </View>
           )}
@@ -170,7 +172,7 @@ const ImagePickerArray: FunctionComponent<ImagePickerArrayProps> = ({
             }}
             gradientLocations={[0.01, 1, 1]}
             style={styles.actionText}>
-            Add Photos or Videos
+            {t('ADD_PHOTOS_OR_VIDEOS')}
           </GradientText>
         </View>
       )}

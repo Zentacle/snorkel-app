@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import MUIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type {
@@ -54,6 +55,7 @@ interface ReviewProps {
 }
 
 const Reviews: FunctionComponent<ReviewProps> = ({ navigation, route }) => {
+  const { t } = useTranslation();
   const currentSpotId = route.params.id;
   const dispatch = useAppDispatch();
   const reviewInState = useAppSelector(isReviewInState(currentSpotId));
@@ -93,7 +95,7 @@ const Reviews: FunctionComponent<ReviewProps> = ({ navigation, route }) => {
           </Text>
           <View style={styles.reviewDot} />
           <Text style={styles.reviewRatingsCount}>
-            {diveSite.num_reviews} reviews
+            {diveSite.num_reviews} {t('REVIEWS')}
           </Text>
         </View>
         <View style={styles.ratingsContainer}>

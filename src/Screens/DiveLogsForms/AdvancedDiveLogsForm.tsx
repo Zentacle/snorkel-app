@@ -13,6 +13,7 @@ import { Form } from 'react-final-form';
 import validate from 'validate.js';
 import get from 'lodash/get';
 import arrayMutators from 'final-form-arrays';
+import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type {
@@ -21,6 +22,7 @@ import type {
 } from '@react-navigation/native';
 import type { FunctionComponent } from 'react';
 import type { FormApi } from 'final-form';
+import { Stage } from './utils/interfaces';
 
 import type {
   RootStackParamList,
@@ -30,7 +32,6 @@ import type {
 import Footer from './components/FormFooter';
 import FormStates from './components/FormStates';
 
-import { advancedFormStages as stages } from './utils/utils';
 import BasicInfo from './forms/advanced/BasicInfo';
 import DateTimeDepth from './forms/advanced/DateTimeDepth';
 import WaterOnshore from './forms/advanced/WaterOnshore';
@@ -65,6 +66,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   navigation,
   route,
 }) => {
+  const { t } = useTranslation();
   const [page, switchPage] = React.useState(1);
   const [modalIsOpen, toggleModal] = React.useState(false);
   const [logDate, setLogDate] = React.useState<Date>();
@@ -78,6 +80,25 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     'params.simpleDiveLog',
     {},
   );
+
+  const stages: Stage[] = [
+    {
+      id: 0,
+      name: t('advancedFormStages._0'),
+    },
+    {
+      id: 1,
+      name: t('advancedFormStages._1'),
+    },
+    {
+      id: 2,
+      name: t('advancedFormStages._2'),
+    },
+    {
+      id: 3,
+      name: t('advancedFormStages._3'),
+    },
+  ];
 
   const next = () => {
     switchPage(page + 1);
@@ -162,9 +183,9 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     maxDepth: 40,
     waterTemp: 14,
     airTemp: 20,
-    visibility: 'Poor',
-    diveActivity: 'Scuba',
-    entry: 'Shore',
+    visibility: t('POOR'),
+    diveActivity: t('SCUBA'),
+    entry: t('SHORE'),
     // @ts-ignore
     startDate: logDate,
     // @ts-ignore
@@ -172,7 +193,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     weight: 5,
     airTankStart: 40,
     airTankEnd: 40,
-    nitrox: 'Normal',
+    nitrox: t('NORMAL'),
     ...simpleDiveLogsForm,
   };
 
@@ -208,12 +229,12 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
         return (
           <SafeAreaView style={styles.container}>
             <ExitModal
-              subtext="When you exit, all advanced dive log information you entered will be deleted. The simple dive log information is saved and will remain unchanged."
+              subtext={t('diveLogForm.EXIT_MODAL_SUBTEXT_FOR_ADVANCED_FORM')}
               isVisible={modalIsOpen}
               modalAction={modalAction}
               modalCancelAction={modalCancelAction}
-              actionText="Exit"
-              cancelActionText="Cancel"
+              actionText={t('EXIT')}
+              cancelActionText={t('CANCEL')}
             />
             <View style={styles.headerContainer}>
               {page > 0 && page !== stages.length ? (
@@ -231,8 +252,8 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
               <View />
               <Text style={[styles.header, page === 0 && { marginLeft: -20 }]}>
                 {page === stages.length
-                  ? 'Advanced Dive Log Created'
-                  : 'Full Dive Log'}
+                  ? t('ADVANCED_DIVE_LOG_CREATED')
+                  : t('FULL_DIVE_LOG')}
               </Text>
               <TouchableWithoutFeedback
                 onPress={page === stages.length ? navigateToHome : openModal}>
@@ -286,7 +307,9 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
                     : next
                 }
                 disabled={!canMoveToNextPage(page, values as InitialValues)}
-                text={page === stages.length - 1 ? 'Complete' : 'Continue'}
+                text={
+                  page === stages.length - 1 ? t('COMPLETE') : t('CONTINUE')
+                }
               />
             )}
           </SafeAreaView>

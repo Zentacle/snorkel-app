@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Image, StyleSheet, Platform, Dimensions } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useTranslation } from 'react-i18next';
 
 import type { AppTabsParamList } from '_utils/interfaces';
 
@@ -24,6 +25,7 @@ import SearchActive from '_assets/tab-icons/search-active.png';
 import { isBelowHeightThreshold } from '_utils/constants';
 
 const AppTabsNavigator: React.FC = () => {
+  const { t } = useTranslation();
   const AppTabs = createBottomTabNavigator<AppTabsParamList>();
   return (
     <AppTabs.Navigator
@@ -35,7 +37,7 @@ const AppTabsNavigator: React.FC = () => {
       }}>
       <AppTabs.Screen
         options={{
-          title: 'Explore',
+          title: t('EXPLORE'),
           tabBarIcon: ({ focused }) => (
             <Image source={focused ? HomeActive : Home} />
           ),
@@ -45,7 +47,7 @@ const AppTabsNavigator: React.FC = () => {
       />
       <AppTabs.Screen
         options={{
-          title: 'Search',
+          title: t('SEARCH'),
           tabBarIcon: ({ focused }) => (
             <Image source={focused ? SearchActive : Search} />
           ),
@@ -79,7 +81,7 @@ const AppTabsNavigator: React.FC = () => {
       />
       <AppTabs.Screen
         options={{
-          title: 'Logs',
+          title: t('LOGS'),
           tabBarIcon: ({ focused }) => (
             <Image source={focused ? LogsActive : Logs} />
           ),
@@ -89,7 +91,7 @@ const AppTabsNavigator: React.FC = () => {
       />
       <AppTabs.Screen
         options={{
-          title: 'Profile',
+          title: t('PROFILE'),
           tabBarIcon: ({ focused }) => (
             <Image source={focused ? ProfileActive : Profile} />
           ),

@@ -8,6 +8,7 @@ import {
   Image,
   TouchableWithoutFeedback,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -39,17 +40,18 @@ const MeasurementType: FunctionComponent<MeasurementTypeProps> = ({
   navigation,
 }) => {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const navigateToActivityType = () => {
     navigation.navigate('ActivityType');
   };
 
   const measurementTypes = [
     {
-      name: 'imperial',
+      name: t('IMPERIAL'),
       types: ['ft', 'lb', 'psi', 'f'],
     },
     {
-      name: 'metric',
+      name: t('METRIC'),
       types: ['m', 'kg', 'bar', 'C'],
     },
   ];
@@ -81,10 +83,10 @@ const MeasurementType: FunctionComponent<MeasurementTypeProps> = ({
         </GradientCircle>
         <View style={styles.descriptionContainer}>
           <Text style={styles.descriptionMainText}>
-            Imperial Units or Metric?
+            {t('measurement_type.DESCRIPTION_MAIN_TEXT')}
           </Text>
           <Text style={styles.descriptionSubText}>
-            Select the convenient units to be used in the application
+            {t('measurement_type.DESCRIPTION_SUB_TEXT')}
           </Text>
         </View>
       </View>

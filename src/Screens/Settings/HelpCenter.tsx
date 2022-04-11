@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MUIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -54,6 +55,7 @@ const support: Support[] = [
 ];
 
 const HelpCenter: FunctionComponent<HelpCenterTypeProps> = ({ navigation }) => {
+  const { t } = useTranslation();
   const navigateBack = () => {
     navigation.goBack();
   };
@@ -85,18 +87,13 @@ const HelpCenter: FunctionComponent<HelpCenterTypeProps> = ({ navigation }) => {
             color="black"
             onPress={navigateBack}
           />
-          <Text style={styles.headerText}>Help Center</Text>
+          <Text style={styles.headerText}>{t('HELP_CENTER')}</Text>
           <View />
         </View>
 
         <View style={styles.helpBody}>
-          <Text style={styles.helpText}>
-            Do you have any questions or suggestions on how we could improve our
-            app? Feel free to reach out to us
-          </Text>
-          <Text style={styles.helpText}>
-            - we would love to get in touch with you.
-          </Text>
+          <Text style={styles.helpText}>{t('HELP_CENTER_TEXT_1')}</Text>
+          <Text style={styles.helpText}>{t('HELP_CENTER_TEXT_2')}</Text>
         </View>
 
         <View style={styles.supportContainer}>
