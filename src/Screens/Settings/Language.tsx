@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Pressable } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  Pressable,
+  ScrollView,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
 
@@ -37,11 +44,16 @@ const Language: FunctionComponent<LanguageTypeProps> = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.contentContainer}>
         <View style={styles.headerContainer}>
-          <Icon name="chevron-back-outline" size={30} onPress={navigateBack} />
+          <Icon
+            name="chevron-back-outline"
+            color="black"
+            size={30}
+            onPress={navigateBack}
+          />
           <Text style={styles.headerText}>{t('LANGUAGE')}</Text>
           <View />
         </View>
-        <View style={styles.bodyContainer}>
+        <ScrollView style={styles.bodyContainer}>
           {languages.map((language, index) => (
             <Pressable
               key={index}
@@ -76,7 +88,7 @@ const Language: FunctionComponent<LanguageTypeProps> = ({ navigation }) => {
               </View>
             </Pressable>
           ))}
-        </View>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -99,6 +111,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 24,
     fontWeight: '700',
+    color: 'black',
   },
   bodyContainer: {
     marginTop: 30,
