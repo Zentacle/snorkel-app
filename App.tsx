@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import SplashScreen from 'react-native-splash-screen';
+import React, { useEffect, Suspense } from 'react';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Settings as FBSdkSignin } from 'react-native-fbsdk-next';
 import { Provider } from 'react-redux';
@@ -21,8 +20,10 @@ export default function App() {
     // SplashScreen.hide();
   }, []);
   return (
-    <Provider store={store}>
-      <Navigator />
-    </Provider>
+    <Suspense fallback="loading">
+      <Provider store={store}>
+        <Navigator />
+      </Provider>
+    </Suspense>
   );
 }

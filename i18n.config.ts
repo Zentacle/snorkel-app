@@ -4,8 +4,8 @@ import { en, es, fr, nl, it, pl, nn, fi, ro, hu, tr } from './translations';
 import languageDetectorPlugin from '_utils/functions/languageDetectorPlugin';
 
 const resources = {
-  tu: {
-    translations: tr,
+  ro: {
+    translation: ro,
   },
   en: {
     translation: en,
@@ -31,24 +31,20 @@ const resources = {
   nl: {
     translation: nl,
   },
-
-  // pl: {
-  //   translations: pl,
-  // },
-  // tr: {
-  //   translation: tr,
-  // },
-  // ro: {
-  //   translations: ro,
-  // },
+  tr: {
+    translation: tr,
+  },
+  pl: {
+    translation: pl,
+  },
 };
 
 i18n
   .use(initReactI18next)
   .use(languageDetectorPlugin as ThirdPartyModule)
   .init({
-    resources,
-    fallbackLng: 'en',
+    resources: resources,
+    fallbackLng: 'pl',
     interpolation: {
       escapeValue: false,
     },

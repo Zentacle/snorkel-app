@@ -99,16 +99,16 @@ export const languages: Language[] = [
     label: 'Magyar',
   },
 
-  // {
-  //   name: 'tr',
-  //   label: 'Turkey',
-  // },
-  // {
-  //   name: 'pl',
-  //   label: 'Polski',
-  // },
-  // {
-  //   name: 'ro',
-  //   label: 'Romana',
-  // },
+  {
+    name: 'tr',
+    label: 'Turkey',
+  },
+  {
+    name: 'pl',
+    label: 'Polski',
+  },
+  {
+    name: 'ro',
+    label: 'Romana',
+  },
 ];
