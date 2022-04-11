@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   ScrollView,
   TouchableWithoutFeedback,
   Platform,
@@ -173,7 +172,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     marginHorizontal: 25,
     marginTop: 20,
-    marginBottom: 20,
   },
   headerContainer: {
     flexDirection: 'row',
