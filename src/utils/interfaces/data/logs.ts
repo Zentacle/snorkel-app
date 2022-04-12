@@ -1,3 +1,4 @@
+import { Spot } from './spot';
 export interface SimpleFormInitialValues {
   id: number | string;
   rating: number;
@@ -30,4 +31,8 @@ export interface AdvancedFormInitialValues extends SimpleFormInitialValues {
   airTankStart?: number;
   airTankEnd?: number;
   nitrox?: string;
+}
+
+export interface DiveLogReturnValues extends AdvancedFormInitialValues {
+  spot: Spot;
 }
