@@ -78,7 +78,7 @@ const SearchMainView = () => {
 
       <View style={styles.diveShopsContainer}>
         <View style={styles.diveShopLabelContainer}>
-          <Text style={styles.headerLabel}>{t('DESTINATION')}</Text>
+          <Text style={styles.headerLabel}>{t('DIVE_SHOPS')}</Text>
           <GradientText
             gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
             start={{
