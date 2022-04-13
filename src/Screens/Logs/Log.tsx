@@ -35,6 +35,7 @@ import { useAppSelector } from '_redux/hooks';
 import { selectDiveLogById } from '_redux/slices/dive-logs';
 import { AdvancedFormInitialValues } from '_utils/interfaces/data/logs';
 import NoLog from './components/NoLog';
+import DiveLogLoading from '_components/reusables/Placeholders/DiveLogs/DiveLog';
 
 type LogNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<LogsStackParamList, 'LogDetail'>,
@@ -107,6 +108,8 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
       },
     });
   };
+
+  // return <DiveLogLoading />;
 
   return (
     <View style={styles.container}>

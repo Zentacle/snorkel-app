@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { WIDTH } from '_utils/constants';
 
-const ImageGallery = () => {
+const DiveLogLoading = () => {
   return (
     <SkeletonPlaceholder>
       <View style={styles.image} />
@@ -11,15 +11,14 @@ const ImageGallery = () => {
         <View style={styles.description1} />
         <View style={styles.description2} />
         <View style={styles.description3} />
+        <View style={styles.dateContainer}>
+          <View style={styles.difficulty} />
+          <View style={styles.date} />
+        </View>
       </View>
       <View style={styles.mapContainer}>
         <View style={styles.map} />
         <View style={styles.button} />
-      </View>
-      <View style={styles.activityContainer}>
-        <View style={styles.activity} />
-        <View style={styles.activity} />
-        <View style={styles.activity} />
       </View>
     </SkeletonPlaceholder>
   );
@@ -31,23 +30,38 @@ const styles = StyleSheet.create({
     width: WIDTH,
   },
   descriptions: {
-    marginTop: 10,
+    marginTop: 30,
     marginHorizontal: 25,
   },
   description1: {
-    width: 120,
-    height: 15,
+    width: WIDTH * 0.7,
+    height: 25,
     marginTop: 10,
+    marginBottom: 5,
   },
   description2: {
-    width: 70,
-    height: 15,
-    marginTop: 5,
+    width: WIDTH * 0.5,
+    height: 20,
+    marginTop: 10,
   },
   description3: {
-    width: 200,
-    height: 15,
-    marginTop: 5,
+    width: WIDTH * 0.5,
+    height: 20,
+    marginTop: 10,
+  },
+  dateContainer: {
+    flexDirection: 'row',
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  difficulty: {
+    width: 60,
+    height: 20,
+    marginRight: 20,
+  },
+  date: {
+    width: 80,
+    height: 20,
   },
   map: {
     width: WIDTH * 0.87,
@@ -65,16 +79,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignItems: 'center',
   },
-  activityContainer: {
-    marginTop: 20,
-    alignItems: 'center',
-  },
-  activity: {
-    width: WIDTH * 0.87,
-    height: 40,
-    borderRadius: 10,
-    marginTop: 10,
-  },
 });
 
-export default ImageGallery;
+export default DiveLogLoading;

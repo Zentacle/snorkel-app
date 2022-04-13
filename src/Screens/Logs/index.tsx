@@ -22,6 +22,8 @@ import { selectAllDiveLogs } from '_redux/slices/dive-logs';
 import EmptyList from './components/EmptyList';
 import LogsList from './components/List';
 import { isBelowHeightThreshold } from '_utils/constants';
+import DiveLogList from '_components/reusables/Placeholders/DiveLogs/List';
+import DiveListItem from '_components/reusables/Placeholders/DiveLogs/ListItem';
 
 type LogsNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<AppTabsParamList, 'Logs'>,
@@ -43,6 +45,8 @@ const Logs: FunctionComponent<LogsProps> = ({ navigation }) => {
       },
     });
   };
+
+  // return <DiveLogList />;
 
   return (
     <SafeAreaView style={styles.container}>
