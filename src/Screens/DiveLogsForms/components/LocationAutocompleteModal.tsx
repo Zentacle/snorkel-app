@@ -20,6 +20,8 @@ import { useTranslation } from 'react-i18next';
 import type { FunctionComponent } from 'react';
 import type { FieldRenderProps } from 'react-final-form';
 import PlainSearchInput from '_components/ui/PlainSearchInput';
+import { handleAutocomplete } from '_redux/slices/search/api';
+import { AutocompleteResponse } from '_utils/interfaces/data/search';
 
 import LocationImage from '_assets/LocationLargish.png';
 import { isBelowHeightThreshold } from '_utils/constants';
@@ -43,10 +45,10 @@ interface Coords {
   lng: number;
 }
 
-interface PlaceSuggestion {
-  place_id: string;
-  description: string;
-}
+// interface PlaceSuggestion {
+//   place_id: string;
+//   description: string;
+// }
 
 type ModalWFinalFormProps = BaseProps & FinalFormProps;
 
@@ -59,16 +61,19 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
 }) => {
   const { t } = useTranslation();
   const [text, changeText] = React.useState('');
-  const [suggestions, setSuggestions] = React.useState<PlaceSuggestion[]>([]);
+  const [suggestions, setSuggestions] = React.useState<AutocompleteResponse[]>(
+    [],
+  );
   const [loading, setLoading] = React.useState(false);
 
   const makeRequest = debounce(async (val: string) => {
-    const uri = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(
-      val,
-    )}&types=geocode&language=en&key=${Config.GOOGLE_MAPS_API_KEY}`;
-    const response = await fetch(uri).then(resp => resp.json());
-    if (response.status === 'OK') {
-      setSuggestions(response.predictions);
+    const response = await handleAutocomplete(val);
+    // const uri = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(
+    //   val,
+    // )}&types=geocode&language=en&key=${Config.GOOGLE_MAPS_API_KEY}`;
+    // const response = await fetch(uri).then(resp => resp.json());
+    if (response.data) {
+      setSuggestions(response.data);
       setLoading(false);
     }
   });
@@ -115,15 +120,15 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     }
   };
 
-  const splitCountry = (input: string) => {
-    const inputArray = input.split(',');
-    return inputArray[inputArray.length - 1].trim();
-  };
+  // const splitCountry = (input: string) => {
+  //   const inputArray = input.split(',');
+  //   return inputArray[inputArray.length - 1].trim();
+  // };
 
-  const pickLocation = (input: string) => {
-    const inputArray = input.split(',');
-    return inputArray[0].trim();
-  };
+  // const pickLocation = (input: string) => {
+  //   const inputArray = input.split(',');
+  //   return inputArray[0].trim();
+  // };
 
   const handleCloseModal = () => {
     // onChange('');
@@ -133,25 +138,26 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     // changeText('');
   };
 
-  const _renderItem = (item: { item: PlaceSuggestion }) => {
+  const _renderItem = (item: { item: AutocompleteResponse }) => {
     return (
-      <Pressable onPress={() => setPlace(item.item.description)}>
+      <Pressable onPress={() => setPlace(item.item.label)}>
         <View style={styles.resultContainer}>
           <Image source={LocationImage} />
           <View style={styles.placeContainer}>
-            <Text style={styles.place}>
+            <Text style={styles.place}>{item.item.label}</Text>
+            {/* <Text style={styles.place}>
               {pickLocation(item.item.description)}
             </Text>
             <Text style={styles.placeSubText}>
               {splitCountry(item.item.description)}
-            </Text>
+            </Text> */}
           </View>
         </View>
       </Pressable>
     );
   };
 
-  const _keyExtractor = (item: any) => item.place_id;
+  const _keyExtractor = (item: any) => item.url;
 
   return (
     <Modal visible={isVisible} onRequestClose={closeModal} style={styles.modal}>

@@ -21,6 +21,9 @@ import type { FunctionComponent } from 'react';
 import type { FieldRenderProps } from 'react-final-form';
 import PlainSearchInput from '_components/ui/PlainSearchInput';
 
+import { handleTypeAhead } from '_redux/slices/search/api';
+import { TypeaheadResponse } from '_utils/interfaces/data/search';
+
 import LocationImage from '_assets/LocationLargish.png';
 import FlagImage from '_assets/Flag.png';
 import { isBelowHeightThreshold } from '_utils/constants';
@@ -48,17 +51,35 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
 }) => {
   const { t } = useTranslation();
   const [text, changeText] = React.useState('');
-  const [suggestions, setSuggestions] = React.useState<PlaceSuggestion[]>([]);
+  const [suggestions, setSuggestions] = React.useState<TypeaheadResponse[]>([]);
+  const [countrySuggestions, setCountrySuggestions] = React.useState<
+    PlaceSuggestion[]
+  >([]);
   const [loading, setLoading] = React.useState(false);
 
   const makeRequest = debounce(async (val: string) => {
+    const response = await handleTypeAhead(val);
+
+    // const uri = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(
+    //   val,
+    // )}&types=geocode&language=en&key=${Config.GOOGLE_MAPS_API_KEY}`;
+    // const response = await fetch(uri).then(resp => resp.json());
+    if (response.data) {
+      setSuggestions(response.data);
+      setLoading(false);
+    }
+  });
+
+  const requestCountrySuggestions = debounce(async (val: string) => {
+    // const response = await handleTypeAhead(val);
+
     const uri = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(
       val,
     )}&types=geocode&language=en&key=${Config.GOOGLE_MAPS_API_KEY}`;
     const response = await fetch(uri).then(resp => resp.json());
     if (response.status === 'OK') {
-      setSuggestions(response.predictions);
-      setLoading(false);
+      setCountrySuggestions(response.predictions);
+      // setLoading(false);
     }
   });
 
@@ -66,7 +87,8 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     if (val.trim().length) {
       setLoading(true);
       changeText(val);
-      makeRequest(val);
+      // makeRequest(val);
+      Promise.all([makeRequest(val), requestCountrySuggestions(val)]);
     } else {
       changeText(val);
       setSuggestions([]);
@@ -97,13 +119,13 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     changeText('');
   };
 
-  const _renderItem = (item: { item: PlaceSuggestion }) => {
+  const _renderItem = (item: { item: TypeaheadResponse }) => {
     return (
-      <Pressable onPress={() => setPlace(item.item.description)}>
+      <Pressable onPress={() => setPlace(item.item.text)}>
         <View style={styles.resultContainer}>
           <Image source={LocationImage} />
           <View style={styles.placeContainer}>
-            <Text style={styles.place}>{item.item.description}</Text>
+            <Text style={styles.place}>{item.item.text}</Text>
             <Text style={styles.placeSubText}>Subtext</Text>
           </View>
         </View>
@@ -111,7 +133,9 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     );
   };
 
-  const _keyExtractor = (item: any) => item.place_id;
+  const _keyExtractor = (item: any) => item.url;
+
+  console.log(countrySuggestions);
 
   return (
     <Modal visible={isVisible} onRequestClose={closeModal} style={styles.modal}>
@@ -138,9 +162,11 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
                 <Image source={FlagImage} />
                 <View style={styles.countryTextsContainer}>
                   <Text style={styles.searchText}>{text}</Text>
-                  <Text style={styles.countryMainText}>
-                    {splitCountry(suggestions[0].description)}
-                  </Text>
+                  {!!countrySuggestions.length && (
+                    <Text style={styles.countryMainText}>
+                      {splitCountry(countrySuggestions[0].description)}
+                    </Text>
+                  )}
                 </View>
               </View>
             )}
