@@ -23,6 +23,7 @@ const SimpleFormDiveLocation: FunctionComponent<
 > = ({ coordinates, onClickEdit, desc }) => {
   const { t } = useTranslation();
   const canShowLocation = coordinates.latitude && coordinates.longitude;
+
   return (
     <View style={styles.diveLocationContainer}>
       {canShowLocation ? (
@@ -32,11 +33,10 @@ const SimpleFormDiveLocation: FunctionComponent<
           </Text>
           <View style={styles.mapContainer}>
             <MapView
-              provider="google"
               style={styles.map}
               scrollEnabled={false}
               liteMode={true}
-              initialRegion={{
+              region={{
                 latitude: coordinates.latitude,
                 longitude: coordinates.longitude,
                 latitudeDelta: 0.0121,
@@ -61,7 +61,12 @@ const SimpleFormDiveLocation: FunctionComponent<
                 <Text style={styles.locationText}>{desc}</Text>
               </View>
             </View>
-            <Icon name="pencil-outline" size={30} onPress={onClickEdit} />
+            <Icon
+              name="pencil-outline"
+              color="black"
+              size={30}
+              onPress={onClickEdit}
+            />
           </View>
         </>
       ) : (

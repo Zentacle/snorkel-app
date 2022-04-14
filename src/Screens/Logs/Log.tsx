@@ -65,7 +65,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
     return <NoLog goBack={navigateBack} />;
   }
 
-  const isAdvancedLog = !!(diveLog.timeInWater && diveLog.maxDepth);
+  const isAdvancedLog = !!(diveLog.dive_length && diveLog.max_depth);
   const coords = {
     latitude: diveLog.location?.lat || -8.409518,
     longitude: diveLog.location?.lng || 115.188919,
@@ -121,7 +121,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
         />
 
         <View style={styles.contentContainer}>
-          <Text style={styles.mainDescription}>{diveLog.name}</Text>
+          <Text style={styles.mainDescription}>{diveLog.title}</Text>
           <View style={styles.locationContainer}>
             <Image source={DescIcon} />
             <Text style={styles.locationText}>USS Liberty Wreck on Beach</Text>
@@ -156,7 +156,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
               </View>
             </View>
             <View style={styles.noteBodyContainer}>
-              <Text style={styles.noteBodyText}>{diveLog.note}</Text>
+              <Text style={styles.noteBodyText}>{diveLog.text}</Text>
             </View>
           </View>
 
@@ -171,14 +171,14 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                 <View style={styles.divingDataBody}>
                   <View style={styles.itemContainer}>
                     <View style={styles.itemLabelContainer}>
-                      <Text style={styles.itemText}>{diveLog.maxDepth}</Text>
+                      <Text style={styles.itemText}>{diveLog.max_depth}</Text>
                       <Text style={styles.measurement}>m</Text>
                     </View>
                     <Text style={styles.itemLabel}>{t('MAX_DEPTH')}</Text>
                   </View>
                   <View style={styles.itemContainer}>
                     <View style={styles.itemLabelContainer}>
-                      <Text style={styles.itemText}>{diveLog.timeInWater}</Text>
+                      <Text style={styles.itemText}>{diveLog.dive_length}</Text>
                       <Text style={styles.measurement}>min</Text>
                     </View>
                     <Text style={styles.itemLabel}>{t('DURATION')}</Text>
@@ -198,7 +198,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                 <View style={styles.waterAirBody}>
                   <View style={styles.itemContainer}>
                     <View style={styles.itemLabelContainer}>
-                      <Text style={styles.itemText}>{diveLog.waterTemp}</Text>
+                      <Text style={styles.itemText}>{diveLog.water_temp}</Text>
                       <Text style={styles.measurement}>c</Text>
                     </View>
                     <Text style={styles.itemLabel}>{t('WATER_TEMP')}</Text>
@@ -212,7 +212,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                   </View>
                   <View style={styles.itemContainer}>
                     <View style={styles.itemLabelContainer}>
-                      <Text style={styles.itemText}>{diveLog.airTemp}</Text>
+                      <Text style={styles.itemText}>{diveLog.air_temp}</Text>
                       <Text style={styles.measurement}>c</Text>
                     </View>
                     <Text style={styles.itemLabel}>{t('AIR_TEMP')}</Text>
@@ -234,7 +234,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                         <Text style={styles.capacityText}>400 bar</Text>
                         <Text style={styles.divider}>|</Text>
                         <Text style={styles.airTankTypetext}>
-                          {diveLog.nitrox}
+                          {diveLog.air_type}
                         </Text>
                       </View>
                     </View>
@@ -243,7 +243,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                         style={{
                           ...styles.gradientLine,
                           width: `${
-                            ((diveLog.airTankStart as number) / 400) * 100
+                            ((diveLog.start_air as number) / 400) * 100
                           }%`,
                         }}
                       />
@@ -251,14 +251,14 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                     <View style={styles.divingGearValueContainer}>
                       <View style={styles.airTankValuelabelContainer}>
                         <Text style={styles.airTankValueText}>
-                          {diveLog.airTankStart}&nbsp;bar
+                          {diveLog.start_air}&nbsp;bar
                         </Text>
                         <Text style={styles.divider}>|</Text>
                         <Text style={styles.airTankUsedText}>{t('USED')}</Text>
                       </View>
                       <View style={styles.airTankMeasurementContainer}>
                         <Text style={styles.airTankRemainderText}>
-                          {400 - (diveLog.airTankStart || 0)}&nbsp;bar
+                          {400 - (diveLog.start_air || 0)}&nbsp;bar
                         </Text>
                         <Text style={styles.divider}>|</Text>
                         <Text style={styles.airTankRemainderLabel}>
@@ -279,7 +279,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                         <Text style={styles.capacityText}>400 bar</Text>
                         <Text style={styles.divider}>|</Text>
                         <Text style={styles.airTankTypetext}>
-                          {diveLog.nitrox}
+                          {diveLog.air_type}
                         </Text>
                       </View>
                     </View>
@@ -288,7 +288,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                         style={{
                           ...styles.gradientLine,
                           width: `${
-                            ((diveLog.airTankEnd as number) / 400) * 100
+                            ((diveLog.end_air as number) / 400) * 100
                           }%`,
                         }}
                       />
@@ -296,14 +296,14 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                     <View style={styles.divingGearValueContainer}>
                       <View style={styles.airTankValuelabelContainer}>
                         <Text style={styles.airTankValueText}>
-                          {diveLog.airTankEnd}&nbsp;bar
+                          {diveLog.end_air}&nbsp;bar
                         </Text>
                         <Text style={styles.divider}>|</Text>
                         <Text style={styles.airTankUsedText}>{t('USED')}</Text>
                       </View>
                       <View style={styles.airTankMeasurementContainer}>
                         <Text style={styles.airTankRemainderText}>
-                          {400 - (diveLog.airTankEnd || 0)}&nbsp;bar
+                          {400 - (diveLog.end_air || 0)}&nbsp;bar
                         </Text>
                         <Text style={styles.divider}>|</Text>
                         <Text style={styles.airTankRemainderLabel}>

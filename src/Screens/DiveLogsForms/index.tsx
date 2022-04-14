@@ -5,7 +5,6 @@ import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
-  Platform,
   TouchableWithoutFeedback,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -29,7 +28,6 @@ import type { RootStackParamList, AppTabsParamList } from '_utils/interfaces';
 import FormStates from './components/FormStates';
 import Footer from './components/FormFooter';
 
-// import { simpleformStages as stages } from './utils/utils';
 import Location from './forms/simple/Location';
 import Rating from './forms/simple/Rating';
 import Name from './forms/simple/Name';
@@ -151,6 +149,7 @@ const SimpleDiveLogsForms: FunctionComponent<
     rating: 0,
     // @ts-ignore
     difficulty: t('BEGINNER'),
+    activity_type: t('SCUBA'),
     location: undefined,
     // @ts-ignore
     // images: [],
@@ -182,9 +181,9 @@ const SimpleDiveLogsForms: FunctionComponent<
       case 1:
         return !!(values.rating && values.difficulty);
       case 2:
-        return !!values.name;
+        return !!values.title;
       case 3:
-        return !!values.note;
+        return !!values.text;
       default:
         return true;
     }
@@ -210,7 +209,7 @@ const SimpleDiveLogsForms: FunctionComponent<
       mutators={{
         ...arrayMutators,
       }}
-      keepDirtyOnReinitialize
+      // keepDirtyOnReinitialize
       render={({ values, form }) => {
         formRef.current = form;
         return (

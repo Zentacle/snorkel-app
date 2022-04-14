@@ -5,7 +5,6 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
-  Platform,
   TouchableWithoutFeedback,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -179,21 +178,20 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
 
   const constraints = {};
   const initialValues: InitialValues = {
-    timeInWater: 45,
-    maxDepth: 40,
-    waterTemp: 14,
-    airTemp: 20,
+    dive_length: 45,
+    max_depth: 40,
+    water_temp: 14,
+    air_temp: 20,
     visibility: t('POOR'),
-    diveActivity: t('SCUBA'),
     entry: t('SHORE'),
     // @ts-ignore
     startDate: logDate,
     // @ts-ignore
     startTime: logDate,
     weight: 5,
-    airTankStart: 40,
-    airTankEnd: 40,
-    nitrox: t('NORMAL'),
+    start_air: 40,
+    end_air: 40,
+    air_type: t('NORMAL'),
     ...simpleDiveLogsForm,
   };
 
@@ -206,8 +204,8 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
         return !!(
           values.rating &&
           values.difficulty &&
-          values.name &&
-          values.note
+          values.title &&
+          values.text
         );
       default:
         return true;

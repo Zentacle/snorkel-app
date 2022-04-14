@@ -17,7 +17,7 @@ const Name = () => {
       </View>
       <View>
         <Field
-          name="name"
+          name="title"
           component={FMInput}
           placeholder={t('WRITE_TITLE')}
           style={styles.input}

@@ -19,7 +19,7 @@ interface LogItemProps {
 
 const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
   const { t } = useTranslation();
-  const isAdvancedLog = !!(diveLog.timeInWater && diveLog.maxDepth);
+  const isAdvancedLog = !!(diveLog.dive_length && diveLog.max_depth);
   const logLat = diveLog.location?.lat || -8.409518;
   const logLng = diveLog.location?.lng || 115.188919;
   return (
@@ -44,8 +44,8 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
             {attachIcons(diveLog.rating, 25)}
           </View>
           {isAdvancedLog && (
-            <View style={styles.diveActivityContainer}>
-              <Text style={styles.diveActivity}>{diveLog.diveActivity}</Text>
+            <View style={styles.activity_typeContainer}>
+              <Text style={styles.activity_type}>{diveLog.activity_type}</Text>
             </View>
           )}
         </View>
@@ -53,10 +53,10 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
 
       <View style={styles.details}>
         <View style={styles.simpleDetailsContainer}>
-          <Text style={styles.detailsTitle}>{diveLog.name}</Text>
+          <Text style={styles.detailsTitle}>{diveLog.title}</Text>
           <View style={styles.descContainer}>
             <Image source={DescIcon} />
-            <Text style={styles.descText}>{diveLog.name}</Text>
+            <Text style={styles.descText}>{diveLog.title}</Text>
           </View>
           <View style={styles.locationContainer}>
             <Image source={LocationImage} />
@@ -70,7 +70,7 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
               <View style={styles.timeDepthTextContainer}>
                 <Text style={styles.timeDepthLabel}>{t('DIVE_TIME')}</Text>
                 <Text style={styles.timeDepthText}>
-                  {diveLog.timeInWater}&nbsp;min
+                  {diveLog.dive_length}&nbsp;min
                 </Text>
               </View>
             </View>
@@ -79,7 +79,7 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
               <View style={styles.timeDepthTextContainer}>
                 <Text style={styles.timeDepthLabel}>{t('MAX_DEPTH')}</Text>
                 <Text style={styles.timeDepthText}>
-                  {diveLog.maxDepth}&nbsp;m
+                  {diveLog.max_depth}&nbsp;m
                 </Text>
               </View>
             </View>
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   ratingsContainer: {
     flexDirection: 'row',
   },
-  diveActivityContainer: {
+  activity_typeContainer: {
     backgroundColor: '#0B94EF',
     alignSelf: 'flex-start',
     paddingVertical: 5,
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     borderRadius: 5,
   },
-  diveActivity: {
+  activity_type: {
     color: '#fff',
     fontSize: 14,
     fontWeight: '500',

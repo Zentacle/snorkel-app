@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   Image,
-  Dimensions,
   TouchableWithoutFeedback,
   Share,
   Alert,
@@ -79,7 +78,7 @@ const Review: FunctionComponent<ReviewProps> = ({
   };
 
   const onCopyToClipboard = () => {
-    const url = `https://zentacle.com/dive-log/${id}`;
+    const url = `https://zentacle.com/dive-log/${formValues.id}`;
     Clipboard.setString(url);
     setCopymessage(true);
     setTimeout(() => {
@@ -125,10 +124,10 @@ const Review: FunctionComponent<ReviewProps> = ({
         </View>
 
         <View style={styles.details}>
-          <Text style={styles.detailsTitle}>{formValues.name}</Text>
+          <Text style={styles.detailsTitle}>{formValues.title}</Text>
           <View style={styles.descContainer}>
             <Image source={DescIcon} />
-            <Text style={styles.descText}>{formValues.name}</Text>
+            <Text style={styles.descText}>{formValues.title}</Text>
           </View>
           <View style={styles.locationContainer}>
             <Image source={LocationImage} />
@@ -144,7 +143,7 @@ const Review: FunctionComponent<ReviewProps> = ({
               <View style={styles.timeDepthTextContainer}>
                 <Text style={styles.timeDepthLabel}>{t('DIVE_TIME')}</Text>
                 <Text style={styles.timeDepthText}>
-                  {formValues.timeInWater} min
+                  {formValues.dive_length} min
                 </Text>
               </View>
             </View>
@@ -153,7 +152,7 @@ const Review: FunctionComponent<ReviewProps> = ({
               <View style={styles.timeDepthTextContainer}>
                 <Text style={styles.timeDepthLabel}>{t('MAX_DEPTH')}</Text>
                 <Text style={styles.timeDepthText}>
-                  {formValues.maxDepth} m
+                  {formValues.max_depth} m
                 </Text>
               </View>
             </View>

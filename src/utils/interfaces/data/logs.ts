@@ -3,8 +3,9 @@ export interface SimpleFormInitialValues {
   id: number | string;
   rating: number;
   difficulty: string;
-  name?: string;
-  note?: string;
+  title?: string;
+  text?: string;
+  activity_type?: string;
   location?: {
     lat: number;
     lng: number;
@@ -20,17 +21,16 @@ export interface SimpleFormInitialValues {
 export interface AdvancedFormInitialValues extends SimpleFormInitialValues {
   startDate?: Date | string; // date type for form, string type for redux. Will handle api value types later
   startTime?: Date | string; // date type for form, string type for redux. Will handle api value types later
-  timeInWater?: number;
-  maxDepth?: number;
-  waterTemp?: number;
-  airTemp?: number;
+  dive_length?: number;
+  max_depth?: number;
+  water_temp?: number;
+  air_temp?: number;
   visibility?: string;
-  diveActivity?: string;
   entry?: string;
   weight?: number;
-  airTankStart?: number;
-  airTankEnd?: number;
-  nitrox?: string;
+  start_air?: number;
+  end_air?: number;
+  air_type?: string;
 }
 
 export interface DiveLogReturnValues extends AdvancedFormInitialValues {

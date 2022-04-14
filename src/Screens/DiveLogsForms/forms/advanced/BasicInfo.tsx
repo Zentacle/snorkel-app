@@ -108,7 +108,7 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
         </View>
         <View>
           <Field
-            name="name"
+            name="title"
             component={FormManagementInput}
             placeholder={t('WRITE_TITLE')}
             style={styles.nameInput}
@@ -127,7 +127,7 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
         </View>
         <View>
           <Field
-            name="note"
+            name="text"
             component={FormManagementInput}
             placeholder={t('WRITE_NOTE')}
             style={styles.notesInput}

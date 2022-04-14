@@ -112,7 +112,7 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
     difficulty: t('BEGINNER'),
     preference: t('SCUBA'),
     entry: t('SHORE'),
-    maxDepth: 18,
+    max_depth: 18,
     ...passedInLocationValues,
   };
 
@@ -193,7 +193,7 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
                   />
                 </View>
 
-                <View style={styles.diveActivityContentContainer}>
+                <View style={styles.activity_typeContentContainer}>
                   <Text style={styles.headerLabel}>{t('ENTRY')}</Text>
                   <Field
                     name="entry"
@@ -205,9 +205,9 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
                   />
                 </View>
 
-                <View style={styles.maxDepthContainer}>
+                <View style={styles.max_depthContainer}>
                   <Field
-                    name="maxDepth"
+                    name="max_depth"
                     label={`${t('MAX_DEPTH')}. Ft`}
                     component={SliderComp}
                     trackMarks={[
@@ -349,11 +349,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  diveActivityContentContainer: {
+  activity_typeContentContainer: {
     marginTop: 30,
     marginBottom: 20,
   },
-  maxDepthContainer: {
+  max_depthContainer: {
     marginTop: 30,
     marginBottom: 30,
   },

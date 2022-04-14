@@ -19,8 +19,8 @@ interface DiveLogSummaryProps {
 function calculateTotalDiveTime(diveLogs: AdvancedFormInitialValues[]) {
   let total = 0;
   for (let log of diveLogs) {
-    if (log.timeInWater) {
-      total += log.timeInWater;
+    if (log.dive_length) {
+      total += log.dive_length;
     }
   }
 
