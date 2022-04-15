@@ -114,10 +114,11 @@ const SimpleDiveLogsForms: FunctionComponent<
   };
 
   const navigateToAdvancedDiveForm = (formvalues: InitialValues) => {
+    console.log('form values insimple', formvalues);
     props.navigation.navigate('LogsFormStack', {
       screen: 'AdvancedDiveLogsForm',
       params: {
-        simpleDiveLog: formvalues,
+        diveLog: formvalues,
       },
     });
   };

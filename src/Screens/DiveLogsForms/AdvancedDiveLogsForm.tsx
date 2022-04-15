@@ -74,11 +74,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   let scrollContainerRef = React.useRef<ScrollView | null>();
   const dispatch = useAppDispatch();
 
-  const simpleDiveLogsForm: InitialValues = get(
-    route,
-    'params.simpleDiveLog',
-    {},
-  );
+  const simpleDiveLogsForm: InitialValues = get(route, 'params.diveLog', {});
 
   const stages: Stage[] = [
     {
@@ -155,11 +151,18 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   };
 
   const submitLog = (values: InitialValues) => {
+    const date = (values.startDate as Date).toDateString();
+    const time = (values.startTime as Date).toTimeString();
+    const arrangedValues = {
+      ...values,
+      date_dived: `${date} ${time}`,
+    };
+    delete arrangedValues.startDate;
+    delete arrangedValues.startTime;
+    console.log('arranged', arrangedValues);
     dispatch(
       editDiveLog({
-        ...values,
-        startDate: (values.startDate as Date).toDateString(),
-        startTime: (values.startTime as Date).toTimeString(),
+        ...arrangedValues,
       }),
     );
   };

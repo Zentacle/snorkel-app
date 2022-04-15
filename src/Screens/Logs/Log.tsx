@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   ScrollView,
   Image,
   Platform,
@@ -14,7 +13,6 @@ import { useTranslation } from 'react-i18next';
 
 import ImageCarousel from '_components/reusables/DiveLogImageCarousel';
 import DiveLocation from './components/DiveLocation';
-import { capitalize } from '_utils/functions';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type {
@@ -26,7 +24,6 @@ import type { RootStackParamList, LogsStackParamList } from '_utils/interfaces';
 
 import LocationImage from '_assets/Location.png';
 import DescIcon from '_assets/DescIcon.png';
-import RatingsGradient from '_components/ui/RatingsGradient';
 import { attachIcons } from '_utils/functions';
 import ProfileImage from '_assets/Profile.jpg';
 import GradientBox from '_components/ui/GradientBox';
@@ -35,7 +32,7 @@ import { useAppSelector } from '_redux/hooks';
 import { selectDiveLogById } from '_redux/slices/dive-logs';
 import { AdvancedFormInitialValues } from '_utils/interfaces/data/logs';
 import NoLog from './components/NoLog';
-import DiveLogLoading from '_components/reusables/Placeholders/DiveLogs/DiveLog';
+// import DiveLogLoading from '_components/reusables/Placeholders/DiveLogs/DiveLog';
 
 type LogNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<LogsStackParamList, 'LogDetail'>,
@@ -87,7 +84,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
     navigation.navigate('LogsFormStack', {
       screen: 'AdvancedDiveLogsForm',
       params: {
-        simpleDiveLog: diveLog,
+        diveLog: diveLog,
       },
     });
   };
@@ -96,14 +93,10 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
     navigation.navigate('LogsFormStack', {
       screen: 'AdvancedDiveLogsForm',
       params: {
-        simpleDiveLog: {
+        diveLog: {
           ...diveLog,
-          startDate:
-            diveLog.startDate &&
-            new Date(`${diveLog.startDate} ${diveLog.startTime}`),
-          startTime:
-            diveLog.startTime &&
-            new Date(`${diveLog.startDate} ${diveLog.startTime}`),
+          startDate: diveLog.date_dived && new Date(diveLog.date_dived),
+          startTime: diveLog.date_dived && new Date(diveLog.date_dived),
         },
       },
     });
@@ -135,7 +128,9 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
             {isAdvancedLog && (
               <>
                 <View style={styles.dot} />
-                <Text style={styles.ratingsText}>{diveLog.startDate}</Text>
+                <Text style={styles.ratingsText}>
+                  {new Date(diveLog.date_dived as string).toDateString()}
+                </Text>
               </>
             )}
           </View>

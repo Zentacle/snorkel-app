@@ -31,6 +31,7 @@ export interface AdvancedFormInitialValues extends SimpleFormInitialValues {
   start_air?: number;
   end_air?: number;
   air_type?: string;
+  date_dived?: string;
 }
 
 export interface DiveLogReturnValues extends AdvancedFormInitialValues {
