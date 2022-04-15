@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import SliderComp from '_components/ui/Slider';
 import GradientCircle from '_components/ui/GradientCircle';
 import GradientBox from '_components/ui/GradientBox';
+import { capitalize } from '_utils/functions';
 import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
 
 const WIDTH = Dimensions.get('window').width;
@@ -17,7 +18,7 @@ const air_typeActiveComponent = (air_type: string) => (
         <View style={styles.selectedLevelCircle}>
           <GradientCircle style={styles.selectedGradient} />
         </View>
-        <Text style={styles.levelText}>{air_type}</Text>
+        <Text style={styles.levelText}>{capitalize(air_type)}</Text>
       </View>
     </GradientBox>
   </View>
@@ -26,13 +27,13 @@ const air_typeActiveComponent = (air_type: string) => (
 const air_typeInactiveComponent = (air_type: string) => (
   <View style={styles.level}>
     <View style={styles.normalLevelCircle}></View>
-    <Text style={styles.levelText}>{air_type}</Text>
+    <Text style={styles.levelText}>{capitalize(air_type)}</Text>
   </View>
 );
 
 const WearGear = () => {
   const { t } = useTranslation();
-  const air_typeTypes = [t('NORMAL'), 'EANx32', 'EANx36'];
+  const air_typeTypes = [t('NORMAL').toLowerCase(), 'EANx32', 'EANx36'];
 
   return (
     <View style={styles.container}>

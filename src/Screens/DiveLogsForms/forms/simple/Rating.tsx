@@ -7,12 +7,21 @@ import GradientCircle from '_components/ui/GradientCircle';
 import GradientBox from '_components/ui/GradientBox';
 import RatingsInputComp from '_components/ui/RatingsInputComp';
 import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
+import { capitalize } from '_utils/functions';
 import { isBelowWidthThreshold, WIDTH } from '_utils/constants';
 
 const Rating = () => {
   const { t } = useTranslation();
-  const levels = [t('BEGINNER'), t('INTERMEDIATE'), t('ADVANCED')];
-  const activity = [t('SCUBA'), t('FREEDIVING'), t('SNORKEL')];
+  const levels = [
+    t('BEGINNER').toLowerCase(),
+    t('INTERMEDIATE').toLowerCase(),
+    t('ADVANCED').toLowerCase(),
+  ];
+  const activity = [
+    t('SCUBA').toLowerCase(),
+    t('FREEDIVING').toLowerCase(),
+    t('SNORKEL').toLowerCase(),
+  ];
 
   const ActiveComponent = (level: string) => (
     <View style={styles.selectedShadow}>
@@ -21,7 +30,7 @@ const Rating = () => {
           <View style={styles.selectedLevelCircle}>
             <GradientCircle style={styles.selectedGradient} />
           </View>
-          <Text style={styles.levelText}>{level}</Text>
+          <Text style={styles.levelText}>{capitalize(level)}</Text>
         </View>
       </GradientBox>
     </View>
@@ -34,7 +43,7 @@ const Rating = () => {
           <View style={styles.selectedActivityCircle}>
             <GradientCircle style={styles.selectedGradient} />
           </View>
-          <Text style={styles.activityText}>{level}</Text>
+          <Text style={styles.activityText}>{capitalize(level)}</Text>
         </View>
       </GradientBox>
     </View>
@@ -43,14 +52,14 @@ const Rating = () => {
   const DiveInactiveComp = (level: string) => (
     <View style={styles.activity}>
       <View style={styles.normalActivityCircle}></View>
-      <Text style={styles.activityText}>{level}</Text>
+      <Text style={styles.activityText}>{capitalize(level)}</Text>
     </View>
   );
 
   const InactiveComponent = (level: string) => (
     <View style={styles.level}>
       <View style={styles.normalLevelCircle}></View>
-      <Text style={styles.levelText}>{level}</Text>
+      <Text style={styles.levelText}>{capitalize(level)}</Text>
     </View>
   );
 

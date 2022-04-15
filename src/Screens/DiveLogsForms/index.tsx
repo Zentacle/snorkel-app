@@ -149,8 +149,8 @@ const SimpleDiveLogsForms: FunctionComponent<
     // @ts-ignore
     rating: 0,
     // @ts-ignore
-    difficulty: t('BEGINNER'),
-    activity_type: t('SCUBA'),
+    difficulty: t('BEGINNER').toLowerCase(),
+    activity_type: t('SCUBA').toLowerCase(),
     location: undefined,
     // @ts-ignore
     // images: [],

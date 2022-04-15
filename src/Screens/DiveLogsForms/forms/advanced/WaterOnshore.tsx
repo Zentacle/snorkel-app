@@ -9,6 +9,7 @@ import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
 import GradientBox from '_components/ui/GradientBox';
 import GradientCircle from '_components/ui/GradientCircle';
 import { WIDTH } from '_utils/constants';
+import { capitalize } from '_utils/functions';
 
 const EntryActiveComp = (entry: string) => (
   <View style={styles.selectedShadow}>
@@ -17,7 +18,7 @@ const EntryActiveComp = (entry: string) => (
         <View style={styles.selectedActivityCircle}>
           <GradientCircle style={styles.selectedGradient} />
         </View>
-        <Text style={styles.activityText}>{entry}</Text>
+        <Text style={styles.activityText}>{capitalize(entry)}</Text>
       </View>
     </GradientBox>
   </View>
@@ -25,7 +26,7 @@ const EntryActiveComp = (entry: string) => (
 
 const WaterOnshore = () => {
   const { t } = useTranslation();
-  const entries = [t('SHORE'), t('BOAT')];
+  const entries = [t('SHORE').toLowerCase(), t('BOAT').toLowerCase()];
 
   const EntryInctiveComp = (entry: string) => {
     const index = entries.findIndex(item => item === entry);
@@ -36,7 +37,7 @@ const WaterOnshore = () => {
           index === 0 ? { marginRight: 15 } : { marginLeft: 15 },
         ]}>
         <View style={styles.normalActivityCircle}></View>
-        <Text style={styles.activityText}>{entry}</Text>
+        <Text style={styles.activityText}>{capitalize(entry)}</Text>
       </View>
     );
   };

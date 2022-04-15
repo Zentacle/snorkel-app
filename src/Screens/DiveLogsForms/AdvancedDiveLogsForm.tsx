@@ -185,8 +185,8 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     max_depth: 40,
     water_temp: 14,
     air_temp: 20,
-    visibility: t('POOR'),
-    entry: t('SHORE'),
+    visibility: 1,
+    entry: t('SHORE').toLowerCase(),
     // @ts-ignore
     startDate: logDate,
     // @ts-ignore
@@ -194,7 +194,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     weight: 5,
     start_air: 40,
     end_air: 40,
-    air_type: t('NORMAL'),
+    air_type: t('NORMAL').toLowerCase(),
     ...simpleDiveLogsForm,
   };
 
