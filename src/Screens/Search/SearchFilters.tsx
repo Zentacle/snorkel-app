@@ -24,8 +24,12 @@ import type {
   SearchStackParamList,
 } from '_utils/interfaces';
 
-import type { InitialSearchValues } from '_utils/interfaces/data/search';
+import { useAppDispatch } from '_redux/hooks';
+import { search } from '_redux/slices/search';
 
+import { capitalize } from '_utils/functions';
+
+import type { InitialSearchValues } from '_utils/interfaces/data/search';
 import GradientCircle from '_components/ui/GradientCircle';
 import GradientBox from '_components/ui/GradientBox';
 import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
@@ -52,7 +56,7 @@ const ActiveComponent = (level: string) => (
         <View style={styles.selectedLevelCircle}>
           <GradientCircle style={styles.selectedGradient} />
         </View>
-        <Text style={styles.levelText}>{level}</Text>
+        <Text style={styles.levelText}>{capitalize(level)}</Text>
       </View>
     </GradientBox>
   </View>
@@ -61,7 +65,7 @@ const ActiveComponent = (level: string) => (
 const InactiveComponent = (level: string) => (
   <View style={styles.level}>
     <View style={styles.normalLevelCircle} />
-    <Text style={styles.levelText}>{level}</Text>
+    <Text style={styles.levelText}>{capitalize(level)}</Text>
   </View>
 );
 
@@ -72,7 +76,7 @@ const EntryActiveComp = (entry: string) => (
         <View style={styles.selectedLevelCircle}>
           <GradientCircle style={styles.selectedGradient} />
         </View>
-        <Text style={styles.levelText}>{entry}</Text>
+        <Text style={styles.levelText}>{capitalize(entry)}</Text>
       </View>
     </GradientBox>
   </View>
@@ -83,9 +87,18 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
   route,
 }) => {
   const { t } = useTranslation();
-  const levels = [t('BEGINNER'), t('INTERMEDIATE'), t('ADVANCED')];
-  const preferences = [t('SCUBA'), t('FREE'), t('SNORKEL')];
-  const entries = [t('SHORE'), t('BOAT')];
+  const dispatch = useAppDispatch();
+  const levels = [
+    t('BEGINNER').toLowerCase(),
+    t('INTERMEDIATE').toLowerCase(),
+    t('ADVANCED').toLowerCase(),
+  ];
+  const preferences = [
+    t('SCUBA').toLowerCase(),
+    t('FREE').toLowerCase(),
+    t('SNORKEL').toLowerCase(),
+  ];
+  const entries = [t('SHORE').toLowerCase(), t('BOAT').toLowerCase()];
   const passedInLocationValues: InitialSearchValues = get(
     route,
     'params.search',
@@ -101,7 +114,7 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
           index === 0 ? { marginRight: 15 } : { marginLeft: 15 },
         ]}>
         <View style={styles.normalLevelCircle}></View>
-        <Text style={styles.levelText}>{entry}</Text>
+        <Text style={styles.levelText}>{capitalize(entry)}</Text>
       </View>
     );
   };
@@ -109,9 +122,9 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
   let formRef = React.useRef<FormApi>();
 
   const initialValues: InitialSearchValues = {
-    difficulty: t('BEGINNER'),
-    preference: t('SCUBA'),
-    entry: t('SHORE'),
+    difficulty: t('BEGINNER').toLowerCase(),
+    preference: t('SCUBA').toLowerCase(),
+    entry: t('SHORE').toLowerCase(),
     max_depth: 18,
     ...passedInLocationValues,
   };
@@ -126,7 +139,7 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
   const resetFiltersFromNav = () => {
     navigation.setParams({
       search: {
-        location: passedInLocationValues.location, // keep location unchanged. Remove the rest
+        search_term: passedInLocationValues.search_term, // keep location unchanged. Remove the rest
       },
     });
     formRef.current?.reset();
@@ -145,12 +158,18 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
     });
   };
 
+  const submit = async (values: InitialSearchValues) => {
+    console.log('triggered', values);
+    await dispatch(search(values));
+    // navigateToResults(values)
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Form
-        onSubmit={() => {}}
+        onSubmit={submit}
         initialValues={initialValues}
-        render={({ form, values }) => {
+        render={({ form, values, handleSubmit }) => {
           formRef.current = form;
           return (
             <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -220,7 +239,7 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
                 </View>
 
                 <Button
-                  onPress={() => navigateToResults(values)}
+                  onPress={handleSubmit}
                   gradient
                   gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
                   gradientLocations={[0.01, 1, 1]}

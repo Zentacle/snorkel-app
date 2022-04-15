@@ -135,8 +135,6 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
 
   const _keyExtractor = (item: any) => item.url;
 
-  console.log(countrySuggestions);
-
   return (
     <Modal visible={isVisible} onRequestClose={closeModal} style={styles.modal}>
       <SafeAreaView style={styles.container}>

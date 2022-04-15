@@ -1,13 +1,10 @@
-import {
-  createSlice,
-  createSelector,
-  createAsyncThunk,
-} from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { Spot } from '_utils/interfaces/data/spot';
-import { AppThunk, RootState } from '../../store';
-import { handleTypeAhead, handleAutocomplete } from './api';
+import { InitialSearchValues } from '_utils/interfaces/data/search';
+import { RootState } from '../../store';
+import { handleSearch } from './api';
 
 interface NormalizedObj {
   [id: string]: Spot;
@@ -17,6 +14,7 @@ interface SearchResultsState {
   loading: boolean;
   error: {
     status: boolean;
+    message: string | null;
   };
 }
 
@@ -25,23 +23,27 @@ const initialState: SearchResultsState = {
   loading: false,
   error: {
     status: false,
+    message: null,
   },
 };
 
-export const typeAhead = createAsyncThunk(
-  'search/typeahead',
-  async (query: string, thunkApi) => {
-    const response = await handleTypeAhead(query);
-    return response;
-    console.log('typeahead response', response);
-  },
-);
+const normalizeData = (data: Spot[]) => {
+  const normalizedObj: NormalizedObj = {};
+  for (let item of data) {
+    normalizedObj[item.id.toString()] = item;
+  }
+  return normalizedObj;
+};
 
-export const autocomplete = createAsyncThunk(
-  'search/autocomplete',
-  async (query: string, thunkApi) => {
-    const response = await handleAutocomplete(query);
-    console.log('autocomplete response', response);
+export const search = createAsyncThunk(
+  'search/search',
+  async (values: InitialSearchValues, thunkApi) => {
+    console.log('triggered redux', values);
+    const response = await handleSearch(values);
+    if (!response.data) {
+      return thunkApi.rejectWithValue('search failed');
+    }
+    return response.data;
   },
 );
 
@@ -57,8 +59,31 @@ export const searchSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(autocomplete.pending, state => {});
+    builder
+      .addCase(search.pending, state => {
+        state.loading = true;
+        state.error.status = false;
+        state.error.message = null;
+      })
+      .addCase(search.rejected, (state, action) => {
+        state.loading = false;
+        state.error.status = true;
+        state.error.message =
+          typeof action.payload === 'string'
+            ? action.payload
+            : 'There was an error completing the search. Please try again';
+      })
+      .addCase(search.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error.status = false;
+        state.error.message = null;
+        state.results = normalizeData(action.payload);
+      });
   },
 });
+
+export const selectSearchResults = (state: RootState) => {
+  state.search.results;
+};
 
 export default searchSlice.reducer;

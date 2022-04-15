@@ -1,14 +1,14 @@
-import { TypeaheadResponse } from './../../../utils/interfaces/data/search';
 import config from 'react-native-config';
-import { AutocompleteResponse } from '_utils/interfaces/data/search';
+import qs from 'qs';
+import {
+  AutocompleteResponse,
+  TypeaheadResponse,
+  InitialSearchValues,
+} from '_utils/interfaces/data/search';
 import { Spot } from '_utils/interfaces/data/spot';
 
 interface ResponseWithSpots {
   data: Spot[];
-}
-
-interface ResponseWithSpot {
-  data: Spot;
 }
 
 interface ResponseWithAutocomplete {
@@ -41,6 +41,25 @@ export async function handleAutocomplete(
 ): Promise<ResponseWithAutocomplete> {
   try {
     const url = `${config.API_ENDPOINT}/search/autocomplete?q=${q}`;
+    const response = fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then(res => res.json());
+    return response;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function handleSearch(
+  values: InitialSearchValues,
+): Promise<ResponseWithSpots> {
+  try {
+    const queryString = qs.stringify(values);
+
+    const url = `${config.API_ENDPOINT}/spots/search?${queryString}`;
     const response = fetch(url, {
       method: 'GET',
       headers: {

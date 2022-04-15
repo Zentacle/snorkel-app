@@ -1,5 +1,5 @@
 export interface LocationSearchInitialValues {
-  location?: string;
+  search_term?: string;
 }
 
 export interface InitialSearchValues extends LocationSearchInitialValues {
@@ -7,6 +7,7 @@ export interface InitialSearchValues extends LocationSearchInitialValues {
   preference?: string;
   entry?: string;
   max_depth?: number;
+  sort?: string;
 }
 
 export interface AutocompleteResponse {
