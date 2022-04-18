@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { attachIcons } from '_utils/functions';
 import type { FunctionComponent } from 'react';
-import type { AdvancedFormInitialValues as DiveLog } from '_utils/interfaces/data/logs';
+import type { DiveLogsState } from '_utils/interfaces/data/logs';
 
 import LocationImage from '_assets/Location.png';
 import DescIcon from '_assets/DescIcon.png';
@@ -14,14 +14,15 @@ import DiveTimeClock from '_assets/ClockClockwise.png';
 import { isBelowHeightThreshold } from '_utils/constants';
 
 interface LogItemProps {
-  diveLog: DiveLog;
+  diveLog: DiveLogsState;
 }
 
 const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
   const { t } = useTranslation();
   const isAdvancedLog = !!(diveLog.dive_length && diveLog.max_depth);
-  const logLat = diveLog.location?.lat || -8.409518;
-  const logLng = diveLog.location?.lng || 115.188919;
+  // !!(diveLog.dive_length && diveLog.max_depth);
+  const logLat = diveLog.spot.latitude || -8.409518;
+  const logLng = diveLog.spot.longitude || 115.188919;
   return (
     <View style={styles.container}>
       <View style={styles.mapRatingsContainer}>
@@ -60,7 +61,7 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
           </View>
           <View style={styles.locationContainer}>
             <Image source={LocationImage} />
-            <Text style={styles.locationText}>{diveLog.location?.desc}</Text>
+            <Text style={styles.locationText}>{diveLog.spot.name}</Text>
           </View>
         </View>
         {isAdvancedLog && (

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -9,14 +9,18 @@ import type { FunctionComponent } from 'react';
 
 import type { RootStackParamList, AppTabsParamList } from '_utils/interfaces';
 
-import { useAppSelector } from '_redux/hooks';
-import { selectAllDiveLogs } from '_redux/slices/dive-logs';
+import { useAppSelector, useAppDispatch } from '_redux/hooks';
+import {
+  fetchOwnDiveLogs,
+  selectAllDiveLogs,
+  selectDiveLogsLoadingState,
+} from '_redux/slices/dive-logs';
+import { selectAuthCookie, selectUser } from '_redux/slices/user';
 
 import EmptyList from './components/EmptyList';
 import LogsList from './components/List';
 import { isBelowHeightThreshold } from '_utils/constants';
-import DiveLogList from '_components/reusables/Placeholders/DiveLogs/List';
-import DiveListItem from '_components/reusables/Placeholders/DiveLogs/ListItem';
+import DiveLogListPlaceholder from '_components/reusables/Placeholders/DiveLogs/List';
 
 type LogsNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<AppTabsParamList, 'Logs'>,
@@ -29,7 +33,23 @@ interface LogsProps {
 
 const Logs: FunctionComponent<LogsProps> = ({ navigation }) => {
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
   const diveLogs = Object.values(useAppSelector(selectAllDiveLogs));
+  const diveLogsIsLoading = useAppSelector(selectDiveLogsLoadingState);
+  const authCookie = useAppSelector(selectAuthCookie);
+  const user = useAppSelector(selectUser);
+
+  useEffect(() => {
+    navigation.addListener('focus', () => {
+      dispatch(
+        fetchOwnDiveLogs({
+          auth_cookie: authCookie as string,
+          username: user?.username as string,
+        }),
+      );
+    });
+  }, [navigation, authCookie, dispatch, user]);
+
   const navigateToLogDetail = (diveLogId: number) => {
     navigation.navigate('LogsStack', {
       screen: 'LogDetail',
@@ -39,7 +59,24 @@ const Logs: FunctionComponent<LogsProps> = ({ navigation }) => {
     });
   };
 
-  // return <DiveLogList />;
+  if (diveLogsIsLoading && !diveLogs.length) {
+    return (
+      <SafeAreaView>
+        <View
+          style={[
+            styles.headerTextContainer,
+            {
+              borderBottomColor: '#B1C1CA',
+              borderBottomWidth: StyleSheet.hairlineWidth,
+              borderStyle: 'solid',
+            },
+          ]}>
+          <Text style={styles.headerText}>{t('DIVE_LOGS')}</Text>
+        </View>
+        <DiveLogListPlaceholder />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
