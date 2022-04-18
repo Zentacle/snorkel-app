@@ -23,6 +23,7 @@ import {
   selectLoggedInState,
   selectUser,
   selectAutoAuthLoadingState,
+  getCurrentUser,
 } from '_redux/slices/user';
 import { autoHydrateSettings } from '_redux/slices/settings';
 import { linking } from '_utils/functions/linking';
@@ -37,6 +38,7 @@ const Navigator: React.FC = () => {
       SplashScreen.hide();
     });
     dispatch(autoHydrateSettings());
+    dispatch(getCurrentUser());
   }, [dispatch]);
 
   const loadingState = useAppSelector(selectAutoAuthLoadingState);
