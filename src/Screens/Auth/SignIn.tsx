@@ -53,6 +53,10 @@ const SignIn: FunctionComponent<SignInProps> = props => {
     }
   };
 
+  const navigateToSignUp = () => {
+    props.navigation.navigate('EmailSignUp');
+  };
+
   const navigateToOnboarding = () => {
     props.navigation.navigate('OnBoarding', {
       screen: 'ChooseUserName',
@@ -242,7 +246,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
         <View style={styles.signInContainer}>
           <Text style={styles.signInText}>
             {t('DONT_HAVE_ACCOUNT')} &nbsp;
-            <TouchableWithoutFeedback onPress={navigateBack}>
+            <TouchableWithoutFeedback onPress={navigateToSignUp}>
               <Text style={styles.signInHighlight}>{t('SIGN_UP')}</Text>
             </TouchableWithoutFeedback>
           </Text>

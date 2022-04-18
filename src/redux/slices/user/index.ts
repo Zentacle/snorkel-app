@@ -159,6 +159,8 @@ export const googleRegister = createAsyncThunk<
     response.data.auth_token,
     response.cookie_header,
   );
+
+  console.log(response);
   return response;
 });
 
