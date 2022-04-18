@@ -3,7 +3,34 @@ import { View, StyleSheet } from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { WIDTH } from '_utils/constants';
 
-const DiveListItem = () => {
+export const DiveListSimple = () => {
+  return (
+    <SkeletonPlaceholder>
+      <View style={styles.container}>
+        <View style={styles.mapContainer}>
+          <View style={styles.map} />
+          <View style={styles.ratingContainer}>
+            <View style={styles.rating} />
+            <View style={styles.activityType} />
+          </View>
+        </View>
+        <View style={styles.simpleDescriptionContainer}>
+          <View style={styles.title} />
+          <View style={styles.subtitle} />
+          <View style={styles.location} />
+        </View>
+        {/* <View style={styles.diveStats} />
+        <View style={styles.images}>
+          <View style={styles.image} />
+          <View style={styles.image} />
+          <View style={styles.image} />
+        </View> */}
+      </View>
+    </SkeletonPlaceholder>
+  );
+};
+
+export const DiveListAdvanced = () => {
   return (
     <SkeletonPlaceholder>
       <View style={styles.container}>
@@ -62,6 +89,10 @@ const styles = StyleSheet.create({
   descriptionContainer: {
     marginTop: 30,
   },
+  simpleDescriptionContainer: {
+    marginTop: 30,
+    marginBottom: 40,
+  },
   title: {
     height: 20,
     width: WIDTH * 0.7,
@@ -93,5 +124,3 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
 });
-
-export default DiveListItem;
