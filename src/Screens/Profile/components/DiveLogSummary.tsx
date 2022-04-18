@@ -10,13 +10,13 @@ import Location from '_assets/location-lar.png';
 import Clock from '_assets/clock-lar.png';
 
 import type { FunctionComponent } from 'react';
-import { AdvancedFormInitialValues } from '_utils/interfaces/data/logs';
+import { DiveLogsState } from '_utils/interfaces/data/logs';
 
 interface DiveLogSummaryProps {
-  diveLogs: AdvancedFormInitialValues[];
+  diveLogs: DiveLogsState[];
 }
 
-function calculateTotalDiveTime(diveLogs: AdvancedFormInitialValues[]) {
+function calculateTotalDiveTime(diveLogs: DiveLogsState[]) {
   let total = 0;
   for (let log of diveLogs) {
     if (log.dive_length) {
@@ -28,14 +28,14 @@ function calculateTotalDiveTime(diveLogs: AdvancedFormInitialValues[]) {
   return formatDuration(total * 60000);
 }
 
-function calculateVisitedSites(diveLogs: AdvancedFormInitialValues[]): number {
+function calculateVisitedSites(diveLogs: DiveLogsState[]): number {
   let locationHashMap: { [key: string]: string } = {};
   let total = 0;
 
   for (let log of diveLogs) {
-    if (log.location?.desc) {
-      if (!locationHashMap[log.location?.desc]) {
-        locationHashMap[log.location.desc] = log.location.desc;
+    if (log.spot.name) {
+      if (!locationHashMap[log.spot.name]) {
+        locationHashMap[log.spot.name] = log.spot.name;
         total += 1;
       }
     }
