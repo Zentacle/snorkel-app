@@ -58,7 +58,7 @@ const WaterOnshore = () => {
       <View style={{ marginTop: 30, marginBottom: 20 }}>
         <Field
           name="air_temp"
-          Vlabel={`${t('AIR_TEMP')} . C`}
+          label={`${t('AIR_TEMP')} . C`}
           component={SliderComp}
           trackMarks={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
           benchMarks={[0, 50, 100]}

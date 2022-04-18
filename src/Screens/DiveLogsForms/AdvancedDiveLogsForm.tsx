@@ -39,12 +39,14 @@ import Review from './forms/advanced/Review';
 import ExitModal from './components/ExitModal';
 
 import type { AdvancedFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
-import { useAppDispatch } from '_redux/hooks';
+import { useAppDispatch, useAppSelector } from '_redux/hooks';
+import { selectAuthCookie } from '_redux/slices/user';
 import { editDiveLog } from '_redux/slices/dive-logs';
 import {
   isBelowHeightThreshold,
   isBelowWidthThreshold,
 } from '_utils/constants';
+import { handleUpdateDiveLog } from '_redux/slices/dive-logs/api';
 
 type AdvancedDiveLogsFormsNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<LogsFormStackParamList, 'AdvancedDiveLogsForm'>,
@@ -66,6 +68,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   route,
 }) => {
   const { t } = useTranslation();
+  const authCookie = useAppSelector(selectAuthCookie);
   const [page, switchPage] = React.useState(1);
   const [modalIsOpen, toggleModal] = React.useState(false);
   const [logDate, setLogDate] = React.useState<Date>();
@@ -150,21 +153,39 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     }
   };
 
-  const submitLog = (values: InitialValues) => {
+  const submitLog = async (values: InitialValues, callback: () => void) => {
     const date = (values.startDate as Date).toDateString();
     const time = (values.startTime as Date).toTimeString();
+    const dateConcat = `${date} ${time}`;
     const arrangedValues = {
       ...values,
-      date_dived: `${date} ${time}`,
+      date_dived: new Date(dateConcat).toISOString(),
+      beach_id: values.location?.beach_id,
     };
     delete arrangedValues.startDate;
     delete arrangedValues.startTime;
+    delete arrangedValues.location;
     console.log('arranged', arrangedValues);
-    dispatch(
-      editDiveLog({
+    console.log(typeof arrangedValues.date_dived);
+
+    const response = await handleUpdateDiveLog(
+      {
         ...arrangedValues,
-      }),
+        beach_id: values.location?.beach_id,
+      },
+      authCookie as string,
     );
+
+    console.log('resp', response);
+
+    callback();
+
+    // console.log('full dl', response);
+    // dispatch(
+    //   editDiveLog({
+    //     ...arrangedValues,
+    //   }),
+    // );
   };
 
   const openModal = () => {
@@ -218,7 +239,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   return (
     <Form
       validate={values => validate(values, constraints)}
-      onSubmit={submitLog}
+      onSubmit={() => {}}
       initialValues={initialValues}
       keepDirtyOnReinitialize
       mutators={{
@@ -302,8 +323,8 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
                 next={
                   page === stages.length - 1
                     ? () => {
-                        handleSubmit();
-                        next();
+                        submitLog(values, next);
+                        // next();
                       }
                     : next
                 }

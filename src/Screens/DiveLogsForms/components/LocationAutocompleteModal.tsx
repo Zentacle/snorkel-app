@@ -20,8 +20,11 @@ import { useTranslation } from 'react-i18next';
 import type { FunctionComponent } from 'react';
 import type { FieldRenderProps } from 'react-final-form';
 import PlainSearchInput from '_components/ui/PlainSearchInput';
-import { handleAutocomplete } from '_redux/slices/search/api';
-import { AutocompleteResponse } from '_utils/interfaces/data/search';
+import { handleTypeAhead } from '_redux/slices/search/api';
+import {
+  AutocompleteResponse,
+  TypeaheadResponse,
+} from '_utils/interfaces/data/search';
 
 import LocationImage from '_assets/LocationLargish.png';
 import { isBelowHeightThreshold } from '_utils/constants';
@@ -61,13 +64,11 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
 }) => {
   const { t } = useTranslation();
   const [text, changeText] = React.useState('');
-  const [suggestions, setSuggestions] = React.useState<AutocompleteResponse[]>(
-    [],
-  );
+  const [suggestions, setSuggestions] = React.useState<TypeaheadResponse[]>([]);
   const [loading, setLoading] = React.useState(false);
 
   const makeRequest = debounce(async (val: string) => {
-    const response = await handleAutocomplete(val);
+    const response = await handleTypeAhead(val);
     // const uri = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(
     //   val,
     // )}&types=geocode&language=en&key=${Config.GOOGLE_MAPS_API_KEY}`;
@@ -102,18 +103,19 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     }
   };
 
-  const setPlace = async (place: string) => {
-    changeText(place);
+  const setPlace = async (place: TypeaheadResponse) => {
+    changeText(place.text);
     setSuggestions([]);
     setLoading(true);
     Keyboard.dismiss();
 
-    const results = await geocodeAddress(place);
+    const results = await geocodeAddress(place.text);
 
     if (results) {
       onChange({
         ...results,
-        desc: place,
+        desc: place.text,
+        beach_id: place.id,
       });
       setLoading(false);
       closeModal();
@@ -138,13 +140,14 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     // changeText('');
   };
 
-  const _renderItem = (item: { item: AutocompleteResponse }) => {
+  const _renderItem = (item: { item: TypeaheadResponse }) => {
     return (
-      <Pressable onPress={() => setPlace(item.item.label)}>
+      <Pressable onPress={() => setPlace(item.item)}>
         <View style={styles.resultContainer}>
           <Image source={LocationImage} />
           <View style={styles.placeContainer}>
-            <Text style={styles.place}>{item.item.label}</Text>
+            <Text style={styles.place}>{item.item.text}</Text>
+            <Text style={styles.placeSubText}>{item.item.subtext}</Text>
             {/* <Text style={styles.place}>
               {pickLocation(item.item.description)}
             </Text>

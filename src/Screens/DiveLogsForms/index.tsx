@@ -35,7 +35,7 @@ import Notes from './forms/simple/Notes';
 import Review from './forms/simple/Review';
 import ExitModal from './components/ExitModal';
 
-import { useAppDispatch } from '_redux/hooks';
+import { useAppDispatch, useAppSelector } from '_redux/hooks';
 import { saveDiveLog } from '_redux/slices/dive-logs';
 
 import type { SimpleFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
@@ -44,6 +44,8 @@ import {
   isBelowWidthThreshold,
 } from '_utils/constants';
 import { Stage } from './utils/interfaces';
+import { selectAuthCookie, selectAuthToken } from '_redux/slices/user';
+import { handleCreateDiveLog } from '_redux/slices/dive-logs/api';
 
 type SimpleDiveLogsFormsNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<AppTabsParamList, 'LogsForm'>,
@@ -61,6 +63,8 @@ const SimpleDiveLogsForms: FunctionComponent<
   SimpleDiveLogsFormsProps
 > = props => {
   const { t } = useTranslation();
+  const authCookie = useAppSelector(selectAuthCookie);
+  const authToken = useAppSelector(selectAuthToken);
   const [page, switchPage] = React.useState(0);
   const [modalIsOpen, toggleModal] = React.useState(false);
   const [savedDiveLogId, saveDiveLogId] = React.useState(0);
@@ -114,7 +118,6 @@ const SimpleDiveLogsForms: FunctionComponent<
   };
 
   const navigateToAdvancedDiveForm = (formvalues: InitialValues) => {
-    console.log('form values insimple', formvalues);
     props.navigation.navigate('LogsFormStack', {
       screen: 'AdvancedDiveLogsForm',
       params: {
@@ -127,17 +130,25 @@ const SimpleDiveLogsForms: FunctionComponent<
     navigateToAdvancedDiveForm({ ...formvalues, id: savedDiveLogId });
   };
 
-  const submitLog = (values: InitialValues) => {
-    const diveLogId = new Date().getTime();
-
-    const diveLog = {
-      ...values,
-      id: !!values.id ? values.id : (diveLogId as number),
-    };
-
-    dispatch(saveDiveLog(diveLog));
-    saveDiveLogId(diveLog.id as number);
-    return diveLog;
+  const submitLog = async (values: InitialValues, callback: () => void) => {
+    try {
+      const response = await handleCreateDiveLog(
+        {
+          ...values,
+          beach_id: values.location?.beach_id,
+        },
+        authCookie as string,
+        authToken as string,
+      );
+      console.log(response);
+      if (response.msg) {
+        throw new Error(response.msg);
+      }
+      saveDiveLogId(response.review.id as number);
+      callback();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const constraints = {};
@@ -297,8 +308,8 @@ const SimpleDiveLogsForms: FunctionComponent<
                   page === stages.length - 1
                     ? () => {
                         // submit then navigate to review
-                        submitLog(values as InitialValues);
-                        next();
+                        submitLog(values as InitialValues, next);
+                        // next();
                       }
                     : next
                 }
