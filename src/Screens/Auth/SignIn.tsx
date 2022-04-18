@@ -23,9 +23,15 @@ import SMButton from '_components/ui/Buttons/SM-Logins';
 import Button from '_components/ui/Buttons/Button';
 import Input from '_components/ui/FormManagementInput';
 import { actionButtons } from './utils';
-import { useAppDispatch } from '_redux/hooks';
-import { loginUser } from '_redux/slices/user';
+import { useAppDispatch, useAppSelector } from '_redux/hooks';
+import {
+  loginUser,
+  googleRegister,
+  selectLoadingState,
+} from '_redux/slices/user';
 import type { User } from '_utils/interfaces/data/user';
+import type { ActionButtons } from './utils/interfaces';
+import { GoogleLoginResponse } from '_utils/interfaces/data/user';
 
 import { isBelowHeightThreshold, HEIGHT } from '_utils/constants';
 
@@ -46,6 +52,9 @@ interface InitialValues {
 const SignIn: FunctionComponent<SignInProps> = props => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
+  type SelectedLogin = 'Facebook' | 'Google' | 'Apple' | '';
+  const [selectedLogin, setSelectedLogin] = React.useState<SelectedLogin>('');
+  const loadingState = useAppSelector(selectLoadingState);
 
   const navigateBack = () => {
     if (props.navigation.canGoBack()) {
@@ -69,6 +78,12 @@ const SignIn: FunctionComponent<SignInProps> = props => {
     });
   };
 
+  const navigateToOnBoarding = () => {
+    props.navigation.navigate('OnBoarding', {
+      screen: 'ChooseUserName',
+    });
+  };
+
   const navigateToApp = () => {
     props.navigation.navigate('App', {
       screen: 'Explore',
@@ -85,6 +100,53 @@ const SignIn: FunctionComponent<SignInProps> = props => {
     },
   };
   const initialValues: InitialValues = {};
+
+  const handleSocialAuth = async (actionButton: ActionButtons) => {
+    setSelectedLogin(actionButton.name as SelectedLogin);
+    switch (actionButton.name) {
+      case 'Google':
+        {
+          const credentialObj = await actionButton.action();
+          if (credentialObj?.credential) {
+            const response = await dispatch(
+              googleRegister(credentialObj as { credential: string }),
+            );
+
+            // assume user has filled onBoarding if username and profile_pic exist
+            const userPreviouslyFilledOnBoardingData = !!(
+              (response.payload as GoogleLoginResponse).user.username &&
+              (response.payload as GoogleLoginResponse).user.profile_pic
+            );
+
+            if (googleRegister.fulfilled.match(response)) {
+              if (userPreviouslyFilledOnBoardingData) {
+                navigateToApp();
+              } else if (
+                (response.payload as GoogleLoginResponse).user.username
+              ) {
+                navigateToCameraPermissions();
+              } else {
+                navigateToOnBoarding();
+              }
+            }
+          }
+        }
+        break;
+      case 'Facebook':
+        {
+          const credentialObj = await actionButton.action();
+          console.log('credentials facebook', credentialObj);
+        }
+        break;
+      case 'Apple':
+        {
+          // not yet implemented. Need to test on real device and fix android
+        }
+        break;
+      default:
+        return;
+    }
+  };
 
   const submitForm = async (values: User) => {
     const response = await dispatch(loginUser(values));
@@ -202,27 +264,32 @@ const SignIn: FunctionComponent<SignInProps> = props => {
                   <View style={styles.altDirContainer}>
                     <Text style={styles.altDirText}>{t('OR')}</Text>
                   </View>
-                  {actionButtons.map((actionButton, index) => (
-                    <SMButton
-                      key={index}
-                      onPress={actionButton.action}
-                      imageSource={actionButton.imageSource}
-                      style={{
-                        container: {
-                          backgroundColor: 'white',
-                          borderRadius: 10,
-                          marginVertical: isBelowHeightThreshold ? 5 : 10,
-                          padding: isBelowHeightThreshold ? 12 : 16,
-                        },
-                        text: {
-                          color: 'black',
-                          fontSize: 16,
-                          fontWeight: '800',
-                        },
-                      }}>
-                      {`${t('CONTINUE_WITH')} ${actionButton.name}`}
-                    </SMButton>
-                  ))}
+                  {actionButtons.map((actionButton, index) => {
+                    const buttonIsLoading =
+                      loadingState && actionButton.name === selectedLogin;
+                    return (
+                      <SMButton
+                        key={index}
+                        loading={buttonIsLoading}
+                        onPress={() => handleSocialAuth(actionButton)}
+                        imageSource={actionButton.imageSource}
+                        style={{
+                          container: {
+                            backgroundColor: 'white',
+                            borderRadius: 10,
+                            marginVertical: isBelowHeightThreshold ? 5 : 10,
+                            padding: isBelowHeightThreshold ? 12 : 16,
+                          },
+                          text: {
+                            color: 'black',
+                            fontSize: 16,
+                            fontWeight: '800',
+                          },
+                        }}>
+                        {`${t('CONTINUE_WITH')} ${actionButton.name}`}
+                      </SMButton>
+                    );
+                  })}
                 </View>
               </>
             );
