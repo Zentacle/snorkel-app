@@ -1,6 +1,6 @@
 import { Spot } from './spot';
 export interface SimpleFormInitialValues {
-  id: number | string;
+  id: number;
   rating: number;
   difficulty: string;
   title?: string;
@@ -10,7 +10,9 @@ export interface SimpleFormInitialValues {
     lat: number;
     lng: number;
     desc: string;
+    beach_id: number;
   };
+  beach_id?: number;
   images: {
     uri: string;
     type?: string;
@@ -34,6 +36,23 @@ export interface AdvancedFormInitialValues extends SimpleFormInitialValues {
   date_dived?: string;
 }
 
-export interface DiveLogReturnValues extends AdvancedFormInitialValues {
+export interface AdvancedDiveLogReturnValues {
+  review: AdvancedFormInitialValues;
+  spot: Spot;
+  msg: string;
+}
+
+export interface SimpleDiveLogReturnValues {
+  review: SimpleFormInitialValues;
+  spot: Spot;
+  msg: string;
+}
+
+type DiveLogsStateStarter = Omit<
+  AdvancedFormInitialValues,
+  'location' | 'startDate' | 'startTime' | 'beach_id'
+>;
+
+export interface DiveLogsState extends DiveLogsStateStarter {
   spot: Spot;
 }

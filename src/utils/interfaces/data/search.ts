@@ -6,7 +6,6 @@ export interface InitialSearchValues extends LocationSearchInitialValues {
   difficulty?: string;
   preference?: string;
   entry?: string;
-  max_depth?: number;
   sort?: string;
 }
 
@@ -21,4 +20,5 @@ export interface TypeaheadResponse {
   text: string;
   type: string;
   url: string;
+  subtext: string;
 }
