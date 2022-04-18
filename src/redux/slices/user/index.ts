@@ -15,6 +15,7 @@ import { AppThunk, RootState } from '../../store';
 const ACTIVE_USER = 'active_user';
 const AUTH_TOKEN = 'auth_token';
 const AUTH_COOKIE = 'auth_cookie';
+const IS_EXISTING_USER = 'is_existing_user';
 
 interface ErrorObj {
   status: boolean;
@@ -28,6 +29,7 @@ interface UserState {
   auth_token: string | null;
   auth_cookie: string | null;
   autoAuthLoading: boolean;
+  existing_user: boolean;
 }
 
 const initialState: UserState = {
@@ -40,7 +42,17 @@ const initialState: UserState = {
   },
   auth_token: null,
   auth_cookie: null,
+  existing_user: false,
 };
+
+export const handleCheckExistingUser = createAsyncThunk(
+  'user/existingUser',
+  async () => {
+    const response = await checkExistingUser();
+
+    return response;
+  },
+);
 
 export const loginUser = createAsyncThunk(
   'user/login',
@@ -55,6 +67,7 @@ export const loginUser = createAsyncThunk(
       response.data.auth_token,
       response.cookie_header,
     );
+    await flagExistingUser();
     return response;
   },
 );
@@ -68,6 +81,7 @@ export const registerUser = createAsyncThunk(
       return thunkApi.rejectWithValue(response.msg);
     }
     await setStorage(null, response.auth_token, response.cookie_header);
+    await flagExistingUser();
     return response;
   },
 );
@@ -176,6 +190,7 @@ export const userSlice = createSlice({
         state.active_user = action.payload.user;
         state.auth_token = action.payload.data.auth_token;
         state.auth_cookie = action.payload.cookie_header;
+        state.existing_user = true;
       })
       .addCase(registerUser.pending, state => {
         state.loading = true;
@@ -193,6 +208,7 @@ export const userSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         state.auth_token = action.payload.auth_token;
         state.auth_cookie = action.payload.cookie_header;
+        state.existing_user = true;
       })
       .addCase(autoAuth.pending, state => {
         state.autoAuthLoading = true;
@@ -207,6 +223,7 @@ export const userSlice = createSlice({
         state.auth_token = action.payload.auth_token;
         state.active_user = action.payload.active_user;
         state.auth_cookie = action.payload.auth_cookie;
+        state.existing_user = true;
       })
       .addCase(updateUser.pending, state => {
         state.loading = true;
@@ -237,6 +254,7 @@ export const userSlice = createSlice({
         state.auth_token = action.payload.data.auth_token;
         state.auth_cookie = action.payload.cookie_header;
         state.active_user = action.payload.user;
+        state.existing_user = true;
       })
       .addCase(getCurrentUser.fulfilled, (state, action) => {
         state.loading = false;
@@ -244,6 +262,9 @@ export const userSlice = createSlice({
         state.error.message = null;
         state.auth_token = action.payload?.access_token as string;
         state.active_user = action.payload as User;
+      })
+      .addCase(handleCheckExistingUser.fulfilled, (state, action) => {
+        state.existing_user = action.payload;
       });
   },
 });
@@ -259,6 +280,9 @@ export const selectAutoAuthLoadingState = (state: RootState) =>
   state.user.autoAuthLoading;
 export const selectAuthCookie = (state: RootState) => state.user.auth_cookie;
 export const selectAuthToken = (state: RootState) => state.user.auth_token;
+export const selectExistingUser = (state: RootState) =>
+  state.user.existing_user;
+
 export const logoutUser = (): AppThunk => async (dispatch, _getState) => {
   try {
     await clearStorage();
@@ -278,6 +302,16 @@ const clearStorage = async () => {
   } catch (err) {
     throw err;
   }
+};
+
+const flagExistingUser = async () => {
+  await AsyncStorage.setItem(IS_EXISTING_USER, 'true');
+};
+
+export const checkExistingUser = async () => {
+  const isExistingUser = await AsyncStorage.getItem(IS_EXISTING_USER);
+
+  return !!isExistingUser;
 };
 
 const setStorage = async (

@@ -48,7 +48,9 @@ const SignIn: FunctionComponent<SignInProps> = props => {
   const { t } = useTranslation();
 
   const navigateBack = () => {
-    props.navigation.goBack();
+    if (props.navigation.canGoBack()) {
+      props.navigation.goBack();
+    }
   };
 
   const navigateToOnboarding = () => {
@@ -110,14 +112,16 @@ const SignIn: FunctionComponent<SignInProps> = props => {
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAwareScrollView>
-        <View style={{ marginLeft: 20, marginTop: 10 }}>
-          <Icon
-            onPress={navigateBack}
-            name="chevron-back"
-            color="black"
-            size={25}
-          />
-        </View>
+        {props.navigation.canGoBack() && (
+          <View style={{ marginLeft: 20, marginTop: 10 }}>
+            <Icon
+              onPress={navigateBack}
+              name="chevron-back"
+              color="black"
+              size={25}
+            />
+          </View>
+        )}
         <View style={styles.introTextContainer}>
           <Text style={styles.introText}>{t('sign_in.INTRO_TEXT')}</Text>
         </View>
