@@ -68,6 +68,7 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
       setSuggestions(response.data);
       setLoading(false);
     }
+    console.log(response.data);
   });
 
   const requestCountrySuggestions = debounce(async (val: string) => {
@@ -126,7 +127,7 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
           <Image source={LocationImage} />
           <View style={styles.placeContainer}>
             <Text style={styles.place}>{item.item.text}</Text>
-            <Text style={styles.placeSubText}>Subtext</Text>
+            <Text style={styles.placeSubText}>{item.item.subtext}</Text>
           </View>
         </View>
       </Pressable>

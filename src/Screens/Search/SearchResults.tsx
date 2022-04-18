@@ -30,9 +30,10 @@ import SearchInput from '_components/ui/SearchInput';
 import DiveSite from './components/DiveSite';
 import { useAppDispatch, useAppSelector } from '_redux/hooks';
 import {
-  handleFetchDiveSites,
-  selectAllDiveSites,
-} from '_redux/slices/dive-sites';
+  selectSearchResults,
+  selectSearchResultsLength,
+  search,
+} from '_redux/slices/search';
 import type { Spot } from '_utils/interfaces/data/spot';
 
 import FiltersIcon from '_assets/FadersHorizontal.png';
@@ -56,7 +57,8 @@ const SearchResults: FunctionComponent<SearchResultsProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-  const diveSites = Object.values(useAppSelector(selectAllDiveSites));
+  const diveSites = Object.values(useAppSelector(selectSearchResults));
+  const resultsLength = useAppSelector(selectSearchResultsLength);
   const [sortModalIsOpen, toggleSortModal] = React.useState(false);
   let formRef = React.useRef<FormApi>();
   const searchValues: InitialSearchValues = get(route, 'params.search', {});
@@ -66,16 +68,21 @@ const SearchResults: FunctionComponent<SearchResultsProps> = ({
     });
   };
 
-  React.useEffect(() => {
-    dispatch(handleFetchDiveSites());
-  }, [dispatch]);
-
   const initialValues: InitialSearchValues = {
     ...searchValues,
   };
 
   const handleToggleSortModal = () => {
     toggleSortModal(!sortModalIsOpen);
+  };
+
+  const submit = async (sort: string) => {
+    await dispatch(
+      search({
+        ...searchValues,
+        sort,
+      }),
+    );
   };
 
   /**
@@ -88,7 +95,7 @@ const SearchResults: FunctionComponent<SearchResultsProps> = ({
   const resetLocationFromNav = () => {
     navigation.setParams({
       search: {
-        location: '',
+        search_term: '',
       },
     });
     formRef.current?.reset();
@@ -114,6 +121,7 @@ const SearchResults: FunctionComponent<SearchResultsProps> = ({
       <SortModal
         modalIsVisible={sortModalIsOpen}
         closeModal={handleToggleSortModal}
+        submit={submit}
       />
       <Form
         onSubmit={() => {}}
@@ -151,7 +159,9 @@ const SearchResults: FunctionComponent<SearchResultsProps> = ({
           contentContainerStyle={styles.diveSitesCardsContainer}
           showsVerticalScrollIndicator={false}>
           <View style={styles.diveSitesHeaderContainer}>
-            <Text style={styles.diveSitesHeaderCount}>58 {t('SITES')}</Text>
+            <Text style={styles.diveSitesHeaderCount}>
+              {resultsLength} {t('SITES')}
+            </Text>
             <View style={styles.diveSitesSortContainer}>
               <Text style={styles.diveSitesSortText}>{t('SORT_BY')}</Text>
               <Icon

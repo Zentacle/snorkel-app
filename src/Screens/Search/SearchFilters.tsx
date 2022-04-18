@@ -6,8 +6,9 @@ import {
   SafeAreaView,
   TouchableWithoutFeedback,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
-import { Field, Form } from 'react-final-form';
+import { Field, Form, FormSpy } from 'react-final-form';
 import Icon from 'react-native-vector-icons/Ionicons';
 import get from 'lodash/get';
 import { useTranslation } from 'react-i18next';
@@ -24,7 +25,7 @@ import type {
   SearchStackParamList,
 } from '_utils/interfaces';
 
-import { useAppDispatch } from '_redux/hooks';
+import { useAppDispatch, useAppSelector } from '_redux/hooks';
 import { search } from '_redux/slices/search';
 
 import { capitalize } from '_utils/functions';
@@ -33,9 +34,10 @@ import type { InitialSearchValues } from '_utils/interfaces/data/search';
 import GradientCircle from '_components/ui/GradientCircle';
 import GradientBox from '_components/ui/GradientBox';
 import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
-import SliderComp from '_components/ui/Slider';
 import Button from '_components/ui/Buttons/Button';
+import { selectSearchResultsLength } from '_redux/slices/search';
 import { isBelowWidthThreshold } from '_utils/constants';
+import MemoizedFormWatcher from './components/FormWatcher';
 
 type SearchFiltersNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<SearchStackParamList, 'SearchFilters'>,
@@ -88,6 +90,9 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
 }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const searchResultsLength = useAppSelector(selectSearchResultsLength);
+  let formRef = React.useRef<FormApi>();
+
   const levels = [
     t('BEGINNER').toLowerCase(),
     t('INTERMEDIATE').toLowerCase(),
@@ -99,6 +104,7 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
     t('SNORKEL').toLowerCase(),
   ];
   const entries = [t('SHORE').toLowerCase(), t('BOAT').toLowerCase()];
+
   const passedInLocationValues: InitialSearchValues = get(
     route,
     'params.search',
@@ -119,15 +125,22 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
     );
   };
 
-  let formRef = React.useRef<FormApi>();
-
   const initialValues: InitialSearchValues = {
-    difficulty: t('BEGINNER').toLowerCase(),
-    preference: t('SCUBA').toLowerCase(),
-    entry: t('SHORE').toLowerCase(),
-    max_depth: 18,
-    ...passedInLocationValues,
+    difficulty: passedInLocationValues.difficulty
+      ? passedInLocationValues.difficulty
+      : t('BEGINNER').toLowerCase(),
+    preference: passedInLocationValues.preference
+      ? passedInLocationValues.preference
+      : t('SCUBA').toLowerCase(),
+    entry: passedInLocationValues.entry
+      ? passedInLocationValues.entry
+      : t('SHORE').toLowerCase(),
+    search_term: passedInLocationValues.search_term
+      ? passedInLocationValues.search_term
+      : '',
   };
+
+  // console.log('loc', passedInLocationValues);
 
   /**
    * since initial state is passed in from navigation params,
@@ -159,9 +172,7 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
   };
 
   const submit = async (values: InitialSearchValues) => {
-    console.log('triggered', values);
     await dispatch(search(values));
-    // navigateToResults(values)
   };
 
   return (
@@ -169,7 +180,8 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
       <Form
         onSubmit={submit}
         initialValues={initialValues}
-        render={({ form, values, handleSubmit }) => {
+        subscription={{ submitting: true, pristine: true }}
+        render={({ form, handleSubmit, submitting }) => {
           formRef.current = form;
           return (
             <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -224,39 +236,41 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
                   />
                 </View>
 
-                <View style={styles.max_depthContainer}>
-                  <Field
-                    name="max_depth"
-                    label={`${t('MAX_DEPTH')}. Ft`}
-                    component={SliderComp}
-                    trackMarks={[
-                      0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500,
-                    ]}
-                    benchMarks={[0, 250, 500]}
-                    minimumValue={0}
-                    maximumValue={500}
-                  />
-                </View>
-
-                <Button
-                  onPress={handleSubmit}
-                  gradient
-                  gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-                  gradientLocations={[0.01, 1, 1]}
-                  start={{
-                    x: 0,
-                    y: 0,
-                  }}
-                  end={{
-                    x: 0.06,
-                    y: 2.2,
-                  }}
-                  style={{
-                    container: styles.buttonContainer,
-                    text: styles.buttonText,
-                  }}>
-                  {t('SHOW')} (32 {t('RESULTS')})
-                </Button>
+                <FormSpy subscription={{ values: true }}>
+                  {({ values }) => (
+                    <>
+                      <MemoizedFormWatcher
+                        formValues={values}
+                        handleSubmit={handleSubmit}
+                      />
+                      <Button
+                        onPress={() => navigateToResults(values)}
+                        gradient
+                        gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+                        gradientLocations={[0.01, 1, 1]}
+                        start={{
+                          x: 0,
+                          y: 0,
+                        }}
+                        end={{
+                          x: 0.06,
+                          y: 2.2,
+                        }}
+                        style={{
+                          container: styles.buttonContainer,
+                          text: styles.buttonText,
+                        }}>
+                        {submitting ? (
+                          <ActivityIndicator size="small" color="white" />
+                        ) : (
+                          `${t('SHOW')} (${searchResultsLength}) ${t(
+                            'RESULTS',
+                          )})`
+                        )}
+                      </Button>
+                    </>
+                  )}
+                </FormSpy>
               </View>
             </ScrollView>
           );
@@ -384,6 +398,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginHorizontal: 0,
     width: '100%',
+    alignItems: 'center',
   },
   buttonText: {
     color: '#FFF',

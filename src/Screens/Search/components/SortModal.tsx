@@ -13,16 +13,19 @@ import { isBelowHeightThreshold } from '_utils/constants';
 interface SortModalProps {
   modalIsVisible: boolean;
   closeModal: () => void;
+  submit: (option: string) => Promise<void>;
 }
 
 const SortModal: FunctionComponent<SortModalProps> = ({
   modalIsVisible,
   closeModal,
+  submit,
 }) => {
   const { t } = useTranslation();
   const sortingOptions = [t('RATING'), t('POPULARITY')];
-  const handleClick = (_option: string) => {
+  const handleClick = (option: string) => {
     // do something with sort value
+    submit(option.toLowerCase());
     closeModal();
   };
   return (
