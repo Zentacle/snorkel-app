@@ -6,12 +6,11 @@ import {
   handleLogin,
   handleUpdateUser,
   handleGoogleregister,
-  handleGetUser,
   handleGetCurrentUser,
 } from './api';
 import { User, GoogleLoginResponse } from '_utils/interfaces/data/user';
 import { AppThunk, RootState } from '../../store';
-import { makeCookieHeaders } from '_utils/functions';
+// import { makeCookieHeaders } from '_utils/functions';
 
 const ACTIVE_USER = 'active_user';
 const AUTH_TOKEN = 'auth_token';
@@ -47,6 +46,7 @@ export const loginUser = createAsyncThunk(
   'user/login',
   async (user: User, thunkApi) => {
     const response = await handleLogin(user);
+    console.log('resp', response);
     if (!response.data) {
       return thunkApi.rejectWithValue(response.msg);
     }
@@ -63,6 +63,7 @@ export const registerUser = createAsyncThunk(
   'user/register',
   async (user: User, thunkApi) => {
     const response = await handleRegister(user);
+    console.log('resp', response);
     if (!response.cookie_header) {
       return thunkApi.rejectWithValue(response.msg);
     }
@@ -115,14 +116,17 @@ export const getCurrentUser = createAsyncThunk(
     if (!user.auth_cookie) {
       return;
     }
-    const response = await handleGetCurrentUser(user.auth_cookie);
-    console.log('response', response);
-    // if (response.msg) {
-    //   if (response.msg === 'token has expired') {
-    //   }
-    //   return thunkApi.rejectWithValue(response.msg);
-    // }
+    const response = await handleGetCurrentUser(
+      user.auth_cookie,
+      user.auth_token as string,
+    );
+    if (!response.access_token) {
+      await clearStorage();
+      thunkApi.dispatch(logout());
+      return thunkApi.rejectWithValue('unable to fetch the currennt user');
+    }
 
+    await setStorage(response, response.access_token);
     return response;
   },
 );
@@ -233,6 +237,13 @@ export const userSlice = createSlice({
         state.auth_token = action.payload.data.auth_token;
         state.auth_cookie = action.payload.cookie_header;
         state.active_user = action.payload.user;
+      })
+      .addCase(getCurrentUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error.status = false;
+        state.error.message = null;
+        state.auth_token = action.payload?.access_token as string;
+        state.active_user = action.payload as User;
       });
   },
 });
@@ -246,6 +257,8 @@ export const selectErrorState = (state: RootState) => state.user.error;
 export const selectLoadingState = (state: RootState) => state.user.loading;
 export const selectAutoAuthLoadingState = (state: RootState) =>
   state.user.autoAuthLoading;
+export const selectAuthCookie = (state: RootState) => state.user.auth_cookie;
+export const selectAuthToken = (state: RootState) => state.user.auth_token;
 export const logoutUser = (): AppThunk => async (dispatch, _getState) => {
   try {
     await clearStorage();

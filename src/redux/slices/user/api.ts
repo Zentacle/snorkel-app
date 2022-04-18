@@ -73,30 +73,19 @@ export async function handleUpdateUser(
   }
 }
 
-export async function handleGetUser(username: string) {
+export async function handleGetCurrentUser(
+  auth_cookie: string,
+  auth_token: string,
+): Promise<User> {
   try {
-    const url = `${config.API_ENDPOINT}/user/get?username=${username}`;
-    const response = fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then(res => res.json());
-    return response;
-  } catch (err) {
-    throw err;
-  }
-}
-
-export async function handleGetCurrentUser(auth_cookie: string) {
-  try {
-    const csrf_token = makeCookieHeaders(auth_cookie).csrf_access_token;
+    // const csrf_token = makeCookieHeaders(auth_cookie).csrf_access_token;
     const url = `${config.API_ENDPOINT}/user/me`;
     const response = fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': csrf_token,
+        // 'X-CSRF-TOKEN': csrf_token,
+        Authorization: `Bearer ${auth_token}`,
       },
     }).then(res => res.json());
     return response;
