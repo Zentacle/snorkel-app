@@ -38,7 +38,6 @@ const normalizeData = (data: Spot[]) => {
 export const search = createAsyncThunk(
   'search/search',
   async (values: InitialSearchValues, thunkApi) => {
-    console.log('triggered redux', values);
     const response = await handleSearch(values);
     if (!response.data) {
       return thunkApi.rejectWithValue('search failed');
@@ -83,7 +82,11 @@ export const searchSlice = createSlice({
 });
 
 export const selectSearchResults = (state: RootState) => {
-  state.search.results;
+  return state.search.results;
+};
+
+export const selectSearchResultsLength = (state: RootState) => {
+  return Object.values(state.search.results).length;
 };
 
 export default searchSlice.reducer;
