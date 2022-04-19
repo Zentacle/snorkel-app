@@ -21,10 +21,7 @@ import type { FunctionComponent } from 'react';
 import type { FieldRenderProps } from 'react-final-form';
 import PlainSearchInput from '_components/ui/PlainSearchInput';
 import { handleTypeAhead } from '_redux/slices/search/api';
-import {
-  AutocompleteResponse,
-  TypeaheadResponse,
-} from '_utils/interfaces/data/search';
+import { TypeaheadResponse } from '_utils/interfaces/data/search';
 
 import LocationImage from '_assets/LocationLargish.png';
 import { isBelowHeightThreshold } from '_utils/constants';
@@ -114,6 +111,13 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     if (results) {
       onChange({
         ...results,
+        desc: place.text,
+        beach_id: place.id,
+      });
+      setLoading(false);
+      closeModal();
+    } else {
+      onChange({
         desc: place.text,
         beach_id: place.id,
       });
