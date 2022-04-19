@@ -51,7 +51,9 @@ const DiveSite: FunctionComponent<DiveSiteProps> = props => {
         </View>
       </View>
       <View style={styles.descriptionContainer}>
-        <Text style={styles.descriptionText}>{props.site.name}</Text>
+        <Text numberOfLines={1} style={styles.descriptionText}>
+          {props.site.name}
+        </Text>
         <View style={styles.locationContainer}>
           <Image source={LocationImage} />
           <Text style={styles.locationText}>
