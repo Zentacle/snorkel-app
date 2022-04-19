@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Field } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
 
@@ -8,28 +8,8 @@ import VisibilityFormComp from '_components/ui/VisibilityFormComp';
 import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
 import GradientBox from '_components/ui/GradientBox';
 import GradientCircle from '_components/ui/GradientCircle';
-
-const WIDTH = Dimensions.get('window').width;
-
-const DiveActiveComp = (level: string) => (
-  <View style={styles.selectedShadow}>
-    <GradientBox style={styles.selectedActivity}>
-      <View style={styles.selectBox}>
-        <View style={styles.selectedActivityCircle}>
-          <GradientCircle style={styles.selectedGradient} />
-        </View>
-        <Text style={styles.activityText}>{level}</Text>
-      </View>
-    </GradientBox>
-  </View>
-);
-
-const DiveInactiveComp = (level: string) => (
-  <View style={styles.activity}>
-    <View style={styles.normalActivityCircle}></View>
-    <Text style={styles.activityText}>{level}</Text>
-  </View>
-);
+import { WIDTH } from '_utils/constants';
+import { capitalize } from '_utils/functions';
 
 const EntryActiveComp = (entry: string) => (
   <View style={styles.selectedShadow}>
@@ -38,7 +18,7 @@ const EntryActiveComp = (entry: string) => (
         <View style={styles.selectedActivityCircle}>
           <GradientCircle style={styles.selectedGradient} />
         </View>
-        <Text style={styles.activityText}>{entry}</Text>
+        <Text style={styles.activityText}>{capitalize(entry)}</Text>
       </View>
     </GradientBox>
   </View>
@@ -46,8 +26,7 @@ const EntryActiveComp = (entry: string) => (
 
 const WaterOnshore = () => {
   const { t } = useTranslation();
-  const levels = [t('SCUBA'), t('FREEDIVING'), t('SNORKEL')];
-  const entries = [t('SHORE'), t('BOAT')];
+  const entries = [t('SHORE').toLowerCase(), t('BOAT').toLowerCase()];
 
   const EntryInctiveComp = (entry: string) => {
     const index = entries.findIndex(item => item === entry);
@@ -58,7 +37,7 @@ const WaterOnshore = () => {
           index === 0 ? { marginRight: 15 } : { marginLeft: 15 },
         ]}>
         <View style={styles.normalActivityCircle}></View>
-        <Text style={styles.activityText}>{entry}</Text>
+        <Text style={styles.activityText}>{capitalize(entry)}</Text>
       </View>
     );
   };
@@ -66,7 +45,7 @@ const WaterOnshore = () => {
     <View style={styles.container}>
       <View style={{ marginTop: 30 }}>
         <Field
-          name="waterTemp"
+          name="water_temp"
           label={`${t('WATER_TEMP')} . C`}
           component={SliderComp}
           trackMarks={[0, 10, 20, 30, 40, 50, 60]}
@@ -78,8 +57,8 @@ const WaterOnshore = () => {
 
       <View style={{ marginTop: 30, marginBottom: 20 }}>
         <Field
-          name="airTemp"
-          Vlabel={`${t('AIR_TEMP')} . C`}
+          name="air_temp"
+          label={`${t('AIR_TEMP')} . C`}
           component={SliderComp}
           trackMarks={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
           benchMarks={[0, 50, 100]}
@@ -90,18 +69,7 @@ const WaterOnshore = () => {
 
       <Field name="visibility" component={VisibilityFormComp} />
 
-      <View style={styles.activityContentContainer}>
-        <Text style={styles.labelText}>{t('DIVE_ACTIVITY')}</Text>
-        <Field
-          name="diveActivity"
-          component={SelectWGradientBorder}
-          options={levels}
-          activeComponent={DiveActiveComp}
-          inactiveComponent={DiveInactiveComp}
-        />
-      </View>
-
-      <View style={styles.diveActivityContentContainer}>
+      <View style={styles.activity_typeContentContainer}>
         <Text style={styles.labelText}>{t('ENTRY')}</Text>
         <Field
           name="entry"
@@ -209,7 +177,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  diveActivityContentContainer: {
+  activity_typeContentContainer: {
     marginTop: 20,
     marginBottom: 20,
   },

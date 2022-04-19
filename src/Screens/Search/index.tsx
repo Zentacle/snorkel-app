@@ -41,7 +41,9 @@ const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
     });
   };
 
-  const initialValues: LocationSearchInitialValues = {};
+  const initialValues: LocationSearchInitialValues = {
+    search_term: '',
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -59,13 +61,13 @@ const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
             return (
               <View>
                 <Field
-                  name="location"
+                  name="search_term"
                   isVisible={autocompleteModalOpen}
                   component={AutocompleteModal}
                   closeModal={() => toggleAutocompleteModal(false)}
                 />
                 <Field
-                  name="location"
+                  name="search_term"
                   component={SearchInput}
                   containerStyle={styles.searchInputContainer}
                   withFilterIcon

@@ -5,7 +5,6 @@ import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
-  Platform,
   TouchableWithoutFeedback,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -29,7 +28,6 @@ import type { RootStackParamList, AppTabsParamList } from '_utils/interfaces';
 import FormStates from './components/FormStates';
 import Footer from './components/FormFooter';
 
-// import { simpleformStages as stages } from './utils/utils';
 import Location from './forms/simple/Location';
 import Rating from './forms/simple/Rating';
 import Name from './forms/simple/Name';
@@ -37,7 +35,7 @@ import Notes from './forms/simple/Notes';
 import Review from './forms/simple/Review';
 import ExitModal from './components/ExitModal';
 
-import { useAppDispatch } from '_redux/hooks';
+import { useAppDispatch, useAppSelector } from '_redux/hooks';
 import { saveDiveLog } from '_redux/slices/dive-logs';
 
 import type { SimpleFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
@@ -46,6 +44,8 @@ import {
   isBelowWidthThreshold,
 } from '_utils/constants';
 import { Stage } from './utils/interfaces';
+import { selectAuthCookie, selectAuthToken } from '_redux/slices/user';
+import { handleCreateDiveLog } from '_redux/slices/dive-logs/api';
 
 type SimpleDiveLogsFormsNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<AppTabsParamList, 'LogsForm'>,
@@ -63,6 +63,8 @@ const SimpleDiveLogsForms: FunctionComponent<
   SimpleDiveLogsFormsProps
 > = props => {
   const { t } = useTranslation();
+  const authCookie = useAppSelector(selectAuthCookie);
+  const authToken = useAppSelector(selectAuthToken);
   const [page, switchPage] = React.useState(0);
   const [modalIsOpen, toggleModal] = React.useState(false);
   const [savedDiveLogId, saveDiveLogId] = React.useState(0);
@@ -119,7 +121,7 @@ const SimpleDiveLogsForms: FunctionComponent<
     props.navigation.navigate('LogsFormStack', {
       screen: 'AdvancedDiveLogsForm',
       params: {
-        simpleDiveLog: formvalues,
+        diveLog: formvalues,
       },
     });
   };
@@ -128,17 +130,25 @@ const SimpleDiveLogsForms: FunctionComponent<
     navigateToAdvancedDiveForm({ ...formvalues, id: savedDiveLogId });
   };
 
-  const submitLog = (values: InitialValues) => {
-    const diveLogId = new Date().getTime();
-
-    const diveLog = {
-      ...values,
-      id: !!values.id ? values.id : (diveLogId as number),
-    };
-
-    dispatch(saveDiveLog(diveLog));
-    saveDiveLogId(diveLog.id as number);
-    return diveLog;
+  const submitLog = async (values: InitialValues, callback: () => void) => {
+    try {
+      const response = await handleCreateDiveLog(
+        {
+          ...values,
+          beach_id: values.location?.beach_id,
+        },
+        authCookie as string,
+        authToken as string,
+      );
+      console.log(response);
+      if (response.msg) {
+        throw new Error(response.msg);
+      }
+      saveDiveLogId(response.review.id as number);
+      callback();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const constraints = {};
@@ -150,7 +160,8 @@ const SimpleDiveLogsForms: FunctionComponent<
     // @ts-ignore
     rating: 0,
     // @ts-ignore
-    difficulty: t('BEGINNER'),
+    difficulty: t('BEGINNER').toLowerCase(),
+    activity_type: t('SCUBA').toLowerCase(),
     location: undefined,
     // @ts-ignore
     // images: [],
@@ -182,9 +193,9 @@ const SimpleDiveLogsForms: FunctionComponent<
       case 1:
         return !!(values.rating && values.difficulty);
       case 2:
-        return !!values.name;
+        return !!values.title;
       case 3:
-        return !!values.note;
+        return !!values.text;
       default:
         return true;
     }
@@ -210,7 +221,7 @@ const SimpleDiveLogsForms: FunctionComponent<
       mutators={{
         ...arrayMutators,
       }}
-      keepDirtyOnReinitialize
+      // keepDirtyOnReinitialize
       render={({ values, form }) => {
         formRef.current = form;
         return (
@@ -297,8 +308,8 @@ const SimpleDiveLogsForms: FunctionComponent<
                   page === stages.length - 1
                     ? () => {
                         // submit then navigate to review
-                        submitLog(values as InitialValues);
-                        next();
+                        submitLog(values as InitialValues, next);
+                        // next();
                       }
                     : next
                 }

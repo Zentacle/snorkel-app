@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   SafeAreaView,
-  Platform,
   ScrollView,
   Image,
 } from 'react-native';
@@ -12,8 +11,16 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
 
 import { useAppSelector, useAppDispatch } from '_redux/hooks';
-import { selectUser, getCurrentUser } from '_redux/slices/user';
-import { selectAllDiveLogs } from '_redux/slices/dive-logs';
+import {
+  selectUser,
+  getCurrentUser,
+  selectAuthCookie,
+} from '_redux/slices/user';
+import {
+  selectAllDiveLogs,
+  fetchOwnDiveLogs,
+  selectDiveLogsLoadingState,
+} from '_redux/slices/dive-logs';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
@@ -27,6 +34,7 @@ import DiveLogSummary from './components/DiveLogSummary';
 import SubscriptionBox from './components/SubscriptionBox';
 import DiveLogDisplay from './components/DiveLogDisplay';
 import { isBelowHeightThreshold } from '_utils/constants';
+import ProfileDiveLogs from '_components/reusables/Placeholders/DiveLogs/ProfileDiveLogs';
 
 type ProfileNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<AppTabsParamList, 'Profile'>,
@@ -40,6 +48,10 @@ interface ProfileProps {
 const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const authCookie = useAppSelector(selectAuthCookie);
+  const user = useAppSelector(selectUser);
+  const diveLogs = Object.values(useAppSelector(selectAllDiveLogs));
+  const diveLogsIsLoading = useAppSelector(selectDiveLogsLoadingState);
 
   React.useEffect(() => {
     dispatch(getCurrentUser());
@@ -51,6 +63,17 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
     });
   };
 
+  React.useEffect(() => {
+    navigation.addListener('focus', () => {
+      dispatch(
+        fetchOwnDiveLogs({
+          auth_cookie: authCookie as string,
+          username: user?.username as string,
+        }),
+      );
+    });
+  }, [navigation, authCookie, dispatch, user]);
+
   const navigateToDiveLog = (diveLogId: number) => {
     navigation.navigate('LogsStack', {
       screen: 'LogDetail',
@@ -60,8 +83,9 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
     });
   };
 
-  const user = useAppSelector(selectUser);
-  const diveLogs = Object.values(useAppSelector(selectAllDiveLogs));
+  // if (diveLogsIsLoading && !diveLogs.length) {
+  // return <ProfileDiveLogs />;
+  // }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -89,23 +113,26 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
 
         <DiveLogSummary diveLogs={diveLogs} />
         <SubscriptionBox />
-
-        <View>
-          <Text style={styles.diveLogsLabel}>
-            {!!diveLogs.length ? t('DIVE_LOG_PHOTOS') : t('NO_DIVE_LOGS')}
-          </Text>
-          <View style={styles.photosContainer}>
-            {diveLogs.map((diveLog, index) => {
-              return (
-                <DiveLogDisplay
-                  diveLog={diveLog}
-                  key={index}
-                  navigateToDiveLog={navigateToDiveLog}
-                />
-              );
-            })}
+        {diveLogsIsLoading && !diveLogs.length ? (
+          <ProfileDiveLogs />
+        ) : (
+          <View>
+            <Text style={styles.diveLogsLabel}>
+              {!!diveLogs.length ? t('DIVE_LOG_PHOTOS') : t('NO_DIVE_LOGS')}
+            </Text>
+            <View style={styles.photosContainer}>
+              {diveLogs.map((diveLog, index) => {
+                return (
+                  <DiveLogDisplay
+                    diveLog={diveLog}
+                    key={index}
+                    navigateToDiveLog={navigateToDiveLog}
+                  />
+                );
+              })}
+            </View>
           </View>
-        </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );

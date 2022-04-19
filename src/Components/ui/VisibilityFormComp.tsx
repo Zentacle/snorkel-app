@@ -16,9 +16,9 @@ import GradientBox from '_components/ui/GradientBox';
 import Visibility from '_assets/Visibility.png';
 
 interface VisibilityFormCompProps {
-  visibilityLevels: string[];
+  visibilityLevels: number[];
 }
-type FinalFormProps = FieldRenderProps<string, any>;
+type FinalFormProps = FieldRenderProps<number, any>;
 type ComponentProps = VisibilityFormCompProps & FinalFormProps;
 
 const VisibilityFormComp: FunctionComponent<ComponentProps> = ({
@@ -26,13 +26,23 @@ const VisibilityFormComp: FunctionComponent<ComponentProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  const visibilityLevels = [
-    t('POOR'),
-    t('BELOW_AVERAGE'),
-    t('AVERAGE'),
-    t('GOOD'),
-    t('AMAZING'),
-  ];
+  const visibilityLevels = [1, 2, 3, 4, 5];
+
+  const visibilityLevelMap: { [key: string]: string } = {
+    1: t('POOR'),
+    2: t('BELOW_AVERAGE'),
+    3: t('AVERAGE'),
+    4: t('GOOD'),
+    5: t('AMAZING'),
+  };
+
+  // const visibilityLevels = [
+  //   t('POOR'),
+  //   t('BELOW_AVERAGE'),
+  //   t('AVERAGE'),
+  //   t('GOOD'),
+  //   t('AMAZING'),
+  // ];
 
   const valueIndex = visibilityLevels.findIndex(vis => vis === value);
 
@@ -40,7 +50,9 @@ const VisibilityFormComp: FunctionComponent<ComponentProps> = ({
     <View style={styles.visibilityContentContainer}>
       <View style={styles.labelTextContainer}>
         <Text style={styles.labelText}>{t('VISIBILITY')}</Text>
-        <Text style={styles.labelText}>{value}</Text>
+        <Text style={styles.labelText}>
+          {visibilityLevelMap[value.toString()]}
+        </Text>
       </View>
       <View style={styles.visibility}>
         {visibilityLevels.map((visibilityLevel, index) => {
@@ -58,7 +70,7 @@ const VisibilityFormComp: FunctionComponent<ComponentProps> = ({
                   </View>
                 </TouchableWithoutFeedback>
                 <Text style={styles.visibilityLevelText}>
-                  {visibilityLevel}
+                  {visibilityLevelMap[visibilityLevel.toString()]}
                 </Text>
               </View>
             );
@@ -70,7 +82,9 @@ const VisibilityFormComp: FunctionComponent<ComponentProps> = ({
                 onPress={() => onChange(visibilityLevel)}>
                 <View style={styles.visibilityContainer}></View>
               </TouchableWithoutFeedback>
-              <Text style={styles.visibilityLevelText}>{visibilityLevel}</Text>
+              <Text style={styles.visibilityLevelText}>
+                {visibilityLevelMap[visibilityLevel.toString()]}
+              </Text>
             </View>
           );
         })}

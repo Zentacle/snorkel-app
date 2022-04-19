@@ -23,6 +23,8 @@ import {
   selectLoggedInState,
   selectUser,
   selectAutoAuthLoadingState,
+  getCurrentUser,
+  handleCheckExistingUser,
 } from '_redux/slices/user';
 import { autoHydrateSettings } from '_redux/slices/settings';
 import { linking } from '_utils/functions/linking';
@@ -32,11 +34,13 @@ const Navigator: React.FC = () => {
   React.useEffect(() => {
     // handle fetching of dive sites and logs here
     // to improve user experience
+    dispatch(handleCheckExistingUser());
     dispatch(handleFetchDiveSites());
     dispatch(autoAuth()).then(() => {
       SplashScreen.hide();
     });
     dispatch(autoHydrateSettings());
+    dispatch(getCurrentUser());
   }, [dispatch]);
 
   const loadingState = useAppSelector(selectAutoAuthLoadingState);

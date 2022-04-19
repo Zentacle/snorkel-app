@@ -71,7 +71,7 @@ export type LogsStackParamList = {
 
 export type LogsFormStackParamList = {
   AdvancedDiveLogsForm: {
-    simpleDiveLog: DiveLog;
+    diveLog: DiveLog;
   };
 };
 

@@ -5,7 +5,6 @@ import {
   StyleSheet,
   ScrollView,
   Image,
-  Dimensions,
   TouchableWithoutFeedback,
   Share,
   Alert,
@@ -129,10 +128,10 @@ const Review: FunctionComponent<ReviewProps> = ({
       </View>
 
       <View style={styles.details}>
-        <Text style={styles.detailsTitle}>{formValues.name}</Text>
+        <Text style={styles.detailsTitle}>{formValues.title}</Text>
         <View style={styles.descContainer}>
           <Image source={DescIcon} />
-          <Text style={styles.descText}>{formValues.name}</Text>
+          <Text style={styles.descText}>{formValues.title}</Text>
         </View>
         <View style={styles.locationContainer}>
           <Image source={LocationImage} />

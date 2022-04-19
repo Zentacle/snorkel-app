@@ -10,6 +10,7 @@ export interface User {
   admin: boolean;
   hometown: string;
   email?: string;
+  access_token: string;
 }
 
 export interface CookieHeaders {

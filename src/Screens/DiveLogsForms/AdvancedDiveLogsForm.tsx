@@ -5,7 +5,6 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
-  Platform,
   TouchableWithoutFeedback,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -40,12 +39,14 @@ import Review from './forms/advanced/Review';
 import ExitModal from './components/ExitModal';
 
 import type { AdvancedFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
-import { useAppDispatch } from '_redux/hooks';
+import { useAppDispatch, useAppSelector } from '_redux/hooks';
+import { selectAuthCookie } from '_redux/slices/user';
 import { editDiveLog } from '_redux/slices/dive-logs';
 import {
   isBelowHeightThreshold,
   isBelowWidthThreshold,
 } from '_utils/constants';
+import { handleUpdateDiveLog } from '_redux/slices/dive-logs/api';
 
 type AdvancedDiveLogsFormsNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<LogsFormStackParamList, 'AdvancedDiveLogsForm'>,
@@ -67,6 +68,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   route,
 }) => {
   const { t } = useTranslation();
+  const authCookie = useAppSelector(selectAuthCookie);
   const [page, switchPage] = React.useState(1);
   const [modalIsOpen, toggleModal] = React.useState(false);
   const [logDate, setLogDate] = React.useState<Date>();
@@ -75,11 +77,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   let scrollContainerRef = React.useRef<ScrollView | null>();
   const dispatch = useAppDispatch();
 
-  const simpleDiveLogsForm: InitialValues = get(
-    route,
-    'params.simpleDiveLog',
-    {},
-  );
+  const simpleDiveLogsForm: InitialValues = get(route, 'params.diveLog', {});
 
   const stages: Stage[] = [
     {
@@ -155,14 +153,39 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     }
   };
 
-  const submitLog = (values: InitialValues) => {
-    dispatch(
-      editDiveLog({
-        ...values,
-        startDate: (values.startDate as Date).toDateString(),
-        startTime: (values.startTime as Date).toTimeString(),
-      }),
+  const submitLog = async (values: InitialValues, callback: () => void) => {
+    const date = (values.startDate as Date).toDateString();
+    const time = (values.startTime as Date).toTimeString();
+    const dateConcat = `${date} ${time}`;
+    const arrangedValues = {
+      ...values,
+      date_dived: new Date(dateConcat).toISOString(),
+      beach_id: values.location?.beach_id,
+    };
+    delete arrangedValues.startDate;
+    delete arrangedValues.startTime;
+    delete arrangedValues.location;
+    console.log('arranged', arrangedValues);
+    console.log(typeof arrangedValues.date_dived);
+
+    const response = await handleUpdateDiveLog(
+      {
+        ...arrangedValues,
+        beach_id: values.location?.beach_id,
+      },
+      authCookie as string,
     );
+
+    console.log('resp', response);
+
+    callback();
+
+    // console.log('full dl', response);
+    // dispatch(
+    //   editDiveLog({
+    //     ...arrangedValues,
+    //   }),
+    // );
   };
 
   const openModal = () => {
@@ -179,21 +202,20 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
 
   const constraints = {};
   const initialValues: InitialValues = {
-    timeInWater: 45,
-    maxDepth: 40,
-    waterTemp: 14,
-    airTemp: 20,
-    visibility: t('POOR'),
-    diveActivity: t('SCUBA'),
-    entry: t('SHORE'),
+    dive_length: 45,
+    max_depth: 40,
+    water_temp: 14,
+    air_temp: 20,
+    visibility: 1,
+    entry: t('SHORE').toLowerCase(),
     // @ts-ignore
     startDate: logDate,
     // @ts-ignore
     startTime: logDate,
     weight: 5,
-    airTankStart: 40,
-    airTankEnd: 40,
-    nitrox: t('NORMAL'),
+    start_air: 40,
+    end_air: 40,
+    air_type: t('NORMAL').toLowerCase(),
     ...simpleDiveLogsForm,
   };
 
@@ -206,8 +228,8 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
         return !!(
           values.rating &&
           values.difficulty &&
-          values.name &&
-          values.note
+          values.title &&
+          values.text
         );
       default:
         return true;
@@ -217,7 +239,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   return (
     <Form
       validate={values => validate(values, constraints)}
-      onSubmit={submitLog}
+      onSubmit={() => {}}
       initialValues={initialValues}
       keepDirtyOnReinitialize
       mutators={{
@@ -301,8 +323,8 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
                 next={
                   page === stages.length - 1
                     ? () => {
-                        handleSubmit();
-                        next();
+                        submitLog(values, next);
+                        // next();
                       }
                     : next
                 }

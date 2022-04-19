@@ -6,8 +6,6 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableWithoutFeedback,
-  Dimensions,
-  Platform,
 } from 'react-native';
 import { Form, Field } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
@@ -36,12 +34,7 @@ import Popular from '_assets/tags/popular.png';
 import TopRating from '_assets/tags/top-rating.png';
 import type { Spot } from '_utils/interfaces/data/spot';
 
-import {
-  WIDTH,
-  HEIGHT,
-  isBelowHeightThreshold,
-  isBelowWidthThreshold,
-} from '_utils/constants';
+import { WIDTH, HEIGHT, isBelowWidthThreshold } from '_utils/constants';
 
 interface TagInterface {
   name: string;
@@ -157,6 +150,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
             contentContainerStyle={styles.nearbySitesCardsContainer}
             showsHorizontalScrollIndicator={false}>
             {diveSites.slice(0, 5).map(item => (
+              // <BeachPlaceHolder />
               <DiveSite
                 key={item.id}
                 site={item}
@@ -230,6 +224,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
                 imageStyle={styles.diveSiteItemImage}
                 onPressContainer={navigateToDiveSite}
               />
+              // <BeachRecommended />
             ))}
           </ScrollView>
         </View>

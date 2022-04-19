@@ -44,7 +44,7 @@ i18n
   .use(languageDetectorPlugin as ThirdPartyModule)
   .init({
     resources: resources,
-    fallbackLng: 'pl',
+    fallbackLng: 'en',
     interpolation: {
       escapeValue: false,
     },

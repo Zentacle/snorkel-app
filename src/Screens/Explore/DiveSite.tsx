@@ -5,11 +5,7 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-  SafeAreaView,
   TouchableWithoutFeedback,
-  ActivityIndicator,
-  Platform,
-  StatusBar,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
@@ -51,6 +47,7 @@ import type { Spot } from '_utils/interfaces/data/spot';
 import LocationImage from '_assets/Location.png';
 import { capitalize } from '_utils/functions';
 import { isBelowHeightThreshold, WIDTH } from '_utils/constants';
+import DiveSiteLoading from '_components/reusables/Placeholders/DiveSiteLoading';
 
 type DiveSiteNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<ExploreStackParamList, 'DiveSite'>,
@@ -162,7 +159,8 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   };
 
   if (isLoading) {
-    return <ActivityIndicator style={{ flex: 1 }} size="large" color="grey" />;
+    return <DiveSiteLoading />;
+    // return <ActivityIndicator style={{ flex: 1 }} size="large" color="grey" />;
   }
 
   if (!diveSiteInState) {
@@ -172,7 +170,9 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       {/* {Platform.OS === 'ios' && <StatusBar barStyle={'light-content'} />} */}
-      <ScrollView style={styles.scrollContainer}>
+      <ScrollView
+        style={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}>
         <ImageCarousel
           goBack={navigateBack}
           shareUrl={`https://zentacle.com/Beach/${diveSite.id}`}
@@ -227,28 +227,30 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
             />
           )}
         </View>
-        <View style={styles.nearbySites}>
-          <View style={styles.nearbySitesTextContainer}>
-            <Text style={styles.nearbySitesMainText}>
-              {t('NEARBY_LOCATIONS')}
-            </Text>
+        {!!nearby && (
+          <View style={styles.nearbySites}>
+            <View style={styles.nearbySitesTextContainer}>
+              <Text style={styles.nearbySitesMainText}>
+                {t('NEARBY_LOCATIONS')}
+              </Text>
+            </View>
+            <ScrollView
+              horizontal
+              contentContainerStyle={styles.nearbySitesCardsContainer}
+              showsHorizontalScrollIndicator={false}>
+              {nearby.map((item, index) => (
+                <DiveSiteComp
+                  key={index}
+                  site={item}
+                  containerStyle={styles.nearbySiteItemContainer}
+                  imageContainerStyle={styles.nearbySiteItemContainer}
+                  imageStyle={styles.nearbySiteItemImage}
+                  onPressContainer={navigateToDiveSite}
+                />
+              ))}
+            </ScrollView>
           </View>
-          <ScrollView
-            horizontal
-            contentContainerStyle={styles.nearbySitesCardsContainer}
-            showsHorizontalScrollIndicator={false}>
-            {nearby.map((item, index) => (
-              <DiveSiteComp
-                key={index}
-                site={item}
-                containerStyle={styles.nearbySiteItemContainer}
-                imageContainerStyle={styles.nearbySiteItemContainer}
-                imageStyle={styles.nearbySiteItemImage}
-                onPressContainer={navigateToDiveSite}
-              />
-            ))}
-          </ScrollView>
-        </View>
+        )}
         <View style={styles.diveShops}>
           <View style={styles.diveShopsTextContainer}>
             <Text style={styles.diveShopsMainText}>
@@ -369,7 +371,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   diveShops: {
-    marginTop: 5,
+    marginTop: 15,
   },
   diveShopsCardsContainer: {
     paddingLeft: 25,

@@ -6,8 +6,9 @@ import {
   SafeAreaView,
   TouchableWithoutFeedback,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
-import { Field, Form } from 'react-final-form';
+import { Field, Form, FormSpy } from 'react-final-form';
 import Icon from 'react-native-vector-icons/Ionicons';
 import get from 'lodash/get';
 import { useTranslation } from 'react-i18next';
@@ -24,14 +25,19 @@ import type {
   SearchStackParamList,
 } from '_utils/interfaces';
 
-import type { InitialSearchValues } from '_utils/interfaces/data/search';
+import { useAppDispatch, useAppSelector } from '_redux/hooks';
+import { search } from '_redux/slices/search';
 
+import { capitalize } from '_utils/functions';
+
+import type { InitialSearchValues } from '_utils/interfaces/data/search';
 import GradientCircle from '_components/ui/GradientCircle';
 import GradientBox from '_components/ui/GradientBox';
 import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
-import SliderComp from '_components/ui/Slider';
 import Button from '_components/ui/Buttons/Button';
+import { selectSearchResultsLength } from '_redux/slices/search';
 import { isBelowWidthThreshold } from '_utils/constants';
+import MemoizedFormWatcher from './components/FormWatcher';
 
 type SearchFiltersNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<SearchStackParamList, 'SearchFilters'>,
@@ -52,7 +58,7 @@ const ActiveComponent = (level: string) => (
         <View style={styles.selectedLevelCircle}>
           <GradientCircle style={styles.selectedGradient} />
         </View>
-        <Text style={styles.levelText}>{level}</Text>
+        <Text style={styles.levelText}>{capitalize(level)}</Text>
       </View>
     </GradientBox>
   </View>
@@ -61,7 +67,7 @@ const ActiveComponent = (level: string) => (
 const InactiveComponent = (level: string) => (
   <View style={styles.level}>
     <View style={styles.normalLevelCircle} />
-    <Text style={styles.levelText}>{level}</Text>
+    <Text style={styles.levelText}>{capitalize(level)}</Text>
   </View>
 );
 
@@ -72,7 +78,7 @@ const EntryActiveComp = (entry: string) => (
         <View style={styles.selectedLevelCircle}>
           <GradientCircle style={styles.selectedGradient} />
         </View>
-        <Text style={styles.levelText}>{entry}</Text>
+        <Text style={styles.levelText}>{capitalize(entry)}</Text>
       </View>
     </GradientBox>
   </View>
@@ -83,9 +89,22 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
   route,
 }) => {
   const { t } = useTranslation();
-  const levels = [t('BEGINNER'), t('INTERMEDIATE'), t('ADVANCED')];
-  const preferences = [t('SCUBA'), t('FREE'), t('SNORKEL')];
-  const entries = [t('SHORE'), t('BOAT')];
+  const dispatch = useAppDispatch();
+  const searchResultsLength = useAppSelector(selectSearchResultsLength);
+  let formRef = React.useRef<FormApi>();
+
+  const levels = [
+    t('BEGINNER').toLowerCase(),
+    t('INTERMEDIATE').toLowerCase(),
+    t('ADVANCED').toLowerCase(),
+  ];
+  const preferences = [
+    t('SCUBA').toLowerCase(),
+    t('FREE').toLowerCase(),
+    t('SNORKEL').toLowerCase(),
+  ];
+  const entries = [t('SHORE').toLowerCase(), t('BOAT').toLowerCase()];
+
   const passedInLocationValues: InitialSearchValues = get(
     route,
     'params.search',
@@ -101,20 +120,27 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
           index === 0 ? { marginRight: 15 } : { marginLeft: 15 },
         ]}>
         <View style={styles.normalLevelCircle}></View>
-        <Text style={styles.levelText}>{entry}</Text>
+        <Text style={styles.levelText}>{capitalize(entry)}</Text>
       </View>
     );
   };
 
-  let formRef = React.useRef<FormApi>();
-
   const initialValues: InitialSearchValues = {
-    difficulty: t('BEGINNER'),
-    preference: t('SCUBA'),
-    entry: t('SHORE'),
-    maxDepth: 18,
-    ...passedInLocationValues,
+    difficulty: passedInLocationValues.difficulty
+      ? passedInLocationValues.difficulty
+      : t('BEGINNER').toLowerCase(),
+    preference: passedInLocationValues.preference
+      ? passedInLocationValues.preference
+      : t('SCUBA').toLowerCase(),
+    entry: passedInLocationValues.entry
+      ? passedInLocationValues.entry
+      : t('SHORE').toLowerCase(),
+    search_term: passedInLocationValues.search_term
+      ? passedInLocationValues.search_term
+      : '',
   };
+
+  // console.log('loc', passedInLocationValues);
 
   /**
    * since initial state is passed in from navigation params,
@@ -126,7 +152,7 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
   const resetFiltersFromNav = () => {
     navigation.setParams({
       search: {
-        location: passedInLocationValues.location, // keep location unchanged. Remove the rest
+        search_term: passedInLocationValues.search_term, // keep location unchanged. Remove the rest
       },
     });
     formRef.current?.reset();
@@ -145,12 +171,17 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
     });
   };
 
+  const submit = async (values: InitialSearchValues) => {
+    await dispatch(search(values));
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Form
-        onSubmit={() => {}}
+        onSubmit={submit}
         initialValues={initialValues}
-        render={({ form, values }) => {
+        subscription={{ submitting: true, pristine: true }}
+        render={({ form, handleSubmit, submitting }) => {
           formRef.current = form;
           return (
             <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -193,7 +224,7 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
                   />
                 </View>
 
-                <View style={styles.diveActivityContentContainer}>
+                <View style={styles.activity_typeContentContainer}>
                   <Text style={styles.headerLabel}>{t('ENTRY')}</Text>
                   <Field
                     name="entry"
@@ -205,39 +236,41 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
                   />
                 </View>
 
-                <View style={styles.maxDepthContainer}>
-                  <Field
-                    name="maxDepth"
-                    label={`${t('MAX_DEPTH')}. Ft`}
-                    component={SliderComp}
-                    trackMarks={[
-                      0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500,
-                    ]}
-                    benchMarks={[0, 250, 500]}
-                    minimumValue={0}
-                    maximumValue={500}
-                  />
-                </View>
-
-                <Button
-                  onPress={() => navigateToResults(values)}
-                  gradient
-                  gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-                  gradientLocations={[0.01, 1, 1]}
-                  start={{
-                    x: 0,
-                    y: 0,
-                  }}
-                  end={{
-                    x: 0.06,
-                    y: 2.2,
-                  }}
-                  style={{
-                    container: styles.buttonContainer,
-                    text: styles.buttonText,
-                  }}>
-                  {t('SHOW')} (32 {t('RESULTS')})
-                </Button>
+                <FormSpy subscription={{ values: true }}>
+                  {({ values }) => (
+                    <>
+                      <MemoizedFormWatcher
+                        formValues={values}
+                        handleSubmit={handleSubmit}
+                      />
+                      <Button
+                        onPress={() => navigateToResults(values)}
+                        gradient
+                        gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+                        gradientLocations={[0.01, 1, 1]}
+                        start={{
+                          x: 0,
+                          y: 0,
+                        }}
+                        end={{
+                          x: 0.06,
+                          y: 2.2,
+                        }}
+                        style={{
+                          container: styles.buttonContainer,
+                          text: styles.buttonText,
+                        }}>
+                        {submitting ? (
+                          <ActivityIndicator size="small" color="white" />
+                        ) : (
+                          `${t('SHOW')} (${searchResultsLength}) ${t(
+                            'RESULTS',
+                          )})`
+                        )}
+                      </Button>
+                    </>
+                  )}
+                </FormSpy>
               </View>
             </ScrollView>
           );
@@ -349,11 +382,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  diveActivityContentContainer: {
+  activity_typeContentContainer: {
     marginTop: 30,
     marginBottom: 20,
   },
-  maxDepthContainer: {
+  max_depthContainer: {
     marginTop: 30,
     marginBottom: 30,
   },
@@ -365,6 +398,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginHorizontal: 0,
     width: '100%',
+    alignItems: 'center',
   },
   buttonText: {
     color: '#FFF',

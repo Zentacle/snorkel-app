@@ -9,7 +9,7 @@ export async function fetchReviews(
   beach_id: number,
 ): Promise<ResponseWithReviews> {
   try {
-    const url = `${config.API_ENDPOINT}/review/get?beach_id=${beach_id}`;
+    const url = `${config.API_ENDPOINT}/reviews/get?beach_id=${beach_id}`;
     const response = fetch(url, {
       method: 'GET',
       headers: {

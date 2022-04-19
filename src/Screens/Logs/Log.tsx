@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   ScrollView,
   Image,
   Platform,
@@ -14,7 +13,6 @@ import { useTranslation } from 'react-i18next';
 
 import ImageCarousel from '_components/reusables/DiveLogImageCarousel';
 import DiveLocation from './components/DiveLocation';
-import { capitalize } from '_utils/functions';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type {
@@ -26,15 +24,15 @@ import type { RootStackParamList, LogsStackParamList } from '_utils/interfaces';
 
 import LocationImage from '_assets/Location.png';
 import DescIcon from '_assets/DescIcon.png';
-import RatingsGradient from '_components/ui/RatingsGradient';
 import { attachIcons } from '_utils/functions';
 import ProfileImage from '_assets/Profile.jpg';
 import GradientBox from '_components/ui/GradientBox';
 
-import { useAppSelector } from '_redux/hooks';
-import { selectDiveLogById } from '_redux/slices/dive-logs';
-import { AdvancedFormInitialValues } from '_utils/interfaces/data/logs';
+import { AdvancedDiveLogReturnValues } from '_utils/interfaces/data/logs';
 import NoLog from './components/NoLog';
+import { handleFetchSingleDiveLog } from '_redux/slices/dive-logs/api';
+
+import DiveLogLoading from '_components/reusables/Placeholders/DiveLogs/DiveLog';
 
 type LogNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<LogsStackParamList, 'LogDetail'>,
@@ -49,10 +47,20 @@ interface LogProps {
 }
 
 const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
+  const [hasLoaded, setHasLoaded] = React.useState(false);
+  const [diveLog, setDiveLog] = React.useState<AdvancedDiveLogReturnValues>();
   const { t } = useTranslation();
-  const diveLog: AdvancedFormInitialValues = useAppSelector(
-    selectDiveLogById(route.params.diveLogId),
-  );
+
+  React.useEffect(() => {
+    handleFetchSingleDiveLog(route.params.diveLogId)
+      .then(response => {
+        setDiveLog(response);
+        setHasLoaded(true);
+      })
+      .catch(() => {
+        setHasLoaded(true);
+      });
+  }, [route.params.diveLogId]);
 
   const navigateBack = () => {
     navigation.navigate('App', {
@@ -60,14 +68,20 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
     });
   };
 
-  if (!diveLog) {
+  if (!hasLoaded) {
+    return <DiveLogLoading />;
+  }
+
+  if (hasLoaded && !diveLog) {
     return <NoLog goBack={navigateBack} />;
   }
 
-  const isAdvancedLog = !!(diveLog.timeInWater && diveLog.maxDepth);
+  const isAdvancedLog = !!(
+    diveLog?.review.dive_length && diveLog?.review.water_temp
+  );
   const coords = {
-    latitude: diveLog.location?.lat || -8.409518,
-    longitude: diveLog.location?.lng || 115.188919,
+    latitude: diveLog?.spot.latitude || -8.409518,
+    longitude: diveLog?.spot.longitude || 115.188919,
   };
 
   const navigateToMap = () => {
@@ -82,266 +96,306 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
     });
   };
 
-  const navigateFromSimpleLogValue = () => {
-    navigation.navigate('LogsFormStack', {
-      screen: 'AdvancedDiveLogsForm',
-      params: {
-        simpleDiveLog: diveLog,
-      },
-    });
-  };
-
-  const navigateToAdvancedLogsForm = () => {
-    navigation.navigate('LogsFormStack', {
-      screen: 'AdvancedDiveLogsForm',
-      params: {
-        simpleDiveLog: {
-          ...diveLog,
-          startDate:
-            diveLog.startDate &&
-            new Date(`${diveLog.startDate} ${diveLog.startTime}`),
-          startTime:
-            diveLog.startTime &&
-            new Date(`${diveLog.startDate} ${diveLog.startTime}`),
+  if (diveLog) {
+    const navigateFromSimpleLogValue = () => {
+      navigation.navigate('LogsFormStack', {
+        screen: 'AdvancedDiveLogsForm',
+        params: {
+          diveLog: {
+            ...diveLog.review,
+            location: {
+              lat: diveLog.spot.latitude,
+              lng: diveLog.spot.longitude,
+              beach_id: diveLog.spot.id,
+              desc: diveLog.spot.name,
+            },
+          },
         },
-      },
-    });
-  };
+      });
+    };
 
-  return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <ImageCarousel
-          goBack={navigateBack}
-          images={diveLog.images}
-          shareUrl={`https://zentacle.com/dive-log/${diveLog.id}`}
-        />
+    const navigateToAdvancedLogsForm = () => {
+      navigation.navigate('LogsFormStack', {
+        screen: 'AdvancedDiveLogsForm',
+        params: {
+          diveLog: {
+            ...diveLog.review,
+            location: {
+              lat: diveLog.spot.latitude,
+              lng: diveLog.spot.longitude,
+              beach_id: diveLog.spot.id,
+              desc: diveLog.spot.name,
+            },
+            startDate:
+              diveLog.review.date_dived && new Date(diveLog.review.date_dived),
+            startTime:
+              diveLog.review.date_dived && new Date(diveLog.review.date_dived),
+          },
+        },
+      });
+    };
+    return (
+      <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <ImageCarousel
+            goBack={navigateBack}
+            images={diveLog.review.images}
+            shareUrl={`https://zentacle.com/dive-log/${diveLog.review.id}`}
+          />
 
-        <View style={styles.contentContainer}>
-          <Text style={styles.mainDescription}>{diveLog.name}</Text>
-          <View style={styles.locationContainer}>
-            <Image source={DescIcon} />
-            <Text style={styles.locationText}>USS Liberty Wreck on Beach</Text>
-          </View>
-          <View style={styles.locationContainer}>
-            <Image source={LocationImage} />
-            <Text style={styles.locationText}>{diveLog.location?.desc}</Text>
-          </View>
-          <View style={styles.ratingsContainer}>
-            <Text style={styles.ratingsLevelText}>{diveLog.difficulty}</Text>
-            {isAdvancedLog && (
-              <>
-                <View style={styles.dot} />
-                <Text style={styles.ratingsText}>{diveLog.startDate}</Text>
-              </>
-            )}
-          </View>
-
-          <DiveLocation coordinates={coords} navigateToMap={navigateToMap} />
-
-          <View style={styles.note}>
-            <View style={styles.noteHeaderContainer}>
-              <View style={styles.profile}>
-                <Image source={ProfileImage} style={styles.profileImage} />
-                <View style={styles.nameSourceContainer}>
-                  <Text style={styles.profileName}>Akari</Text>
-                  <Text style={styles.noteSource}>Snorkel</Text>
-                </View>
-              </View>
-              <View style={styles.ratingsIconsContainer}>
-                {attachIcons(diveLog.rating, 20)}
-              </View>
-            </View>
-            <View style={styles.noteBodyContainer}>
-              <Text style={styles.noteBodyText}>{diveLog.note}</Text>
-            </View>
-          </View>
-
-          {isAdvancedLog && (
-            <View style={styles.advancedDiveLogDetailsContainer}>
-              <View style={styles.entryContainer}>
-                <Text style={styles.entryLabel}>{t('ENTRY')}</Text>
-                <Text style={styles.entryText}>{diveLog.entry}</Text>
-              </View>
-              <View style={styles.divingDataContainer}>
-                <Text style={styles.headerText}>{t('DIVING_DATA')}</Text>
-                <View style={styles.divingDataBody}>
-                  <View style={styles.itemContainer}>
-                    <View style={styles.itemLabelContainer}>
-                      <Text style={styles.itemText}>{diveLog.maxDepth}</Text>
-                      <Text style={styles.measurement}>m</Text>
-                    </View>
-                    <Text style={styles.itemLabel}>{t('MAX_DEPTH')}</Text>
-                  </View>
-                  <View style={styles.itemContainer}>
-                    <View style={styles.itemLabelContainer}>
-                      <Text style={styles.itemText}>{diveLog.timeInWater}</Text>
-                      <Text style={styles.measurement}>min</Text>
-                    </View>
-                    <Text style={styles.itemLabel}>{t('DURATION')}</Text>
-                  </View>
-                  <View style={styles.itemContainer}>
-                    <View style={styles.itemLabelContainer}>
-                      <Text style={styles.itemText}>{diveLog.weight}</Text>
-                      <Text style={styles.measurement}>kg</Text>
-                    </View>
-                    <Text style={styles.itemLabel}>{t('WEIGHT')}</Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.waterAirContainer}>
-                <Text style={styles.headerText}>{t('DIVING_DATA')}</Text>
-                <View style={styles.waterAirBody}>
-                  <View style={styles.itemContainer}>
-                    <View style={styles.itemLabelContainer}>
-                      <Text style={styles.itemText}>{diveLog.waterTemp}</Text>
-                      <Text style={styles.measurement}>c</Text>
-                    </View>
-                    <Text style={styles.itemLabel}>{t('WATER_TEMP')}</Text>
-                  </View>
-                  <View style={styles.itemContainer}>
-                    <View style={styles.itemLabelContainer}>
-                      <Text style={styles.itemText}>{diveLog.visibility}</Text>
-                      <Text style={styles.measurement}></Text>
-                    </View>
-                    <Text style={styles.itemLabel}>{t('VISIBILITY')}</Text>
-                  </View>
-                  <View style={styles.itemContainer}>
-                    <View style={styles.itemLabelContainer}>
-                      <Text style={styles.itemText}>{diveLog.airTemp}</Text>
-                      <Text style={styles.measurement}>c</Text>
-                    </View>
-                    <Text style={styles.itemLabel}>{t('AIR_TEMP')}</Text>
-                  </View>
-                </View>
-              </View>
-
-              <View style={styles.divingGearContainer}>
-                <Text style={styles.headerText}>{t('DIVING_DATA')}</Text>
-                <View style={styles.divingGearBody}>
-                  <View style={styles.divingGearItemContainer}>
-                    <View style={styles.divingGearLabelContainer}>
-                      <View style={styles.airTankLabelContainer}>
-                        <Text style={styles.airTankLabelText}>
-                          {t('AIR_TANK')} 1
-                        </Text>
-                      </View>
-                      <View style={styles.airTankMeasurementContainer}>
-                        <Text style={styles.capacityText}>400 bar</Text>
-                        <Text style={styles.divider}>|</Text>
-                        <Text style={styles.airTankTypetext}>
-                          {diveLog.nitrox}
-                        </Text>
-                      </View>
-                    </View>
-                    <View style={styles.progressContainer}>
-                      <GradientBox
-                        style={{
-                          ...styles.gradientLine,
-                          width: `${
-                            ((diveLog.airTankStart as number) / 400) * 100
-                          }%`,
-                        }}
-                      />
-                    </View>
-                    <View style={styles.divingGearValueContainer}>
-                      <View style={styles.airTankValuelabelContainer}>
-                        <Text style={styles.airTankValueText}>
-                          {diveLog.airTankStart}&nbsp;bar
-                        </Text>
-                        <Text style={styles.divider}>|</Text>
-                        <Text style={styles.airTankUsedText}>{t('USED')}</Text>
-                      </View>
-                      <View style={styles.airTankMeasurementContainer}>
-                        <Text style={styles.airTankRemainderText}>
-                          {400 - (diveLog.airTankStart || 0)}&nbsp;bar
-                        </Text>
-                        <Text style={styles.divider}>|</Text>
-                        <Text style={styles.airTankRemainderLabel}>
-                          {t('LEFT')}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-
-                  <View style={styles.divingGearItemContainer}>
-                    <View style={styles.divingGearLabelContainer}>
-                      <View style={styles.airTankLabelContainer}>
-                        <Text style={styles.airTankLabelText}>
-                          {t('AIR_TANK')} 2
-                        </Text>
-                      </View>
-                      <View style={styles.airTankMeasurementContainer}>
-                        <Text style={styles.capacityText}>400 bar</Text>
-                        <Text style={styles.divider}>|</Text>
-                        <Text style={styles.airTankTypetext}>
-                          {diveLog.nitrox}
-                        </Text>
-                      </View>
-                    </View>
-                    <View style={styles.progressContainer}>
-                      <GradientBox
-                        style={{
-                          ...styles.gradientLine,
-                          width: `${
-                            ((diveLog.airTankEnd as number) / 400) * 100
-                          }%`,
-                        }}
-                      />
-                    </View>
-                    <View style={styles.divingGearValueContainer}>
-                      <View style={styles.airTankValuelabelContainer}>
-                        <Text style={styles.airTankValueText}>
-                          {diveLog.airTankEnd}&nbsp;bar
-                        </Text>
-                        <Text style={styles.divider}>|</Text>
-                        <Text style={styles.airTankUsedText}>{t('USED')}</Text>
-                      </View>
-                      <View style={styles.airTankMeasurementContainer}>
-                        <Text style={styles.airTankRemainderText}>
-                          {400 - (diveLog.airTankEnd || 0)}&nbsp;bar
-                        </Text>
-                        <Text style={styles.divider}>|</Text>
-                        <Text style={styles.airTankRemainderLabel}>
-                          {t('LEFT')}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </View>
-          )}
-
-          <View style={styles.editLogContainer}>
-            <Icon
-              onPress={
-                isAdvancedLog
-                  ? navigateToAdvancedLogsForm
-                  : navigateFromSimpleLogValue
-              }
-              name="pencil-outline"
-              color="black"
-              size={30}
-            />
-            <TouchableWithoutFeedback
-              onPress={
-                isAdvancedLog
-                  ? navigateToAdvancedLogsForm
-                  : navigateFromSimpleLogValue
-              }>
-              <Text style={styles.editLogText}>
-                {isAdvancedLog
-                  ? 'Edit Advanced dive log'
-                  : 'Edit Simple dive log'}
+          <View style={styles.contentContainer}>
+            <Text style={styles.mainDescription}>{diveLog.review.title}</Text>
+            <View style={styles.locationContainer}>
+              <Image source={DescIcon} />
+              <Text style={styles.locationText}>
+                USS Liberty Wreck on Beach
               </Text>
-            </TouchableWithoutFeedback>
+            </View>
+            <View style={styles.locationContainer}>
+              <Image source={LocationImage} />
+              <Text style={styles.locationText}>{diveLog.spot.name}</Text>
+            </View>
+            <View style={styles.ratingsContainer}>
+              <Text style={styles.ratingsLevelText}>
+                {diveLog.review.difficulty}
+              </Text>
+              {isAdvancedLog && (
+                <>
+                  <View style={styles.dot} />
+                  <Text style={styles.ratingsText}>
+                    {new Date(
+                      diveLog.review.date_dived as string,
+                    ).toDateString()}
+                  </Text>
+                </>
+              )}
+            </View>
+
+            <DiveLocation coordinates={coords} navigateToMap={navigateToMap} />
+
+            <View style={styles.note}>
+              <View style={styles.noteHeaderContainer}>
+                <View style={styles.profile}>
+                  <Image source={ProfileImage} style={styles.profileImage} />
+                  <View style={styles.nameSourceContainer}>
+                    <Text style={styles.profileName}>Akari</Text>
+                    <Text style={styles.noteSource}>Snorkel</Text>
+                  </View>
+                </View>
+                <View style={styles.ratingsIconsContainer}>
+                  {attachIcons(diveLog.review.rating, 20)}
+                </View>
+              </View>
+              <View style={styles.noteBodyContainer}>
+                <Text style={styles.noteBodyText}>{diveLog.review.text}</Text>
+              </View>
+            </View>
+
+            {isAdvancedLog && (
+              <View style={styles.advancedDiveLogDetailsContainer}>
+                <View style={styles.entryContainer}>
+                  <Text style={styles.entryLabel}>{t('ENTRY')}</Text>
+                  <Text style={styles.entryText}>{diveLog.review.entry}</Text>
+                </View>
+                <View style={styles.divingDataContainer}>
+                  <Text style={styles.headerText}>{t('DIVING_DATA')}</Text>
+                  <View style={styles.divingDataBody}>
+                    <View style={styles.itemContainer}>
+                      <View style={styles.itemLabelContainer}>
+                        <Text style={styles.itemText}>
+                          {diveLog.review.max_depth}
+                        </Text>
+                        <Text style={styles.measurement}>m</Text>
+                      </View>
+                      <Text style={styles.itemLabel}>{t('MAX_DEPTH')}</Text>
+                    </View>
+                    <View style={styles.itemContainer}>
+                      <View style={styles.itemLabelContainer}>
+                        <Text style={styles.itemText}>
+                          {diveLog.review.dive_length}
+                        </Text>
+                        <Text style={styles.measurement}>min</Text>
+                      </View>
+                      <Text style={styles.itemLabel}>{t('DURATION')}</Text>
+                    </View>
+                    <View style={styles.itemContainer}>
+                      <View style={styles.itemLabelContainer}>
+                        <Text style={styles.itemText}>
+                          {diveLog.review.weight}
+                        </Text>
+                        <Text style={styles.measurement}>kg</Text>
+                      </View>
+                      <Text style={styles.itemLabel}>{t('WEIGHT')}</Text>
+                    </View>
+                  </View>
+                </View>
+
+                <View style={styles.waterAirContainer}>
+                  <Text style={styles.headerText}>{t('DIVING_DATA')}</Text>
+                  <View style={styles.waterAirBody}>
+                    <View style={styles.itemContainer}>
+                      <View style={styles.itemLabelContainer}>
+                        <Text style={styles.itemText}>
+                          {diveLog.review.water_temp}
+                        </Text>
+                        <Text style={styles.measurement}>c</Text>
+                      </View>
+                      <Text style={styles.itemLabel}>{t('WATER_TEMP')}</Text>
+                    </View>
+                    <View style={styles.itemContainer}>
+                      <View style={styles.itemLabelContainer}>
+                        <Text style={styles.itemText}>
+                          {diveLog.review.visibility}
+                        </Text>
+                        <Text style={styles.measurement}></Text>
+                      </View>
+                      <Text style={styles.itemLabel}>{t('VISIBILITY')}</Text>
+                    </View>
+                    <View style={styles.itemContainer}>
+                      <View style={styles.itemLabelContainer}>
+                        <Text style={styles.itemText}>
+                          {diveLog.review.air_temp}
+                        </Text>
+                        <Text style={styles.measurement}>c</Text>
+                      </View>
+                      <Text style={styles.itemLabel}>{t('AIR_TEMP')}</Text>
+                    </View>
+                  </View>
+                </View>
+
+                <View style={styles.divingGearContainer}>
+                  <Text style={styles.headerText}>{t('DIVING_DATA')}</Text>
+                  <View style={styles.divingGearBody}>
+                    <View style={styles.divingGearItemContainer}>
+                      <View style={styles.divingGearLabelContainer}>
+                        <View style={styles.airTankLabelContainer}>
+                          <Text style={styles.airTankLabelText}>
+                            {t('AIR_TANK')} 1
+                          </Text>
+                        </View>
+                        <View style={styles.airTankMeasurementContainer}>
+                          <Text style={styles.capacityText}>400 bar</Text>
+                          <Text style={styles.divider}>|</Text>
+                          <Text style={styles.airTankTypetext}>
+                            {diveLog.review.air_type}
+                          </Text>
+                        </View>
+                      </View>
+                      <View style={styles.progressContainer}>
+                        <GradientBox
+                          style={{
+                            ...styles.gradientLine,
+                            width: `${
+                              ((diveLog.review.start_air as number) / 400) * 100
+                            }%`,
+                          }}
+                        />
+                      </View>
+                      <View style={styles.divingGearValueContainer}>
+                        <View style={styles.airTankValuelabelContainer}>
+                          <Text style={styles.airTankValueText}>
+                            {diveLog.review.start_air}&nbsp;bar
+                          </Text>
+                          <Text style={styles.divider}>|</Text>
+                          <Text style={styles.airTankUsedText}>
+                            {t('USED')}
+                          </Text>
+                        </View>
+                        <View style={styles.airTankMeasurementContainer}>
+                          <Text style={styles.airTankRemainderText}>
+                            {400 - (diveLog.review.start_air || 0)}&nbsp;bar
+                          </Text>
+                          <Text style={styles.divider}>|</Text>
+                          <Text style={styles.airTankRemainderLabel}>
+                            {t('LEFT')}
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+
+                    <View style={styles.divingGearItemContainer}>
+                      <View style={styles.divingGearLabelContainer}>
+                        <View style={styles.airTankLabelContainer}>
+                          <Text style={styles.airTankLabelText}>
+                            {t('AIR_TANK')} 2
+                          </Text>
+                        </View>
+                        <View style={styles.airTankMeasurementContainer}>
+                          <Text style={styles.capacityText}>400 bar</Text>
+                          <Text style={styles.divider}>|</Text>
+                          <Text style={styles.airTankTypetext}>
+                            {diveLog.review.air_type}
+                          </Text>
+                        </View>
+                      </View>
+                      <View style={styles.progressContainer}>
+                        <GradientBox
+                          style={{
+                            ...styles.gradientLine,
+                            width: `${
+                              ((diveLog.review.end_air as number) / 400) * 100
+                            }%`,
+                          }}
+                        />
+                      </View>
+                      <View style={styles.divingGearValueContainer}>
+                        <View style={styles.airTankValuelabelContainer}>
+                          <Text style={styles.airTankValueText}>
+                            {diveLog.review.end_air}&nbsp;bar
+                          </Text>
+                          <Text style={styles.divider}>|</Text>
+                          <Text style={styles.airTankUsedText}>
+                            {t('USED')}
+                          </Text>
+                        </View>
+                        <View style={styles.airTankMeasurementContainer}>
+                          <Text style={styles.airTankRemainderText}>
+                            {400 - (diveLog.review.end_air || 0)}&nbsp;bar
+                          </Text>
+                          <Text style={styles.divider}>|</Text>
+                          <Text style={styles.airTankRemainderLabel}>
+                            {t('LEFT')}
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            )}
+
+            <View style={styles.editLogContainer}>
+              <Icon
+                onPress={
+                  isAdvancedLog
+                    ? navigateToAdvancedLogsForm
+                    : navigateFromSimpleLogValue
+                }
+                name="pencil-outline"
+                color="black"
+                size={30}
+              />
+              <TouchableWithoutFeedback
+                onPress={
+                  isAdvancedLog
+                    ? navigateToAdvancedLogsForm
+                    : navigateFromSimpleLogValue
+                }>
+                <Text style={styles.editLogText}>
+                  {isAdvancedLog
+                    ? 'Edit Advanced dive log'
+                    : 'Edit Simple dive log'}
+                </Text>
+              </TouchableWithoutFeedback>
+            </View>
           </View>
-        </View>
-      </ScrollView>
-    </View>
-  );
+        </ScrollView>
+      </View>
+    );
+  }
+
+  // unlikely to hit here, but has to return something other thasn undefined
+  return null;
 };
 
 const styles = StyleSheet.create({

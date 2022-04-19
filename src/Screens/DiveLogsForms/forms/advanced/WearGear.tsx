@@ -6,33 +6,34 @@ import { useTranslation } from 'react-i18next';
 import SliderComp from '_components/ui/Slider';
 import GradientCircle from '_components/ui/GradientCircle';
 import GradientBox from '_components/ui/GradientBox';
+import { capitalize } from '_utils/functions';
 import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
 
 const WIDTH = Dimensions.get('window').width;
 
-const NitroxActiveComponent = (nitrox: string) => (
+const air_typeActiveComponent = (air_type: string) => (
   <View style={styles.selectedShadow}>
     <GradientBox style={styles.selectedLevel}>
       <View style={styles.selectBox}>
         <View style={styles.selectedLevelCircle}>
           <GradientCircle style={styles.selectedGradient} />
         </View>
-        <Text style={styles.levelText}>{nitrox}</Text>
+        <Text style={styles.levelText}>{capitalize(air_type)}</Text>
       </View>
     </GradientBox>
   </View>
 );
 
-const NitroxInactiveComponent = (nitrox: string) => (
+const air_typeInactiveComponent = (air_type: string) => (
   <View style={styles.level}>
     <View style={styles.normalLevelCircle}></View>
-    <Text style={styles.levelText}>{nitrox}</Text>
+    <Text style={styles.levelText}>{capitalize(air_type)}</Text>
   </View>
 );
 
 const WearGear = () => {
   const { t } = useTranslation();
-  const nitroxTypes = [t('NORMAL'), 'EANx32', 'EANx36'];
+  const air_typeTypes = [t('NORMAL').toLowerCase(), 'EANx32', 'EANx36'];
 
   return (
     <View style={styles.container}>
@@ -55,7 +56,7 @@ const WearGear = () => {
       </View>
 
       <Field
-        name="airTankStart"
+        name="start_air"
         label={`${t('START')} . bar`}
         component={SliderComp}
         trackMarks={[0, 40, 80, 120, 160, 200, 240, 280, 320, 360, 400]}
@@ -65,7 +66,7 @@ const WearGear = () => {
       />
 
       <Field
-        name="airTankEnd"
+        name="end_air"
         label={`${t('END')} . bar`}
         component={SliderComp}
         trackMarks={[0, 40, 80, 120, 160, 200, 240, 280, 320, 360, 400]}
@@ -76,11 +77,11 @@ const WearGear = () => {
 
       <View style={styles.gearTypesContainer}>
         <Field
-          name="nitrox"
+          name="air_type"
           component={SelectWGradientBorder}
-          options={nitroxTypes}
-          activeComponent={NitroxActiveComponent}
-          inactiveComponent={NitroxInactiveComponent}
+          options={air_typeTypes}
+          activeComponent={air_typeActiveComponent}
+          inactiveComponent={air_typeInactiveComponent}
         />
       </View>
     </View>
