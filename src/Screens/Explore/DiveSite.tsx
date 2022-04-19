@@ -21,11 +21,11 @@ import Footer from './components/DiveSiteFooter';
 import { useAppSelector, useAppDispatch } from '_redux/hooks';
 import {
   selectDiveSiteById,
-  handleFetchNearby,
   handleFetchDiveSite,
   isDiveSiteDetailinState,
   selectLoadingState,
 } from '_redux/slices/dive-sites';
+import { fetchNearby } from '_redux/slices/dive-sites/api';
 import {
   handleFetchReviews,
   selectReviewById,
@@ -100,7 +100,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
-    handleFetchNearby(currentSpotId).then(results => setNearby(results));
+    fetchNearby(currentSpotId).then(results => setNearby(results.data));
     // only fetch dive site and reviews if they don't already exist
     // in their respective redux slices.
     if (!reviewInState) {
