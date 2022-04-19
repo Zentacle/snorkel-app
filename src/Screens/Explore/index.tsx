@@ -14,11 +14,12 @@ import SearchInput from '_components/ui/SearchInput';
 import Tag from '_components/ui/Tag';
 import GradientText from '_components/ui/GradientText';
 import DiveSite from './components/DiveSite';
-import DiveShop from './components/DiveShop';
+// import DiveShop from './components/DiveShop';
 import { useAppDispatch, useAppSelector } from '_redux/hooks';
 import {
   handleFetchDiveSites,
   selectAllDiveSites,
+  selectLoadingState,
 } from '_redux/slices/dive-sites';
 import { selectUser } from '_redux/slices/user';
 
@@ -29,6 +30,7 @@ import type { FunctionComponent } from 'react';
 import type { RootStackParamList, AppTabsParamList } from '_utils/interfaces';
 import type { ImageSourcePropType } from 'react-native';
 
+import BeachLoading from '_components/reusables/Placeholders/BeachLoading/index';
 import Newest from '_assets/tags/newest.png';
 import Popular from '_assets/tags/popular.png';
 import TopRating from '_assets/tags/top-rating.png';
@@ -54,6 +56,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const diveSites = Object.values(useAppSelector(selectAllDiveSites) || []);
+  const diveSitesIsLoading = useAppSelector(selectLoadingState);
   const user = useAppSelector(selectUser);
 
   const tags: TagInterface[] = [
@@ -86,11 +89,15 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
     });
   };
 
-  const navigateToDiveShop = () => {
-    navigation.navigate('ExploreStack', {
-      screen: 'DiveShop',
-    });
-  };
+  // const navigateToDiveShop = () => {
+  //   navigation.navigate('ExploreStack', {
+  //     screen: 'DiveShop',
+  //   });
+  // };
+
+  if (!diveSitesIsLoading && !diveSites.length) {
+    return <BeachLoading />;
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -102,7 +109,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
           onSubmit={() => {}}
           initialValues={{}}
           keepDirtyOnReinitialize
-          render={({ values, form }) => {
+          render={() => {
             return (
               <Field
                 name="search"
@@ -149,7 +156,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
             horizontal
             contentContainerStyle={styles.nearbySitesCardsContainer}
             showsHorizontalScrollIndicator={false}>
-            {diveSites.slice(0, 5).map(item => (
+            {diveSites.slice(0, Math.floor(diveSites.length / 2)).map(item => (
               // <BeachPlaceHolder />
               <DiveSite
                 key={item.id}
@@ -162,7 +169,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
             ))}
           </ScrollView>
         </View>
-        <View style={styles.diveShops}>
+        {/* <View style={styles.diveShops}>
           <View style={styles.diveShopsTextContainer}>
             <Text style={styles.diveShopsMainText}>{t('DIVE_SHOPS')}</Text>
             <TouchableWithoutFeedback>
@@ -190,7 +197,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
               <DiveShop key={index} onPressContainer={navigateToDiveShop} />
             ))}
           </ScrollView>
-        </View>
+        </View> */}
 
         <View style={styles.diveSites}>
           <View style={styles.diveSitesTextContainer}>
@@ -215,7 +222,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
           <ScrollView
             contentContainerStyle={styles.diveSitesCardsContainer}
             showsHorizontalScrollIndicator={false}>
-            {diveSites.slice(5).map(item => (
+            {diveSites.slice(Math.floor(diveSites.length / 2)).map(item => (
               <DiveSite
                 key={item.id}
                 site={item}
@@ -224,7 +231,6 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
                 imageStyle={styles.diveSiteItemImage}
                 onPressContainer={navigateToDiveSite}
               />
-              // <BeachRecommended />
             ))}
           </ScrollView>
         </View>
