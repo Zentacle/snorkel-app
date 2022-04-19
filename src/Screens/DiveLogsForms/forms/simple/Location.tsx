@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Pressable,
+  Image,
+} from 'react-native';
 import IOIcon from 'react-native-vector-icons/Ionicons';
 import { Field } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
@@ -10,6 +17,7 @@ import GradientCircle from '_components/ui/GradientCircle';
 import LocationAutocompleteModal from '_screens/DiveLogsForms/components/LocationAutocompleteModal';
 import SimpleFormDiveLocation from '_screens/DiveLogsForms/components/SimpleFormDiveLocation';
 
+import UnavailableLocationBox from '_screens/DiveLogsForms/components/UnavailableLocationBox';
 import type { FunctionComponent } from 'react';
 import ImagePickerArray from '_screens/DiveLogsForms/components/ImagePickerArray';
 import { isBelowHeightThreshold } from '_utils/constants';
@@ -42,6 +50,8 @@ const Location: FunctionComponent<LocationAndImageProps> = ({ location }) => {
     location.desc
   );
 
+  console.log('loc', location);
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Field
@@ -51,7 +61,7 @@ const Location: FunctionComponent<LocationAndImageProps> = ({ location }) => {
         closeModal={closeLocationModal}
       />
 
-      {isValidLocation ? (
+      {isValidLocation && (
         <SimpleFormDiveLocation
           coordinates={{
             latitude: location.lat,
@@ -60,6 +70,10 @@ const Location: FunctionComponent<LocationAndImageProps> = ({ location }) => {
           desc={location.desc}
           onClickEdit={openLocationModal}
         />
+      )}
+
+      {!isValidLocation && location?.desc ? (
+        <UnavailableLocationBox desc={location.desc} />
       ) : (
         <View>
           <Text style={styles.headerLabel}>{t('DIVE_LOCATION')}</Text>

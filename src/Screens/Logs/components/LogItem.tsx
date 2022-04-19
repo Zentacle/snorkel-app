@@ -12,6 +12,7 @@ import DescIcon from '_assets/DescIcon.png';
 import DepthArrow from '_assets/ArrowsDownUp.png';
 import DiveTimeClock from '_assets/ClockClockwise.png';
 import { isBelowHeightThreshold } from '_utils/constants';
+import UnavailableLocationBox from './UnavailableLocationListBox';
 
 interface LogItemProps {
   diveLog: DiveLogsState;
@@ -21,25 +22,34 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
   const { t } = useTranslation();
   const isAdvancedLog = !!(diveLog.dive_length && diveLog.max_depth);
   // !!(diveLog.dive_length && diveLog.max_depth);
-  const logLat = diveLog.spot.latitude || -8.409518;
-  const logLng = diveLog.spot.longitude || 115.188919;
+  const logLat = diveLog.spot.latitude;
+  const logLng = diveLog.spot.longitude;
+
+  const logHasCoordinates = !!(diveLog.spot.latitude && diveLog.spot.longitude);
   return (
     <View style={styles.container}>
       <View style={styles.mapRatingsContainer}>
-        <View style={styles.mapContainer}>
-          <MapView
-            provider="google"
-            style={styles.map}
-            scrollEnabled={false}
-            liteMode={true}
-            initialRegion={{
-              latitude: logLat,
-              longitude: logLng,
-              latitudeDelta: 0.0421,
-              longitudeDelta: 0.6922,
-            }}
-          />
-        </View>
+        {logHasCoordinates ? (
+          <View style={styles.mapContainer}>
+            <MapView
+              provider="google"
+              style={styles.map}
+              scrollEnabled={false}
+              liteMode={true}
+              initialRegion={{
+                latitude: logLat,
+                longitude: logLng,
+                latitudeDelta: 0.0421,
+                longitudeDelta: 0.6922,
+              }}
+            />
+          </View>
+        ) : (
+          <View style={styles.unavailableLocationContainer}>
+            <UnavailableLocationBox desc={diveLog.spot.name} />
+          </View>
+        )}
+
         <View style={styles.ratingsActivityContainer}>
           <View style={styles.ratingsContainer}>
             {attachIcons(diveLog.rating, 25)}
@@ -188,6 +198,11 @@ const styles = StyleSheet.create({
   timeDepthLabel: {
     color: 'gray',
     marginBottom: 15,
+  },
+  unavailableLocationContainer: {
+    width: '55%',
+    padding: 5,
+    borderRadius: 12,
   },
 });
 

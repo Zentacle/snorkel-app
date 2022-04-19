@@ -33,6 +33,7 @@ import NoLog from './components/NoLog';
 import { handleFetchSingleDiveLog } from '_redux/slices/dive-logs/api';
 
 import DiveLogLoading from '_components/reusables/Placeholders/DiveLogs/DiveLog';
+import UnavailableLocationBox from './components/UnavailabbleLocationDetailBox';
 
 type LogNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<LogsStackParamList, 'LogDetail'>,
@@ -134,6 +135,11 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
         },
       });
     };
+
+    const logHasCoordinates = !!(
+      diveLog.spot.latitude && diveLog.spot.longitude
+    );
+
     return (
       <View style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -171,7 +177,14 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
               )}
             </View>
 
-            <DiveLocation coordinates={coords} navigateToMap={navigateToMap} />
+            {logHasCoordinates ? (
+              <DiveLocation
+                coordinates={coords}
+                navigateToMap={navigateToMap}
+              />
+            ) : (
+              <UnavailableLocationBox desc={diveLog.spot.name} />
+            )}
 
             <View style={styles.note}>
               <View style={styles.noteHeaderContainer}>

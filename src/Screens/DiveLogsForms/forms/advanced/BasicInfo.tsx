@@ -21,6 +21,7 @@ import type { FunctionComponent } from 'react';
 import type { AdvancedFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
 import { capitalize } from '_utils/functions';
 import { WIDTH } from '_utils/constants';
+import UnavailableLocationBox from '_screens/DiveLogsForms/components/UnavailableLocationBox';
 
 interface BasicInfoProps {
   values: InitialValues;
@@ -79,12 +80,15 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
     t('SNORKEL').toLowerCase(),
   ];
 
+  const locationHasCoordinates =
+    values.location && values.location.lat && values.location.lng;
+
   return (
     <View style={styles.container}>
       <View>
         <Text style={styles.headerLabel}>{t('DIVE_SITE_LOCATION')}</Text>
         <View style={styles.mapContainer}>
-          {values.location && (
+          {values.location && locationHasCoordinates && (
             <MapView
               provider="google"
               style={styles.map}
@@ -103,6 +107,10 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
                 }}
               />
             </MapView>
+          )}
+
+          {values.location?.desc && !locationHasCoordinates && (
+            <UnavailableLocationBox desc={values.location.desc} />
           )}
           <View />
           <View style={styles.mapDescriptionContainer}>

@@ -35,8 +35,7 @@ import Notes from './forms/simple/Notes';
 import Review from './forms/simple/Review';
 import ExitModal from './components/ExitModal';
 
-import { useAppDispatch, useAppSelector } from '_redux/hooks';
-import { saveDiveLog } from '_redux/slices/dive-logs';
+import { useAppSelector } from '_redux/hooks';
 
 import type { SimpleFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
 import {
@@ -70,7 +69,6 @@ const SimpleDiveLogsForms: FunctionComponent<
   const [savedDiveLogId, saveDiveLogId] = React.useState(0);
   const passedInLog: InitialValues = get(props.route, 'params.diveLogs', {});
   let formRef = React.useRef<FormApi>();
-  const dispatch = useAppDispatch();
 
   const stages: Stage[] = [
     {
@@ -186,8 +184,8 @@ const SimpleDiveLogsForms: FunctionComponent<
       case 0:
         return !!(
           values.location &&
-          values.location.lat &&
-          values.location.lng &&
+          // values.location.lat &&
+          // values.location.lng &&
           values.location.desc
         );
       case 1:
