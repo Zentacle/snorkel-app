@@ -316,7 +316,7 @@ const SimpleDiveLogsForms: FunctionComponent<
                 text={
                   page === stages.length - 1
                     ? formSubmitting
-                      ? 'Completing'
+                      ? t('COMPLETING')
                       : t('COMPLETE')
                     : t('CONTINUE')
                 }

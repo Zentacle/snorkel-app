@@ -332,7 +332,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
                 text={
                   page === stages.length - 1
                     ? formSubmitting
-                      ? 'Completing'
+                      ? t('COMPLETING')
                       : t('COMPLETE')
                     : t('CONTINUE')
                 }

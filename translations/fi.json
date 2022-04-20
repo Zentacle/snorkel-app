@@ -267,5 +267,6 @@
   "TYPE_UNITS_MAIN_TEXT": "Imperiumin yksiköt vai metriset yksiköt?",
   "TYPE_UNITS_SUB_TEXT": "Valitse sovelluksessa käytettävät kätevät yksiköt",
   "LOGS": "lokit",
-  "PROFILE": "Profiili"
+  "PROFILE": "Profiili",
+  "COMPLETING": "Täydennetään"
 }

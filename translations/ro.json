@@ -267,5 +267,6 @@
   "TYPE_UNITS_MAIN_TEXT": "Unități imperiale sau metrice?",
   "TYPE_UNITS_SUB_TEXT": "Selectați unitățile convenabile care vor fi utilizate în aplicație",
   "LOGS": "înregistra",
-  "PROFILE": "Profil"
+  "PROFILE": "Profil",
+  "COMPLETING": "Finalizarea"
 }
