@@ -140,13 +140,13 @@ export const googleRegister = createAsyncThunk<
   { credential: string }
 >('user/googleRegister', async (body, thunkApi) => {
   const response = await handleGoogleregister(body);
-  if (!response.cookie_header) {
+
+  if (!response.data.auth_token) {
     return thunkApi.rejectWithValue('Unable to register with Google');
   }
 
   await setStorage(response.user, response.data.auth_token);
 
-  console.log(response);
   return response;
 });
 
