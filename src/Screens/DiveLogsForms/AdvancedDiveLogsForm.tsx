@@ -71,6 +71,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   const [page, switchPage] = React.useState(1);
   const [modalIsOpen, toggleModal] = React.useState(false);
   const [logDate, setLogDate] = React.useState<Date>();
+  const [formSubmitting, setFormSubmitting] = React.useState(false);
 
   let formRef = React.useRef<FormApi<InitialValues, Partial<InitialValues>>>();
   let scrollContainerRef = React.useRef<ScrollView | null>();
@@ -152,6 +153,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   };
 
   const submitLog = async (values: InitialValues, callback: () => void) => {
+    setFormSubmitting(true);
     const date = (values.startDate as Date).toDateString();
     const time = (values.startTime as Date).toTimeString();
     const dateConcat = `${date} ${time}`;
@@ -163,8 +165,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     delete arrangedValues.startDate;
     delete arrangedValues.startTime;
     delete arrangedValues.location;
-    console.log('arranged', arrangedValues);
-    console.log(typeof arrangedValues.date_dived);
+    delete arrangedValues.date_posted;
 
     const response = await handleUpdateDiveLog(
       {
@@ -173,6 +174,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
       },
       authToken as string,
     );
+    setFormSubmitting(false);
 
     console.log('resp', response);
 
@@ -328,7 +330,11 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
                 }
                 disabled={!canMoveToNextPage(page, values as InitialValues)}
                 text={
-                  page === stages.length - 1 ? t('COMPLETE') : t('CONTINUE')
+                  page === stages.length - 1
+                    ? formSubmitting
+                      ? 'Completing'
+                      : t('COMPLETE')
+                    : t('CONTINUE')
                 }
               />
             )}
