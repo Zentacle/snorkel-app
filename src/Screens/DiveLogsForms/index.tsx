@@ -66,6 +66,7 @@ const SimpleDiveLogsForms: FunctionComponent<
   const [page, switchPage] = React.useState(0);
   const [modalIsOpen, toggleModal] = React.useState(false);
   const [savedDiveLogId, saveDiveLogId] = React.useState(0);
+  const [formSubmitting, setFormSubmitting] = React.useState(false);
   const passedInLog: InitialValues = get(props.route, 'params.diveLogs', {});
   let formRef = React.useRef<FormApi>();
 
@@ -129,6 +130,7 @@ const SimpleDiveLogsForms: FunctionComponent<
 
   const submitLog = async (values: InitialValues, callback: () => void) => {
     try {
+      setFormSubmitting(true);
       const response = await handleCreateDiveLog(
         {
           ...values,
@@ -141,6 +143,7 @@ const SimpleDiveLogsForms: FunctionComponent<
         throw new Error(response.msg);
       }
       saveDiveLogId(response.review.id as number);
+      setFormSubmitting(false);
       callback();
     } catch (err) {
       console.log(err);
@@ -311,7 +314,11 @@ const SimpleDiveLogsForms: FunctionComponent<
                 }
                 disabled={!canMoveToNextPage(page, values as InitialValues)}
                 text={
-                  page === stages.length - 1 ? t('COMPLETE') : t('CONTINUE')
+                  page === stages.length - 1
+                    ? formSubmitting
+                      ? 'Completing'
+                      : t('COMPLETE')
+                    : t('CONTINUE')
                 }
               />
             )}
