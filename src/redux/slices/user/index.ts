@@ -10,11 +10,9 @@ import {
 } from './api';
 import { User, GoogleLoginResponse } from '_utils/interfaces/data/user';
 import { AppThunk, RootState } from '../../store';
-// import { makeCookieHeaders } from '_utils/functions';
 
 const ACTIVE_USER = 'active_user';
 const AUTH_TOKEN = 'auth_token';
-const AUTH_COOKIE = 'auth_cookie';
 const IS_EXISTING_USER = 'is_existing_user';
 
 interface ErrorObj {
@@ -27,7 +25,6 @@ interface UserState {
   loading: boolean;
   error: ErrorObj;
   auth_token: string | null;
-  auth_cookie: string | null;
   autoAuthLoading: boolean;
   existing_user: boolean;
 }
@@ -41,7 +38,6 @@ const initialState: UserState = {
     message: null,
   },
   auth_token: null,
-  auth_cookie: null,
   existing_user: false,
 };
 
@@ -62,11 +58,7 @@ export const loginUser = createAsyncThunk(
     if (!response.data) {
       return thunkApi.rejectWithValue(response.msg);
     }
-    await setStorage(
-      response.user,
-      response.data.auth_token,
-      response.cookie_header,
-    );
+    await setStorage(response.user, response.data.auth_token);
     await flagExistingUser();
     return response;
   },
@@ -80,7 +72,7 @@ export const registerUser = createAsyncThunk(
     if (!response.cookie_header) {
       return thunkApi.rejectWithValue(response.msg);
     }
-    await setStorage(null, response.auth_token, response.cookie_header);
+    await setStorage(null, response.auth_token);
     await flagExistingUser();
     return response;
   },
@@ -91,14 +83,12 @@ export const autoAuth = createAsyncThunk(
   async (_, thunkApi) => {
     const userObj = await AsyncStorage.getItem(ACTIVE_USER);
     const tokenStr = await AsyncStorage.getItem(AUTH_TOKEN);
-    const cookieHeader = await AsyncStorage.getItem(AUTH_COOKIE);
     if (!userObj || !tokenStr) {
       return thunkApi.rejectWithValue('User object not available');
     }
     return {
       active_user: JSON.parse(userObj) as User,
       auth_token: tokenStr,
-      auth_cookie: cookieHeader,
     };
   },
 );
@@ -108,10 +98,13 @@ export const updateUser = createAsyncThunk(
   async (userInput: User, thunkApi) => {
     const { user } = (await thunkApi.getState()) as { user: UserState };
     // only request to update user if loggedIn because it wouldn't work otherwise anyway
-    if (!user.auth_cookie) {
+    if (!user.auth_token) {
       return;
     }
-    const response = await handleUpdateUser(userInput, user.auth_cookie);
+    const response = await handleUpdateUser(
+      userInput,
+      user.auth_token as string,
+    );
     if (response.msg) {
       if (response.msg === 'token has expired') {
       }
@@ -127,13 +120,10 @@ export const getCurrentUser = createAsyncThunk(
   async (_, thunkApi) => {
     const { user } = (await thunkApi.getState()) as { user: UserState };
     // only request to update user if loggedIn because it wouldn't work otherwise anyway
-    if (!user.auth_cookie) {
+    if (!user.auth_token) {
       return;
     }
-    const response = await handleGetCurrentUser(
-      user.auth_cookie,
-      user.auth_token as string,
-    );
+    const response = await handleGetCurrentUser(user.auth_token as string);
     if (!response.access_token) {
       await clearStorage();
       thunkApi.dispatch(logout());
@@ -154,11 +144,7 @@ export const googleRegister = createAsyncThunk<
     return thunkApi.rejectWithValue('Unable to register with Google');
   }
 
-  await setStorage(
-    response.user,
-    response.data.auth_token,
-    response.cookie_header,
-  );
+  await setStorage(response.user, response.data.auth_token);
 
   console.log(response);
   return response;
@@ -171,7 +157,6 @@ export const userSlice = createSlice({
     logout: (state, _action: PayloadAction) => {
       state.active_user = null;
       state.auth_token = '';
-      state.auth_cookie = '';
     },
   },
   extraReducers: builder => {
@@ -191,7 +176,6 @@ export const userSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.active_user = action.payload.user;
         state.auth_token = action.payload.data.auth_token;
-        state.auth_cookie = action.payload.cookie_header;
         state.existing_user = true;
       })
       .addCase(registerUser.pending, state => {
@@ -209,7 +193,6 @@ export const userSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.auth_token = action.payload.auth_token;
-        state.auth_cookie = action.payload.cookie_header;
         state.existing_user = true;
       })
       .addCase(autoAuth.pending, state => {
@@ -224,7 +207,6 @@ export const userSlice = createSlice({
         state.autoAuthLoading = false;
         state.auth_token = action.payload.auth_token;
         state.active_user = action.payload.active_user;
-        state.auth_cookie = action.payload.auth_cookie;
         state.existing_user = true;
       })
       .addCase(updateUser.pending, state => {
@@ -254,7 +236,6 @@ export const userSlice = createSlice({
         state.error.status = false;
         state.error.message = null;
         state.auth_token = action.payload.data.auth_token;
-        state.auth_cookie = action.payload.cookie_header;
         state.active_user = action.payload.user;
         state.existing_user = true;
       })
@@ -275,12 +256,11 @@ const { logout } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user.active_user;
 export const selectLoggedInState = (state: RootState) =>
-  Boolean(state.user.active_user && state.user.auth_cookie);
+  Boolean(state.user.active_user && state.user.auth_token);
 export const selectErrorState = (state: RootState) => state.user.error;
 export const selectLoadingState = (state: RootState) => state.user.loading;
 export const selectAutoAuthLoadingState = (state: RootState) =>
   state.user.autoAuthLoading;
-export const selectAuthCookie = (state: RootState) => state.user.auth_cookie;
 export const selectAuthToken = (state: RootState) => state.user.auth_token;
 export const selectExistingUser = (state: RootState) =>
   state.user.existing_user;
@@ -298,8 +278,7 @@ const clearStorage = async () => {
   try {
     return (
       await AsyncStorage.removeItem(ACTIVE_USER),
-      await AsyncStorage.removeItem(AUTH_TOKEN),
-      await AsyncStorage.removeItem(AUTH_COOKIE)
+      await AsyncStorage.removeItem(AUTH_TOKEN)
     );
   } catch (err) {
     throw err;
@@ -316,19 +295,12 @@ export const checkExistingUser = async () => {
   return !!isExistingUser;
 };
 
-const setStorage = async (
-  user: User | null,
-  token?: string,
-  cookie?: string,
-) => {
+const setStorage = async (user: User | null, token?: string) => {
   if (user) {
     await AsyncStorage.setItem(ACTIVE_USER, JSON.stringify(user));
   }
   if (token) {
     await AsyncStorage.setItem(AUTH_TOKEN, token);
-  }
-  if (cookie) {
-    await AsyncStorage.setItem(AUTH_COOKIE, cookie);
   }
 };
 

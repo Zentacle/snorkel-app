@@ -43,7 +43,7 @@ import {
   isBelowWidthThreshold,
 } from '_utils/constants';
 import { Stage } from './utils/interfaces';
-import { selectAuthCookie, selectAuthToken } from '_redux/slices/user';
+import { selectAuthToken } from '_redux/slices/user';
 import { handleCreateDiveLog } from '_redux/slices/dive-logs/api';
 
 type SimpleDiveLogsFormsNavigationProps = CompositeNavigationProp<
@@ -62,7 +62,6 @@ const SimpleDiveLogsForms: FunctionComponent<
   SimpleDiveLogsFormsProps
 > = props => {
   const { t } = useTranslation();
-  const authCookie = useAppSelector(selectAuthCookie);
   const authToken = useAppSelector(selectAuthToken);
   const [page, switchPage] = React.useState(0);
   const [modalIsOpen, toggleModal] = React.useState(false);
@@ -135,7 +134,6 @@ const SimpleDiveLogsForms: FunctionComponent<
           ...values,
           beach_id: values.location?.beach_id,
         },
-        authCookie as string,
         authToken as string,
       );
       console.log(response);

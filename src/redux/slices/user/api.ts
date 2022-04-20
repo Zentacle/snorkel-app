@@ -6,7 +6,6 @@ import {
   UpdateUserReturn,
   GoogleLoginResponse,
 } from '_utils/interfaces/data/user';
-import { makeCookieHeaders } from '_utils/functions';
 
 export async function handleRegister(body: User): Promise<Auth> {
   try {
@@ -17,13 +16,7 @@ export async function handleRegister(body: User): Promise<Auth> {
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then(async res => {
-      const data = await res.json();
-      return {
-        ...data,
-        cookie_header: res.headers.get('set-cookie'),
-      };
-    });
+    }).then(res => res.json());
     return response;
   } catch (err) {
     throw err;
@@ -39,13 +32,7 @@ export async function handleLogin(body: User): Promise<LoginResponse> {
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then(async res => {
-      const data = await res.json();
-      return {
-        ...data,
-        cookie_header: res.headers.get('set-cookie'),
-      };
-    });
+    }).then(res => res.json());
     return response;
   } catch (err) {
     throw err;
@@ -54,17 +41,16 @@ export async function handleLogin(body: User): Promise<LoginResponse> {
 
 export async function handleUpdateUser(
   body: User,
-  auth_cookie: string,
+  auth_token: string,
 ): Promise<UpdateUserReturn> {
   try {
-    const csrf_token = makeCookieHeaders(auth_cookie).csrf_access_token;
     const url = `${config.API_ENDPOINT}/user/patch`;
     const response = fetch(url, {
       method: 'PATCH',
       body: JSON.stringify(body),
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': csrf_token,
+        Authorization: `Bearer ${auth_token}`,
       },
     }).then(res => res.json());
     return response;
@@ -73,18 +59,13 @@ export async function handleUpdateUser(
   }
 }
 
-export async function handleGetCurrentUser(
-  auth_cookie: string,
-  auth_token: string,
-): Promise<User> {
+export async function handleGetCurrentUser(auth_token: string): Promise<User> {
   try {
-    // const csrf_token = makeCookieHeaders(auth_cookie).csrf_access_token;
     const url = `${config.API_ENDPOINT}/user/me`;
     const response = fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        // 'X-CSRF-TOKEN': csrf_token,
         Authorization: `Bearer ${auth_token}`,
       },
     }).then(res => res.json());
@@ -105,17 +86,7 @@ export async function handleGoogleregister(body: {
       headers: {
         'Content-Type': 'application/json',
       },
-    })
-      .then(async res => {
-        const data = await res.json();
-        return {
-          ...data,
-          cookie_header: res.headers.get('set-cookie'),
-        };
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    }).then(res => res.json());
     return response;
   } catch (err) {
     throw err;

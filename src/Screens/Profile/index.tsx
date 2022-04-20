@@ -14,7 +14,7 @@ import { useAppSelector, useAppDispatch } from '_redux/hooks';
 import {
   selectUser,
   getCurrentUser,
-  selectAuthCookie,
+  selectAuthToken,
 } from '_redux/slices/user';
 import {
   selectAllDiveLogs,
@@ -48,10 +48,10 @@ interface ProfileProps {
 const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const authCookie = useAppSelector(selectAuthCookie);
   const user = useAppSelector(selectUser);
   const diveLogs = Object.values(useAppSelector(selectAllDiveLogs));
   const diveLogsIsLoading = useAppSelector(selectDiveLogsLoadingState);
+  const authToken = useAppSelector(selectAuthToken);
 
   React.useEffect(() => {
     dispatch(getCurrentUser());
@@ -67,12 +67,12 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
     navigation.addListener('focus', () => {
       dispatch(
         fetchOwnDiveLogs({
-          auth_cookie: authCookie as string,
+          auth_token: authToken as string,
           username: user?.username as string,
         }),
       );
     });
-  }, [navigation, authCookie, dispatch, user]);
+  }, [navigation, authToken, dispatch, user]);
 
   const navigateToDiveLog = (diveLogId: number) => {
     navigation.navigate('LogsStack', {

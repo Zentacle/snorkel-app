@@ -39,9 +39,8 @@ import Review from './forms/advanced/Review';
 import ExitModal from './components/ExitModal';
 
 import type { AdvancedFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
-import { useAppDispatch, useAppSelector } from '_redux/hooks';
-import { selectAuthCookie } from '_redux/slices/user';
-import { editDiveLog } from '_redux/slices/dive-logs';
+import { useAppSelector } from '_redux/hooks';
+import { selectAuthToken } from '_redux/slices/user';
 import {
   isBelowHeightThreshold,
   isBelowWidthThreshold,
@@ -68,14 +67,13 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   route,
 }) => {
   const { t } = useTranslation();
-  const authCookie = useAppSelector(selectAuthCookie);
+  const authToken = useAppSelector(selectAuthToken);
   const [page, switchPage] = React.useState(1);
   const [modalIsOpen, toggleModal] = React.useState(false);
   const [logDate, setLogDate] = React.useState<Date>();
 
   let formRef = React.useRef<FormApi<InitialValues, Partial<InitialValues>>>();
   let scrollContainerRef = React.useRef<ScrollView | null>();
-  const dispatch = useAppDispatch();
 
   const simpleDiveLogsForm: InitialValues = get(route, 'params.diveLog', {});
 
@@ -173,7 +171,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
         ...arrangedValues,
         beach_id: values.location?.beach_id,
       },
-      authCookie as string,
+      authToken as string,
     );
 
     console.log('resp', response);
@@ -245,7 +243,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
       mutators={{
         ...arrayMutators,
       }}
-      render={({ values, handleSubmit, form }) => {
+      render={({ values, form }) => {
         formRef.current = form;
 
         return (

@@ -15,7 +15,7 @@ import {
   selectAllDiveLogs,
   selectDiveLogsLoadingState,
 } from '_redux/slices/dive-logs';
-import { selectAuthCookie, selectUser } from '_redux/slices/user';
+import { selectAuthToken, selectUser } from '_redux/slices/user';
 
 import EmptyList from './components/EmptyList';
 import LogsList from './components/List';
@@ -36,19 +36,19 @@ const Logs: FunctionComponent<LogsProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
   const diveLogs = Object.values(useAppSelector(selectAllDiveLogs));
   const diveLogsIsLoading = useAppSelector(selectDiveLogsLoadingState);
-  const authCookie = useAppSelector(selectAuthCookie);
+  const authToken = useAppSelector(selectAuthToken);
   const user = useAppSelector(selectUser);
 
   useEffect(() => {
     navigation.addListener('focus', () => {
       dispatch(
         fetchOwnDiveLogs({
-          auth_cookie: authCookie as string,
+          auth_token: authToken as string,
           username: user?.username as string,
         }),
       );
     });
-  }, [navigation, authCookie, dispatch, user]);
+  }, [navigation, authToken, dispatch, user]);
 
   const navigateToLogDetail = (diveLogId: number) => {
     navigation.navigate('LogsStack', {

@@ -41,7 +41,7 @@ const normalizeData = (data: DiveLogsState[]) => {
 };
 
 interface UserAuthCookie {
-  auth_cookie: string;
+  auth_token: string;
   username: string;
 }
 
@@ -49,7 +49,7 @@ export const fetchOwnDiveLogs = createAsyncThunk(
   'dive-logs/fetch-dive-logs',
   async (userAuth: UserAuthCookie, thunkApi) => {
     const response = await handleFetchOwnDiveLogs(
-      userAuth.auth_cookie,
+      userAuth.auth_token,
       userAuth.username,
     );
     if (response.msg) {
