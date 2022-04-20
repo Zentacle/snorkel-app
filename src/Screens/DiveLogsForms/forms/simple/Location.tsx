@@ -61,7 +61,7 @@ const Location: FunctionComponent<LocationAndImageProps> = ({ location }) => {
         closeModal={closeLocationModal}
       />
 
-      {isValidLocation && (
+      {isValidLocation ? (
         <SimpleFormDiveLocation
           coordinates={{
             latitude: location.lat,
@@ -70,9 +70,7 @@ const Location: FunctionComponent<LocationAndImageProps> = ({ location }) => {
           desc={location.desc}
           onClickEdit={openLocationModal}
         />
-      )}
-
-      {!isValidLocation && location?.desc ? (
+      ) : !isValidLocation && location?.desc ? (
         <UnavailableLocationBox desc={location.desc} />
       ) : (
         <View>
