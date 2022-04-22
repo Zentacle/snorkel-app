@@ -268,5 +268,6 @@
   "TYPE_UNITS_SUB_TEXT": "Uygulamada kullanılacak uygun birimleri seçin",
   "LOGS": "Kütükler",
   "PROFILE": "Profil",
-  "COMPLETING": "Tamamlanıyor"
+  "COMPLETING": "Tamamlanıyor",
+  "SIGN_UP_ERROR": "Hesap oluşturulurken bir hata oluştu, lütfen tekrar deneyin."
 }

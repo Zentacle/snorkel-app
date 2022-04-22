@@ -268,5 +268,6 @@
   "TYPE_UNITS_SUB_TEXT": "Valitse sovelluksessa käytettävät kätevät yksiköt",
   "LOGS": "lokit",
   "PROFILE": "Profiili",
-  "COMPLETING": "Täydennetään"
+  "COMPLETING": "Täydennetään",
+  "SIGN_UP_ERROR": "Tiliä luotaessa tapahtui virhe. Yritä uudelleen."
 }

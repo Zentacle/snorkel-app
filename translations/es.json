@@ -268,5 +268,6 @@
   "TYPE_UNITS_SUB_TEXT": "Seleccionar las unidades convenientes a utilizar en la aplicación",
   "LOGS": "Registros",
   "PROFILE": "Perfil",
-  "COMPLETING": "Completando"
+  "COMPLETING": "Completando",
+  "SIGN_UP_ERROR": "Hubo un error al crear una cuenta, intente nuevamente"
 }

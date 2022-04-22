@@ -268,5 +268,6 @@
   "TYPE_UNITS_SUB_TEXT": "Selecteer de handige eenheden die in de toepassing moeten worden gebruikt",
   "LOGS": "Logboeken",
   "PROFILE": "Profiel",
-  "COMPLETING": "Voltooien"
+  "COMPLETING": "Voltooien",
+  "SIGN_UP_ERROR": "Er is een fout opgetreden bij het maken van een account, probeer het opnieuw."
 }

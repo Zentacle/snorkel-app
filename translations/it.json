@@ -268,5 +268,6 @@
   "TYPE_UNITS_SUB_TEXT": "Selezionare le unità convenienti da utilizzare nell'applicazione",
   "LOGS": "accederi",
   "PROFILE": "Profilo",
-  "COMPLETING": "Completamento"
+  "COMPLETING": "Completamento",
+  "SIGN_UP_ERROR": "Si è verificato un errore durante la creazione di un account, riprova."
 }

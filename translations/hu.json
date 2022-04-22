@@ -268,5 +268,6 @@
   "TYPE_UNITS_SUB_TEXT": "Válassza ki az alkalmazásban használandó kényelmes mértékegységeket",
   "LOGS": "Napló",
   "PROFILE": "Profil",
-  "COMPLETING": "Befejezés"
+  "COMPLETING": "Befejezés",
+  "SIGN_UP_ERROR": "Hiba történt a fiók létrehozásakor. Kérjük, próbálja újra"
 }

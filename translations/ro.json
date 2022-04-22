@@ -268,5 +268,6 @@
   "TYPE_UNITS_SUB_TEXT": "Selectați unitățile convenabile care vor fi utilizate în aplicație",
   "LOGS": "înregistra",
   "PROFILE": "Profil",
-  "COMPLETING": "Finalizarea"
+  "COMPLETING": "Finalizarea",
+  "SIGN_UP_ERROR": "A apărut o eroare la crearea unui cont, vă rugăm să încercați din nou."
 }

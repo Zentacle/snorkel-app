@@ -138,7 +138,7 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
         [FORM_ERROR]:
           typeof response.payload === 'string'
             ? response.payload
-            : t('LOG_IN_ERROR'),
+            : t('SIGN_UP_ERROR'),
       };
     }
   };
