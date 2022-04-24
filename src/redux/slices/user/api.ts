@@ -7,6 +7,10 @@ import {
   GoogleLoginResponse,
 } from '_utils/interfaces/data/user';
 
+interface GetCurrentUserResponse extends User {
+  cookie_header: string;
+}
+
 export async function handleRegister(body: User): Promise<Auth> {
   try {
     const url = `${config.API_ENDPOINT}/user/register`;
@@ -16,7 +20,13 @@ export async function handleRegister(body: User): Promise<Auth> {
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then(res => res.json());
+    }).then(async res => {
+      const data = await res.json();
+      return {
+        ...data,
+        cookie_header: res.headers.get('set-cookie'),
+      };
+    });
     return response;
   } catch (err) {
     throw err;
@@ -32,7 +42,13 @@ export async function handleLogin(body: User): Promise<LoginResponse> {
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then(res => res.json());
+    }).then(async res => {
+      const data = await res.json();
+      return {
+        ...data,
+        cookie_header: res.headers.get('set-cookie'),
+      };
+    });
     return response;
   } catch (err) {
     throw err;
@@ -59,14 +75,16 @@ export async function handleUpdateUser(
   }
 }
 
-export async function handleGetCurrentUser(auth_token: string): Promise<User> {
+export async function handleGetCurrentUser(
+  refresh_token: string,
+): Promise<GetCurrentUserResponse> {
   try {
     const url = `${config.API_ENDPOINT}/user/me`;
     const response = fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${auth_token}`,
+        Authorization: `Bearer ${refresh_token}`,
       },
     }).then(res => res.json());
     return response;
@@ -86,7 +104,13 @@ export async function handleGoogleregister(body: {
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then(res => res.json());
+    }).then(async res => {
+      const data = await res.json();
+      return {
+        ...data,
+        cookie_header: res.headers.get('set-cookie'),
+      };
+    });
     return response;
   } catch (err) {
     throw err;
