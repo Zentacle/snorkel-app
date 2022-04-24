@@ -2,6 +2,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
+import { AppState } from 'react-native';
 
 import type { RootStackParamList } from '_utils/interfaces';
 
@@ -31,6 +32,13 @@ import { linking } from '_utils/functions/linking';
 
 const Navigator: React.FC = () => {
   const dispatch = useAppDispatch();
+  const appState = React.useRef(AppState.currentState);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_appStateVisible, setAppStateVisible] = React.useState(
+    appState.current,
+  );
+
   React.useEffect(() => {
     // handle fetching of dive sites and logs here
     // to improve user experience
@@ -40,7 +48,6 @@ const Navigator: React.FC = () => {
       SplashScreen.hide();
     });
     dispatch(autoHydrateSettings());
-    dispatch(getCurrentUser());
   }, [dispatch]);
 
   const loadingState = useAppSelector(selectAutoAuthLoadingState);
@@ -53,6 +60,24 @@ const Navigator: React.FC = () => {
   const userPreviouslyFilledOnBoardingData = !!(
     userHasUsername && userHasProfilePic
   );
+
+  React.useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === 'active'
+      ) {
+        dispatch(getCurrentUser());
+      }
+
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  });
 
   if (loadingState) {
     return null;
