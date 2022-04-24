@@ -8,7 +8,7 @@ import type { FunctionComponent } from 'react';
 import Button from '_components/ui/Buttons/Button';
 
 import ProfileImage from '_assets/Profile.jpg';
-import { attachIcons } from '_utils/functions';
+import { attachIcons, capitalize } from '_utils/functions';
 import { Spot } from '_utils/interfaces/data/spot';
 import { Review } from '_utils/interfaces/data/review';
 
@@ -57,9 +57,11 @@ const DiveSiteReviews: FunctionComponent<DiveSiteReviewsProps> = ({
                 <Text style={styles.profileName}>
                   {selectedReview.user.first_name}
                 </Text>
-                <Text style={styles.reviewSource}>
-                  {selectedReview.shorediving_data ? 'Shore Diving' : 'Snorkel'}
-                </Text>
+                <View style={styles.activityTypeContainer}>
+                  <Text style={styles.activityType}>
+                    {capitalize(selectedReview.activity_type)}
+                  </Text>
+                </View>
               </View>
             </View>
             <View style={styles.ratingsIconsContainer}>
@@ -202,12 +204,14 @@ const styles = StyleSheet.create({
   nameSourceContainer: {
     marginLeft: 15,
   },
-  reviewSource: {
+  activityType: {
     color: '#FFF',
+  },
+  activityTypeContainer: {
     backgroundColor: '#0B94EF',
-    paddingVertical: 3,
-    paddingHorizontal: 5,
     borderRadius: 5,
+    paddingVertical: 3.5,
+    paddingHorizontal: 5.5,
   },
   ratingsIconsContainer: {
     flexDirection: 'row',

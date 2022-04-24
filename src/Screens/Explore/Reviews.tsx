@@ -5,7 +5,6 @@ import {
   StyleSheet,
   ScrollView,
   Image,
-  SafeAreaView,
   ActivityIndicator,
   Platform,
 } from 'react-native';
@@ -25,7 +24,7 @@ import type {
 } from '_utils/interfaces';
 
 import RatingsGradient from '_components/ui/RatingsGradient';
-import { attachIcons } from '_utils/functions';
+import { attachIcons, capitalize } from '_utils/functions';
 import ProfileImage from '_assets/Profile.jpg';
 
 import { useAppSelector, useAppDispatch } from '_redux/hooks';
@@ -134,9 +133,11 @@ const Reviews: FunctionComponent<ReviewProps> = ({ navigation, route }) => {
                     <Text style={styles.profileName}>
                       {item.user.first_name}
                     </Text>
-                    <Text style={styles.reviewSource}>
-                      {item.shorediving_data ? 'Shore Diving' : 'Snorkel'}
-                    </Text>
+                    <View style={styles.activityTypeContainer}>
+                      <Text style={styles.activityType}>
+                        {capitalize(item.activity_type)}
+                      </Text>
+                    </View>
                   </View>
                 </View>
                 <View style={styles.ratingsIconsContainer}>
@@ -168,11 +169,12 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   mainContent: {
-    marginHorizontal: 20,
+    marginHorizontal: 25,
   },
   reviewLabelContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginHorizontal: 2,
   },
   reviewRatingsCount: {
     color: 'black',
@@ -195,6 +197,7 @@ const styles = StyleSheet.create({
   },
   ratingsContainer: {
     marginTop: 20,
+    marginHorizontal: 4,
   },
   ratingItemContainer: {
     flexDirection: 'row',
@@ -254,12 +257,14 @@ const styles = StyleSheet.create({
   nameSourceContainer: {
     marginLeft: 15,
   },
-  reviewSource: {
+  activityType: {
     color: '#FFF',
+  },
+  activityTypeContainer: {
     backgroundColor: '#0B94EF',
-    paddingVertical: 3,
-    paddingHorizontal: 5,
     borderRadius: 5,
+    paddingVertical: 3.5,
+    paddingHorizontal: 5.5,
   },
   ratingsIconsContainer: {
     flexDirection: 'row',
