@@ -303,7 +303,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    marginBottom: isBelowHeightThreshold ? 100 : 95,
+    marginBottom: isBelowHeightThreshold ? 120 : 115,
   },
   container: {
     flex: 1,
