@@ -202,21 +202,39 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
 
   const constraints = {};
   const initialValues: InitialValues = {
-    dive_length: 45,
-    max_depth: 40,
-    water_temp: 14,
-    air_temp: 20,
-    visibility: 1,
-    entry: t('SHORE').toLowerCase(),
+    id: simpleDiveLogsForm.id,
+    dive_length: simpleDiveLogsForm.dive_length
+      ? simpleDiveLogsForm.dive_length
+      : 45,
+    max_depth: simpleDiveLogsForm.max_depth ? simpleDiveLogsForm.max_depth : 40,
+    water_temp: simpleDiveLogsForm.water_temp
+      ? simpleDiveLogsForm.water_temp
+      : 14,
+    air_temp: simpleDiveLogsForm.air_temp ? simpleDiveLogsForm.air_temp : 20,
+    visibility: simpleDiveLogsForm.visibility
+      ? simpleDiveLogsForm.visibility
+      : 1,
+    entry: simpleDiveLogsForm.entry
+      ? simpleDiveLogsForm.entry
+      : t('SHORE').toLowerCase(),
     // @ts-ignore
     startDate: logDate,
     // @ts-ignore
     startTime: logDate,
-    weight: 5,
-    start_air: 40,
-    end_air: 40,
-    air_type: t('NORMAL').toLowerCase(),
-    ...simpleDiveLogsForm,
+    weight: simpleDiveLogsForm.weight ? simpleDiveLogsForm.weight : 5,
+    start_air: simpleDiveLogsForm.start_air ? simpleDiveLogsForm.start_air : 40,
+    end_air: simpleDiveLogsForm.end_air ? simpleDiveLogsForm.end_air : 40,
+    air_type: simpleDiveLogsForm.air_type
+      ? simpleDiveLogsForm.air_type
+      : t('NORMAL').toLowerCase(),
+    rating: simpleDiveLogsForm.rating,
+    difficulty: simpleDiveLogsForm.difficulty,
+    location: simpleDiveLogsForm.location,
+    activity_type: simpleDiveLogsForm.activity_type,
+    images: simpleDiveLogsForm.images,
+    title: simpleDiveLogsForm.title,
+    text: simpleDiveLogsForm.text,
+    // ...simpleDiveLogsForm,
   };
 
   const canMoveToNextPage = (
