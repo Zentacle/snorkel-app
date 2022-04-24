@@ -11,11 +11,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
 
 import { useAppSelector, useAppDispatch } from '_redux/hooks';
-import {
-  selectUser,
-  getCurrentUser,
-  selectAuthToken,
-} from '_redux/slices/user';
+import { selectUser, selectAuthToken } from '_redux/slices/user';
 import {
   selectAllDiveLogs,
   fetchOwnDiveLogs,
@@ -52,10 +48,6 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
   const diveLogs = Object.values(useAppSelector(selectAllDiveLogs));
   const diveLogsIsLoading = useAppSelector(selectDiveLogsLoadingState);
   const authToken = useAppSelector(selectAuthToken);
-
-  React.useEffect(() => {
-    dispatch(getCurrentUser());
-  }, [dispatch]);
 
   const navigateToSettings = () => {
     navigation.navigate('SettingsStack', {
