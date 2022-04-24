@@ -171,7 +171,7 @@ export const googleRegister = createAsyncThunk(
     }
 
     const refresh_token = makeCookieHeaders(
-      response.cookie_header,
+      response.cookie_header as string,
     ).refresh_token_cookie;
 
     await setStorage(response.user, response.data.auth_token, refresh_token);
