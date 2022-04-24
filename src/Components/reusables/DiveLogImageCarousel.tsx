@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
   header: {},
   headerIconsContainer: {
     position: 'absolute',
-    top: Platform.OS === 'ios' ? 40 : 20,
+    top: Platform.OS === 'ios' ? 52 : 30,
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
