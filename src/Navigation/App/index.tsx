@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     elevation: 3,
     marginBottom: 5,
-    marginTop: 5,
+    marginTop: 10,
   },
 });
 
