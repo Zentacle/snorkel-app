@@ -20,6 +20,7 @@ interface LocationAndImageProps {
     lat: number;
     lng: number;
     desc: string;
+    location_city: string;
   };
 }
 
@@ -62,10 +63,15 @@ const Location: FunctionComponent<LocationAndImageProps> = ({ location }) => {
             longitude: location.lng,
           }}
           desc={location.desc}
+          location_city={location.location_city}
           onClickEdit={openLocationModal}
         />
       ) : !isValidLocation && location?.desc ? (
-        <UnavailableLocationBox desc={location.desc} />
+        <UnavailableLocationBox
+          desc={location.desc}
+          location_city={location.location_city}
+          onClickEdit={openLocationModal}
+        />
       ) : (
         <View>
           <Text style={styles.headerLabel}>{t('DIVE_LOCATION')}</Text>
