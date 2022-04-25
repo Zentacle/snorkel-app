@@ -54,7 +54,6 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
   const makeRequest = debounce(async (val: string) => {
     const queryObj = {
       query: val,
-      beach_only: 'True',
     };
     const queryString = stringify(queryObj);
     const response = await handleTypeAhead(queryString);
@@ -62,7 +61,6 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
       setSuggestions(response.data);
       setLoading(false);
     }
-    console.log(response.data);
   });
 
   const handleTextChange = (val: string) => {
