@@ -1,4 +1,5 @@
 import { Spot } from './spot';
+import { User } from './user';
 export interface SimpleFormInitialValues {
   id: number;
   rating: number;
@@ -38,8 +39,12 @@ export interface AdvancedFormInitialValues extends SimpleFormInitialValues {
   date_posted?: string;
 }
 
+interface DiveLogDetailReview extends AdvancedFormInitialValues {
+  user?: User;
+}
+
 export interface AdvancedDiveLogReturnValues {
-  review: AdvancedFormInitialValues;
+  review: DiveLogDetailReview;
   spot: Spot;
   msg: string;
 }

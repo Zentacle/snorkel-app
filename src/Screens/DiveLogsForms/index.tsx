@@ -235,7 +235,7 @@ const SimpleDiveLogsForms: FunctionComponent<
             />
             <ScrollView
               nestedScrollEnabled
-              keyboardShouldPersistTaps="always"
+              keyboardShouldPersistTaps="handled"
               style={[
                 styles.scrollContainer,
                 page !== stages.length && {
