@@ -9,7 +9,6 @@ import {
   ActivityIndicator,
   FlatList,
   Keyboard,
-  Pressable,
   SafeAreaView,
   TouchableWithoutFeedback,
 } from 'react-native';
