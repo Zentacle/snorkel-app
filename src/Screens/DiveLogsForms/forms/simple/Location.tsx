@@ -44,7 +44,10 @@ const Location: FunctionComponent<LocationAndImageProps> = ({ location }) => {
   );
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      nestedScrollEnabled
+      contentContainerStyle={styles.container}
+      keyboardShouldPersistTaps="handled">
       <Field
         name="location"
         isVisible={autocompleteModalOpen}

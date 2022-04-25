@@ -234,6 +234,8 @@ const SimpleDiveLogsForms: FunctionComponent<
               cancelActionText={t('CANCEL')}
             />
             <ScrollView
+              nestedScrollEnabled
+              keyboardShouldPersistTaps="always"
               style={[
                 styles.scrollContainer,
                 page !== stages.length && {

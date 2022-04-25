@@ -317,6 +317,8 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
             )}
             <ScrollView
               ref={ref => (scrollContainerRef.current = ref)}
+              nestedScrollEnabled
+              keyboardShouldPersistTaps="handled"
               style={[
                 styles.scrollContainer,
                 page !== stages.length && {
