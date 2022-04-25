@@ -145,7 +145,9 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
             autoFocus
           />
           <TouchableWithoutFeedback onPress={handleCloseModal}>
-            <Text style={styles.searchLabel}>{t('CANCEL')}</Text>
+            <View style={styles.searchBar}>
+              <Text style={styles.searchLabel}>{t('CANCEL')}</Text>
+            </View>
           </TouchableWithoutFeedback>
         </View>
         {loading ? (
@@ -193,6 +195,10 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     color: 'grey',
     fontSize: 17,
+  },
+  searchBar: {
+    paddingVertical: 20,
+    paddingHorizontal: 10,
   },
   search: {
     color: 'black',
