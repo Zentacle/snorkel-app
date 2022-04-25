@@ -4,7 +4,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Dimensions,
   TouchableWithoutFeedback,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -177,7 +176,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAwareScrollView>
+      <KeyboardAwareScrollView keyboardShouldPersistTaps="handled">
         {props.navigation.canGoBack() && (
           <View style={{ marginLeft: 20, marginTop: 10 }}>
             <Icon
