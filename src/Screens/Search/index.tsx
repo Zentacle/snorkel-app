@@ -61,6 +61,8 @@ const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
       </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
+        nestedScrollEnabled
+        keyboardShouldPersistTaps="handled"
         style={styles.contentContainer}>
         <Form
           onSubmit={() => {}}
