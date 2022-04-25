@@ -136,6 +136,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
                   handleInputFocus={handleInputFocus}
                   placeholderTextColor="#BFBFBF"
                   component={SearchInput}
+                  style={{ height: 50 }}
                 />
               </View>
             );
