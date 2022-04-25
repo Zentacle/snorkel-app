@@ -74,6 +74,7 @@ const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
                   isVisible={autocompleteModalOpen}
                   component={AutocompleteModal}
                   closeModal={() => toggleAutocompleteModal(false)}
+                  navigateToDiveSite={navigateToDiveSite}
                 />
                 <Field
                   name="search_term"

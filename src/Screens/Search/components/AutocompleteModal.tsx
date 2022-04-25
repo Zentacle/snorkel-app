@@ -32,6 +32,7 @@ interface BaseProps {
   isVisible: boolean;
   closeModal: () => void;
   reset: () => void;
+  navigateToDiveSite: (id: number) => void;
 }
 type FinalFormProps = FieldRenderProps<string, any>;
 
@@ -43,6 +44,7 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
   isVisible,
   closeModal,
   input: { onChange },
+  navigateToDiveSite,
 }) => {
   const { t } = useTranslation();
   const [text, changeText] = React.useState('');
@@ -92,21 +94,36 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     changeText('');
   };
 
+  const handleNavigationToDiveSite = (diveSiteId: number) => {
+    navigateToDiveSite(diveSiteId);
+    handleCloseModal();
+  };
+
   const _renderItem = (item: { item: TypeaheadResponse }) => {
     console.log('item', item.item);
     return (
       <Pressable onPress={() => setPlace(item.item.text)}>
         <View style={styles.resultContainer}>
           {item.item.type === 'site' ? (
-            <Image source={LocationImage} />
+            <>
+              <Image source={LocationImage} />
+              <Pressable
+                onPress={() => handleNavigationToDiveSite(item.item.id)}>
+                <View style={styles.placeContainer}>
+                  <Text style={styles.place}>{item.item.text}</Text>
+                  <Text style={styles.placeSubText}>{item.item.subtext}</Text>
+                </View>
+              </Pressable>
+            </>
           ) : (
-            <Image source={FlagImage} />
+            <>
+              <Image source={FlagImage} />
+              <View style={styles.placeContainer}>
+                <Text style={styles.place}>{item.item.text}</Text>
+                <Text style={styles.placeSubText}>{item.item.subtext}</Text>
+              </View>
+            </>
           )}
-
-          <View style={styles.placeContainer}>
-            <Text style={styles.place}>{item.item.text}</Text>
-            <Text style={styles.placeSubText}>{item.item.subtext}</Text>
-          </View>
         </View>
       </Pressable>
     );
