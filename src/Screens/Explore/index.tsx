@@ -109,7 +109,10 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.contentContainer}>
+      <ScrollView
+        style={styles.contentContainer}
+        nestedScrollEnabled
+        keyboardShouldPersistTaps="handled">
         <Text style={styles.welcomeText}>
           {t('WELCOME')},&nbsp;{user?.first_name}!
         </Text>
