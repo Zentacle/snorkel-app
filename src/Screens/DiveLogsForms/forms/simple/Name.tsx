@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Field } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
 
@@ -8,7 +8,9 @@ import FMInput from '_components/ui/FormManagementInput';
 const Name = () => {
   const { t } = useTranslation();
   return (
-    <View style={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      keyboardShouldPersistTaps="never">
       <View style={styles.nameContentLabel}>
         <Text style={styles.headerLabel}>{t('ENTER_NAME')}</Text>
         <View style={styles.optionalContainer}>
@@ -25,7 +27,7 @@ const Name = () => {
           maxLength={40}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -33,6 +35,7 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 30,
     marginHorizontal: 25,
+    paddingBottom: 240,
   },
   headerLabel: {
     color: 'black',
