@@ -100,7 +100,6 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
   };
 
   const _renderItem = (item: { item: TypeaheadResponse }) => {
-    console.log('item', item.item);
     return (
       <Pressable onPress={() => setPlace(item.item.text)}>
         <View style={styles.resultContainer}>
