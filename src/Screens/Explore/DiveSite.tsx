@@ -112,11 +112,11 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
     }
   }, [currentSpotId, dispatch, reviewInState, diveSiteInState]);
 
-  const navigateToDiveSite = (diveSpot: Spot) => {
+  const navigateToDiveSite = (diveSpotId: number) => {
     navigation.push('ExploreStack', {
       screen: 'DiveSite',
       params: {
-        diveSpotId: diveSpot.id,
+        diveSpotId,
       },
     });
   };

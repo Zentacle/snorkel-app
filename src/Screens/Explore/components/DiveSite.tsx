@@ -22,7 +22,7 @@ interface DiveSiteProps {
   containerStyle?: ViewStyle;
   imageContainerStyle?: ViewStyle;
   imageStyle?: ImageStyle;
-  onPressContainer?: (diveSpot: Spot) => void;
+  onPressContainer?: (diveSpotId: number) => void;
   site: Spot;
 }
 
@@ -81,7 +81,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = props => {
     return (
       <TouchableWithoutFeedback
         onPress={() =>
-          props.onPressContainer && props.onPressContainer(props.site)
+          props.onPressContainer && props.onPressContainer(props.site.id)
         }>
         {content}
       </TouchableWithoutFeedback>

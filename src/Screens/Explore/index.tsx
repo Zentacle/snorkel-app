@@ -34,7 +34,7 @@ import BeachLoading from '_components/reusables/Placeholders/BeachLoading/index'
 import Newest from '_assets/tags/newest.png';
 import Popular from '_assets/tags/popular.png';
 import TopRating from '_assets/tags/top-rating.png';
-import type { Spot } from '_utils/interfaces/data/spot';
+import AutocompleteModal from './components/AutocompleteModal';
 
 import { WIDTH, HEIGHT, isBelowWidthThreshold } from '_utils/constants';
 
@@ -58,6 +58,8 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   const diveSites = Object.values(useAppSelector(selectAllDiveSites) || []);
   const diveSitesIsLoading = useAppSelector(selectLoadingState);
   const user = useAppSelector(selectUser);
+  const [autocompleteModalOpen, toggleAutocompleteModal] =
+    React.useState(false);
 
   const tags: TagInterface[] = [
     {
@@ -82,13 +84,17 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
     });
   }, [navigation, dispatch]);
 
-  const navigateToDiveSite = (diveSpot: Spot) => {
+  const navigateToDiveSite = (diveSpotId: number) => {
     navigation.navigate('ExploreStack', {
       screen: 'DiveSite',
       params: {
-        diveSpotId: diveSpot.id,
+        diveSpotId,
       },
     });
+  };
+
+  const handleInputFocus = () => {
+    toggleAutocompleteModal(true);
   };
 
   // const navigateToDiveShop = () => {
@@ -113,12 +119,22 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
           keepDirtyOnReinitialize
           render={() => {
             return (
-              <Field
-                name="search"
-                placeholder={t('explore.SEARCH_PLACEHOLDER')}
-                placeholderTextColor="#BFBFBF"
-                component={SearchInput}
-              />
+              <View>
+                <Field
+                  name="search"
+                  isVisible={autocompleteModalOpen}
+                  component={AutocompleteModal}
+                  closeModal={() => toggleAutocompleteModal(false)}
+                  navigateToDiveSite={navigateToDiveSite}
+                />
+                <Field
+                  name="search"
+                  placeholder={t('explore.SEARCH_PLACEHOLDER')}
+                  handleInputFocus={handleInputFocus}
+                  placeholderTextColor="#BFBFBF"
+                  component={SearchInput}
+                />
+              </View>
             );
           }}
         />
