@@ -174,7 +174,9 @@ const SearchMainView: React.FunctionComponent<SearchMainViewProps> = ({
                   <Image source={DiveSiteImage} style={styles.diveSiteImage} />
                 )}
                 <View style={styles.diveSiteTextContainer}>
-                  <Text style={styles.diveSiteMainText}>{diveSite.name}</Text>
+                  <Text numberOfLines={1} style={styles.diveSiteMainText}>
+                    {diveSite.name}
+                  </Text>
                   <View style={styles.diveSiteSubtextContainer}>
                     <Image
                       style={styles.locationImage}
@@ -338,6 +340,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: 'black',
     fontWeight: '600',
+    width: 150,
   },
   diveSiteSubtext: {
     fontSize: 14,
