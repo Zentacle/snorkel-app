@@ -142,6 +142,7 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
             style={styles.search}
             placeholder="Search"
             placeholderTextColor="#BFBFBF"
+            autoFocus
           />
           <TouchableWithoutFeedback onPress={handleCloseModal}>
             <Text style={styles.searchLabel}>{t('CANCEL')}</Text>

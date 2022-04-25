@@ -22,6 +22,7 @@ interface BaseProps {
   withFilterIcon?: boolean;
   onChange?: (val: string) => void;
   value?: string;
+  autoFocus?: boolean;
 }
 
 const PlainSearchInput: FunctionComponent<BaseProps> = ({
@@ -33,6 +34,7 @@ const PlainSearchInput: FunctionComponent<BaseProps> = ({
   onChange,
   value,
   style,
+  autoFocus,
 }) => {
   return (
     <View style={[styles.container, containerStyle]}>
@@ -43,6 +45,7 @@ const PlainSearchInput: FunctionComponent<BaseProps> = ({
         placeholderTextColor={placeholderTextColor}
         value={value}
         onChangeText={onChange}
+        autoFocus={autoFocus ?? false}
       />
       {withFilterIcon && (
         <TouchableWithoutFeedback onPress={onClickFilterIcon}>

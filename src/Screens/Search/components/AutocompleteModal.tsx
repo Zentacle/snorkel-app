@@ -64,6 +64,10 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     console.log(response.data);
   });
 
+  // React.useEffect(() => {
+  //   Keyboard.
+  // })
+
   const handleTextChange = (val: string) => {
     if (val.trim().length) {
       setLoading(true);
@@ -141,6 +145,7 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
             style={styles.search}
             placeholder="Search"
             placeholderTextColor="#BFBFBF"
+            autoFocus
           />
           <TouchableWithoutFeedback onPress={handleCloseModal}>
             <Text style={styles.searchLabel}>{t('CANCEL')}</Text>
