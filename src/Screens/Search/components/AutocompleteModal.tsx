@@ -14,8 +14,8 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import debounce from 'lodash/debounce';
-import Config from 'react-native-config';
 import { useTranslation } from 'react-i18next';
+import { stringify } from 'qs';
 
 import type { FunctionComponent } from 'react';
 import type { FieldRenderProps } from 'react-final-form';
@@ -35,11 +35,6 @@ interface BaseProps {
 }
 type FinalFormProps = FieldRenderProps<string, any>;
 
-interface PlaceSuggestion {
-  place_id: string;
-  description: string;
-}
-
 type ModalWFinalFormProps = BaseProps & FinalFormProps;
 
 const HEIGHT = Dimensions.get('window').height;
@@ -52,18 +47,14 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
   const { t } = useTranslation();
   const [text, changeText] = React.useState('');
   const [suggestions, setSuggestions] = React.useState<TypeaheadResponse[]>([]);
-  const [countrySuggestions, setCountrySuggestions] = React.useState<
-    PlaceSuggestion[]
-  >([]);
   const [loading, setLoading] = React.useState(false);
 
   const makeRequest = debounce(async (val: string) => {
-    const response = await handleTypeAhead(val);
-
-    // const uri = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(
-    //   val,
-    // )}&types=geocode&language=en&key=${Config.GOOGLE_MAPS_API_KEY}`;
-    // const response = await fetch(uri).then(resp => resp.json());
+    const queryObj = {
+      query: val,
+    };
+    const queryString = stringify(queryObj);
+    const response = await handleTypeAhead(queryString);
     if (response.data) {
       setSuggestions(response.data);
       setLoading(false);
@@ -71,25 +62,11 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     console.log(response.data);
   });
 
-  const requestCountrySuggestions = debounce(async (val: string) => {
-    // const response = await handleTypeAhead(val);
-
-    const uri = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(
-      val,
-    )}&types=geocode&language=en&key=${Config.GOOGLE_MAPS_API_KEY}`;
-    const response = await fetch(uri).then(resp => resp.json());
-    if (response.status === 'OK') {
-      setCountrySuggestions(response.predictions);
-      // setLoading(false);
-    }
-  });
-
   const handleTextChange = (val: string) => {
     if (val.trim().length) {
       setLoading(true);
       changeText(val);
-      // makeRequest(val);
-      Promise.all([makeRequest(val), requestCountrySuggestions(val)]);
+      makeRequest(val);
     } else {
       changeText(val);
       setSuggestions([]);
@@ -107,11 +84,6 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     closeModal();
   };
 
-  const splitCountry = (input: string) => {
-    const inputArray = input.split(',');
-    return inputArray[inputArray.length - 1].trim();
-  };
-
   const handleCloseModal = () => {
     onChange('');
     closeModal();
@@ -121,10 +93,16 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
   };
 
   const _renderItem = (item: { item: TypeaheadResponse }) => {
+    console.log('item', item.item);
     return (
       <Pressable onPress={() => setPlace(item.item.text)}>
         <View style={styles.resultContainer}>
-          <Image source={LocationImage} />
+          {item.item.type === 'site' ? (
+            <Image source={LocationImage} />
+          ) : (
+            <Image source={FlagImage} />
+          )}
+
           <View style={styles.placeContainer}>
             <Text style={styles.place}>{item.item.text}</Text>
             <Text style={styles.placeSubText}>{item.item.subtext}</Text>
@@ -156,19 +134,6 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
           <ActivityIndicator size="small" color="black" />
         ) : (
           <View style={styles.listContainer}>
-            {!!suggestions.length && (
-              <View style={styles.countryContainer}>
-                <Image source={FlagImage} />
-                <View style={styles.countryTextsContainer}>
-                  <Text style={styles.searchText}>{text}</Text>
-                  {!!countrySuggestions.length && (
-                    <Text style={styles.countryMainText}>
-                      {splitCountry(countrySuggestions[0].description)}
-                    </Text>
-                  )}
-                </View>
-              </View>
-            )}
             <FlatList
               keyExtractor={_keyExtractor}
               renderItem={_renderItem}
@@ -214,23 +179,6 @@ const styles = StyleSheet.create({
   search: {
     color: 'black',
     fontSize: 16,
-  },
-  countryContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  countryTextsContainer: {
-    marginLeft: 15,
-  },
-  countryMainText: {
-    fontSize: 15,
-    color: 'grey',
-  },
-  searchText: {
-    fontSize: 15,
-    color: 'black',
-    marginBottom: 2,
   },
   resultContainer: {
     flexDirection: 'row',
