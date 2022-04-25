@@ -11,6 +11,7 @@ import {
   Keyboard,
   Pressable,
   SafeAreaView,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import debounce from 'lodash/debounce';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -47,12 +48,20 @@ const HEIGHT = Dimensions.get('window').height;
 const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
   isVisible,
   closeModal,
-  input: { onChange },
+  input: { onChange, value },
 }) => {
   const { t } = useTranslation();
   const [text, changeText] = React.useState('');
   const [suggestions, setSuggestions] = React.useState<TypeaheadResponse[]>([]);
   const [loading, setLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    if (value) {
+      changeText(value.desc);
+    } else {
+      changeText('');
+    }
+  }, [isVisible, value]);
 
   const makeRequest = debounce(async (val: string) => {
     const queryObj = {
@@ -105,7 +114,7 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
 
   const _renderItem = (item: { item: TypeaheadResponse }) => {
     return (
-      <Pressable onPress={() => setPlace(item.item)}>
+      <TouchableWithoutFeedback onPress={() => setPlace(item.item)}>
         <View style={styles.resultContainer}>
           <Image source={LocationImage} />
           <View style={styles.placeContainer}>
@@ -113,7 +122,7 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
             <Text style={styles.placeSubText}>{item.item.subtext}</Text>
           </View>
         </View>
-      </Pressable>
+      </TouchableWithoutFeedback>
     );
   };
 
@@ -148,7 +157,7 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
               keyExtractor={_keyExtractor}
               renderItem={_renderItem}
               data={suggestions}
-              keyboardShouldPersistTaps="always"
+              keyboardShouldPersistTaps="handled"
             />
           </View>
         )}
