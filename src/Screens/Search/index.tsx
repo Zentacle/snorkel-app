@@ -41,6 +41,15 @@ const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
     });
   };
 
+  const navigateToDiveSite = (id: number) => {
+    navigation.navigate('ExploreStack', {
+      screen: 'DiveSite',
+      params: {
+        diveSpotId: id,
+      },
+    });
+  };
+
   const initialValues: LocationSearchInitialValues = {
     search_term: '',
   };
@@ -79,7 +88,7 @@ const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
           }}
         />
 
-        <SearchMainView />
+        <SearchMainView navigateToDiveSite={navigateToDiveSite} />
       </ScrollView>
     </SafeAreaView>
   );

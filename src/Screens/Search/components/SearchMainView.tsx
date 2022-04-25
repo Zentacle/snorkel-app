@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  Pressable,
+} from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import GradientText from '_components/ui/GradientText';
@@ -11,8 +18,15 @@ import { useAppSelector } from '_redux/hooks';
 import { selectAllDiveSites } from '_redux/slices/dive-sites';
 
 import { destinations } from '../utils';
+import { Spot } from '_utils/interfaces/data/spot';
 
-const SearchMainView = () => {
+interface SearchMainViewProps {
+  navigateToDiveSite: (id: number) => void;
+}
+
+const SearchMainView: React.FunctionComponent<SearchMainViewProps> = ({
+  navigateToDiveSite,
+}) => {
   const diveSites = Object.values(useAppSelector(selectAllDiveSites));
   const { t } = useTranslation();
   const recentSearches = [
@@ -146,26 +160,33 @@ const SearchMainView = () => {
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.diveSites}>
-          {diveSites.map((diveSite, index) => (
-            <View style={styles.diveSite} key={index}>
-              {diveSite.hero_img ? (
-                <Image
-                  source={{ uri: diveSite.hero_img }}
-                  style={styles.diveSiteImage}
-                />
-              ) : (
-                <Image source={DiveSiteImage} style={styles.diveSiteImage} />
-              )}
-              <View style={styles.diveSiteTextContainer}>
-                <Text style={styles.diveSiteMainText}>{diveSite.name}</Text>
-                <View style={styles.diveSiteSubtextContainer}>
-                  <Image style={styles.locationImage} source={LocationImage} />
-                  <Text numberOfLines={1} style={styles.diveSiteSubtext}>
-                    {diveSite.location_city}
-                  </Text>
+          {diveSites.map((diveSite: Spot) => (
+            <Pressable
+              key={diveSite.id}
+              onPress={() => navigateToDiveSite(diveSite.id)}>
+              <View style={styles.diveSite}>
+                {diveSite.hero_img ? (
+                  <Image
+                    source={{ uri: diveSite.hero_img }}
+                    style={styles.diveSiteImage}
+                  />
+                ) : (
+                  <Image source={DiveSiteImage} style={styles.diveSiteImage} />
+                )}
+                <View style={styles.diveSiteTextContainer}>
+                  <Text style={styles.diveSiteMainText}>{diveSite.name}</Text>
+                  <View style={styles.diveSiteSubtextContainer}>
+                    <Image
+                      style={styles.locationImage}
+                      source={LocationImage}
+                    />
+                    <Text numberOfLines={1} style={styles.diveSiteSubtext}>
+                      {diveSite.location_city}
+                    </Text>
+                  </View>
                 </View>
               </View>
-            </View>
+            </Pressable>
           ))}
         </ScrollView>
       </View>
