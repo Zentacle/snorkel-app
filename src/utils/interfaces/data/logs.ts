@@ -10,6 +10,7 @@ export interface SimpleFormInitialValues {
     lat: number;
     lng: number;
     desc: string;
+    location_city: string;
     beach_id: number;
   };
   beach_id?: number;

@@ -13,9 +13,9 @@ import {
   SafeAreaView,
 } from 'react-native';
 import debounce from 'lodash/debounce';
-import Config from 'react-native-config';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
+import { stringify } from 'qs';
 
 import type { FunctionComponent } from 'react';
 import type { FieldRenderProps } from 'react-final-form';
@@ -40,16 +40,6 @@ type FinalFormProps = FieldRenderProps<
   any
 >;
 
-interface Coords {
-  lat: number;
-  lng: number;
-}
-
-// interface PlaceSuggestion {
-//   place_id: string;
-//   description: string;
-// }
-
 type ModalWFinalFormProps = BaseProps & FinalFormProps;
 
 const HEIGHT = Dimensions.get('window').height;
@@ -65,28 +55,18 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
   const [loading, setLoading] = React.useState(false);
 
   const makeRequest = debounce(async (val: string) => {
-    const response = await handleTypeAhead(val);
-    // const uri = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(
-    //   val,
-    // )}&types=geocode&language=en&key=${Config.GOOGLE_MAPS_API_KEY}`;
-    // const response = await fetch(uri).then(resp => resp.json());
+    const queryObj = {
+      query: val,
+      beach_only: 'True',
+    };
+    const queryString = stringify(queryObj);
+    const response = await handleTypeAhead(queryString);
+
     if (response.data) {
       setSuggestions(response.data);
       setLoading(false);
     }
   });
-
-  const geocodeAddress = async (address: string): Promise<Coords | void> => {
-    const uri = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-      address,
-    )}&key=${Config.GOOGLE_MAPS_API_KEY}`;
-
-    const response = await fetch(uri).then(resp => resp.json());
-
-    if (response.status === 'OK') {
-      return response.results[0].geometry.location;
-    }
-  };
 
   const handleTextChange = (val: string) => {
     if (val.trim().length) {
@@ -106,42 +86,21 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     setLoading(true);
     Keyboard.dismiss();
 
-    const results = await geocodeAddress(place.text);
-
-    if (results) {
-      onChange({
-        ...results,
-        desc: place.text,
-        beach_id: place.id,
-      });
-      setLoading(false);
-      closeModal();
-    } else {
-      onChange({
-        desc: place.text,
-        beach_id: place.id,
-      });
-      setLoading(false);
-      closeModal();
-    }
+    onChange({
+      beach_id: place.id,
+      desc: place.text,
+      location_city: place.subtext,
+      lat: place.data.latitude,
+      lng: place.data.longitude,
+    });
+    setLoading(false);
+    closeModal();
   };
 
-  // const splitCountry = (input: string) => {
-  //   const inputArray = input.split(',');
-  //   return inputArray[inputArray.length - 1].trim();
-  // };
-
-  // const pickLocation = (input: string) => {
-  //   const inputArray = input.split(',');
-  //   return inputArray[0].trim();
-  // };
-
   const handleCloseModal = () => {
-    // onChange('');
     closeModal();
     setLoading(false);
     setSuggestions([]);
-    // changeText('');
   };
 
   const _renderItem = (item: { item: TypeaheadResponse }) => {
@@ -152,12 +111,6 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
           <View style={styles.placeContainer}>
             <Text style={styles.place}>{item.item.text}</Text>
             <Text style={styles.placeSubText}>{item.item.subtext}</Text>
-            {/* <Text style={styles.place}>
-              {pickLocation(item.item.description)}
-            </Text>
-            <Text style={styles.placeSubText}>
-              {splitCountry(item.item.description)}
-            </Text> */}
           </View>
         </View>
       </Pressable>
