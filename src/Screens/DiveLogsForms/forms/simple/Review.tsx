@@ -131,11 +131,13 @@ const Review: FunctionComponent<ReviewProps> = ({
         <Text style={styles.detailsTitle}>{formValues.title}</Text>
         <View style={styles.descContainer}>
           <Image source={DescIcon} />
-          <Text style={styles.descText}>{formValues.title}</Text>
+          <Text style={styles.descText}>{formValues.location?.desc}</Text>
         </View>
         <View style={styles.locationContainer}>
           <Image source={LocationImage} />
-          <Text style={styles.locationText}>{formValues.location?.desc}</Text>
+          <Text style={styles.locationText}>
+            {formValues.location?.location_city}
+          </Text>
           {/* <View style={styles.dot} /> */}
           <Text style={styles.locationTimestamp}>
             {new Date().toDateString()}

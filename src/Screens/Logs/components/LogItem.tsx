@@ -67,11 +67,13 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
           <Text style={styles.detailsTitle}>{diveLog.title}</Text>
           <View style={styles.descContainer}>
             <Image source={DescIcon} />
-            <Text style={styles.descText}>{diveLog.title}</Text>
+            <Text style={styles.descText}>{diveLog.spot.name}</Text>
           </View>
           <View style={styles.locationContainer}>
             <Image source={LocationImage} />
-            <Text style={styles.locationText}>{diveLog.spot.name}</Text>
+            <Text style={styles.locationText}>
+              {diveLog.spot.location_city}
+            </Text>
           </View>
         </View>
         {isAdvancedLog && (

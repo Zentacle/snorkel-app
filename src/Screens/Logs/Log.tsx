@@ -109,6 +109,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
               lng: diveLog.spot.longitude,
               beach_id: diveLog.spot.id,
               desc: diveLog.spot.name,
+              location_city: diveLog.spot.location_city,
             },
           },
         },
@@ -126,6 +127,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
               lng: diveLog.spot.longitude,
               beach_id: diveLog.spot.id,
               desc: diveLog.spot.name,
+              location_city: diveLog.spot.location_city,
             },
             startDate:
               diveLog.review.date_dived && new Date(diveLog.review.date_dived),
