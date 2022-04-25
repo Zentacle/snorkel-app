@@ -136,6 +136,7 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
             containerStyle={styles.inputCompContainer}
             style={styles.search}
             placeholder={t('LOCATION_SITE_DIVER')}
+            placeholderTextColor="grey"
           />
         </View>
         {loading ? (
