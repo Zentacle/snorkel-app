@@ -71,6 +71,7 @@ const Location: FunctionComponent<LocationAndImageProps> = ({ location }) => {
           desc={location.desc}
           location_city={location.location_city}
           onClickEdit={openLocationModal}
+          showEdit
         />
       ) : (
         <View>

@@ -6,12 +6,13 @@ import CoordsIndicator from '_assets/coords.jpeg';
 
 interface UnavailableLocationBoxProps {
   desc: string;
-  onClickEdit: () => void;
+  onClickEdit?: () => void;
   location_city: string;
+  showEdit?: boolean;
 }
 const UnavailableLocationBox: React.FunctionComponent<
   UnavailableLocationBoxProps
-> = ({ desc, location_city, onClickEdit }) => {
+> = ({ desc, location_city, onClickEdit, showEdit }) => {
   return (
     <View style={styles.container}>
       <View style={styles.coordsContainer}>
@@ -24,13 +25,15 @@ const UnavailableLocationBox: React.FunctionComponent<
           </Text>
         </View>
       </View>
-      <Icon
-        name="pencil-outline"
-        color="black"
-        size={20}
-        onPress={onClickEdit}
-        style={styles.editIcon}
-      />
+      {showEdit && (
+        <Icon
+          name="pencil-outline"
+          color="black"
+          size={20}
+          onPress={onClickEdit}
+          style={styles.editIcon}
+        />
+      )}
     </View>
   );
 };
