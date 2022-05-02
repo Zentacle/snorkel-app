@@ -2,14 +2,14 @@ import React from 'react';
 import { View, StyleSheet, Pressable } from 'react-native';
 
 import type { FunctionComponent } from 'react';
-import type { AdvancedFormInitialValues as DiveLog } from '_utils/interfaces/data/logs';
+import type { DiveLogsState } from '_utils/interfaces/data/logs';
 
 import LogItem from './LogItem';
 import { isBelowHeightThreshold } from '_utils/constants';
 
 interface LogListProps {
   navigateToDetail: (diveLogId: number) => void;
-  diveLogs: DiveLog[];
+  diveLogs: DiveLogsState[];
 }
 const LogsList: FunctionComponent<LogListProps> = ({
   navigateToDetail,

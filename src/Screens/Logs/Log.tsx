@@ -33,6 +33,7 @@ import NoLog from './components/NoLog';
 import { handleFetchSingleDiveLog } from '_redux/slices/dive-logs/api';
 
 import DiveLogLoading from '_components/reusables/Placeholders/DiveLogs/DiveLog';
+import UnavailableLocationBox from './components/UnavailabbleLocationDetailBox';
 
 type LogNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<LogsStackParamList, 'LogDetail'>,
@@ -108,6 +109,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
               lng: diveLog.spot.longitude,
               beach_id: diveLog.spot.id,
               desc: diveLog.spot.name,
+              location_city: diveLog.spot.location_city,
             },
           },
         },
@@ -125,6 +127,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
               lng: diveLog.spot.longitude,
               beach_id: diveLog.spot.id,
               desc: diveLog.spot.name,
+              location_city: diveLog.spot.location_city,
             },
             startDate:
               diveLog.review.date_dived && new Date(diveLog.review.date_dived),
@@ -134,6 +137,13 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
         },
       });
     };
+
+    const logHasCoordinates = !!(
+      diveLog.spot.latitude && diveLog.spot.longitude
+    );
+
+    console.log('dv', diveLog);
+
     return (
       <View style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -147,13 +157,13 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
             <Text style={styles.mainDescription}>{diveLog.review.title}</Text>
             <View style={styles.locationContainer}>
               <Image source={DescIcon} />
-              <Text style={styles.locationText}>
-                USS Liberty Wreck on Beach
-              </Text>
+              <Text style={styles.locationText}>{diveLog.spot.name}</Text>
             </View>
             <View style={styles.locationContainer}>
               <Image source={LocationImage} />
-              <Text style={styles.locationText}>{diveLog.spot.name}</Text>
+              <Text style={styles.locationText}>
+                {diveLog.spot.location_city}
+              </Text>
             </View>
             <View style={styles.ratingsContainer}>
               <Text style={styles.ratingsLevelText}>
@@ -171,15 +181,35 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
               )}
             </View>
 
-            <DiveLocation coordinates={coords} navigateToMap={navigateToMap} />
+            {logHasCoordinates ? (
+              <DiveLocation
+                coordinates={coords}
+                navigateToMap={navigateToMap}
+              />
+            ) : (
+              <UnavailableLocationBox desc={diveLog.spot.name} />
+            )}
 
             <View style={styles.note}>
               <View style={styles.noteHeaderContainer}>
                 <View style={styles.profile}>
-                  <Image source={ProfileImage} style={styles.profileImage} />
+                  {diveLog.review.user?.profile_pic ? (
+                    <Image
+                      source={{ uri: diveLog.review.user.profile_pic }}
+                      style={styles.profileImage}
+                    />
+                  ) : (
+                    <Image source={ProfileImage} style={styles.profileImage} />
+                  )}
                   <View style={styles.nameSourceContainer}>
-                    <Text style={styles.profileName}>Akari</Text>
-                    <Text style={styles.noteSource}>Snorkel</Text>
+                    <Text style={styles.profileName}>
+                      {diveLog.review.user?.first_name}
+                    </Text>
+                    <View style={styles.noteSourceContainer}>
+                      <Text style={styles.noteSource}>
+                        {diveLog.review.activity_type}
+                      </Text>
+                    </View>
                   </View>
                 </View>
                 <View style={styles.ratingsIconsContainer}>
@@ -484,12 +514,14 @@ const styles = StyleSheet.create({
   nameSourceContainer: {
     marginLeft: 15,
   },
-  noteSource: {
-    color: '#FFF',
+  noteSourceContainer: {
     backgroundColor: '#0B94EF',
     paddingVertical: 3,
     paddingHorizontal: 5,
     borderRadius: 5,
+  },
+  noteSource: {
+    color: '#FFF',
   },
   ratingsIconsContainer: {
     flexDirection: 'row',

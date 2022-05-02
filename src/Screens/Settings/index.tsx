@@ -238,7 +238,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 12,
     padding: 16,
-    marginVertical: 8,
+    marginTop: 8,
+    marginBottom: 30,
     marginHorizontal: 0,
   },
   buttonText: {

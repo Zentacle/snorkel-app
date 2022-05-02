@@ -22,7 +22,7 @@ interface DiveSiteProps {
   containerStyle?: ViewStyle;
   imageContainerStyle?: ViewStyle;
   imageStyle?: ImageStyle;
-  onPressContainer?: (diveSpot: Spot) => void;
+  onPressContainer?: (diveSpotId: number) => void;
   site: Spot;
 }
 
@@ -51,7 +51,9 @@ const DiveSite: FunctionComponent<DiveSiteProps> = props => {
         </View>
       </View>
       <View style={styles.descriptionContainer}>
-        <Text style={styles.descriptionText}>{props.site.name}</Text>
+        <Text numberOfLines={1} style={styles.descriptionText}>
+          {props.site.name}
+        </Text>
         <View style={styles.locationContainer}>
           <Image source={LocationImage} />
           <Text style={styles.locationText}>
@@ -79,7 +81,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = props => {
     return (
       <TouchableWithoutFeedback
         onPress={() =>
-          props.onPressContainer && props.onPressContainer(props.site)
+          props.onPressContainer && props.onPressContainer(props.site.id)
         }>
         {content}
       </TouchableWithoutFeedback>

@@ -61,12 +61,7 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
       setSuggestions(response.data);
       setLoading(false);
     }
-    console.log(response.data);
   });
-
-  // React.useEffect(() => {
-  //   Keyboard.
-  // })
 
   const handleTextChange = (val: string) => {
     if (val.trim().length) {
@@ -78,6 +73,11 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
       setSuggestions([]);
       setLoading(false);
     }
+  };
+
+  const handleNavigationToDiveSite = (diveSiteId: number) => {
+    navigateToDiveSite(diveSiteId);
+    handleCloseModal();
   };
 
   const setPlace = async (place: string) => {
@@ -96,11 +96,6 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     setLoading(false);
     setSuggestions([]);
     changeText('');
-  };
-
-  const handleNavigationToDiveSite = (diveSiteId: number) => {
-    navigateToDiveSite(diveSiteId);
-    handleCloseModal();
   };
 
   const _renderItem = (item: { item: TypeaheadResponse }) => {

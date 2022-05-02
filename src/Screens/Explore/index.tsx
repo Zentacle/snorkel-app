@@ -14,13 +14,16 @@ import SearchInput from '_components/ui/SearchInput';
 import Tag from '_components/ui/Tag';
 import GradientText from '_components/ui/GradientText';
 import DiveSite from './components/DiveSite';
-import DiveShop from './components/DiveShop';
+// import DiveShop from './components/DiveShop';
 import { useAppDispatch, useAppSelector } from '_redux/hooks';
 import {
   handleFetchDiveSites,
   selectAllDiveSites,
+  selectLoadingState,
+  handleFetchRecommended,
+  selectRecommendedSites,
 } from '_redux/slices/dive-sites';
-import { selectUser } from '_redux/slices/user';
+import { selectUser, selectAuthToken } from '_redux/slices/user';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
@@ -29,10 +32,11 @@ import type { FunctionComponent } from 'react';
 import type { RootStackParamList, AppTabsParamList } from '_utils/interfaces';
 import type { ImageSourcePropType } from 'react-native';
 
+import BeachLoading from '_components/reusables/Placeholders/BeachLoading/index';
 import Newest from '_assets/tags/newest.png';
 import Popular from '_assets/tags/popular.png';
 import TopRating from '_assets/tags/top-rating.png';
-import type { Spot } from '_utils/interfaces/data/spot';
+import AutocompleteModal from './components/AutocompleteModal';
 
 import { WIDTH, HEIGHT, isBelowWidthThreshold } from '_utils/constants';
 
@@ -53,8 +57,14 @@ interface ExploreProps {
 const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-  const diveSites = Object.values(useAppSelector(selectAllDiveSites) || []);
+  const diveSites = Object.values(useAppSelector(selectAllDiveSites)) || [];
+  const recommended =
+    Object.values(useAppSelector(selectRecommendedSites)) || [];
+  const diveSitesIsLoading = useAppSelector(selectLoadingState);
   const user = useAppSelector(selectUser);
+  const [autocompleteModalOpen, toggleAutocompleteModal] =
+    React.useState(false);
+  const authToken = useAppSelector(selectAuthToken);
 
   const tags: TagInterface[] = [
     {
@@ -71,30 +81,42 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
     },
   ];
 
-  // console.log('dive sites from store', diveSites);
-  // const [diveSites, setDiveSites] = React.useState<Spot>([]);
   React.useEffect(() => {
-    dispatch(handleFetchDiveSites());
-  }, [dispatch]);
+    navigation.addListener('focus', () => {
+      dispatch(handleFetchDiveSites());
+      dispatch(handleFetchRecommended(authToken as string));
+    });
+  }, [navigation, dispatch, authToken]);
 
-  const navigateToDiveSite = (diveSpot: Spot) => {
+  const navigateToDiveSite = (diveSpotId: number) => {
     navigation.navigate('ExploreStack', {
       screen: 'DiveSite',
       params: {
-        diveSpotId: diveSpot.id,
+        diveSpotId,
       },
     });
   };
 
-  const navigateToDiveShop = () => {
-    navigation.navigate('ExploreStack', {
-      screen: 'DiveShop',
-    });
+  const handleInputFocus = () => {
+    toggleAutocompleteModal(true);
   };
+
+  // const navigateToDiveShop = () => {
+  //   navigation.navigate('ExploreStack', {
+  //     screen: 'DiveShop',
+  //   });
+  // };
+
+  if (!diveSitesIsLoading && !diveSites.length) {
+    return <BeachLoading />;
+  }
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.contentContainer}>
+      <ScrollView
+        style={styles.contentContainer}
+        nestedScrollEnabled
+        keyboardShouldPersistTaps="handled">
         <Text style={styles.welcomeText}>
           {t('WELCOME')},&nbsp;{user?.first_name}!
         </Text>
@@ -102,14 +124,25 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
           onSubmit={() => {}}
           initialValues={{}}
           keepDirtyOnReinitialize
-          render={({ values, form }) => {
+          render={() => {
             return (
-              <Field
-                name="search"
-                placeholder={t('explore.SEARCH_PLACEHOLDER')}
-                placeholderTextColor="#BFBFBF"
-                component={SearchInput}
-              />
+              <View>
+                <Field
+                  name="search"
+                  isVisible={autocompleteModalOpen}
+                  component={AutocompleteModal}
+                  closeModal={() => toggleAutocompleteModal(false)}
+                  navigateToDiveSite={navigateToDiveSite}
+                />
+                <Field
+                  name="search"
+                  placeholder={t('explore.SEARCH_PLACEHOLDER')}
+                  handleInputFocus={handleInputFocus}
+                  placeholderTextColor="#BFBFBF"
+                  component={SearchInput}
+                  style={{ height: 50 }}
+                />
+              </View>
             );
           }}
         />
@@ -149,8 +182,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
             horizontal
             contentContainerStyle={styles.nearbySitesCardsContainer}
             showsHorizontalScrollIndicator={false}>
-            {diveSites.slice(0, 5).map(item => (
-              // <BeachPlaceHolder />
+            {diveSites.map(item => (
               <DiveSite
                 key={item.id}
                 site={item}
@@ -162,7 +194,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
             ))}
           </ScrollView>
         </View>
-        <View style={styles.diveShops}>
+        {/* <View style={styles.diveShops}>
           <View style={styles.diveShopsTextContainer}>
             <Text style={styles.diveShopsMainText}>{t('DIVE_SHOPS')}</Text>
             <TouchableWithoutFeedback>
@@ -190,7 +222,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
               <DiveShop key={index} onPressContainer={navigateToDiveShop} />
             ))}
           </ScrollView>
-        </View>
+        </View> */}
 
         <View style={styles.diveSites}>
           <View style={styles.diveSitesTextContainer}>
@@ -215,17 +247,29 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
           <ScrollView
             contentContainerStyle={styles.diveSitesCardsContainer}
             showsHorizontalScrollIndicator={false}>
-            {diveSites.slice(5).map(item => (
-              <DiveSite
-                key={item.id}
-                site={item}
-                containerStyle={styles.diveSiteItemContainer}
-                imageContainerStyle={styles.diveSiteItemContainer}
-                imageStyle={styles.diveSiteItemImage}
-                onPressContainer={navigateToDiveSite}
-              />
-              // <BeachRecommended />
-            ))}
+            {recommended.length
+              ? recommended.map(item => (
+                  <DiveSite
+                    key={item.id}
+                    site={item}
+                    containerStyle={styles.diveSiteItemContainer}
+                    imageContainerStyle={styles.diveSiteItemContainer}
+                    imageStyle={styles.diveSiteItemImage}
+                    onPressContainer={navigateToDiveSite}
+                  />
+                ))
+              : diveSites
+                  .slice(Math.floor(diveSites.length / 2))
+                  .map(item => (
+                    <DiveSite
+                      key={item.id}
+                      site={item}
+                      containerStyle={styles.diveSiteItemContainer}
+                      imageContainerStyle={styles.diveSiteItemContainer}
+                      imageStyle={styles.diveSiteItemImage}
+                      onPressContainer={navigateToDiveSite}
+                    />
+                  ))}
           </ScrollView>
         </View>
       </ScrollView>

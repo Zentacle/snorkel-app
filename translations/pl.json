@@ -267,5 +267,7 @@
   "TYPE_UNITS_MAIN_TEXT": "Jednostki imperialne czy metryczne?",
   "TYPE_UNITS_SUB_TEXT": "Wybierz dogodne jednostki, które będą używane w aplikacji",
   "LOGS": "zapisać",
-  "PROFILE": "Profil"
+  "PROFILE": "Profil",
+  "COMPLETING": "Kończenie",
+  "SIGN_UP_ERROR": "Wystąpił błąd podczas tworzenia konta, spróbuj ponownie."
 }

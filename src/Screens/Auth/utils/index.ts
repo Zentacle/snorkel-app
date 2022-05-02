@@ -1,10 +1,6 @@
 import { Platform } from 'react-native';
-import {
-  appleAuth,
-  appleAuthAndroid,
-} from '@invertase/react-native-apple-authentication';
+import { appleAuth } from '@invertase/react-native-apple-authentication';
 import 'react-native-get-random-values';
-import { v4 as uuid } from 'uuid';
 import {
   GoogleSignin,
   statusCodes,
@@ -20,7 +16,7 @@ import FacebookLogo from '_assets/logos/facebook-logo/FacebookLogo.png';
 import GoogleLogo from '_assets/logos/google-logo/GoogleLogo.png';
 import type { ActionButtons } from './interfaces';
 
-async function onAppleButtonPressIOS() {
+async function appleSignIn() {
   try {
     // performs login request
     const appleAuthRequestResponse = await appleAuth.performRequest({
@@ -44,45 +40,6 @@ async function onAppleButtonPressIOS() {
     // if (credentialState === appleAuth.State.AUTHORIZED) {
     //   // user is authenticated
     // }
-  } catch (err) {
-    console.log('error', err);
-  }
-}
-
-async function onAppleButtonPressAndroid() {
-  try {
-    // Generate secure, random values for state and nonce
-    const rawNonce = uuid();
-    const state = uuid();
-
-    // Configure the request
-    appleAuthAndroid.configure({
-      // The Service ID you registered with Apple
-      clientId: 'com.example.client-android',
-
-      // Return URL added to your Apple dev console. We intercept this redirect, but it must still match
-      // the URL you provided to Apple. It can be an empty route on your backend as it's never called.
-      redirectUri: 'https://zentacle.com/api/signinwithapple',
-
-      // The type of response requested - code, id_token, or both.
-      responseType: appleAuthAndroid.ResponseType.ALL,
-
-      // The amount of user information requested from Apple.
-      scope: appleAuthAndroid.Scope.ALL,
-
-      // Random nonce value that will be SHA256 hashed before sending to Apple.
-      nonce: rawNonce,
-
-      // Unique state value used to prevent CSRF attacks. A UUID will be generated if nothing is provided.
-      state,
-    });
-
-    // Open the browser window for user sign in
-    const response = await appleAuthAndroid.signIn();
-
-    console.log('android', response);
-
-    // Send the authorization code to your backend for verification
   } catch (err) {
     console.log('error', err);
   }
@@ -138,14 +95,26 @@ function facebookAuth() {
   );
 }
 
-export const actionButtons: ActionButtons[] = [
+const androidActionButtons: ActionButtons[] = [
+  {
+    name: 'Google',
+    icon: '',
+    action: () => googleSignIn(),
+    imageSource: GoogleLogo,
+  },
+  {
+    name: 'Facebook',
+    icon: '',
+    action: () => facebookAuth(),
+    imageSource: FacebookLogo,
+  },
+];
+
+const iOSActionButtons: ActionButtons[] = [
   {
     name: 'Apple',
     icon: '',
-    action: () =>
-      Platform.OS === 'android'
-        ? onAppleButtonPressAndroid()
-        : onAppleButtonPressIOS(),
+    action: () => appleSignIn(),
     imageSource: AppleLogo,
   },
   {
@@ -161,3 +130,6 @@ export const actionButtons: ActionButtons[] = [
     imageSource: FacebookLogo,
   },
 ];
+
+export const actionButtons =
+  Platform.OS === 'ios' ? iOSActionButtons : androidActionButtons;

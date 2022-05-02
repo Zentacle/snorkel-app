@@ -138,7 +138,7 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
         [FORM_ERROR]:
           typeof response.payload === 'string'
             ? response.payload
-            : t('LOG_IN_ERROR'),
+            : t('SIGN_UP_ERROR'),
       };
     }
   };
@@ -162,7 +162,7 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAwareScrollView>
+      <KeyboardAwareScrollView keyboardShouldPersistTaps="handled">
         <View style={{ marginLeft: 20, marginTop: 10 }}>
           <Icon
             onPress={navigateBack}

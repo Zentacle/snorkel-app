@@ -1,14 +1,17 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Platform } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 import { Field } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import FMInput from '_components/ui/FormManagementInput';
 
 const Notes = () => {
   const { t } = useTranslation();
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <KeyboardAwareScrollView
+      contentContainerStyle={styles.container}
+      keyboardShouldPersistTaps="never">
       <View style={styles.notesContentLabel}>
         <Text style={styles.headerLabel}>{t('NOTE')}</Text>
         <View style={styles.optionalContainer}>
@@ -26,7 +29,7 @@ const Notes = () => {
           multiline
         />
       </View>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -34,6 +37,7 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 30,
     marginHorizontal: 25,
+    paddingBottom: 240,
   },
   headerLabel: {
     color: 'black',

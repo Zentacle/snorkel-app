@@ -23,7 +23,7 @@ export async function handleTypeAhead(
   query: string,
 ): Promise<ResponseWithTypeahead> {
   try {
-    const url = `${config.API_ENDPOINT}/search/typeahead?query=${query}`;
+    const url = `${config.API_ENDPOINT}/search/typeahead?${query}`;
     const response = fetch(url, {
       method: 'GET',
       headers: {

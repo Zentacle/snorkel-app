@@ -5,27 +5,27 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-  TouchableWithoutFeedback,
+  // TouchableWithoutFeedback,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Ionicon from 'react-native-vector-icons/Ionicons';
+// import Ionicon from 'react-native-vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
 
 import ImageCarousel from '_components/reusables/ImageCarousel';
 import DiveLocation from './components/DiveLocation';
 import DiveSiteReviews from './components/DiveSiteReviews';
-import GradientText from '_components/ui/GradientText';
+// import GradientText from '_components/ui/GradientText';
 import DiveSiteComp from './components/DiveSite';
-import DiveShopComp from './components/DiveShop';
+// import DiveShopComp from './components/DiveShop';
 import Footer from './components/DiveSiteFooter';
 import { useAppSelector, useAppDispatch } from '_redux/hooks';
 import {
   selectDiveSiteById,
-  handleFetchNearby,
   handleFetchDiveSite,
   isDiveSiteDetailinState,
   selectLoadingState,
 } from '_redux/slices/dive-sites';
+import { fetchNearby } from '_redux/slices/dive-sites/api';
 import {
   handleFetchReviews,
   selectReviewById,
@@ -48,6 +48,7 @@ import LocationImage from '_assets/Location.png';
 import { capitalize } from '_utils/functions';
 import { isBelowHeightThreshold, WIDTH } from '_utils/constants';
 import DiveSiteLoading from '_components/reusables/Placeholders/DiveSiteLoading';
+import UnavailableLocationBox from '_screens/Logs/components/UnavailabbleLocationDetailBox';
 
 type DiveSiteNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<ExploreStackParamList, 'DiveSite'>,
@@ -100,7 +101,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
-    handleFetchNearby(currentSpotId).then(results => setNearby(results));
+    fetchNearby(currentSpotId).then(results => setNearby(results.data));
     // only fetch dive site and reviews if they don't already exist
     // in their respective redux slices.
     if (!reviewInState) {
@@ -111,20 +112,20 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
     }
   }, [currentSpotId, dispatch, reviewInState, diveSiteInState]);
 
-  const navigateToDiveSite = (diveSpot: Spot) => {
+  const navigateToDiveSite = (diveSpotId: number) => {
     navigation.push('ExploreStack', {
       screen: 'DiveSite',
       params: {
-        diveSpotId: diveSpot.id,
+        diveSpotId,
       },
     });
   };
 
-  const navigateToDiveShop = () => {
-    navigation.navigate('ExploreStack', {
-      screen: 'DiveShop',
-    });
-  };
+  // const navigateToDiveShop = () => {
+  //   navigation.navigate('ExploreStack', {
+  //     screen: 'DiveShop',
+  //   });
+  // };
 
   const navigateToDiveLogForm = () => {
     navigation.navigate('App', {
@@ -167,6 +168,8 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
     return null;
   }
 
+  const siteHasCoordinates = !!(diveSite.longitude && diveSite.latitude);
+
   return (
     <View style={styles.container}>
       {/* {Platform.OS === 'ios' && <StatusBar barStyle={'light-content'} />} */}
@@ -196,13 +199,19 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
             <Text style={styles.ratingsCount}>({diveSite.num_reviews})</Text>
           </View>
 
-          <DiveLocation
-            coordinates={{
-              latitude: diveSite.latitude,
-              longitude: diveSite.longitude,
-            }}
-            navigateToMap={navigateToMap}
-          />
+          {siteHasCoordinates ? (
+            <DiveLocation
+              coordinates={{
+                latitude: diveSite.latitude,
+                longitude: diveSite.longitude,
+              }}
+              navigateToMap={navigateToMap}
+            />
+          ) : (
+            <View style={{ marginVertical: 10 }}>
+              <UnavailableLocationBox desc={diveSite.location_city} />
+            </View>
+          )}
 
           {activities.map((activity, index) => (
             <View key={index} style={styles.activityContainer}>
@@ -251,7 +260,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
             </ScrollView>
           </View>
         )}
-        <View style={styles.diveShops}>
+        {/* <View style={styles.diveShops}>
           <View style={styles.diveShopsTextContainer}>
             <Text style={styles.diveShopsMainText}>
               {t('CLOSEST_DIVE_SHOPS')}
@@ -285,7 +294,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
             <Ionicon name="flag-outline" color="black" size={22} />
             <Text style={styles.reportText}>{t('REPORT_THIS_LOCATION')}</Text>
           </View>
-        </View>
+        </View> */}
       </ScrollView>
       <Footer navigateToDiveLogForm={navigateToDiveLogForm} />
     </View>
@@ -294,7 +303,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    marginBottom: isBelowHeightThreshold ? 100 : 95,
+    marginBottom: isBelowHeightThreshold ? 120 : 115,
   },
   container: {
     flex: 1,

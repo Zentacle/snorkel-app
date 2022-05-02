@@ -1,4 +1,5 @@
 import { Spot } from './spot';
+import { User } from './user';
 export interface SimpleFormInitialValues {
   id: number;
   rating: number;
@@ -10,6 +11,7 @@ export interface SimpleFormInitialValues {
     lat: number;
     lng: number;
     desc: string;
+    location_city: string;
     beach_id: number;
   };
   beach_id?: number;
@@ -34,10 +36,15 @@ export interface AdvancedFormInitialValues extends SimpleFormInitialValues {
   end_air?: number;
   air_type?: string;
   date_dived?: string;
+  date_posted?: string;
+}
+
+interface DiveLogDetailReview extends AdvancedFormInitialValues {
+  user?: User;
 }
 
 export interface AdvancedDiveLogReturnValues {
-  review: AdvancedFormInitialValues;
+  review: DiveLogDetailReview;
   spot: Spot;
   msg: string;
 }

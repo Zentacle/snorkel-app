@@ -267,5 +267,7 @@
   "TYPE_UNITS_MAIN_TEXT": "Unités impériales ou métriques ?",
   "TYPE_UNITS_SUB_TEXT": "Sélectionnez les unités pratiques à utiliser dans l'application",
   "LOGS": "Journaux",
-  "PROFILE": "Profil"
+  "PROFILE": "Profil",
+  "COMPLETING": "Achèvement",
+  "SIGN_UP_ERROR": "Une erreur s'est produite lors de la création d'un compte, veuillez réessayer."
 }

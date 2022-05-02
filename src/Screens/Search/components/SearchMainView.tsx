@@ -1,15 +1,33 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  Pressable,
+} from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import GradientText from '_components/ui/GradientText';
-import DiveShopImage from '_assets/EcoCenter.jpeg';
+// import DiveShopImage from '_assets/EcoCenter.jpeg';
 import LocationImage from '_assets/LocationLargish.png';
 import DiveSiteImage from '_assets/DiveSite5.jpeg';
 
-import { destinations } from '../utils';
+import { useAppSelector } from '_redux/hooks';
+import { selectAllDiveSites } from '_redux/slices/dive-sites';
 
-const SearchMainView = () => {
+import { destinations } from '../utils';
+import { Spot } from '_utils/interfaces/data/spot';
+
+interface SearchMainViewProps {
+  navigateToDiveSite: (id: number) => void;
+}
+
+const SearchMainView: React.FunctionComponent<SearchMainViewProps> = ({
+  navigateToDiveSite,
+}) => {
+  const diveSites = Object.values(useAppSelector(selectAllDiveSites));
   const { t } = useTranslation();
   const recentSearches = [
     t('BEACH'),
@@ -76,7 +94,7 @@ const SearchMainView = () => {
         </ScrollView>
       </View>
 
-      <View style={styles.diveShopsContainer}>
+      {/* <View style={styles.diveShopsContainer}>
         <View style={styles.diveShopLabelContainer}>
           <Text style={styles.headerLabel}>{t('DIVE_SHOPS')}</Text>
           <GradientText
@@ -118,7 +136,7 @@ const SearchMainView = () => {
             </View>
           ))}
         </ScrollView>
-      </View>
+      </View> */}
 
       <View style={styles.diveSitesContainer}>
         <View style={styles.diveSiteLabelContainer}>
@@ -142,19 +160,35 @@ const SearchMainView = () => {
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.diveSites}>
-          {[1, 2, 3, 4, 5].map((_, index) => (
-            <View style={styles.diveSite} key={index}>
-              <Image source={DiveSiteImage} style={styles.diveSiteImage} />
-              <View style={styles.diveSiteTextContainer}>
-                <Text style={styles.diveSiteMainText}>Snorkel Shop</Text>
-                <View style={styles.diveSiteSubtextContainer}>
-                  <Image style={styles.locationImage} source={LocationImage} />
-                  <Text numberOfLines={1} style={styles.diveSiteSubtext}>
-                    East Bali Lighthouse
+          {diveSites.map((diveSite: Spot) => (
+            <Pressable
+              key={diveSite.id}
+              onPress={() => navigateToDiveSite(diveSite.id)}>
+              <View style={styles.diveSite}>
+                {diveSite.hero_img ? (
+                  <Image
+                    source={{ uri: diveSite.hero_img }}
+                    style={styles.diveSiteImage}
+                  />
+                ) : (
+                  <Image source={DiveSiteImage} style={styles.diveSiteImage} />
+                )}
+                <View style={styles.diveSiteTextContainer}>
+                  <Text numberOfLines={1} style={styles.diveSiteMainText}>
+                    {diveSite.name}
                   </Text>
+                  <View style={styles.diveSiteSubtextContainer}>
+                    <Image
+                      style={styles.locationImage}
+                      source={LocationImage}
+                    />
+                    <Text numberOfLines={1} style={styles.diveSiteSubtext}>
+                      {diveSite.location_city}
+                    </Text>
+                  </View>
                 </View>
               </View>
-            </View>
+            </Pressable>
           ))}
         </ScrollView>
       </View>
@@ -296,6 +330,8 @@ const styles = StyleSheet.create({
     width: 150,
     height: 160,
     borderRadius: 8,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: '#E0E0E0',
   },
   diveSiteTextContainer: {
     marginTop: 10,
@@ -304,6 +340,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: 'black',
     fontWeight: '600',
+    width: 150,
   },
   diveSiteSubtext: {
     fontSize: 14,

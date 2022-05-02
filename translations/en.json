@@ -267,5 +267,7 @@
   "TYPE_UNITS_MAIN_TEXT": "Imperial Units or Metric?",
   "TYPE_UNITS_SUB_TEXT": "Select the convenient units to be used in the application",
   "LOGS": "Logs",
-  "PROFILE": "Profile"
+  "PROFILE": "Profile",
+  "COMPLETING": "Completing",
+  "SIGN_UP_ERROR": "There was an error creating an account, please try again."
 }

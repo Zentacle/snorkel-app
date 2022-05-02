@@ -1,15 +1,20 @@
-import { createSlice, createSelector } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
+import { getCurrentUser } from './../user/index';
+import {
+  createSlice,
+  createSelector,
+  createAsyncThunk,
+} from '@reduxjs/toolkit';
 
-import { fetchDiveSites, fetchNearby, fetchDiveSite } from './api';
+import { fetchDiveSites, fetchDiveSite, fetchRecommended } from './api';
 import { Spot } from '_utils/interfaces/data/spot';
-import { AppThunk, RootState } from '../../store';
+import { RootState } from '../../store';
 
 interface NormalizedObj {
   [id: string]: Spot;
 }
 interface DiveSpotState {
   diveSpots: NormalizedObj;
+  recommended: NormalizedObj;
   loading: boolean;
   error: {
     status: boolean;
@@ -18,28 +23,94 @@ interface DiveSpotState {
 
 const initialState: DiveSpotState = {
   diveSpots: {},
+  recommended: {},
   loading: false,
   error: {
     status: false,
   },
 };
 
+export const handleFetchRecommended = createAsyncThunk(
+  'dive-sites/recommended',
+  async (token: string, thunkApi) => {
+    const response = await fetchRecommended(token);
+    if (!response.data) {
+      if (response.msg === 'Token has expired') {
+        await thunkApi.dispatch(getCurrentUser());
+      }
+      return thunkApi.rejectWithValue(response.msg);
+    }
+    return response.data;
+  },
+);
+
+export const handleFetchDiveSites = createAsyncThunk(
+  'dive-sites/fetchdiveSites',
+  async (_, thunkApi) => {
+    const response = await fetchDiveSites();
+    if (!response.data) {
+      return thunkApi.rejectWithValue(response.msg);
+    }
+    return response.data;
+  },
+);
+
+export const handleFetchDiveSite = createAsyncThunk(
+  'dive-sites/fetchdiveSite',
+  async (id: number, thunkApi) => {
+    const response = await fetchDiveSite(id);
+    if (!response.data) {
+      return thunkApi.rejectWithValue(response.msg);
+    }
+    return response.data;
+  },
+);
+
 export const diveSitesSlice = createSlice({
   name: 'dive-sites',
   initialState: initialState,
-  reducers: {
-    setLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
-    },
-    getAllDiveSites: (state, action: PayloadAction<Spot[]>) => {
-      state.diveSpots = normalizeData(action.payload);
-    },
-    getDiveSite: (state, action: PayloadAction<Spot>) => {
-      state.diveSpots[action.payload.id] = action.payload;
-    },
-    setError: (state, action: PayloadAction<boolean>) => {
-      state.error.status = action.payload;
-    },
+  reducers: {},
+  extraReducers: builder => {
+    builder
+      .addCase(handleFetchDiveSites.pending, state => {
+        state.loading = true;
+        state.error.status = false;
+      })
+      .addCase(handleFetchDiveSites.rejected, state => {
+        state.loading = false;
+        state.error.status = true;
+      })
+      .addCase(handleFetchDiveSites.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error.status = false;
+        state.diveSpots = normalizeData(action.payload);
+      })
+      .addCase(handleFetchDiveSite.pending, state => {
+        state.loading = true;
+        state.error.status = false;
+      })
+      .addCase(handleFetchDiveSite.rejected, state => {
+        state.loading = false;
+        state.error.status = true;
+      })
+      .addCase(handleFetchDiveSite.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error.status = false;
+        state.diveSpots[action.payload.id] = action.payload;
+      })
+      .addCase(handleFetchRecommended.pending, state => {
+        state.loading = true;
+        state.error.status = false;
+      })
+      .addCase(handleFetchRecommended.rejected, state => {
+        state.loading = false;
+        state.error.status = true;
+      })
+      .addCase(handleFetchRecommended.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error.status = false;
+        state.recommended = normalizeData(action.payload);
+      });
   },
 });
 
@@ -50,9 +121,6 @@ const normalizeData = (data: Spot[]) => {
   }
   return normalizedObj;
 };
-
-const { getAllDiveSites, getDiveSite, setLoading, setError } =
-  diveSitesSlice.actions;
 
 export const selectAllDiveSites = (state: RootState) =>
   state.dive_sites.diveSpots;
@@ -70,37 +138,8 @@ export const selectLoadingState = (state: RootState) =>
   state.dive_sites.loading;
 
 export const selectErrorState = (state: RootState) => state.dive_sites.error;
-
-export const handleFetchDiveSites =
-  (): AppThunk => async (dispatch, _getState) => {
-    try {
-      dispatch(setLoading(true));
-      const diveSites = await fetchDiveSites();
-      dispatch(getAllDiveSites(diveSites.data));
-      dispatch(setLoading(false));
-      dispatch(setError(false));
-    } catch (err) {
-      dispatch(setError(true));
-      throw err;
-    }
-  };
-
-export const handleFetchDiveSite =
-  (id: number): AppThunk =>
-  async (dispatch, _getState) => {
-    try {
-      dispatch(setLoading(true));
-      const diveSite = await fetchDiveSite(id);
-      // add divesite to dive sites object in state so we needen't make
-      // network calls if a dive site exists in state
-      dispatch(getDiveSite(diveSite.data));
-      dispatch(setLoading(false));
-      dispatch(setError(false));
-    } catch (err) {
-      dispatch(setError(true));
-      throw err;
-    }
-  };
+export const selectRecommendedSites = (state: RootState) =>
+  state.dive_sites.recommended;
 
 export const isDiveSiteDetailinState = (id: number) => {
   return createSelector(
@@ -108,16 +147,6 @@ export const isDiveSiteDetailinState = (id: number) => {
     selectedDiveSites =>
       Boolean(selectedDiveSites[id]) && Boolean(selectedDiveSites[id].ratings),
   );
-};
-
-export const handleFetchNearby = async (id: number) => {
-  try {
-    const recommended = await fetchNearby(id);
-    return recommended.data;
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
 };
 
 export default diveSitesSlice.reducer;

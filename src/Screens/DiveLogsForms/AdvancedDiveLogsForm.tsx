@@ -39,9 +39,8 @@ import Review from './forms/advanced/Review';
 import ExitModal from './components/ExitModal';
 
 import type { AdvancedFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
-import { useAppDispatch, useAppSelector } from '_redux/hooks';
-import { selectAuthCookie } from '_redux/slices/user';
-import { editDiveLog } from '_redux/slices/dive-logs';
+import { useAppSelector } from '_redux/hooks';
+import { selectAuthToken } from '_redux/slices/user';
 import {
   isBelowHeightThreshold,
   isBelowWidthThreshold,
@@ -68,14 +67,14 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   route,
 }) => {
   const { t } = useTranslation();
-  const authCookie = useAppSelector(selectAuthCookie);
+  const authToken = useAppSelector(selectAuthToken);
   const [page, switchPage] = React.useState(1);
   const [modalIsOpen, toggleModal] = React.useState(false);
   const [logDate, setLogDate] = React.useState<Date>();
+  const [formSubmitting, setFormSubmitting] = React.useState(false);
 
   let formRef = React.useRef<FormApi<InitialValues, Partial<InitialValues>>>();
   let scrollContainerRef = React.useRef<ScrollView | null>();
-  const dispatch = useAppDispatch();
 
   const simpleDiveLogsForm: InitialValues = get(route, 'params.diveLog', {});
 
@@ -154,6 +153,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   };
 
   const submitLog = async (values: InitialValues, callback: () => void) => {
+    setFormSubmitting(true);
     const date = (values.startDate as Date).toDateString();
     const time = (values.startTime as Date).toTimeString();
     const dateConcat = `${date} ${time}`;
@@ -165,16 +165,16 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     delete arrangedValues.startDate;
     delete arrangedValues.startTime;
     delete arrangedValues.location;
-    console.log('arranged', arrangedValues);
-    console.log(typeof arrangedValues.date_dived);
+    delete arrangedValues.date_posted;
 
     const response = await handleUpdateDiveLog(
       {
         ...arrangedValues,
         beach_id: values.location?.beach_id,
       },
-      authCookie as string,
+      authToken as string,
     );
+    setFormSubmitting(false);
 
     console.log('resp', response);
 
@@ -202,21 +202,39 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
 
   const constraints = {};
   const initialValues: InitialValues = {
-    dive_length: 45,
-    max_depth: 40,
-    water_temp: 14,
-    air_temp: 20,
-    visibility: 1,
-    entry: t('SHORE').toLowerCase(),
+    id: simpleDiveLogsForm.id,
+    dive_length: simpleDiveLogsForm.dive_length
+      ? simpleDiveLogsForm.dive_length
+      : 45,
+    max_depth: simpleDiveLogsForm.max_depth ? simpleDiveLogsForm.max_depth : 40,
+    water_temp: simpleDiveLogsForm.water_temp
+      ? simpleDiveLogsForm.water_temp
+      : 14,
+    air_temp: simpleDiveLogsForm.air_temp ? simpleDiveLogsForm.air_temp : 20,
+    visibility: simpleDiveLogsForm.visibility
+      ? simpleDiveLogsForm.visibility
+      : 1,
+    entry: simpleDiveLogsForm.entry
+      ? simpleDiveLogsForm.entry
+      : t('SHORE').toLowerCase(),
     // @ts-ignore
     startDate: logDate,
     // @ts-ignore
     startTime: logDate,
-    weight: 5,
-    start_air: 40,
-    end_air: 40,
-    air_type: t('NORMAL').toLowerCase(),
-    ...simpleDiveLogsForm,
+    weight: simpleDiveLogsForm.weight ? simpleDiveLogsForm.weight : 5,
+    start_air: simpleDiveLogsForm.start_air ? simpleDiveLogsForm.start_air : 40,
+    end_air: simpleDiveLogsForm.end_air ? simpleDiveLogsForm.end_air : 40,
+    air_type: simpleDiveLogsForm.air_type
+      ? simpleDiveLogsForm.air_type
+      : t('NORMAL').toLowerCase(),
+    rating: simpleDiveLogsForm.rating,
+    difficulty: simpleDiveLogsForm.difficulty,
+    location: simpleDiveLogsForm.location,
+    activity_type: simpleDiveLogsForm.activity_type,
+    images: simpleDiveLogsForm.images,
+    title: simpleDiveLogsForm.title,
+    text: simpleDiveLogsForm.text,
+    // ...simpleDiveLogsForm,
   };
 
   const canMoveToNextPage = (
@@ -245,7 +263,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
       mutators={{
         ...arrayMutators,
       }}
-      render={({ values, handleSubmit, form }) => {
+      render={({ values, form }) => {
         formRef.current = form;
 
         return (
@@ -299,6 +317,8 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
             )}
             <ScrollView
               ref={ref => (scrollContainerRef.current = ref)}
+              nestedScrollEnabled
+              keyboardShouldPersistTaps="handled"
               style={[
                 styles.scrollContainer,
                 page !== stages.length && {
@@ -330,7 +350,11 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
                 }
                 disabled={!canMoveToNextPage(page, values as InitialValues)}
                 text={
-                  page === stages.length - 1 ? t('COMPLETE') : t('CONTINUE')
+                  page === stages.length - 1
+                    ? formSubmitting
+                      ? t('COMPLETING')
+                      : t('COMPLETE')
+                    : t('CONTINUE')
                 }
               />
             )}

@@ -267,5 +267,7 @@
   "TYPE_UNITS_MAIN_TEXT": "Birodalmi mértékegységek vagy metrikus?",
   "TYPE_UNITS_SUB_TEXT": "Válassza ki az alkalmazásban használandó kényelmes mértékegységeket",
   "LOGS": "Napló",
-  "PROFILE": "Profil"
+  "PROFILE": "Profil",
+  "COMPLETING": "Befejezés",
+  "SIGN_UP_ERROR": "Hiba történt a fiók létrehozásakor. Kérjük, próbálja újra"
 }

@@ -16,11 +16,12 @@ interface SimpleFormDiveLocationProps {
   };
   desc: string;
   onClickEdit: () => void;
+  location_city: string;
 }
 
 const SimpleFormDiveLocation: FunctionComponent<
   SimpleFormDiveLocationProps
-> = ({ coordinates, onClickEdit, desc }) => {
+> = ({ coordinates, onClickEdit, desc, location_city }) => {
   const { t } = useTranslation();
   const canShowLocation = coordinates.latitude && coordinates.longitude;
 
@@ -54,11 +55,11 @@ const SimpleFormDiveLocation: FunctionComponent<
             <View>
               <View style={styles.descContainer}>
                 <Image source={DescIcon} />
-                <Text style={styles.descText}>{t('DIVE_PLACE')}</Text>
+                <Text style={styles.descText}>{desc}</Text>
               </View>
               <View style={styles.locationContainer}>
                 <Image source={LocationImage} />
-                <Text style={styles.locationText}>{desc}</Text>
+                <Text style={styles.locationText}>{location_city}</Text>
               </View>
             </View>
             <Icon

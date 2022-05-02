@@ -8,14 +8,14 @@ import {
   handleGoogleregister,
   handleGetCurrentUser,
 } from './api';
-import { User, GoogleLoginResponse } from '_utils/interfaces/data/user';
+import { User } from '_utils/interfaces/data/user';
+import { makeCookieHeaders } from '_utils/functions';
 import { AppThunk, RootState } from '../../store';
-// import { makeCookieHeaders } from '_utils/functions';
 
 const ACTIVE_USER = 'active_user';
 const AUTH_TOKEN = 'auth_token';
-const AUTH_COOKIE = 'auth_cookie';
 const IS_EXISTING_USER = 'is_existing_user';
+const REFRESH_TOKEN = 'refresh_token';
 
 interface ErrorObj {
   status: boolean;
@@ -27,7 +27,7 @@ interface UserState {
   loading: boolean;
   error: ErrorObj;
   auth_token: string | null;
-  auth_cookie: string | null;
+  refresh_token: string | null;
   autoAuthLoading: boolean;
   existing_user: boolean;
 }
@@ -41,7 +41,7 @@ const initialState: UserState = {
     message: null,
   },
   auth_token: null,
-  auth_cookie: null,
+  refresh_token: null,
   existing_user: false,
 };
 
@@ -58,17 +58,22 @@ export const loginUser = createAsyncThunk(
   'user/login',
   async (user: User, thunkApi) => {
     const response = await handleLogin(user);
-    console.log('resp', response);
+
     if (!response.data) {
       return thunkApi.rejectWithValue(response.msg);
     }
-    await setStorage(
-      response.user,
-      response.data.auth_token,
+
+    const refresh_token = makeCookieHeaders(
       response.cookie_header,
-    );
+    ).refresh_token_cookie;
+
+    await setStorage(response.user, response.data.auth_token, refresh_token);
     await flagExistingUser();
-    return response;
+    return {
+      user: response.user,
+      data: response.data,
+      refresh_token,
+    };
   },
 );
 
@@ -76,13 +81,18 @@ export const registerUser = createAsyncThunk(
   'user/register',
   async (user: User, thunkApi) => {
     const response = await handleRegister(user);
-    console.log('resp', response);
-    if (!response.cookie_header) {
+    if (!response.auth_token) {
       return thunkApi.rejectWithValue(response.msg);
     }
-    await setStorage(null, response.auth_token, response.cookie_header);
+    const refresh_token = makeCookieHeaders(
+      response.cookie_header,
+    ).refresh_token_cookie;
+    await setStorage(null, response.auth_token, refresh_token);
     await flagExistingUser();
-    return response;
+    return {
+      ...response,
+      refresh_token,
+    };
   },
 );
 
@@ -91,14 +101,14 @@ export const autoAuth = createAsyncThunk(
   async (_, thunkApi) => {
     const userObj = await AsyncStorage.getItem(ACTIVE_USER);
     const tokenStr = await AsyncStorage.getItem(AUTH_TOKEN);
-    const cookieHeader = await AsyncStorage.getItem(AUTH_COOKIE);
-    if (!userObj || !tokenStr) {
+    const refreshToken = await AsyncStorage.getItem(REFRESH_TOKEN);
+    if (!tokenStr || !refreshToken) {
       return thunkApi.rejectWithValue('User object not available');
     }
     return {
-      active_user: JSON.parse(userObj) as User,
+      active_user: userObj ? (JSON.parse(userObj) as User) : ({} as User),
       auth_token: tokenStr,
-      auth_cookie: cookieHeader,
+      refresh_token: refreshToken,
     };
   },
 );
@@ -108,15 +118,21 @@ export const updateUser = createAsyncThunk(
   async (userInput: User, thunkApi) => {
     const { user } = (await thunkApi.getState()) as { user: UserState };
     // only request to update user if loggedIn because it wouldn't work otherwise anyway
-    if (!user.auth_cookie) {
+    if (!user.auth_token) {
       return;
     }
-    const response = await handleUpdateUser(userInput, user.auth_cookie);
+    const response = await handleUpdateUser(
+      userInput,
+      user.auth_token as string,
+    );
     if (response.msg) {
       if (response.msg === 'token has expired') {
+        thunkApi.dispatch(logout());
       }
       return thunkApi.rejectWithValue(response.msg);
     }
+
+    await setStorage(response);
 
     return response;
   },
@@ -127,17 +143,15 @@ export const getCurrentUser = createAsyncThunk(
   async (_, thunkApi) => {
     const { user } = (await thunkApi.getState()) as { user: UserState };
     // only request to update user if loggedIn because it wouldn't work otherwise anyway
-    if (!user.auth_cookie) {
-      return;
+    if (!user || !user.refresh_token) {
+      return thunkApi.rejectWithValue('unable to fetch the current user');
     }
-    const response = await handleGetCurrentUser(
-      user.auth_cookie,
-      user.auth_token as string,
-    );
+
+    const response = await handleGetCurrentUser(user.refresh_token as string);
     if (!response.access_token) {
       await clearStorage();
       thunkApi.dispatch(logout());
-      return thunkApi.rejectWithValue('unable to fetch the currennt user');
+      return thunkApi.rejectWithValue('unable to fetch the current user');
     }
 
     await setStorage(response, response.access_token);
@@ -145,24 +159,32 @@ export const getCurrentUser = createAsyncThunk(
   },
 );
 
-export const googleRegister = createAsyncThunk<
-  GoogleLoginResponse,
-  { credential: string }
->('user/googleRegister', async (body, thunkApi) => {
-  const response = await handleGoogleregister(body);
-  if (!response.cookie_header) {
-    return thunkApi.rejectWithValue('Unable to register with Google');
-  }
+export const googleRegister = createAsyncThunk(
+  // <
+  // GoogleLoginResponse,
+  // { credential: string }
+  // >
+  'user/googleRegister',
+  async (body: { credential: string }, thunkApi) => {
+    const response = await handleGoogleregister(body);
 
-  await setStorage(
-    response.user,
-    response.data.auth_token,
-    response.cookie_header,
-  );
+    if (!response.data.auth_token) {
+      return thunkApi.rejectWithValue('Unable to register with Google');
+    }
 
-  console.log(response);
-  return response;
-});
+    const refresh_token = makeCookieHeaders(
+      response.cookie_header as string,
+    ).refresh_token_cookie;
+
+    await setStorage(response.user, response.data.auth_token, refresh_token);
+
+    return {
+      user: response.user,
+      data: response.data,
+      refresh_token,
+    };
+  },
+);
 
 export const userSlice = createSlice({
   name: 'user',
@@ -170,8 +192,8 @@ export const userSlice = createSlice({
   reducers: {
     logout: (state, _action: PayloadAction) => {
       state.active_user = null;
-      state.auth_token = '';
-      state.auth_cookie = '';
+      state.auth_token = null;
+      state.refresh_token = null;
     },
   },
   extraReducers: builder => {
@@ -191,8 +213,8 @@ export const userSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.active_user = action.payload.user;
         state.auth_token = action.payload.data.auth_token;
-        state.auth_cookie = action.payload.cookie_header;
         state.existing_user = true;
+        state.refresh_token = action.payload.refresh_token;
       })
       .addCase(registerUser.pending, state => {
         state.loading = true;
@@ -209,8 +231,8 @@ export const userSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.auth_token = action.payload.auth_token;
-        state.auth_cookie = action.payload.cookie_header;
         state.existing_user = true;
+        state.refresh_token = action.payload.refresh_token;
       })
       .addCase(autoAuth.pending, state => {
         state.autoAuthLoading = true;
@@ -224,8 +246,8 @@ export const userSlice = createSlice({
         state.autoAuthLoading = false;
         state.auth_token = action.payload.auth_token;
         state.active_user = action.payload.active_user;
-        state.auth_cookie = action.payload.auth_cookie;
         state.existing_user = true;
+        state.refresh_token = action.payload.refresh_token;
       })
       .addCase(updateUser.pending, state => {
         state.loading = true;
@@ -254,9 +276,9 @@ export const userSlice = createSlice({
         state.error.status = false;
         state.error.message = null;
         state.auth_token = action.payload.data.auth_token;
-        state.auth_cookie = action.payload.cookie_header;
         state.active_user = action.payload.user;
         state.existing_user = true;
+        state.refresh_token = action.payload.refresh_token as string;
       })
       .addCase(getCurrentUser.fulfilled, (state, action) => {
         state.loading = false;
@@ -264,6 +286,19 @@ export const userSlice = createSlice({
         state.error.message = null;
         state.auth_token = action.payload?.access_token as string;
         state.active_user = action.payload as User;
+      })
+      .addCase(getCurrentUser.pending, state => {
+        state.loading = true;
+        state.error.status = false;
+        state.error.message = null;
+      })
+      .addCase(getCurrentUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error.status = true;
+        state.error.message =
+          typeof action.payload === 'string'
+            ? action.payload
+            : 'There was an error fetching the current user. Please try again later';
       })
       .addCase(handleCheckExistingUser.fulfilled, (state, action) => {
         state.existing_user = action.payload;
@@ -275,12 +310,11 @@ const { logout } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user.active_user;
 export const selectLoggedInState = (state: RootState) =>
-  Boolean(state.user.active_user && state.user.auth_cookie);
+  Boolean(state.user.refresh_token && state.user.auth_token);
 export const selectErrorState = (state: RootState) => state.user.error;
 export const selectLoadingState = (state: RootState) => state.user.loading;
 export const selectAutoAuthLoadingState = (state: RootState) =>
   state.user.autoAuthLoading;
-export const selectAuthCookie = (state: RootState) => state.user.auth_cookie;
 export const selectAuthToken = (state: RootState) => state.user.auth_token;
 export const selectExistingUser = (state: RootState) =>
   state.user.existing_user;
@@ -299,7 +333,7 @@ const clearStorage = async () => {
     return (
       await AsyncStorage.removeItem(ACTIVE_USER),
       await AsyncStorage.removeItem(AUTH_TOKEN),
-      await AsyncStorage.removeItem(AUTH_COOKIE)
+      await AsyncStorage.removeItem(REFRESH_TOKEN)
     );
   } catch (err) {
     throw err;
@@ -319,7 +353,7 @@ export const checkExistingUser = async () => {
 const setStorage = async (
   user: User | null,
   token?: string,
-  cookie?: string,
+  refresh_token?: string,
 ) => {
   if (user) {
     await AsyncStorage.setItem(ACTIVE_USER, JSON.stringify(user));
@@ -327,8 +361,9 @@ const setStorage = async (
   if (token) {
     await AsyncStorage.setItem(AUTH_TOKEN, token);
   }
-  if (cookie) {
-    await AsyncStorage.setItem(AUTH_COOKIE, cookie);
+
+  if (refresh_token) {
+    await AsyncStorage.setItem(REFRESH_TOKEN, refresh_token);
   }
 };
 

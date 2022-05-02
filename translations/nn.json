@@ -267,5 +267,7 @@
   "TYPE_UNITS_MAIN_TEXT": "Imperiale enheter eller metriske?",
   "TYPE_UNITS_SUB_TEXT": "Velg de praktiske enhetene som skal brukes i applikasjonen",
   "LOGS": "logger",
-  "PROFILE": "Profil"
+  "PROFILE": "Profil",
+  "COMPLETING": "Fullfører",
+  "SIGN_UP_ERROR": "Det oppsto en feil ved opprettelse av en konto. Prøv igjen."
 }

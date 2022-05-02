@@ -16,14 +16,14 @@ const BeachLoading = () => {
           style={styles.scroll}
           horizontal
           showsHorizontalScrollIndicator={false}>
-          {[1, 2, 3].map(() => (
-            <BeachNearby />
+          {[1, 2, 3].map((_, index) => (
+            <BeachNearby key={index} />
           ))}
         </ScrollView>
 
         <ScrollView showsVerticalScrollIndicator={false} style={styles.scroll}>
-          {[1, 2, 3].map(() => (
-            <BeachRecommended />
+          {[1, 2, 3].map((_, index) => (
+            <BeachRecommended key={index} />
           ))}
         </ScrollView>
       </ScrollView>

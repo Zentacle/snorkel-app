@@ -21,6 +21,8 @@ import type { FunctionComponent } from 'react';
 import type { AdvancedFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
 import { capitalize } from '_utils/functions';
 import { WIDTH } from '_utils/constants';
+import UnavailableLocationBox from '_screens/DiveLogsForms/components/UnavailableLocationBox';
+import LocationAutocompleteModal from '_screens/DiveLogsForms/components/LocationAutocompleteModal';
 
 interface BasicInfoProps {
   values: InitialValues;
@@ -67,6 +69,16 @@ const DiveActiveComp = (level: string) => (
 
 const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
   const { t } = useTranslation();
+  const [autocompleteModalOpen, toggleAutocompleteModal] =
+    React.useState(false);
+
+  const openLocationModal = () => {
+    toggleAutocompleteModal(true);
+  };
+
+  const closeLocationModal = () => {
+    toggleAutocompleteModal(false);
+  };
   const levels = [
     t('BEGINNER').toLowerCase(),
     t('INTERMEDIATE').toLowerCase(),
@@ -79,12 +91,21 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
     t('SNORKEL').toLowerCase(),
   ];
 
+  const locationHasCoordinates =
+    values.location && values.location.lat && values.location.lng;
+
   return (
     <View style={styles.container}>
       <View>
+        <Field
+          name="location"
+          isVisible={autocompleteModalOpen}
+          component={LocationAutocompleteModal}
+          closeModal={closeLocationModal}
+        />
         <Text style={styles.headerLabel}>{t('DIVE_SITE_LOCATION')}</Text>
         <View style={styles.mapContainer}>
-          {values.location && (
+          {values.location && locationHasCoordinates && (
             <MapView
               provider="google"
               style={styles.map}
@@ -104,6 +125,13 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
               />
             </MapView>
           )}
+
+          {values.location?.desc && !locationHasCoordinates && (
+            <UnavailableLocationBox
+              location_city={values.location.location_city}
+              desc={values.location.desc}
+            />
+          )}
           <View />
           <View style={styles.mapDescriptionContainer}>
             <View style={styles.mapTextContainer}>
@@ -111,17 +139,24 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
                 <View style={styles.mapTextImageContainer}>
                   <Image source={LogImage} />
                 </View>
-                <Text style={styles.mapText}>USS Liberty Wreck on Beach</Text>
+                <Text style={styles.mapText}>{values.location?.desc}</Text>
               </View>
               <View style={styles.mapTextItem}>
                 <View style={styles.mapTextImageContainer}>
                   <Image source={LocationImage} />
                 </View>
-                <Text style={styles.mapText}>{values.location?.desc}</Text>
+                <Text style={styles.mapText}>
+                  {values.location?.location_city}
+                </Text>
               </View>
             </View>
             <View style={styles.mapIconContainer}>
-              <MAIcon name="pencil-outline" color="black" size={30} />
+              <MAIcon
+                onPress={openLocationModal}
+                name="pencil-outline"
+                color="black"
+                size={30}
+              />
             </View>
           </View>
         </View>

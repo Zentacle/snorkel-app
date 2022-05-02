@@ -41,6 +41,15 @@ const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
     });
   };
 
+  const navigateToDiveSite = (id: number) => {
+    navigation.navigate('ExploreStack', {
+      screen: 'DiveSite',
+      params: {
+        diveSpotId: id,
+      },
+    });
+  };
+
   const initialValues: LocationSearchInitialValues = {
     search_term: '',
   };
@@ -52,6 +61,8 @@ const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
       </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
+        nestedScrollEnabled
+        keyboardShouldPersistTaps="handled"
         style={styles.contentContainer}>
         <Form
           onSubmit={() => {}}
@@ -65,6 +76,7 @@ const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
                   isVisible={autocompleteModalOpen}
                   component={AutocompleteModal}
                   closeModal={() => toggleAutocompleteModal(false)}
+                  navigateToDiveSite={navigateToDiveSite}
                 />
                 <Field
                   name="search_term"
@@ -79,7 +91,7 @@ const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
           }}
         />
 
-        <SearchMainView />
+        <SearchMainView navigateToDiveSite={navigateToDiveSite} />
       </ScrollView>
     </SafeAreaView>
   );

@@ -10,6 +10,7 @@ import GradientCircle from '_components/ui/GradientCircle';
 import LocationAutocompleteModal from '_screens/DiveLogsForms/components/LocationAutocompleteModal';
 import SimpleFormDiveLocation from '_screens/DiveLogsForms/components/SimpleFormDiveLocation';
 
+import UnavailableLocationBox from '_screens/DiveLogsForms/components/UnavailableLocationBox';
 import type { FunctionComponent } from 'react';
 import ImagePickerArray from '_screens/DiveLogsForms/components/ImagePickerArray';
 import { isBelowHeightThreshold } from '_utils/constants';
@@ -19,6 +20,7 @@ interface LocationAndImageProps {
     lat: number;
     lng: number;
     desc: string;
+    location_city: string;
   };
 }
 
@@ -43,7 +45,10 @@ const Location: FunctionComponent<LocationAndImageProps> = ({ location }) => {
   );
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      nestedScrollEnabled
+      contentContainerStyle={styles.container}
+      keyboardShouldPersistTaps="handled">
       <Field
         name="location"
         isVisible={autocompleteModalOpen}
@@ -58,7 +63,15 @@ const Location: FunctionComponent<LocationAndImageProps> = ({ location }) => {
             longitude: location.lng,
           }}
           desc={location.desc}
+          location_city={location.location_city}
           onClickEdit={openLocationModal}
+        />
+      ) : !isValidLocation && location?.desc ? (
+        <UnavailableLocationBox
+          desc={location.desc}
+          location_city={location.location_city}
+          onClickEdit={openLocationModal}
+          showEdit
         />
       ) : (
         <View>

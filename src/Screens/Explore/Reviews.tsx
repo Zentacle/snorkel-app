@@ -5,7 +5,6 @@ import {
   StyleSheet,
   ScrollView,
   Image,
-  SafeAreaView,
   ActivityIndicator,
   Platform,
 } from 'react-native';
@@ -25,8 +24,8 @@ import type {
 } from '_utils/interfaces';
 
 import RatingsGradient from '_components/ui/RatingsGradient';
-import { attachIcons } from '_utils/functions';
-import ProfileImage from '_assets/Profile.jpg';
+import { attachIcons, capitalize } from '_utils/functions';
+import ProfileImage from '_assets/profile-placeholder.png';
 
 import { useAppSelector, useAppDispatch } from '_redux/hooks';
 import {
@@ -134,9 +133,22 @@ const Reviews: FunctionComponent<ReviewProps> = ({ navigation, route }) => {
                     <Text style={styles.profileName}>
                       {item.user.first_name}
                     </Text>
-                    <Text style={styles.reviewSource}>
-                      {item.shorediving_data ? 'Shore Diving' : 'Snorkel'}
-                    </Text>
+                    <View
+                      style={[
+                        styles.activityTypeContainer,
+                        {
+                          width:
+                            item.activity_type === 'scuba'
+                              ? 55
+                              : item.activity_type === 'snorkel'
+                              ? 65
+                              : 80,
+                        },
+                      ]}>
+                      <Text style={styles.activityType}>
+                        {item.activity_type}
+                      </Text>
+                    </View>
                   </View>
                 </View>
                 <View style={styles.ratingsIconsContainer}>
@@ -168,11 +180,12 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   mainContent: {
-    marginHorizontal: 20,
+    marginHorizontal: 25,
   },
   reviewLabelContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginHorizontal: 2,
   },
   reviewRatingsCount: {
     color: 'black',
@@ -195,6 +208,7 @@ const styles = StyleSheet.create({
   },
   ratingsContainer: {
     marginTop: 20,
+    marginHorizontal: 4,
   },
   ratingItemContainer: {
     flexDirection: 'row',
@@ -218,13 +232,14 @@ const styles = StyleSheet.create({
   },
   review: {
     width: '100%',
-    minHeight: 150,
+    minHeight: 100,
     borderRadius: 24,
-    padding: 20,
-    marginVertical: 1.5,
-    borderColor: '#e9e9e9',
-    borderWidth: StyleSheet.hairlineWidth,
-    borderStyle: 'solid',
+    marginHorizontal: 5,
+    // padding: 20,
+    marginVertical: 10,
+    // borderColor: '#e9e9e9',
+    // borderWidth: StyleSheet.hairlineWidth,
+    // borderStyle: 'solid',
   },
   reviewHeaderContainer: {
     flexDirection: 'row',
@@ -254,12 +269,15 @@ const styles = StyleSheet.create({
   nameSourceContainer: {
     marginLeft: 15,
   },
-  reviewSource: {
+  activityType: {
     color: '#FFF',
+    textTransform: 'capitalize',
+  },
+  activityTypeContainer: {
     backgroundColor: '#0B94EF',
-    paddingVertical: 3,
-    paddingHorizontal: 5,
     borderRadius: 5,
+    paddingVertical: 3.5,
+    paddingHorizontal: 5.5,
   },
   ratingsIconsContainer: {
     flexDirection: 'row',

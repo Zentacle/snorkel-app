@@ -46,5 +46,5 @@ export interface UpdateUserReturn extends User {
 export interface GoogleLoginResponse {
   data: AuthData;
   user: User;
-  cookie_header: string;
+  cookie_header?: string;
 }

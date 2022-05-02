@@ -35,8 +35,7 @@ import Notes from './forms/simple/Notes';
 import Review from './forms/simple/Review';
 import ExitModal from './components/ExitModal';
 
-import { useAppDispatch, useAppSelector } from '_redux/hooks';
-import { saveDiveLog } from '_redux/slices/dive-logs';
+import { useAppSelector } from '_redux/hooks';
 
 import type { SimpleFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
 import {
@@ -44,7 +43,7 @@ import {
   isBelowWidthThreshold,
 } from '_utils/constants';
 import { Stage } from './utils/interfaces';
-import { selectAuthCookie, selectAuthToken } from '_redux/slices/user';
+import { selectAuthToken } from '_redux/slices/user';
 import { handleCreateDiveLog } from '_redux/slices/dive-logs/api';
 
 type SimpleDiveLogsFormsNavigationProps = CompositeNavigationProp<
@@ -63,14 +62,13 @@ const SimpleDiveLogsForms: FunctionComponent<
   SimpleDiveLogsFormsProps
 > = props => {
   const { t } = useTranslation();
-  const authCookie = useAppSelector(selectAuthCookie);
   const authToken = useAppSelector(selectAuthToken);
   const [page, switchPage] = React.useState(0);
   const [modalIsOpen, toggleModal] = React.useState(false);
   const [savedDiveLogId, saveDiveLogId] = React.useState(0);
+  const [formSubmitting, setFormSubmitting] = React.useState(false);
   const passedInLog: InitialValues = get(props.route, 'params.diveLogs', {});
   let formRef = React.useRef<FormApi>();
-  const dispatch = useAppDispatch();
 
   const stages: Stage[] = [
     {
@@ -132,12 +130,12 @@ const SimpleDiveLogsForms: FunctionComponent<
 
   const submitLog = async (values: InitialValues, callback: () => void) => {
     try {
+      setFormSubmitting(true);
       const response = await handleCreateDiveLog(
         {
           ...values,
           beach_id: values.location?.beach_id,
         },
-        authCookie as string,
         authToken as string,
       );
       console.log(response);
@@ -145,6 +143,7 @@ const SimpleDiveLogsForms: FunctionComponent<
         throw new Error(response.msg);
       }
       saveDiveLogId(response.review.id as number);
+      setFormSubmitting(false);
       callback();
     } catch (err) {
       console.log(err);
@@ -186,8 +185,8 @@ const SimpleDiveLogsForms: FunctionComponent<
       case 0:
         return !!(
           values.location &&
-          values.location.lat &&
-          values.location.lng &&
+          // values.location.lat &&
+          // values.location.lng &&
           values.location.desc
         );
       case 1:
@@ -235,6 +234,8 @@ const SimpleDiveLogsForms: FunctionComponent<
               cancelActionText={t('CANCEL')}
             />
             <ScrollView
+              nestedScrollEnabled
+              keyboardShouldPersistTaps="handled"
               style={[
                 styles.scrollContainer,
                 page !== stages.length && {
@@ -315,7 +316,11 @@ const SimpleDiveLogsForms: FunctionComponent<
                 }
                 disabled={!canMoveToNextPage(page, values as InitialValues)}
                 text={
-                  page === stages.length - 1 ? t('COMPLETE') : t('CONTINUE')
+                  page === stages.length - 1
+                    ? formSubmitting
+                      ? t('COMPLETING')
+                      : t('COMPLETE')
+                    : t('CONTINUE')
                 }
               />
             )}

@@ -105,15 +105,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
   },
-
   levelContentContainer: {
     marginVertical: 40,
   },
-
   level: {
     backgroundColor: '#fff',
     borderRadius: 12,
     opacity: 0.5,
+    width: '30%',
   },
   selectBox: {
     borderRadius: 12,
@@ -129,6 +128,7 @@ const styles = StyleSheet.create({
       height: 2,
     },
     shadowOpacity: 0.2,
+    width: '30%',
   },
   selectedLevel: {
     backgroundColor: '#fff',
@@ -138,8 +138,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   levelText: {
-    marginRight: isBelowWidthThreshold ? 15 : 25,
-    marginLeft: 15,
+    marginLeft: 10,
     marginBottom: 10,
     color: 'black',
   },
@@ -199,8 +198,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   activityText: {
-    marginRight: WIDTH < 380 ? 10 : 25,
-    marginLeft: 15,
+    marginLeft: 10,
     marginBottom: 10,
     color: 'black',
     fontSize: WIDTH < 380 ? 13 : 14,
