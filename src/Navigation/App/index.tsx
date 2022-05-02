@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   },
   tabBarLabelStyle: {
     marginTop: Platform.OS === 'ios' ? -15 : -20,
-    marginBottom: Platform.OS === 'ios' ? 15 : 0,
+    marginBottom: Platform.OS === 'ios' ? 25 : 10,
     fontSize: 12,
     fontWeight: '400',
   },
