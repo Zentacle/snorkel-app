@@ -7,7 +7,7 @@ import type { FunctionComponent } from 'react';
 
 import Button from '_components/ui/Buttons/Button';
 
-import ProfileImage from '_assets/Profile.jpg';
+import ProfileImage from '_assets/profile-placeholder.png';
 import { attachIcons, capitalize } from '_utils/functions';
 import { Spot } from '_utils/interfaces/data/spot';
 import { Review } from '_utils/interfaces/data/review';
@@ -57,7 +57,18 @@ const DiveSiteReviews: FunctionComponent<DiveSiteReviewsProps> = ({
                 <Text style={styles.profileName}>
                   {selectedReview.user.first_name}
                 </Text>
-                <View style={styles.activityTypeContainer}>
+                <View
+                  style={[
+                    styles.activityTypeContainer,
+                    {
+                      width:
+                        selectedReview.activity_type === 'scuba'
+                          ? 55
+                          : selectedReview.activity_type === 'snorkel'
+                          ? 65
+                          : 80,
+                    },
+                  ]}>
                   <Text style={styles.activityType}>
                     {capitalize(selectedReview.activity_type)}
                   </Text>

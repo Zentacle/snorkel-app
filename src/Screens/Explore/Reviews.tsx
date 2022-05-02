@@ -25,7 +25,7 @@ import type {
 
 import RatingsGradient from '_components/ui/RatingsGradient';
 import { attachIcons, capitalize } from '_utils/functions';
-import ProfileImage from '_assets/Profile.jpg';
+import ProfileImage from '_assets/profile-placeholder.png';
 
 import { useAppSelector, useAppDispatch } from '_redux/hooks';
 import {
@@ -133,9 +133,20 @@ const Reviews: FunctionComponent<ReviewProps> = ({ navigation, route }) => {
                     <Text style={styles.profileName}>
                       {item.user.first_name}
                     </Text>
-                    <View style={styles.activityTypeContainer}>
+                    <View
+                      style={[
+                        styles.activityTypeContainer,
+                        {
+                          width:
+                            item.activity_type === 'scuba'
+                              ? 55
+                              : item.activity_type === 'snorkel'
+                              ? 65
+                              : 80,
+                        },
+                      ]}>
                       <Text style={styles.activityType}>
-                        {capitalize(item.activity_type)}
+                        {item.activity_type}
                       </Text>
                     </View>
                   </View>
@@ -260,6 +271,7 @@ const styles = StyleSheet.create({
   },
   activityType: {
     color: '#FFF',
+    textTransform: 'capitalize',
   },
   activityTypeContainer: {
     backgroundColor: '#0B94EF',
