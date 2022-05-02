@@ -48,6 +48,7 @@ const Navigator: React.FC = () => {
       SplashScreen.hide();
     });
     dispatch(autoHydrateSettings());
+    dispatch(getCurrentUser());
   }, [dispatch]);
 
   const loadingState = useAppSelector(selectAutoAuthLoadingState);
