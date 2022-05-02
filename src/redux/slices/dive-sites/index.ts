@@ -1,3 +1,4 @@
+import { getCurrentUser } from './../user/index';
 import {
   createSlice,
   createSelector,
@@ -13,6 +14,7 @@ interface NormalizedObj {
 }
 interface DiveSpotState {
   diveSpots: NormalizedObj;
+  recommended: NormalizedObj;
   loading: boolean;
   error: {
     status: boolean;
@@ -21,6 +23,7 @@ interface DiveSpotState {
 
 const initialState: DiveSpotState = {
   diveSpots: {},
+  recommended: {},
   loading: false,
   error: {
     status: false,
@@ -29,9 +32,12 @@ const initialState: DiveSpotState = {
 
 export const handleFetchRecommended = createAsyncThunk(
   'dive-sites/recommended',
-  async (_, thunkApi) => {
-    const response = await fetchRecommended();
+  async (token: string, thunkApi) => {
+    const response = await fetchRecommended(token);
     if (!response.data) {
+      if (response.msg === 'Token has expired') {
+        await thunkApi.dispatch(getCurrentUser());
+      }
       return thunkApi.rejectWithValue(response.msg);
     }
     return response.data;
@@ -91,6 +97,19 @@ export const diveSitesSlice = createSlice({
         state.loading = false;
         state.error.status = false;
         state.diveSpots[action.payload.id] = action.payload;
+      })
+      .addCase(handleFetchRecommended.pending, state => {
+        state.loading = true;
+        state.error.status = false;
+      })
+      .addCase(handleFetchRecommended.rejected, state => {
+        state.loading = false;
+        state.error.status = true;
+      })
+      .addCase(handleFetchRecommended.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error.status = false;
+        state.recommended = normalizeData(action.payload);
       });
   },
 });
@@ -119,6 +138,8 @@ export const selectLoadingState = (state: RootState) =>
   state.dive_sites.loading;
 
 export const selectErrorState = (state: RootState) => state.dive_sites.error;
+export const selectRecommendedSites = (state: RootState) =>
+  state.dive_sites.recommended;
 
 export const isDiveSiteDetailinState = (id: number) => {
   return createSelector(

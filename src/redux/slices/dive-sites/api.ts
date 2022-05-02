@@ -60,13 +60,16 @@ export async function fetchNearby(
   }
 }
 
-export async function fetchRecommended(): Promise<ResponseWithSpots> {
+export async function fetchRecommended(
+  token: string,
+): Promise<ResponseWithSpots> {
   try {
     const url = `${config.API_ENDPOINT}/spots/recs`;
     const response = fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
     }).then(res => res.json());
     return response;

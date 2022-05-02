@@ -58,9 +58,11 @@ export const loginUser = createAsyncThunk(
   'user/login',
   async (user: User, thunkApi) => {
     const response = await handleLogin(user);
+
     if (!response.data) {
       return thunkApi.rejectWithValue(response.msg);
     }
+
     const refresh_token = makeCookieHeaders(
       response.cookie_header,
     ).refresh_token_cookie;

@@ -20,8 +20,10 @@ import {
   handleFetchDiveSites,
   selectAllDiveSites,
   selectLoadingState,
+  handleFetchRecommended,
+  selectRecommendedSites,
 } from '_redux/slices/dive-sites';
-import { selectUser } from '_redux/slices/user';
+import { selectUser, selectAuthToken } from '_redux/slices/user';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
@@ -55,11 +57,14 @@ interface ExploreProps {
 const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-  const diveSites = Object.values(useAppSelector(selectAllDiveSites) || []);
+  const diveSites = Object.values(useAppSelector(selectAllDiveSites)) || [];
+  const recommended =
+    Object.values(useAppSelector(selectRecommendedSites)) || [];
   const diveSitesIsLoading = useAppSelector(selectLoadingState);
   const user = useAppSelector(selectUser);
   const [autocompleteModalOpen, toggleAutocompleteModal] =
     React.useState(false);
+  const authToken = useAppSelector(selectAuthToken);
 
   const tags: TagInterface[] = [
     {
@@ -76,13 +81,12 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
     },
   ];
 
-  // console.log('dive sites from store', diveSites);
-  // const [diveSites, setDiveSites] = React.useState<Spot>([]);
   React.useEffect(() => {
     navigation.addListener('focus', () => {
       dispatch(handleFetchDiveSites());
+      dispatch(handleFetchRecommended(authToken as string));
     });
-  }, [navigation, dispatch]);
+  }, [navigation, dispatch, authToken]);
 
   const navigateToDiveSite = (diveSpotId: number) => {
     navigation.navigate('ExploreStack', {
@@ -178,8 +182,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
             horizontal
             contentContainerStyle={styles.nearbySitesCardsContainer}
             showsHorizontalScrollIndicator={false}>
-            {diveSites.slice(0, Math.floor(diveSites.length / 2)).map(item => (
-              // <BeachPlaceHolder />
+            {diveSites.map(item => (
               <DiveSite
                 key={item.id}
                 site={item}
@@ -244,16 +247,29 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
           <ScrollView
             contentContainerStyle={styles.diveSitesCardsContainer}
             showsHorizontalScrollIndicator={false}>
-            {diveSites.slice(Math.floor(diveSites.length / 2)).map(item => (
-              <DiveSite
-                key={item.id}
-                site={item}
-                containerStyle={styles.diveSiteItemContainer}
-                imageContainerStyle={styles.diveSiteItemContainer}
-                imageStyle={styles.diveSiteItemImage}
-                onPressContainer={navigateToDiveSite}
-              />
-            ))}
+            {recommended.length
+              ? recommended.map(item => (
+                  <DiveSite
+                    key={item.id}
+                    site={item}
+                    containerStyle={styles.diveSiteItemContainer}
+                    imageContainerStyle={styles.diveSiteItemContainer}
+                    imageStyle={styles.diveSiteItemImage}
+                    onPressContainer={navigateToDiveSite}
+                  />
+                ))
+              : diveSites
+                  .slice(Math.floor(diveSites.length / 2))
+                  .map(item => (
+                    <DiveSite
+                      key={item.id}
+                      site={item}
+                      containerStyle={styles.diveSiteItemContainer}
+                      imageContainerStyle={styles.diveSiteItemContainer}
+                      imageStyle={styles.diveSiteItemImage}
+                      onPressContainer={navigateToDiveSite}
+                    />
+                  ))}
           </ScrollView>
         </View>
       </ScrollView>
