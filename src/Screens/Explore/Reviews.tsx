@@ -24,7 +24,7 @@ import type {
 } from '_utils/interfaces';
 
 import RatingsGradient from '_components/ui/RatingsGradient';
-import { attachIcons, capitalize } from '_utils/functions';
+import { attachIcons } from '_utils/functions';
 import ProfileImage from '_assets/profile-placeholder.png';
 
 import { useAppSelector, useAppDispatch } from '_redux/hooks';
