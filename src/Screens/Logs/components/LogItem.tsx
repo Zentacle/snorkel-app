@@ -54,11 +54,9 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
           <View style={styles.ratingsContainer}>
             {attachIcons(diveLog.rating, 25)}
           </View>
-          {isAdvancedLog && (
-            <View style={styles.activity_typeContainer}>
-              <Text style={styles.activity_type}>{diveLog.activity_type}</Text>
-            </View>
-          )}
+          <View style={styles.activity_typeContainer}>
+            <Text style={styles.activity_type}>{diveLog.activity_type}</Text>
+          </View>
         </View>
       </View>
 
@@ -143,9 +141,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 14,
     fontWeight: '500',
+    textTransform: 'capitalize',
   },
   details: {
-    marginTop: 10,
     marginHorizontal: 20,
   },
   detailsTitle: {
@@ -164,7 +162,7 @@ const styles = StyleSheet.create({
   },
   locationContainer: {
     flexDirection: 'row',
-    marginTop: 10,
+    marginTop: 6,
     alignItems: 'center',
   },
   locationText: {

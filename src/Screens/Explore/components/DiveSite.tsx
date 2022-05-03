@@ -126,6 +126,8 @@ const styles = StyleSheet.create({
   descriptionContainer: {
     paddingHorizontal: 15,
     paddingVertical: 7,
+    justifyContent: 'center',
+    marginTop: 5,
   },
   descriptionText: {
     color: 'black',

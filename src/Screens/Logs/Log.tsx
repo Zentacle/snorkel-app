@@ -479,13 +479,10 @@ const styles = StyleSheet.create({
   },
   note: {
     width: '100%',
-    minHeight: 150,
+    minHeight: 120,
     borderRadius: 24,
-    padding: 20,
+    paddingTop: 10,
     marginVertical: 1.5,
-    borderColor: '#e9e9e9',
-    borderWidth: StyleSheet.hairlineWidth,
-    borderStyle: 'solid',
   },
   noteHeaderContainer: {
     flexDirection: 'row',
