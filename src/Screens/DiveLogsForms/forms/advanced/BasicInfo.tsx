@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import MAIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MapView, { Marker } from 'react-native-maps';
 import { Field } from 'react-final-form';
@@ -14,15 +14,14 @@ import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
 import RatingsInputComp from '_components/ui/RatingsInputComp';
 import ImagePickerArray from '_screens/DiveLogsForms/components/ImagePickerArray';
 
-import LocationImage from '_assets/Location.png';
-import LogImage from '_assets/log-color.png';
-
 import type { FunctionComponent } from 'react';
 import type { AdvancedFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
 import { capitalize } from '_utils/functions';
 import { WIDTH } from '_utils/constants';
 import UnavailableLocationBox from '_screens/DiveLogsForms/components/UnavailableLocationBox';
 import LocationAutocompleteModal from '_screens/DiveLogsForms/components/LocationAutocompleteModal';
+import Snorkel from '_assets/scuba_icons/snorkel.svg';
+import Location from '_assets/scuba_icons/Location.svg';
 
 interface BasicInfoProps {
   values: InitialValues;
@@ -137,13 +136,15 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
             <View style={styles.mapTextContainer}>
               <View style={styles.mapTextItem}>
                 <View style={styles.mapTextImageContainer}>
-                  <Image source={LogImage} />
+                  {/* <Image source={LogImage} /> */}
+                  <Snorkel width={15} />
                 </View>
                 <Text style={styles.mapText}>{values.location?.desc}</Text>
               </View>
               <View style={styles.mapTextItem}>
                 <View style={styles.mapTextImageContainer}>
-                  <Image source={LocationImage} />
+                  {/* <Image source={LocationImage} /> */}
+                  <Location width={15} />
                 </View>
                 <Text style={styles.mapText}>
                   {values.location?.location_city}

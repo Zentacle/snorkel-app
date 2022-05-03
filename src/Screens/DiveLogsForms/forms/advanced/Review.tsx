@@ -21,12 +21,12 @@ import { FunctionComponent } from 'react';
 import type { AdvancedFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
 
 import DivingPlaceholder from '_assets/diving-placeholder.jpeg';
-import LocationImage from '_assets/Location.png';
-import DescIcon from '_assets/DescIcon.png';
 import CopyIcon from '_assets/CopySimple.png';
 import UploadIcon from '_assets/UploadSimple.png';
 import DepthArrow from '_assets/ArrowsDownUp.png';
 import DiveTimeClock from '_assets/ClockClockwise.png';
+import Snorkel from '_assets/scuba_icons/snorkel.svg';
+import Location from '_assets/scuba_icons/Location.svg';
 
 import { useAppSelector } from '_redux/hooks';
 import { selectUser } from '_redux/slices/user';
@@ -126,11 +126,11 @@ const Review: FunctionComponent<ReviewProps> = ({
         <View style={styles.details}>
           <Text style={styles.detailsTitle}>{formValues.title}</Text>
           <View style={styles.descContainer}>
-            <Image source={DescIcon} />
+            <Snorkel width={15} />
             <Text style={styles.descText}>{formValues.location?.desc}</Text>
           </View>
           <View style={styles.locationContainer}>
-            <Image source={LocationImage} />
+            <Location width={15} />
             <Text style={styles.locationText}>
               {formValues.location?.location_city}
             </Text>

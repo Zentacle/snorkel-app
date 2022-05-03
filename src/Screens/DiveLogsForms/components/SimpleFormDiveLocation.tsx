@@ -1,13 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from 'react-i18next';
 
 import type { FunctionComponent } from 'react';
 
-import LocationImage from '_assets/Location.png';
-import DescIcon from '_assets/DescIcon.png';
+import Snorkel from '_assets/scuba_icons/snorkel.svg';
+import Location from '_assets/scuba_icons/Location.svg';
 
 interface SimpleFormDiveLocationProps {
   coordinates: {
@@ -54,11 +54,11 @@ const SimpleFormDiveLocation: FunctionComponent<
           <View style={styles.locationDetails}>
             <View>
               <View style={styles.descContainer}>
-                <Image source={DescIcon} />
+                <Snorkel width={15} />
                 <Text style={styles.descText}>{desc}</Text>
               </View>
               <View style={styles.locationContainer}>
-                <Image source={LocationImage} />
+                <Location width={15} />
                 <Text style={styles.locationText}>{location_city}</Text>
               </View>
             </View>

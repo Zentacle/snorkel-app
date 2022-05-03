@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 
 import GradientBox from '_components/ui/GradientBox';
 
-import LogColor from '_assets/log-color-lar.png';
-import Location from '_assets/location-lar.png';
+import Snorkel from '_assets/scuba_icons/snorkel.svg';
+import Location from '_assets/scuba_icons/Location.svg';
 import Clock from '_assets/clock-lar.png';
 
 import type { FunctionComponent } from 'react';
@@ -64,18 +64,13 @@ const DiveLogSummary: FunctionComponent<DiveLogSummaryProps> = ({
               <Text style={styles.summaryLabel}>{t('TOTAL_DIVE_TIME')}</Text>
             </View>
             <View style={styles.summaryItem}>
-              <Image
-                style={{ width: 25, height: 25, marginBottom: 5 }}
-                source={LogColor}
-              />
+              <Snorkel width={15} />
               <Text style={styles.summaryValue}>{diveLogs.length}</Text>
               <Text style={styles.summaryLabel}>{t('DIVE_LOGS')}</Text>
             </View>
             <View style={styles.summaryItem}>
-              <Image
-                style={{ width: 20, height: 25, marginBottom: 5 }}
-                source={Location}
-              />
+              <Location width={15} />
+
               <Text style={styles.summaryValue}>
                 {calculateVisitedSites(diveLogs)}
               </Text>

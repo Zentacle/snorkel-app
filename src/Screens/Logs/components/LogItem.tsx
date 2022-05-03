@@ -7,12 +7,12 @@ import { attachIcons } from '_utils/functions';
 import type { FunctionComponent } from 'react';
 import type { DiveLogsState } from '_utils/interfaces/data/logs';
 
-import LocationImage from '_assets/Location.png';
-import DescIcon from '_assets/DescIcon.png';
 import DepthArrow from '_assets/ArrowsDownUp.png';
 import DiveTimeClock from '_assets/ClockClockwise.png';
 import { isBelowHeightThreshold } from '_utils/constants';
 import UnavailableLocationBox from './UnavailableLocationListBox';
+import Snorkel from '_assets/scuba_icons/snorkel.svg';
+import Location from '_assets/scuba_icons/Location.svg';
 
 interface LogItemProps {
   diveLog: DiveLogsState;
@@ -66,11 +66,11 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
         <View style={styles.simpleDetailsContainer}>
           <Text style={styles.detailsTitle}>{diveLog.title}</Text>
           <View style={styles.descContainer}>
-            <Image source={DescIcon} />
+            <Snorkel width={15} />
             <Text style={styles.descText}>{diveLog.spot.name}</Text>
           </View>
           <View style={styles.locationContainer}>
-            <Image source={LocationImage} />
+            <Location width={15} />
             <Text style={styles.locationText}>
               {diveLog.spot.location_city}
             </Text>

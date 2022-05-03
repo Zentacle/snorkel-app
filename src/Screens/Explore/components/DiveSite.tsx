@@ -14,7 +14,7 @@ import type { ViewStyle, ImageStyle } from 'react-native';
 import type { Spot } from '_utils/interfaces/data/spot';
 
 import DiveSiteImage from '_assets/DiveSite.jpg';
-import LocationImage from '_assets/Location.png';
+import Location from '_assets/scuba_icons/Location.svg';
 
 import { attachIcons, capitalize } from '_utils/functions';
 
@@ -55,7 +55,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = props => {
           {props.site.name}
         </Text>
         <View style={styles.locationContainer}>
-          <Image source={LocationImage} />
+          <Location width={15} />
           <Text style={styles.locationText}>
             {props.site.location_city.split(',')[0]}
           </Text>
