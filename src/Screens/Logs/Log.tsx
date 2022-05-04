@@ -22,8 +22,6 @@ import type {
 import type { FunctionComponent } from 'react';
 import type { RootStackParamList, LogsStackParamList } from '_utils/interfaces';
 
-import LocationImage from '_assets/Location.png';
-import DescIcon from '_assets/DescIcon.png';
 import { attachIcons } from '_utils/functions';
 import ProfileImage from '_assets/Profile.jpg';
 import GradientBox from '_components/ui/GradientBox';
@@ -34,6 +32,9 @@ import { handleFetchSingleDiveLog } from '_redux/slices/dive-logs/api';
 
 import DiveLogLoading from '_components/reusables/Placeholders/DiveLogs/DiveLog';
 import UnavailableLocationBox from './components/UnavailabbleLocationDetailBox';
+
+import Snorkel from '_assets/scuba_icons/snorkel.svg';
+import Location from '_assets/scuba_icons/Location.svg';
 
 type LogNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<LogsStackParamList, 'LogDetail'>,
@@ -156,11 +157,11 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
           <View style={styles.contentContainer}>
             <Text style={styles.mainDescription}>{diveLog.review.title}</Text>
             <View style={styles.locationContainer}>
-              <Image source={DescIcon} />
+              <Snorkel width={15} />
               <Text style={styles.locationText}>{diveLog.spot.name}</Text>
             </View>
             <View style={styles.locationContainer}>
-              <Image source={LocationImage} />
+              <Location width={15} />
               <Text style={styles.locationText}>
                 {diveLog.spot.location_city}
               </Text>
@@ -478,13 +479,10 @@ const styles = StyleSheet.create({
   },
   note: {
     width: '100%',
-    minHeight: 150,
+    minHeight: 120,
     borderRadius: 24,
-    padding: 20,
+    paddingTop: 10,
     marginVertical: 1.5,
-    borderColor: '#e9e9e9',
-    borderWidth: StyleSheet.hairlineWidth,
-    borderStyle: 'solid',
   },
   noteHeaderContainer: {
     flexDirection: 'row',

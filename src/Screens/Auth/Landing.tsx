@@ -17,10 +17,21 @@ import SMButton from '_components/ui/Buttons/SM-Logins';
 import Button from '_components/ui/Buttons/Button';
 import CoverImage from '_assets/main-screen.png';
 import { actionButtons } from './utils';
-import type { ActionButtons } from './utils/interfaces';
+import type {
+  ActionButtons,
+  AppleAuthReturn,
+  GoogleAuthReturn,
+} from './utils/interfaces';
 import { useAppDispatch, useAppSelector } from '_redux/hooks';
-import { googleRegister, selectLoadingState } from '_redux/slices/user';
-import { GoogleLoginResponse } from '_utils/interfaces/data/user';
+import {
+  googleRegister,
+  selectLoadingState,
+  appleRegister,
+} from '_redux/slices/user';
+import {
+  AppleLoginResponse,
+  GoogleLoginResponse,
+} from '_utils/interfaces/data/user';
 
 import { isBelowHeightThreshold, HEIGHT } from '_utils/constants';
 
@@ -72,7 +83,7 @@ const Landing: FunctionComponent<LandingProps> = props => {
       case 'Google':
         {
           const credentialObj = await actionButton.action();
-          if (credentialObj?.credential) {
+          if ((credentialObj as GoogleAuthReturn)?.credential) {
             const response = await dispatch(
               googleRegister(credentialObj as { credential: string }),
             );
@@ -105,7 +116,30 @@ const Landing: FunctionComponent<LandingProps> = props => {
         break;
       case 'Apple':
         {
-          // not yet implemented. Need to test on real device and fix android
+          const credentialObj = await actionButton.action();
+          if (credentialObj as AppleAuthReturn) {
+            const response = await dispatch(
+              appleRegister(credentialObj as AppleAuthReturn),
+            );
+
+            // assume user has filled onBoarding if username and profile_pic exist
+            const userPreviouslyFilledOnBoardingData = !!(
+              (response.payload as AppleLoginResponse).user.username &&
+              (response.payload as AppleLoginResponse).user.profile_pic
+            );
+
+            if (appleRegister.fulfilled.match(response)) {
+              if (userPreviouslyFilledOnBoardingData) {
+                navigateToApp();
+              } else if (
+                (response.payload as AppleLoginResponse).user.username
+              ) {
+                navigateToCameraPermissions();
+              } else {
+                navigateToOnBoarding();
+              }
+            }
+          }
         }
         break;
       default:

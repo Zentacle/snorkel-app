@@ -14,7 +14,7 @@ import type { ViewStyle, ImageStyle } from 'react-native';
 import type { Spot } from '_utils/interfaces/data/spot';
 
 import DiveSiteImage from '_assets/DiveSite.jpg';
-import LocationImage from '_assets/Location.png';
+import Location from '_assets/scuba_icons/Location.svg';
 
 import { attachIcons, capitalize } from '_utils/functions';
 
@@ -45,17 +45,17 @@ const DiveSite: FunctionComponent<DiveSiteProps> = props => {
             source={DiveSiteImage}
           />
         )}
-        <View style={styles.imageCountContainer}>
+        {/* <View style={styles.imageCountContainer}>
           <Icon name="image-outline" size={18} color="#FFF" />
           <Text style={styles.imageCountText}>24</Text>
-        </View>
+        </View> */}
       </View>
       <View style={styles.descriptionContainer}>
         <Text numberOfLines={1} style={styles.descriptionText}>
           {props.site.name}
         </Text>
         <View style={styles.locationContainer}>
-          <Image source={LocationImage} />
+          <Location width={15} />
           <Text style={styles.locationText}>
             {props.site.location_city.split(',')[0]}
           </Text>
@@ -126,6 +126,8 @@ const styles = StyleSheet.create({
   descriptionContainer: {
     paddingHorizontal: 15,
     paddingVertical: 7,
+    justifyContent: 'center',
+    marginTop: 5,
   },
   descriptionText: {
     color: 'black',

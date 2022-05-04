@@ -1,22 +1,12 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  ScrollView,
-  // TouchableWithoutFeedback,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-// import Ionicon from 'react-native-vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
 
 import ImageCarousel from '_components/reusables/ImageCarousel';
 import DiveLocation from './components/DiveLocation';
 import DiveSiteReviews from './components/DiveSiteReviews';
-// import GradientText from '_components/ui/GradientText';
 import DiveSiteComp from './components/DiveSite';
-// import DiveShopComp from './components/DiveShop';
 import Footer from './components/DiveSiteFooter';
 import { useAppSelector, useAppDispatch } from '_redux/hooks';
 import {
@@ -44,11 +34,11 @@ import type {
 } from '_utils/interfaces';
 import type { Spot } from '_utils/interfaces/data/spot';
 
-import LocationImage from '_assets/Location.png';
 import { capitalize } from '_utils/functions';
 import { isBelowHeightThreshold, WIDTH } from '_utils/constants';
 import DiveSiteLoading from '_components/reusables/Placeholders/DiveSiteLoading';
 import UnavailableLocationBox from '_screens/Logs/components/UnavailabbleLocationDetailBox';
+import Location from '_assets/scuba_icons/Location.svg';
 
 type DiveSiteNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<ExploreStackParamList, 'DiveSite'>,
@@ -184,7 +174,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
         <View style={styles.contentContainer}>
           <Text style={styles.mainDescription}>{diveSite.name}</Text>
           <View style={styles.locationContainer}>
-            <Image source={LocationImage} />
+            <Location width={15} />
             <Text style={styles.locationText}>{diveSite.location_city}</Text>
           </View>
           <View style={styles.ratingsContainer}>

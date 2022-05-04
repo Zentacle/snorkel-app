@@ -218,9 +218,13 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
       ? simpleDiveLogsForm.entry
       : t('SHORE').toLowerCase(),
     // @ts-ignore
-    startDate: logDate,
+    startDate: simpleDiveLogsForm.date_dived
+      ? new Date(simpleDiveLogsForm.date_dived)
+      : logDate,
     // @ts-ignore
-    startTime: logDate,
+    startTime: simpleDiveLogsForm.date_dived
+      ? new Date(simpleDiveLogsForm.date_dived)
+      : logDate,
     weight: simpleDiveLogsForm.weight ? simpleDiveLogsForm.weight : 5,
     start_air: simpleDiveLogsForm.start_air ? simpleDiveLogsForm.start_air : 40,
     end_air: simpleDiveLogsForm.end_air ? simpleDiveLogsForm.end_air : 40,

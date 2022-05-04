@@ -23,6 +23,7 @@ export interface CookieHeaders {
 
 export interface AuthData {
   auth_token: string;
+  refresh_token: string;
   message: string;
   status: string;
 }
@@ -48,3 +49,5 @@ export interface GoogleLoginResponse {
   user: User;
   cookie_header?: string;
 }
+
+export interface AppleLoginResponse extends GoogleLoginResponse {}

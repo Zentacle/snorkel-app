@@ -1,17 +1,11 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MapView from 'react-native-maps';
 
 import type { FunctionComponent } from 'react';
 
-import LocationImage from '_assets/Location.png';
+import Location from '_assets/scuba_icons/Location.svg';
 
 interface DiveShopProps {
   onPressContainer?: () => void;
@@ -37,7 +31,7 @@ const DiveShop: FunctionComponent<DiveShopProps> = props => {
       <View style={styles.descriptionContainer}>
         <Text style={styles.descriptionText}>Dive Shop on the beach</Text>
         <View style={styles.locationContainer}>
-          <Image source={LocationImage} />
+          <Location width={15} />
           <Text style={styles.locationText}>East Bali, Indonesia</Text>
         </View>
         <View style={styles.ratingsContainer}>

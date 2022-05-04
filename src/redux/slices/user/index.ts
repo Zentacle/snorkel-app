@@ -1,3 +1,4 @@
+import { AppleAuthReturn } from './../../../Screens/Auth/utils/interfaces';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -7,6 +8,7 @@ import {
   handleUpdateUser,
   handleGoogleregister,
   handleGetCurrentUser,
+  handleAppleregister,
 } from './api';
 import { User } from '_utils/interfaces/data/user';
 import { makeCookieHeaders } from '_utils/functions';
@@ -63,16 +65,15 @@ export const loginUser = createAsyncThunk(
       return thunkApi.rejectWithValue(response.msg);
     }
 
-    const refresh_token = makeCookieHeaders(
-      response.cookie_header,
-    ).refresh_token_cookie;
-
-    await setStorage(response.user, response.data.auth_token, refresh_token);
+    await setStorage(
+      response.user,
+      response.data.auth_token,
+      response.data.refresh_token,
+    );
     await flagExistingUser();
     return {
       user: response.user,
       data: response.data,
-      refresh_token,
     };
   },
 );
@@ -84,14 +85,11 @@ export const registerUser = createAsyncThunk(
     if (!response.auth_token) {
       return thunkApi.rejectWithValue(response.msg);
     }
-    const refresh_token = makeCookieHeaders(
-      response.cookie_header,
-    ).refresh_token_cookie;
-    await setStorage(null, response.auth_token, refresh_token);
+
+    await setStorage(null, response.auth_token, response.refresh_token);
     await flagExistingUser();
     return {
       ...response,
-      refresh_token,
     };
   },
 );
@@ -160,10 +158,6 @@ export const getCurrentUser = createAsyncThunk(
 );
 
 export const googleRegister = createAsyncThunk(
-  // <
-  // GoogleLoginResponse,
-  // { credential: string }
-  // >
   'user/googleRegister',
   async (body: { credential: string }, thunkApi) => {
     const response = await handleGoogleregister(body);
@@ -172,16 +166,41 @@ export const googleRegister = createAsyncThunk(
       return thunkApi.rejectWithValue('Unable to register with Google');
     }
 
-    const refresh_token = makeCookieHeaders(
-      response.cookie_header as string,
-    ).refresh_token_cookie;
+    await setStorage(
+      response.user,
+      response.data.auth_token,
+      response.data.refresh_token,
+    );
 
-    await setStorage(response.user, response.data.auth_token, refresh_token);
+    await flagExistingUser();
 
     return {
       user: response.user,
       data: response.data,
-      refresh_token,
+    };
+  },
+);
+
+export const appleRegister = createAsyncThunk(
+  'user/appleRegister',
+  async (body: AppleAuthReturn, thunkApi) => {
+    const response = await handleAppleregister(body);
+
+    if (!response.data.auth_token) {
+      return thunkApi.rejectWithValue('Unable to register with Apple');
+    }
+
+    await setStorage(
+      response.user,
+      response.data.auth_token,
+      response.data.refresh_token,
+    );
+
+    await flagExistingUser();
+
+    return {
+      user: response.user,
+      data: response.data,
     };
   },
 );
@@ -214,7 +233,7 @@ export const userSlice = createSlice({
         state.active_user = action.payload.user;
         state.auth_token = action.payload.data.auth_token;
         state.existing_user = true;
-        state.refresh_token = action.payload.refresh_token;
+        state.refresh_token = action.payload.data.refresh_token;
       })
       .addCase(registerUser.pending, state => {
         state.loading = true;
@@ -278,7 +297,7 @@ export const userSlice = createSlice({
         state.auth_token = action.payload.data.auth_token;
         state.active_user = action.payload.user;
         state.existing_user = true;
-        state.refresh_token = action.payload.refresh_token as string;
+        state.refresh_token = action.payload.data.refresh_token as string;
       })
       .addCase(getCurrentUser.fulfilled, (state, action) => {
         state.loading = false;
@@ -302,6 +321,23 @@ export const userSlice = createSlice({
       })
       .addCase(handleCheckExistingUser.fulfilled, (state, action) => {
         state.existing_user = action.payload;
+      })
+      .addCase(appleRegister.pending, state => {
+        state.loading = true;
+      })
+      .addCase(appleRegister.rejected, (state, action) => {
+        state.loading = false;
+        state.error.status = true;
+        state.error.message = action.payload as string;
+      })
+      .addCase(appleRegister.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error.status = false;
+        state.error.message = null;
+        state.auth_token = action.payload.data.auth_token;
+        state.active_user = action.payload.user;
+        state.existing_user = true;
+        state.refresh_token = action.payload.data.refresh_token as string;
       });
   },
 });

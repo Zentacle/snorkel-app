@@ -24,7 +24,7 @@ import type {
 } from '_utils/interfaces';
 
 import RatingsGradient from '_components/ui/RatingsGradient';
-import { attachIcons, capitalize } from '_utils/functions';
+import { attachIcons } from '_utils/functions';
 import ProfileImage from '_assets/profile-placeholder.png';
 
 import { useAppSelector, useAppDispatch } from '_redux/hooks';
@@ -99,21 +99,23 @@ const Reviews: FunctionComponent<ReviewProps> = ({ navigation, route }) => {
         </View>
         <View style={styles.ratingsContainer}>
           {diveSite.ratings &&
-            Object.entries(diveSite.ratings).map(([level, count], index) => (
-              <View key={index} style={styles.ratingItemContainer}>
-                <View style={styles.ratingItemStarContainer}>
-                  <Text style={styles.ratingItemStarLabel}>{level}</Text>
-                  <MUIcon name="star" size={18} color="#aa00ff" />
+            Object.entries(diveSite.ratings)
+              .map(([level, count], index) => (
+                <View key={index} style={styles.ratingItemContainer}>
+                  <View style={styles.ratingItemStarContainer}>
+                    <Text style={styles.ratingItemStarLabel}>{level}</Text>
+                    <MUIcon name="star" size={18} color="#aa00ff" />
+                  </View>
+                  <RatingsGradient
+                    width={calculatePercentage(
+                      count,
+                      parseInt(diveSite.num_reviews),
+                    )}
+                  />
+                  <Text style={styles.ratingItemCount}>{count}</Text>
                 </View>
-                <RatingsGradient
-                  width={calculatePercentage(
-                    count,
-                    parseInt(diveSite.num_reviews),
-                  )}
-                />
-                <Text style={styles.ratingItemCount}>{count}</Text>
-              </View>
-            ))}
+              ))
+              .reverse()}
         </View>
         <View style={styles.reviews}>
           {reviews.map((item, index) => (
@@ -175,9 +177,12 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   backButtonContainer: {
-    marginHorizontal: 20,
-    marginTop: Platform.OS === 'ios' ? 40 : 20,
-    paddingBottom: 10,
+    paddingHorizontal: 20,
+    marginTop: Platform.OS === 'ios' ? 60 : 30,
+    paddingBottom: 15,
+    borderBottomColor: '#CECECE',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    marginBottom: 30,
   },
   mainContent: {
     marginHorizontal: 25,

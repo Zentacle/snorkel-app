@@ -3,11 +3,9 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   ScrollView,
   SafeAreaView,
   TouchableWithoutFeedback,
-  Platform,
 } from 'react-native';
 import FEIcon from 'react-native-vector-icons/Feather';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -31,7 +29,7 @@ import GradientText from '_components/ui/GradientText';
 import DiveShopComp from './components/DiveShop';
 import Footer from './components/DiveShopFooter';
 
-import LocationImage from '_assets/Location.png';
+import Location from '_assets/scuba_icons/Location.svg';
 import { isBelowHeightThreshold } from '_utils/constants';
 
 type DiveShopNavigationProps = CompositeNavigationProp<
@@ -107,7 +105,7 @@ const DiveShop: FunctionComponent<DiveShopProps> = ({ navigation }) => {
           <View>
             <Text style={styles.mainDescription}>Maui Dreams</Text>
             <View style={styles.locationContainer}>
-              <Image source={LocationImage} />
+              <Location width={15} />
               <Text style={styles.locationText}>East Bali, Indonesia</Text>
             </View>
             <View style={styles.ratingsContainer}>

@@ -27,10 +27,18 @@ import {
   loginUser,
   googleRegister,
   selectLoadingState,
+  appleRegister,
 } from '_redux/slices/user';
 import type { User } from '_utils/interfaces/data/user';
-import type { ActionButtons } from './utils/interfaces';
-import { GoogleLoginResponse } from '_utils/interfaces/data/user';
+import type {
+  ActionButtons,
+  GoogleAuthReturn,
+  AppleAuthReturn,
+} from './utils/interfaces';
+import {
+  GoogleLoginResponse,
+  AppleLoginResponse,
+} from '_utils/interfaces/data/user';
 
 import { isBelowHeightThreshold, HEIGHT } from '_utils/constants';
 
@@ -106,7 +114,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
       case 'Google':
         {
           const credentialObj = await actionButton.action();
-          if (credentialObj?.credential) {
+          if ((credentialObj as GoogleAuthReturn)?.credential) {
             const response = await dispatch(
               googleRegister(credentialObj as { credential: string }),
             );
@@ -139,7 +147,30 @@ const SignIn: FunctionComponent<SignInProps> = props => {
         break;
       case 'Apple':
         {
-          // not yet implemented. Need to test on real device and fix android
+          const credentialObj = await actionButton.action();
+          if (credentialObj as AppleAuthReturn) {
+            const response = await dispatch(
+              appleRegister(credentialObj as AppleAuthReturn),
+            );
+
+            // assume user has filled onBoarding if username and profile_pic exist
+            const userPreviouslyFilledOnBoardingData = !!(
+              (response.payload as AppleLoginResponse).user.username &&
+              (response.payload as AppleLoginResponse).user.profile_pic
+            );
+
+            if (appleRegister.fulfilled.match(response)) {
+              if (userPreviouslyFilledOnBoardingData) {
+                navigateToApp();
+              } else if (
+                (response.payload as AppleLoginResponse).user.username
+              ) {
+                navigateToCameraPermissions();
+              } else {
+                navigateToOnBoarding();
+              }
+            }
+          }
         }
         break;
       default:
