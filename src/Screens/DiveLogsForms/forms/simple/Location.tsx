@@ -76,27 +76,29 @@ const Location: FunctionComponent<LocationAndImageProps> = ({ location }) => {
       ) : (
         <View>
           <Text style={styles.headerLabel}>{t('DIVE_LOCATION')}</Text>
-          <View style={styles.subContainer}>
-            <Pressable onPress={openLocationModal}>
-              <GradientCircle style={styles.iconContainer}>
-                <IOIcon name="location-outline" size={25} color="white" />
-              </GradientCircle>
-            </Pressable>
-            <GradientText
-              gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-              start={{
-                x: 0,
-                y: 0,
-              }}
-              end={{
-                x: 0.06,
-                y: 1.8,
-              }}
-              gradientLocations={[0.01, 1, 1]}
-              style={styles.actionText}>
-              {t('ADD_LOCATION')}
-            </GradientText>
-          </View>
+          <Pressable onPress={openLocationModal}>
+            <View style={styles.subContainer}>
+              <Pressable onPress={openLocationModal}>
+                <GradientCircle style={styles.iconContainer}>
+                  <IOIcon name="location-outline" size={25} color="white" />
+                </GradientCircle>
+              </Pressable>
+              <GradientText
+                gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+                start={{
+                  x: 0,
+                  y: 0,
+                }}
+                end={{
+                  x: 0.06,
+                  y: 1.8,
+                }}
+                gradientLocations={[0.01, 1, 1]}
+                style={styles.actionText}>
+                {t('ADD_LOCATION')}
+              </GradientText>
+            </View>
+          </Pressable>
         </View>
       )}
 
