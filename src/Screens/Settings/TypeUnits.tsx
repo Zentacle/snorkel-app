@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import {
   View,
   Text,
@@ -159,9 +159,16 @@ const TypeUnits: FunctionComponent<TypeUnitsTypeProps> = ({ navigation }) => {
                   style={styles.selectionText}>
                   {capitalize(measurement.name)}
                 </GradientText>
-                <Text style={styles.selectionLabel}>
-                  {measurement.types.map(type => `${type} `)}
-                </Text>
+                <View style={styles.selectionLabelContainer}>
+                  {measurement.types.map((type, mIndex) => (
+                    <Fragment key={mIndex}>
+                      <Text style={styles.selectionLabel}>{type}</Text>
+                      {mIndex !== measurement.types.length - 1 && (
+                        <View style={styles.dot} />
+                      )}
+                    </Fragment>
+                  ))}
+                </View>
               </View>
             </TouchableWithoutFeedback>
           );
@@ -234,11 +241,24 @@ const styles = StyleSheet.create({
   selectionLabel: {
     color: 'black',
   },
+  selectionLabelContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 15,
+  },
   selectedType: {
     borderRadius: 12,
     paddingVertical: 1.5,
     paddingHorizontal: 1.5,
     elevation: 2,
+  },
+  dot: {
+    width: 2.4,
+    height: 2.4,
+    borderRadius: 1.2,
+    backgroundColor: '#828993',
+    marginHorizontal: 7,
+    marginTop: 4,
   },
 });
 
