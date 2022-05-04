@@ -326,6 +326,7 @@ const styles = StyleSheet.create({
     borderRadius: 1.2,
     backgroundColor: '#828993',
     marginLeft: 10,
+    marginRight: 5,
     marginTop: 4,
   },
   ratingsContainer: {
