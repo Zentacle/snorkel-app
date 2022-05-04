@@ -104,7 +104,7 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
         <Text style={styles.displayName}>{user?.display_name}</Text>
 
         <DiveLogSummary diveLogs={diveLogs} />
-        <SubscriptionBox />
+        {/* <SubscriptionBox /> */}
         {diveLogsIsLoading && !diveLogs.length ? (
           <ProfileDiveLogs />
         ) : (

@@ -72,7 +72,7 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
       <ScrollView
         style={styles.contentContainer}
         showsVerticalScrollIndicator={false}>
-        <View style={styles.subscriptionContainer}>
+        {/* <View style={styles.subscriptionContainer}>
           <GradientBox
             style={styles.subscriptionBox}
             gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
@@ -94,7 +94,7 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
               </Text>
             </View>
           </GradientBox>
-        </View>
+        </View> */}
         <View style={styles.pagesSectionContainer}>
           <Text style={styles.pagesLabel}>{t('ACCOUNT')}</Text>
           <View>
