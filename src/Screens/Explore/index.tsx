@@ -146,7 +146,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
             );
           }}
         />
-        <ScrollView
+        {/* <ScrollView
           showsHorizontalScrollIndicator={false}
           horizontal
           contentContainerStyle={styles.tagScrollContainer}>
@@ -155,13 +155,13 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
               {tag.name}
             </Tag>
           ))}
-        </ScrollView>
+        </ScrollView> */}
         <View style={styles.nearbySites}>
           <View style={styles.nearbySitesTextContainer}>
             <Text style={styles.nearbySitesMainText}>
               {t('explore.NEARBY_SITES_MAIN_TEXT')}
             </Text>
-            <TouchableWithoutFeedback>
+            {/* <TouchableWithoutFeedback>
               <GradientText
                 gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
                 start={{
@@ -176,7 +176,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
                 style={styles.nearbySitesMapText}>
                 {t('VIEW_MAP')}
               </GradientText>
-            </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback> */}
           </View>
           <ScrollView
             horizontal
@@ -227,7 +227,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
         <View style={styles.diveSites}>
           <View style={styles.diveSitesTextContainer}>
             <Text style={styles.diveSitesMainText}>{t('RECOMMENDED')}</Text>
-            <TouchableWithoutFeedback>
+            {/* <TouchableWithoutFeedback>
               <GradientText
                 gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
                 start={{
@@ -242,7 +242,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
                 style={styles.diveSitesMapText}>
                 {t('VIEW_MAP')}
               </GradientText>
-            </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback> */}
           </View>
           <ScrollView
             contentContainerStyle={styles.diveSitesCardsContainer}
@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   nearbySites: {
-    marginTop: 20,
+    marginTop: 30,
   },
   nearbySiteItemContainer: {
     width: isBelowWidthThreshold ? WIDTH * 0.75 : WIDTH * 0.8,
