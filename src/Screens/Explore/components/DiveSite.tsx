@@ -45,10 +45,10 @@ const DiveSite: FunctionComponent<DiveSiteProps> = props => {
             source={DiveSiteImage}
           />
         )}
-        <View style={styles.imageCountContainer}>
+        {/* <View style={styles.imageCountContainer}>
           <Icon name="image-outline" size={18} color="#FFF" />
           <Text style={styles.imageCountText}>24</Text>
-        </View>
+        </View> */}
       </View>
       <View style={styles.descriptionContainer}>
         <Text numberOfLines={1} style={styles.descriptionText}>
