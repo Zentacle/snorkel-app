@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
   resultContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 5,
+    marginVertical: 10,
   },
   placeContainer: {
     marginLeft: 15,
