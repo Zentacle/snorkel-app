@@ -61,7 +61,6 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
       setSuggestions(response.data);
       setLoading(false);
     }
-    console.log(response.data);
   });
 
   // React.useEffect(() => {
