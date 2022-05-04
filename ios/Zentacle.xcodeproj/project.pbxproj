@@ -12,10 +12,11 @@
 		0E35FE66278F3E8D0080B9BF /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E35FE65278F3E8D0080B9BF /* Launch Screen.storyboard */; };
 		0E992FA627E9C6DD0043CDB2 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0E992FA527E9C6DD0043CDB2 /* Config.xcconfig */; };
 		0E9C3D25279A4D410020D871 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9C3D24279A4D410020D871 /* File.swift */; };
+		0EB1366F28233FA000530DD2 /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EB1366D28233F7300530DD2 /* AppTrackingTransparency.framework */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		6172F2D35A4C3AA820D92908 /* libPods-Zentacle.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6423831EA8574132BED9D8CC /* libPods-Zentacle.a */; };
+		6172F2D35A4C3AA820D92908 /* libPods-Zentacle.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6423831EA8574132BED9D8CC /* libPods-Zentacle.a */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7EF68E3733C33B6898317E18 /* libPods-Zentacle-ZentacleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ABFE59519B596E51CEFDCCC0 /* libPods-Zentacle-ZentacleTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -39,6 +40,7 @@
 		0E4642132799D6E400EE1D9F /* Zentacle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Zentacle.entitlements; path = Zentacle/Zentacle.entitlements; sourceTree = "<group>"; };
 		0E992FA527E9C6DD0043CDB2 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		0E9C3D24279A4D410020D871 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		0EB1366D28233F7300530DD2 /* AppTrackingTransparency.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppTrackingTransparency.framework; path = System/Library/Frameworks/AppTrackingTransparency.framework; sourceTree = SDKROOT; };
 		0ED8D8F3279A1E2F00944708 /* Zentacle-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Zentacle-Bridging-Header.h"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Zentacle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zentacle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Zentacle/AppDelegate.h; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EB1366F28233FA000530DD2 /* AppTrackingTransparency.framework in Frameworks */,
 				6172F2D35A4C3AA820D92908 /* libPods-Zentacle.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -110,6 +113,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0EB1366D28233F7300530DD2 /* AppTrackingTransparency.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				6423831EA8574132BED9D8CC /* libPods-Zentacle.a */,
 				ABFE59519B596E51CEFDCCC0 /* libPods-Zentacle-ZentacleTests.a */,
@@ -204,7 +208,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				0E992F9A27E925F60043CDB2 /* PBXTargetDependency */,
 				0E992F9C27E925F60043CDB2 /* PBXTargetDependency */,
 				0E992F9E27E925F60043CDB2 /* PBXTargetDependency */,
 				0E992FA027E925F60043CDB2 /* PBXTargetDependency */,
@@ -449,9 +452,6 @@
 			target = 13B07F861A680F5B00A75B9A /* Zentacle */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
-		0E992F9A27E925F60043CDB2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-		};
 		0E992F9C27E925F60043CDB2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 		};
@@ -532,7 +532,7 @@
 				CODE_SIGN_ENTITLEMENTS = Zentacle/Zentacle.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = 9C8EQ3DGNG;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Zentacle/Info.plist;
@@ -540,7 +540,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.12;
+				MARKETING_VERSION = 1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -566,14 +566,14 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = 9C8EQ3DGNG;
 				INFOPLIST_FILE = Zentacle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.12;
+				MARKETING_VERSION = 1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
