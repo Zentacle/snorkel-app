@@ -30,16 +30,26 @@ async function appleSignIn() {
     //   appleAuthRequestResponse.user,
     // );
 
-    console.log(
-      'auth response ios apple',
-      appleAuthRequestResponse,
-      // credentialState,
-    );
+    console.log('apple auth response', appleAuthRequestResponse);
 
     // use credentialState response to ensure the user is authenticated
     // if (credentialState === appleAuth.State.AUTHORIZED) {
-    //   // user is authenticated
-    // }
+    // user is authenticated
+    return {
+      code: appleAuthRequestResponse.authorizationCode,
+      id_token: appleAuthRequestResponse.identityToken,
+      // state: credentialState,
+      user: {
+        email: appleAuthRequestResponse.email,
+        name: {
+          firstName: appleAuthRequestResponse.fullName?.givenName,
+          lastName: appleAuthRequestResponse.fullName?.familyName,
+        },
+      },
+      // };
+    };
+
+    return null;
   } catch (err) {
     console.log('error', err);
   }
