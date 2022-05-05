@@ -100,30 +100,34 @@ const Navigator: React.FC = () => {
 
   const Stack = createNativeStackNavigator<RootStackParamList>();
 
-  if (!loggedInState) {
-    return (
-      <NavigationContainer linking={linking}>
-        <Stack.Navigator
-          initialRouteName="Auth"
-          screenOptions={{
-            headerShown: false,
-          }}>
-          <Stack.Screen name="Auth" component={AuthNavigator} />
-          <Stack.Screen name="NotFound" component={NotFound} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-  }
+  // if (!loggedInState) {
+  //   return (
+  //     <NavigationContainer linking={linking}>
+  //       <Stack.Navigator
+  //         initialRouteName="Auth"
+  //         screenOptions={{
+  //           headerShown: false,
+  //         }}>
+  //         <Stack.Screen name="NotFound" component={NotFound} />
+  //       </Stack.Navigator>
+  //     </NavigationContainer>
+  //   );
+  // }
 
   return (
     <NavigationContainer linking={linking}>
       <Stack.Navigator
         initialRouteName={
-          userPreviouslyFilledOnBoardingData ? 'App' : 'OnBoarding'
+          loggedInState
+            ? userPreviouslyFilledOnBoardingData
+              ? 'App'
+              : 'OnBoarding'
+            : 'Auth'
         }
         screenOptions={{
           headerShown: false,
         }}>
+        <Stack.Screen name="Auth" component={AuthNavigator} />
         <Stack.Screen name="OnBoarding" component={OnboardingNavigator} />
         <Stack.Screen name="App" component={AppTabsNavigator} />
         <Stack.Screen name="ExploreStack" component={ExploreNavigator} />
