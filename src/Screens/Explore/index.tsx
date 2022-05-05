@@ -1,18 +1,11 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import { Form, Field } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
 
 import SearchInput from '_components/ui/SearchInput';
-import Tag from '_components/ui/Tag';
-import GradientText from '_components/ui/GradientText';
+// import Tag from '_components/ui/Tag';
+// import GradientText from '_components/ui/GradientText';
 import DiveSite from './components/DiveSite';
 // import DiveShop from './components/DiveShop';
 import { useAppDispatch, useAppSelector } from '_redux/hooks';
@@ -30,20 +23,20 @@ import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import type { CompositeNavigationProp } from '@react-navigation/native';
 import type { FunctionComponent } from 'react';
 import type { RootStackParamList, AppTabsParamList } from '_utils/interfaces';
-import type { ImageSourcePropType } from 'react-native';
+// import type { ImageSourcePropType } from 'react-native';
 
 import BeachLoading from '_components/reusables/Placeholders/BeachLoading/index';
-import Newest from '_assets/tags/newest.png';
-import Popular from '_assets/tags/popular.png';
-import TopRating from '_assets/tags/top-rating.png';
+// import Newest from '_assets/tags/newest.png';
+// import Popular from '_assets/tags/popular.png';
+// import TopRating from '_assets/tags/top-rating.png';
 import AutocompleteModal from './components/AutocompleteModal';
 
 import { WIDTH, HEIGHT, isBelowWidthThreshold } from '_utils/constants';
 
-interface TagInterface {
-  name: string;
-  imageIcon: ImageSourcePropType;
-}
+// interface TagInterface {
+//   name: string;
+//   imageIcon: ImageSourcePropType;
+// }
 
 type ExploreNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<AppTabsParamList, 'Explore'>,
@@ -66,20 +59,20 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
     React.useState(false);
   const authToken = useAppSelector(selectAuthToken);
 
-  const tags: TagInterface[] = [
-    {
-      name: t('POPULAR'),
-      imageIcon: Popular,
-    },
-    {
-      name: t('NEWEST'),
-      imageIcon: Newest,
-    },
-    {
-      name: t('TOP_RATING'),
-      imageIcon: TopRating,
-    },
-  ];
+  // const tags: TagInterface[] = [
+  //   {
+  //     name: t('POPULAR'),
+  //     imageIcon: Popular,
+  //   },
+  //   {
+  //     name: t('NEWEST'),
+  //     imageIcon: Newest,
+  //   },
+  //   {
+  //     name: t('TOP_RATING'),
+  //     imageIcon: TopRating,
+  //   },
+  // ];
 
   React.useEffect(() => {
     navigation.addListener('focus', () => {
@@ -118,7 +111,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
         nestedScrollEnabled
         keyboardShouldPersistTaps="handled">
         <Text style={styles.welcomeText}>
-          {t('WELCOME')},&nbsp;{user?.first_name}!
+          {t('WELCOME')},&nbsp; {user ? user.first_name : t('FRIEND')}!
         </Text>
         <Form
           onSubmit={() => {}}
