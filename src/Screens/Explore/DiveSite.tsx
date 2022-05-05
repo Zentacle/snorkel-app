@@ -149,6 +149,12 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
     });
   };
 
+  const navigateToAuth = () => {
+    navigation.navigate('Auth', {
+      screen: 'Landing',
+    });
+  };
+
   if (isLoading) {
     return <DiveSiteLoading />;
     // return <ActivityIndicator style={{ flex: 1 }} size="large" color="grey" />;
@@ -286,7 +292,10 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
           </View>
         </View> */}
       </ScrollView>
-      <Footer navigateToDiveLogForm={navigateToDiveLogForm} />
+      <Footer
+        navigateToAuth={navigateToAuth}
+        navigateToDiveLogForm={navigateToDiveLogForm}
+      />
     </View>
   );
 };

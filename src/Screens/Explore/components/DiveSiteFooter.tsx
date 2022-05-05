@@ -4,15 +4,19 @@ import { useTranslation } from 'react-i18next';
 
 import type { FunctionComponent } from 'react';
 
+import { useAppSelector } from '_redux/hooks';
+import { selectUser } from '_redux/slices/user';
 import Button from '_components/ui/Buttons/Button';
 import { isBelowHeightThreshold } from '_utils/constants';
 
 interface DiveSiteFooterProps {
   navigateToDiveLogForm: () => void;
+  navigateToAuth: () => void;
 }
 
 const DiveSiteFooter: FunctionComponent<DiveSiteFooterProps> = props => {
   const { t } = useTranslation();
+  const user = useAppSelector(selectUser);
 
   return (
     <View style={styles.container}>
@@ -21,7 +25,7 @@ const DiveSiteFooter: FunctionComponent<DiveSiteFooterProps> = props => {
         <Text style={styles.logLabel}>{t('DIVE_LOGS')}</Text>
       </View>
       <Button
-        onPress={props.navigateToDiveLogForm}
+        onPress={user ? props.navigateToDiveLogForm : props.navigateToAuth}
         gradient
         gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
         gradientLocations={[0.01, 1, 1]}
@@ -37,7 +41,7 @@ const DiveSiteFooter: FunctionComponent<DiveSiteFooterProps> = props => {
           container: styles.buttonContainer,
           text: styles.buttonText,
         }}>
-        {t('LOG_A_DIVE')}
+        {user ? t('LOG_A_DIVE') : t('LOGIN_TO_CONTINUE')}
       </Button>
     </View>
   );
