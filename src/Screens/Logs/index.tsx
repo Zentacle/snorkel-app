@@ -41,12 +41,14 @@ const Logs: FunctionComponent<LogsProps> = ({ navigation }) => {
 
   useEffect(() => {
     navigation.addListener('focus', () => {
-      dispatch(
-        fetchOwnDiveLogs({
-          auth_token: authToken as string,
-          username: user?.username as string,
-        }),
-      );
+      if (user) {
+        dispatch(
+          fetchOwnDiveLogs({
+            auth_token: authToken as string,
+            username: user?.username as string,
+          }),
+        );
+      }
     });
   }, [navigation, authToken, dispatch, user]);
 
