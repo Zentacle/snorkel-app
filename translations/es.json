@@ -269,5 +269,11 @@
   "LOGS": "Registros",
   "PROFILE": "Perfil",
   "COMPLETING": "Completando",
-  "SIGN_UP_ERROR": "Hubo un error al crear una cuenta, intente nuevamente"
+  "SIGN_UP_ERROR": "Hubo un error al crear una cuenta, intente nuevamente",
+  "FRIEND": "Amigo",
+  "LOGIN_TO_CONTINUE": "Iniciar sesión para continuar",
+  "NEED_TO_BE_LOGGED_IN": "¡Tienes que iniciar sesión!",
+  "REQUIRE_ACCOUNT_SUBTEXT": "Las acciones realizadas en esta página requieren que tengas una cuenta",
+  "LOGIN_OR_SIGNUP": "Iniciar sesión o Registrarse",
+  "ENTER_USERNAME": "Introduzca su nombre de usuario"
 }

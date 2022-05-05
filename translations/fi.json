@@ -269,5 +269,11 @@
   "LOGS": "lokit",
   "PROFILE": "Profiili",
   "COMPLETING": "Täydennetään",
-  "SIGN_UP_ERROR": "Tiliä luotaessa tapahtui virhe. Yritä uudelleen."
+  "SIGN_UP_ERROR": "Tiliä luotaessa tapahtui virhe. Yritä uudelleen.",
+  "FRIEND": "ystävä",
+  "LOGIN_TO_CONTINUE": "Kirjaudu jatkaaksesi",
+  "NEED_TO_BE_LOGGED_IN": "Sinun täytyy olla kirjautunut sisään!",
+  "REQUIRE_ACCOUNT_SUBTEXT": "Tällä sivulla suoritettavat toimet edellyttävät, että sinulla on tili",
+  "LOGIN_OR_SIGNUP": "Kirjaudu tai rekisteröidy",
+  "ENTER_USERNAME": "Syötä käyttäjätunnus"
 }

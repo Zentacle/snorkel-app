@@ -269,5 +269,11 @@
   "LOGS": "Journaux",
   "PROFILE": "Profil",
   "COMPLETING": "Achèvement",
-  "SIGN_UP_ERROR": "Une erreur s'est produite lors de la création d'un compte, veuillez réessayer."
+  "SIGN_UP_ERROR": "Une erreur s'est produite lors de la création d'un compte, veuillez réessayer.",
+  "FRIEND": "Ami",
+  "LOGIN_TO_CONTINUE": "Connectez-vous pour continuer",
+  "NEED_TO_BE_LOGGED_IN": "Vous devez être connecté!",
+  "REQUIRE_ACCOUNT_SUBTEXT": "Les actions effectuées sur cette page nécessitent que vous ayez un compte",
+  "LOGIN_OR_SIGNUP": "Identifiez-vous ou inscrivez-vous",
+  "ENTER_USERNAME": "Saisissez votre nom d'utilisateur"
 }

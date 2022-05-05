@@ -269,5 +269,11 @@
   "LOGS": "Logs",
   "PROFILE": "Profile",
   "COMPLETING": "Completing",
-  "SIGN_UP_ERROR": "There was an error creating an account, please try again."
+  "SIGN_UP_ERROR": "There was an error creating an account, please try again.",
+  "FRIEND": "Friend",
+  "LOGIN_TO_CONTINUE": "Login to Continue",
+  "NEED_TO_BE_LOGGED_IN": "You need to be logged in!",
+  "REQUIRE_ACCOUNT_SUBTEXT": "The actions performed on this page require you to have an account",
+  "LOGIN_OR_SIGNUP": "Login or Signup",
+  "ENTER_USERNAME": "Enter Username"
 }

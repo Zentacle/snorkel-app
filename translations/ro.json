@@ -269,5 +269,11 @@
   "LOGS": "înregistra",
   "PROFILE": "Profil",
   "COMPLETING": "Finalizarea",
-  "SIGN_UP_ERROR": "A apărut o eroare la crearea unui cont, vă rugăm să încercați din nou."
+  "SIGN_UP_ERROR": "A apărut o eroare la crearea unui cont, vă rugăm să încercați din nou.",
+  "FRIEND": "prietenes",
+  "LOGIN_TO_CONTINUE": "Conectați-vă pentru a continua",
+  "NEED_TO_BE_LOGGED_IN": "Trebuie să fii autentificat!",
+  "REQUIRE_ACCOUNT_SUBTEXT": "Acțiunile efectuate pe această pagină necesită să aveți un cont",
+  "LOGIN_OR_SIGNUP": "Autentificare sau înscriere",
+  "ENTER_USERNAME": "Introduceti numele de utilizator"
 }

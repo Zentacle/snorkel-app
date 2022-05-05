@@ -269,5 +269,11 @@
   "LOGS": "zapisać",
   "PROFILE": "Profil",
   "COMPLETING": "Kończenie",
-  "SIGN_UP_ERROR": "Wystąpił błąd podczas tworzenia konta, spróbuj ponownie."
+  "SIGN_UP_ERROR": "Wystąpił błąd podczas tworzenia konta, spróbuj ponownie.",
+  "FRIEND": "Przyjaciel",
+  "LOGIN_TO_CONTINUE": "Zaloguj się, aby kontynuować",
+  "NEED_TO_BE_LOGGED_IN": "Musisz być zalogowany!",
+  "REQUIRE_ACCOUNT_SUBTEXT": "Czynności wykonywane na tej stronie wymagają posiadania konta",
+  "LOGIN_OR_SIGNUP": "Zaloguj się albo Zarejestruj",
+  "ENTER_USERNAME": "Wpisz nazwę użytkownika"
 }

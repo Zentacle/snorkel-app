@@ -269,5 +269,11 @@
   "LOGS": "Napló",
   "PROFILE": "Profil",
   "COMPLETING": "Befejezés",
-  "SIGN_UP_ERROR": "Hiba történt a fiók létrehozásakor. Kérjük, próbálja újra"
+  "SIGN_UP_ERROR": "Hiba történt a fiók létrehozásakor. Kérjük, próbálja újra",
+  "FRIEND": "Barát",
+  "LOGIN_TO_CONTINUE": "Jelentkezzen be a folytatáshoz",
+  "NEED_TO_BE_LOGGED_IN": "Be kell jelentkezned!",
+  "REQUIRE_ACCOUNT_SUBTEXT": "Az ezen az oldalon végrehajtott műveletekhez fiókkal kell rendelkeznie",
+  "LOGIN_OR_SIGNUP": "Bejelentkezés vagy regisztráció",
+  "ENTER_USERNAME": "Adja meg a felhasználónevet"
 }

@@ -269,5 +269,11 @@
   "LOGS": "accederi",
   "PROFILE": "Profilo",
   "COMPLETING": "Completamento",
-  "SIGN_UP_ERROR": "Si è verificato un errore durante la creazione di un account, riprova."
+  "SIGN_UP_ERROR": "Si è verificato un errore durante la creazione di un account, riprova.",
+  "FRIEND": "Amico",
+  "LOGIN_TO_CONTINUE": "Accedi per continuare",
+  "NEED_TO_BE_LOGGED_IN": "Devi essere loggato!",
+  "REQUIRE_ACCOUNT_SUBTEXT": "Le azioni eseguite in questa pagina richiedono che tu disponga di un account",
+  "LOGIN_OR_SIGNUP": "Accedi o iscriviti",
+  "ENTER_USERNAME": "Inserire username"
 }
