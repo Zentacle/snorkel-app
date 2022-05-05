@@ -119,9 +119,7 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
           {t('ENABLE')}
         </Button>
         <Button
-          onPress={() => {
-            Alert.alert('We need to handle this case');
-          }}
+          onPress={navigateToAvatar}
           textGradient
           start={{
             x: 0,

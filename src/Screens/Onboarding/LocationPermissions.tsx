@@ -113,9 +113,7 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
           {t('ENABLE')}
         </Button>
         <Button
-          onPress={() => {
-            Alert.alert('We need to handle this case');
-          }}
+          onPress={navigateToMeasurementType}
           textGradient
           start={{
             x: 0,
