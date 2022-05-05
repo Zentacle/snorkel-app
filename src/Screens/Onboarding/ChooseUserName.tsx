@@ -106,7 +106,7 @@ const ChooseUserName: FunctionComponent<ChooseUserNameProps> = props => {
                     </Text>
                   </View>
                   <View style={styles.inputContainer}>
-                    <Text style={styles.inputLabel}>{t('ENTER_NAME')}</Text>
+                    <Text style={styles.inputLabel}>{t('ENTER_USERNAME')}</Text>
                     <Field
                       name="username"
                       component={Input}
