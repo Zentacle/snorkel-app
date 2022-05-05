@@ -5,6 +5,7 @@ import {
   Text,
   View,
   TouchableWithoutFeedback,
+  Pressable,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -41,6 +42,7 @@ import {
 } from '_utils/interfaces/data/user';
 
 import { isBelowHeightThreshold, HEIGHT } from '_utils/constants';
+import GradientText from '_components/ui/GradientText';
 
 type LandingScreenNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<AuthtackParamList, 'SignIn'>,
@@ -67,6 +69,18 @@ const SignIn: FunctionComponent<SignInProps> = props => {
     if (props.navigation.canGoBack()) {
       props.navigation.goBack();
     }
+  };
+
+  const navigateToTerms = () => {
+    props.navigation.navigate('SettingsStack', {
+      screen: 'TermsAndConditions',
+    });
+  };
+
+  const navigateToPrivacy = () => {
+    props.navigation.navigate('SettingsStack', {
+      screen: 'PrivacyPolicy',
+    });
   };
 
   const navigateToSignUp = () => {
@@ -329,13 +343,13 @@ const SignIn: FunctionComponent<SignInProps> = props => {
         <View style={styles.privacyContainer}>
           <Text style={styles.privacyText}>
             {t('landing.privacy._1')}&nbsp;
-            <TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={navigateToTerms}>
               <Text style={styles.privacyLink}>
                 {t('landing.privacy._2')}&nbsp;
               </Text>
             </TouchableWithoutFeedback>
             {t('landing.privacy._3')}&nbsp;
-            <TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={navigateToPrivacy}>
               <Text style={styles.privacyLink}>{t('landing.privacy._4')}.</Text>
             </TouchableWithoutFeedback>
           </Text>
@@ -347,6 +361,26 @@ const SignIn: FunctionComponent<SignInProps> = props => {
               <Text style={styles.signInHighlight}>{t('SIGN_UP')}</Text>
             </TouchableWithoutFeedback>
           </Text>
+        </View>
+
+        <View style={styles.skipContainer}>
+          <Text style={styles.skipAltText}>{t('OR')}</Text>
+          <Pressable onPress={navigateToApp}>
+            <GradientText
+              gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+              start={{
+                x: 0,
+                y: 0,
+              }}
+              end={{
+                x: 0.06,
+                y: 1.8,
+              }}
+              gradientLocations={[0.01, 1, 1]}
+              style={styles.skipButtonText}>
+              {t('SKIP')}
+            </GradientText>
+          </Pressable>
         </View>
       </KeyboardAwareScrollView>
     </SafeAreaView>
@@ -424,6 +458,21 @@ const styles = StyleSheet.create({
   errorText: {
     textAlign: 'center',
     color: 'red',
+  },
+  skipContainer: {
+    alignItems: 'center',
+    marginTop: 25,
+  },
+  skipAltText: {
+    textTransform: 'capitalize',
+    fontSize: 16,
+    fontWeight: '500',
+    color: 'black',
+  },
+  skipButtonText: {
+    fontSize: 16,
+    fontWeight: '800',
+    marginTop: 15,
   },
 });
 

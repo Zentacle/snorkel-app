@@ -5,6 +5,7 @@ import {
   View,
   ImageBackground,
   TouchableWithoutFeedback,
+  Pressable,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -32,6 +33,7 @@ import {
   AppleLoginResponse,
   GoogleLoginResponse,
 } from '_utils/interfaces/data/user';
+import GradientText from '_components/ui/GradientText';
 
 import { isBelowHeightThreshold, HEIGHT } from '_utils/constants';
 
@@ -53,6 +55,18 @@ const Landing: FunctionComponent<LandingProps> = props => {
 
   const navigateToSignIn = () => {
     props.navigation.navigate('SignIn');
+  };
+
+  const navigateToTerms = () => {
+    props.navigation.navigate('SettingsStack', {
+      screen: 'TermsAndConditions',
+    });
+  };
+
+  const navigateToPrivacy = () => {
+    props.navigation.navigate('SettingsStack', {
+      screen: 'PrivacyPolicy',
+    });
   };
 
   const navigateToEmailRegister = () => {
@@ -215,13 +229,13 @@ const Landing: FunctionComponent<LandingProps> = props => {
         <View style={styles.privacyContainer}>
           <Text style={styles.privacyText}>
             {t('landing.privacy._1')}&nbsp;
-            <TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={navigateToTerms}>
               <Text style={styles.privacyLink}>
                 {t('landing.privacy._2')}&nbsp;
               </Text>
             </TouchableWithoutFeedback>
             {t('landing.privacy._3')}&nbsp;
-            <TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={navigateToPrivacy}>
               <Text style={styles.privacyLink}>{t('landing.privacy._4')}.</Text>
             </TouchableWithoutFeedback>
           </Text>
@@ -233,6 +247,13 @@ const Landing: FunctionComponent<LandingProps> = props => {
               <Text style={styles.signInHighlight}>{t('SIGN_IN')}</Text>
             </TouchableWithoutFeedback>
           </Text>
+        </View>
+
+        <View style={styles.skipContainer}>
+          <Text style={styles.skipAltText}>{t('OR')}</Text>
+          <Pressable onPress={navigateToApp}>
+            <Text style={styles.skipButtonText}>{t('SKIP')}</Text>
+          </Pressable>
         </View>
       </View>
     </ImageBackground>
@@ -291,6 +312,22 @@ const styles = StyleSheet.create({
   signInHighlight: {
     color: '#AA00FF',
     fontWeight: '700',
+  },
+  skipContainer: {
+    alignItems: 'center',
+    marginTop: 25,
+  },
+  skipAltText: {
+    textTransform: 'capitalize',
+    fontSize: 16,
+    fontWeight: '500',
+    color: 'white',
+  },
+  skipButtonText: {
+    fontSize: 16,
+    fontWeight: '800',
+    marginTop: 15,
+    color: 'white',
   },
 });
 

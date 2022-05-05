@@ -68,6 +68,18 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
     props.navigation.goBack();
   };
 
+  const navigateToTerms = () => {
+    props.navigation.navigate('SettingsStack', {
+      screen: 'TermsAndConditions',
+    });
+  };
+
+  const navigateToPrivacy = () => {
+    props.navigation.navigate('SettingsStack', {
+      screen: 'PrivacyPolicy',
+    });
+  };
+
   const navigateToSignIn = () => {
     props.navigation.navigate('SignIn');
   };
@@ -332,13 +344,13 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
         <View style={styles.privacyContainer}>
           <Text style={styles.privacyText}>
             {t('landing.privacy._1')}&nbsp;
-            <TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={navigateToTerms}>
               <Text style={styles.privacyLink}>
                 {t('landing.privacy._2')}&nbsp;
               </Text>
             </TouchableWithoutFeedback>
             {t('landing.privacy._3')}&nbsp;
-            <TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={navigateToPrivacy}>
               <Text style={styles.privacyLink}>{t('landing.privacy._4')}.</Text>
             </TouchableWithoutFeedback>
           </Text>
