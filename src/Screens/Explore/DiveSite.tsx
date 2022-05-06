@@ -121,7 +121,15 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
     navigation.navigate('App', {
       screen: 'LogsForm',
       params: {
-        diveLogs: {},
+        diveLogs: {
+          location: {
+            lat: diveSite.latitude,
+            lng: diveSite.longitude,
+            desc: diveSite.name,
+            location_city: diveSite.location_city,
+            beach_id: diveSite.id,
+          },
+        },
       },
     });
   };
