@@ -275,5 +275,6 @@
   "NEED_TO_BE_LOGGED_IN": "Du må være pålogget!",
   "REQUIRE_ACCOUNT_SUBTEXT": "Handlingene som utføres på denne siden krever at du har en konto",
   "LOGIN_OR_SIGNUP": "Logg inn eller registrer deg",
-  "ENTER_USERNAME": "Skriv inn brukernavn"
+  "ENTER_USERNAME": "Skriv inn brukernavn",
+  "REVIEW": "anmeldelse"
 }

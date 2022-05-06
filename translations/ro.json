@@ -275,5 +275,6 @@
   "NEED_TO_BE_LOGGED_IN": "Trebuie să fii autentificat!",
   "REQUIRE_ACCOUNT_SUBTEXT": "Acțiunile efectuate pe această pagină necesită să aveți un cont",
   "LOGIN_OR_SIGNUP": "Autentificare sau înscriere",
-  "ENTER_USERNAME": "Introduceti numele de utilizator"
+  "ENTER_USERNAME": "Introduceti numele de utilizator",
+  "REVIEW": "revizuire"
 }

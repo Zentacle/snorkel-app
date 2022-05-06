@@ -275,5 +275,6 @@
   "NEED_TO_BE_LOGGED_IN": "Devi essere loggato!",
   "REQUIRE_ACCOUNT_SUBTEXT": "Le azioni eseguite in questa pagina richiedono che tu disponga di un account",
   "LOGIN_OR_SIGNUP": "Accedi o iscriviti",
-  "ENTER_USERNAME": "Inserire username"
+  "ENTER_USERNAME": "Inserire username",
+  "REVIEW": "revisione"
 }

@@ -275,5 +275,6 @@
   "NEED_TO_BE_LOGGED_IN": "Sinun täytyy olla kirjautunut sisään!",
   "REQUIRE_ACCOUNT_SUBTEXT": "Tällä sivulla suoritettavat toimet edellyttävät, että sinulla on tili",
   "LOGIN_OR_SIGNUP": "Kirjaudu tai rekisteröidy",
-  "ENTER_USERNAME": "Syötä käyttäjätunnus"
+  "ENTER_USERNAME": "Syötä käyttäjätunnus",
+  "REVIEW": "arvostelu"
 }

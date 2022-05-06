@@ -275,5 +275,6 @@
   "NEED_TO_BE_LOGGED_IN": "¡Tienes que iniciar sesión!",
   "REQUIRE_ACCOUNT_SUBTEXT": "Las acciones realizadas en esta página requieren que tengas una cuenta",
   "LOGIN_OR_SIGNUP": "Iniciar sesión o Registrarse",
-  "ENTER_USERNAME": "Introduzca su nombre de usuario"
+  "ENTER_USERNAME": "Introduzca su nombre de usuario",
+  "REVIEW": "revisión"
 }
