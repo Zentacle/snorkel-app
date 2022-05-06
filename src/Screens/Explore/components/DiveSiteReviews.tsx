@@ -38,7 +38,10 @@ const DiveSiteReviews: FunctionComponent<DiveSiteReviewsProps> = ({
         </Text>
         <View style={styles.reviewDot} />
         <Text style={styles.reviewRatingsCount}>
-          {diveSite.num_reviews} {t('REVIEWS')}
+          {/* {diveSite.num_reviews} {t('REVIEWS')} */}
+          {diveSite.num_reviews.length === 1
+            ? `${diveSite.num_reviews} ${t('REVIEWS')}`
+            : `${diveSite.num_reviews} ${t('REVIEW')}`}
         </Text>
       </View>
       <View style={styles.reviewCardsContainer}>
@@ -133,7 +136,8 @@ const styles = StyleSheet.create({
     height: 2.4,
     borderRadius: 1.2,
     backgroundColor: '#828993',
-    marginHorizontal: 5,
+    marginLeft: 5,
+    marginRight: 10,
     marginTop: 4,
   },
   reviewCardsContainer: {
