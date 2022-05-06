@@ -6,7 +6,6 @@ import {
   SafeAreaView,
   Dimensions,
   // PermissionsAndroid,
-  Alert,
   Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -59,12 +58,7 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
             PermissionsMedia === RESULTS.GRANTED ||
             PermissionsMedia === RESULTS.UNAVAILABLE
           ) {
-            const PermissionsMicrophone = await request(
-              PERMISSIONS.IOS.MICROPHONE,
-            );
-            if (PermissionsMicrophone === RESULTS.GRANTED) {
-              navigateToAvatar();
-            }
+            navigateToAvatar();
           }
         }
       }
