@@ -8,6 +8,7 @@ import {
 import { fetchDiveSites, fetchDiveSite, fetchRecommended } from './api';
 import { Spot } from '_utils/interfaces/data/spot';
 import { RootState } from '../../store';
+import type { RecommendedArgs } from '_utils/interfaces/data/spot';
 
 interface NormalizedObj {
   [id: string]: Spot;
@@ -32,8 +33,8 @@ const initialState: DiveSpotState = {
 
 export const handleFetchRecommended = createAsyncThunk(
   'dive-sites/recommended',
-  async (token: string, thunkApi) => {
-    const response = await fetchRecommended(token);
+  async (args: RecommendedArgs, thunkApi) => {
+    const response = await fetchRecommended(args);
     if (!response.data) {
       if (response.msg === 'Token has expired') {
         await thunkApi.dispatch(getCurrentUser());

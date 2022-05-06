@@ -1,7 +1,16 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  Platform,
+} from 'react-native';
 import { Form, Field } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
+import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
+import Geolocation from 'react-native-geolocation-service';
 
 import SearchInput from '_components/ui/SearchInput';
 // import Tag from '_components/ui/Tag';
@@ -77,7 +86,47 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   React.useEffect(() => {
     navigation.addListener('focus', () => {
       dispatch(handleFetchDiveSites());
-      dispatch(handleFetchRecommended(authToken as string));
+
+      const handleRecommenndedSitesRequest = async () => {
+        if (Platform.OS === 'ios') {
+          const locationAlways = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
+          const locationWhenInUse = await check(
+            PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+          );
+
+          console.log('perms', locationAlways, locationWhenInUse);
+
+          if (
+            locationAlways === RESULTS.GRANTED ||
+            locationWhenInUse === RESULTS.GRANTED
+          ) {
+            Geolocation.getCurrentPosition(
+              position => {
+                console.log(position);
+                dispatch(
+                  handleFetchRecommended({
+                    token: authToken as string,
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                  }),
+                );
+              },
+              error => {
+                console.log(error.code, error.message);
+              },
+              { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+            );
+          } else {
+            dispatch(
+              handleFetchRecommended({
+                token: authToken as string,
+              }),
+            );
+          }
+        }
+      };
+
+      handleRecommenndedSitesRequest();
     });
   }, [navigation, dispatch, authToken]);
 

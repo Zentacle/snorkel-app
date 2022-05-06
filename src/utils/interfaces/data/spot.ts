@@ -30,3 +30,9 @@ export interface Spot {
     [rating: string]: number;
   };
 }
+
+export interface RecommendedArgs {
+  token: string;
+  longitude?: number;
+  latitude?: number;
+}
