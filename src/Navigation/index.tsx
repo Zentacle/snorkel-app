@@ -3,6 +3,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
 import { AppState } from 'react-native';
+import {
+  requestTrackingPermission,
+  getTrackingStatus,
+} from 'react-native-tracking-transparency';
 
 import type { RootStackParamList } from '_utils/interfaces';
 
@@ -71,6 +75,16 @@ const Navigator: React.FC = () => {
         dispatch(getCurrentUser());
       }
 
+      // just need to be active, no need to track state change
+      if (nextAppState === 'active') {
+        (async () => {
+          const trackingStatus = await getTrackingStatus();
+          if (trackingStatus === 'not-determined') {
+            requestTrackingPermission();
+          }
+        })();
+      }
+
       appState.current = nextAppState;
       setAppStateVisible(appState.current);
     });
@@ -86,30 +100,34 @@ const Navigator: React.FC = () => {
 
   const Stack = createNativeStackNavigator<RootStackParamList>();
 
-  if (!loggedInState) {
-    return (
-      <NavigationContainer linking={linking}>
-        <Stack.Navigator
-          initialRouteName="Auth"
-          screenOptions={{
-            headerShown: false,
-          }}>
-          <Stack.Screen name="Auth" component={AuthNavigator} />
-          <Stack.Screen name="NotFound" component={NotFound} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-  }
+  // if (!loggedInState) {
+  //   return (
+  //     <NavigationContainer linking={linking}>
+  //       <Stack.Navigator
+  //         initialRouteName="Auth"
+  //         screenOptions={{
+  //           headerShown: false,
+  //         }}>
+  //         <Stack.Screen name="NotFound" component={NotFound} />
+  //       </Stack.Navigator>
+  //     </NavigationContainer>
+  //   );
+  // }
 
   return (
     <NavigationContainer linking={linking}>
       <Stack.Navigator
         initialRouteName={
-          userPreviouslyFilledOnBoardingData ? 'App' : 'OnBoarding'
+          loggedInState
+            ? userPreviouslyFilledOnBoardingData
+              ? 'App'
+              : 'OnBoarding'
+            : 'Auth'
         }
         screenOptions={{
           headerShown: false,
         }}>
+        <Stack.Screen name="Auth" component={AuthNavigator} />
         <Stack.Screen name="OnBoarding" component={OnboardingNavigator} />
         <Stack.Screen name="App" component={AppTabsNavigator} />
         <Stack.Screen name="ExploreStack" component={ExploreNavigator} />

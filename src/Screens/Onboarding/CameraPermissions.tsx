@@ -6,7 +6,6 @@ import {
   SafeAreaView,
   Dimensions,
   // PermissionsAndroid,
-  Alert,
   Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -20,6 +19,8 @@ import type {
   RootStackParamList,
   OnboardingStackParamList,
 } from '_utils/interfaces';
+import { useAppSelector } from '_redux/hooks';
+import { selectUser } from '_redux/slices/user';
 
 import GradientCircle from '_components/ui/GradientCircle';
 import Button from '_components/ui/Buttons/Button';
@@ -39,8 +40,23 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
   navigation,
 }) => {
   const { t } = useTranslation();
+  const user = useAppSelector(selectUser);
   const navigateToAvatar = () => {
     navigation.navigate('ChooseAvatar');
+  };
+
+  const navigateToLocationPermissions = () => {
+    navigation.navigate('OnBoarding', {
+      screen: 'LocationPermissions',
+    });
+  };
+
+  const handleButtonPress = async () => {
+    if (user && !user.profile_pic) {
+      navigateToAvatar();
+    } else {
+      navigateToLocationPermissions();
+    }
   };
 
   const handleCameraPermissions = async () => {
@@ -48,23 +64,30 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
       if (Platform.OS === 'android') {
         request(PERMISSIONS.ANDROID.CAMERA).then(result => {
           if (result === RESULTS.GRANTED) {
-            navigateToAvatar();
+            if (user && !user.profile_pic) {
+              navigateToAvatar();
+            } else {
+              navigateToLocationPermissions();
+            }
+          } else {
+            navigateToLocationPermissions();
           }
         });
       } else {
         const PermissionsCamera = await request(PERMISSIONS.IOS.CAMERA);
         if (PermissionsCamera === RESULTS.GRANTED) {
-          const PermissionsMedia = await request(PERMISSIONS.IOS.MEDIA_LIBRARY);
+          const PermissionsMedia = await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
           if (
             PermissionsMedia === RESULTS.GRANTED ||
             PermissionsMedia === RESULTS.UNAVAILABLE
           ) {
-            const PermissionsMicrophone = await request(
-              PERMISSIONS.IOS.MICROPHONE,
-            );
-            if (PermissionsMicrophone === RESULTS.GRANTED) {
+            if (user && !user.profile_pic) {
+              navigateToAvatar();
+            } else {
               navigateToAvatar();
             }
+          } else {
+            navigateToLocationPermissions();
           }
         }
       }
@@ -119,9 +142,7 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
           {t('ENABLE')}
         </Button>
         <Button
-          onPress={() => {
-            Alert.alert('We need to handle this case');
-          }}
+          onPress={handleButtonPress}
           textGradient
           start={{
             x: 0,

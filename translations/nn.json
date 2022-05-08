@@ -269,5 +269,12 @@
   "LOGS": "logger",
   "PROFILE": "Profil",
   "COMPLETING": "Fullfører",
-  "SIGN_UP_ERROR": "Det oppsto en feil ved opprettelse av en konto. Prøv igjen."
+  "SIGN_UP_ERROR": "Det oppsto en feil ved opprettelse av en konto. Prøv igjen.",
+  "FRIEND": "Venn",
+  "LOGIN_TO_CONTINUE": "Logg på for å fortsette",
+  "NEED_TO_BE_LOGGED_IN": "Du må være pålogget!",
+  "REQUIRE_ACCOUNT_SUBTEXT": "Handlingene som utføres på denne siden krever at du har en konto",
+  "LOGIN_OR_SIGNUP": "Logg inn eller registrer deg",
+  "ENTER_USERNAME": "Skriv inn brukernavn",
+  "REVIEW": "anmeldelse"
 }

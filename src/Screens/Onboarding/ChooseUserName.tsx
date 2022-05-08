@@ -1,5 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions, SafeAreaView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import { Form, Field } from 'react-final-form';
 import validate from 'validate.js';
 import { FORM_ERROR } from 'final-form';
@@ -83,68 +91,72 @@ const ChooseUserName: FunctionComponent<ChooseUserNameProps> = props => {
         }) => {
           return (
             <>
-              <View style={styles.contentContainer}>
-                <View style={styles.headerContainer}>
-                  <Text style={styles.headerText}>
-                    {t('choose_username.DESCRIPTION_MAIN_TEXT')}
-                  </Text>
-                  <Text style={styles.headerSubtext}>
-                    {t('choose_username.DESCRIPTION_SUB_TEXT', {
-                      name: 'Zentacle',
-                    })}
-                  </Text>
-                </View>
-                <View style={styles.inputContainer}>
-                  <Text style={styles.inputLabel}>{t('ENTER_NAME')}</Text>
-                  <Field
-                    name="username"
-                    component={Input}
-                    placeholder={t('USERNAME')}
-                    placeholderTextColor="#BFBFBF"
-                    // style={styles.input}
-                    containerStyle={styles.input}
-                  />
-                </View>
-              </View>
-
-              <View style={styles.footer}>
-                <Button
-                  onPress={handleSubmit}
-                  loading={submitting}
-                  disabled={invalid && !dirtySinceLastSubmit}
-                  gradient
-                  gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-                  gradientLocations={[0.0, 1, 1]}
-                  start={{
-                    x: 0,
-                    y: 0,
-                  }}
-                  end={{
-                    x: 0.06,
-                    y: 2.3,
-                  }}
-                  style={{
-                    container: {
-                      backgroundColor: 'white',
-                      borderRadius: 12,
-                      padding: HEIGHT < 400 ? 12 : 16,
-                      marginVertical: HEIGHT < 400 ? 10 : 20,
-                      marginHorizontal: 0,
-                    },
-                    text: {
-                      color: '#FFF',
-                      fontSize: 16,
-                      fontWeight: '800',
-                    },
-                  }}>
-                  Continue
-                </Button>
-                {submitFailed && !!submitError && (
-                  <View style={styles.errorContainer}>
-                    <Text style={styles.errorText}>{submitError}</Text>
+              <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={styles.contentContainer}>
+                <View style={styles.headerAndInput}>
+                  <View style={styles.headerContainer}>
+                    <Text style={styles.headerText}>
+                      {t('choose_username.DESCRIPTION_MAIN_TEXT')}
+                    </Text>
+                    <Text style={styles.headerSubtext}>
+                      {t('choose_username.DESCRIPTION_SUB_TEXT', {
+                        name: 'Zentacle',
+                      })}
+                    </Text>
                   </View>
-                )}
-              </View>
+                  <View style={styles.inputContainer}>
+                    <Text style={styles.inputLabel}>{t('ENTER_USERNAME')}</Text>
+                    <Field
+                      name="username"
+                      component={Input}
+                      placeholder={t('USERNAME')}
+                      placeholderTextColor="#BFBFBF"
+                      // style={styles.input}
+                      containerStyle={styles.input}
+                    />
+                  </View>
+                </View>
+
+                <View style={styles.footer}>
+                  <Button
+                    onPress={handleSubmit}
+                    loading={submitting}
+                    disabled={invalid && !dirtySinceLastSubmit}
+                    gradient
+                    gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+                    gradientLocations={[0.0, 1, 1]}
+                    start={{
+                      x: 0,
+                      y: 0,
+                    }}
+                    end={{
+                      x: 0.06,
+                      y: 2.3,
+                    }}
+                    style={{
+                      container: {
+                        backgroundColor: 'white',
+                        borderRadius: 12,
+                        padding: HEIGHT < 400 ? 12 : 16,
+                        marginVertical: HEIGHT < 400 ? 10 : 20,
+                        marginHorizontal: 0,
+                      },
+                      text: {
+                        color: '#FFF',
+                        fontSize: 16,
+                        fontWeight: '800',
+                      },
+                    }}>
+                    Continue
+                  </Button>
+                  {submitFailed && !!submitError && (
+                    <View style={styles.errorContainer}>
+                      <Text style={styles.errorText}>{submitError}</Text>
+                    </View>
+                  )}
+                </View>
+              </KeyboardAvoidingView>
             </>
           );
         }}
@@ -171,6 +183,9 @@ const styles = StyleSheet.create({
     color: 'black',
     marginTop: 8,
   },
+  headerAndInput: {
+    marginHorizontal: 25,
+  },
   inputContainer: {},
   input: {
     marginHorizontal: 0,
@@ -183,7 +198,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    marginHorizontal: 25,
+    justifyContent: 'space-between',
   },
   footer: {
     marginHorizontal: 25,

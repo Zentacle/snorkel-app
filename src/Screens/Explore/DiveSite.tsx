@@ -15,7 +15,7 @@ import {
   isDiveSiteDetailinState,
   selectLoadingState,
 } from '_redux/slices/dive-sites';
-import { fetchNearby } from '_redux/slices/dive-sites/api';
+import { fetchDiveSiteImages, fetchNearby } from '_redux/slices/dive-sites/api';
 import {
   handleFetchReviews,
   selectReviewById,
@@ -88,6 +88,12 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   const reviews = reviewInState ? Object.values(reviewObj) : [];
   const diveSite = useAppSelector(selectDiveSiteById(currentSpotId));
 
+  // const diveSiteImages = [
+  //   {
+  //     uri: diveSite.hero_img,
+  //   },
+  // ];
+
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
@@ -97,10 +103,17 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
     if (!reviewInState) {
       dispatch(handleFetchReviews(currentSpotId));
     }
-    if (!diveSiteInState) {
+
+    // because we need to fetch images as well, we're making calls to the api unless the
+    // site we  want has had its images downloaded
+    if (!diveSiteInState && !diveSite.images?.length) {
       dispatch(handleFetchDiveSite(currentSpotId));
     }
-  }, [currentSpotId, dispatch, reviewInState, diveSiteInState]);
+
+    // fetchDiveSiteImages(diveSite.id).then(results => {
+    //   console.log('images', results);
+    // });
+  }, [currentSpotId, dispatch, reviewInState, diveSiteInState, diveSite]);
 
   const navigateToDiveSite = (diveSpotId: number) => {
     navigation.push('ExploreStack', {
@@ -121,7 +134,15 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
     navigation.navigate('App', {
       screen: 'LogsForm',
       params: {
-        diveLogs: {},
+        diveLogs: {
+          location: {
+            lat: diveSite.latitude,
+            lng: diveSite.longitude,
+            desc: diveSite.name,
+            location_city: diveSite.location_city,
+            beach_id: diveSite.id,
+          },
+        },
       },
     });
   };
@@ -149,6 +170,12 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
     });
   };
 
+  const navigateToAuth = () => {
+    navigation.navigate('Auth', {
+      screen: 'Landing',
+    });
+  };
+
   if (isLoading) {
     return <DiveSiteLoading />;
     // return <ActivityIndicator style={{ flex: 1 }} size="large" color="grey" />;
@@ -169,6 +196,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
         <ImageCarousel
           goBack={navigateBack}
           shareUrl={`https://zentacle.com/Beach/${diveSite.id}`}
+          images={diveSite.images}
         />
 
         <View style={styles.contentContainer}>
@@ -286,7 +314,10 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
           </View>
         </View> */}
       </ScrollView>
-      <Footer navigateToDiveLogForm={navigateToDiveLogForm} />
+      <Footer
+        navigateToAuth={navigateToAuth}
+        navigateToDiveLogForm={navigateToDiveLogForm}
+      />
     </View>
   );
 };
@@ -326,6 +357,7 @@ const styles = StyleSheet.create({
     borderRadius: 1.2,
     backgroundColor: '#828993',
     marginLeft: 10,
+    marginRight: 5,
     marginTop: 4,
   },
   ratingsContainer: {

@@ -1,5 +1,9 @@
 import config from 'react-native-config';
 import { Spot } from '_utils/interfaces/data/spot';
+import type {
+  RecommendedArgs,
+  ResponseWithImages,
+} from '_utils/interfaces/data/spot';
 
 interface ResponseWithSpots {
   data: Spot[];
@@ -61,15 +65,35 @@ export async function fetchNearby(
 }
 
 export async function fetchRecommended(
-  token: string,
+  args: RecommendedArgs,
 ): Promise<ResponseWithSpots> {
   try {
-    const url = `${config.API_ENDPOINT}/spots/recs`;
+    let url = `${config.API_ENDPOINT}/spots/recs`;
+    if (args.latitude && args.latitude) {
+      url = `${config.API_ENDPOINT}/spots/recs?lat=${args.latitude}&lng=${args.longitude}`;
+    }
     const response = fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${args.token}`,
+      },
+    }).then(res => res.json());
+    return response;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function fetchDiveSiteImages(
+  beach_id: number,
+): Promise<ResponseWithImages> {
+  try {
+    const url = `${config.API_ENDPOINT}/beachimages?beach_id=${beach_id}`;
+    const response = fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
       },
     }).then(res => res.json());
     return response;

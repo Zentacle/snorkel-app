@@ -269,5 +269,12 @@
   "LOGS": "Logboeken",
   "PROFILE": "Profiel",
   "COMPLETING": "Voltooien",
-  "SIGN_UP_ERROR": "Er is een fout opgetreden bij het maken van een account, probeer het opnieuw."
+  "SIGN_UP_ERROR": "Er is een fout opgetreden bij het maken van een account, probeer het opnieuw.",
+  "FRIEND": "vriend",
+  "LOGIN_TO_CONTINUE": "Log in om door te gaan",
+  "NEED_TO_BE_LOGGED_IN": "Je moet ingelogd zijn!",
+  "REQUIRE_ACCOUNT_SUBTEXT": "Voor de acties die op deze pagina worden uitgevoerd, moet u een account hebben",
+  "LOGIN_OR_SIGNUP": "Meld je aan of schrijf je in",
+  "ENTER_USERNAME": "Vul je gebruikersnaam in",
+  "REVIEW": "beoordeling"
 }

@@ -5,9 +5,15 @@ import {
   createAsyncThunk,
 } from '@reduxjs/toolkit';
 
-import { fetchDiveSites, fetchDiveSite, fetchRecommended } from './api';
+import {
+  fetchDiveSites,
+  fetchDiveSite,
+  fetchRecommended,
+  fetchDiveSiteImages,
+} from './api';
 import { Spot } from '_utils/interfaces/data/spot';
 import { RootState } from '../../store';
+import type { RecommendedArgs } from '_utils/interfaces/data/spot';
 
 interface NormalizedObj {
   [id: string]: Spot;
@@ -32,8 +38,8 @@ const initialState: DiveSpotState = {
 
 export const handleFetchRecommended = createAsyncThunk(
   'dive-sites/recommended',
-  async (token: string, thunkApi) => {
-    const response = await fetchRecommended(token);
+  async (args: RecommendedArgs, thunkApi) => {
+    const response = await fetchRecommended(args);
     if (!response.data) {
       if (response.msg === 'Token has expired') {
         await thunkApi.dispatch(getCurrentUser());
@@ -62,7 +68,19 @@ export const handleFetchDiveSite = createAsyncThunk(
     if (!response.data) {
       return thunkApi.rejectWithValue(response.msg);
     }
-    return response.data;
+    const images = await fetchDiveSiteImages(id);
+
+    if (response.data.hero_img) {
+      return {
+        ...response.data,
+        images: [{ signedurl: response.data.hero_img }, ...images.data],
+      };
+    }
+
+    return {
+      ...response.data,
+      images: [...images.data],
+    };
   },
 );
 

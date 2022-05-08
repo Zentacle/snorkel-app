@@ -11,13 +11,13 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MUIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from 'react-i18next';
 
-import GradientBox from '_components/ui/GradientBox';
+// import GradientBox from '_components/ui/GradientBox';
 import Button from '_components/ui/Buttons/Button';
 
 import { usePages } from './utils';
 
-import { useAppDispatch } from '_redux/hooks';
-import { logoutUser } from '_redux/slices/user';
+import { useAppDispatch, useAppSelector } from '_redux/hooks';
+import { logoutUser, selectUser } from '_redux/slices/user';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -40,11 +40,19 @@ interface SettingsTypeProps {
 
 const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
   const { t } = useTranslation();
+  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const { accountPages, morePages } = usePages();
 
   const handleLogout = () => {
     dispatch(logoutUser());
+    navigateToAuth();
+  };
+
+  const navigateToAuth = () => {
+    navigation.navigate('Auth', {
+      screen: 'SignIn',
+    });
   };
 
   const navigateBack = () => {
@@ -72,7 +80,7 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
       <ScrollView
         style={styles.contentContainer}
         showsVerticalScrollIndicator={false}>
-        <View style={styles.subscriptionContainer}>
+        {/* <View style={styles.subscriptionContainer}>
           <GradientBox
             style={styles.subscriptionBox}
             gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
@@ -94,31 +102,33 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
               </Text>
             </View>
           </GradientBox>
-        </View>
-        <View style={styles.pagesSectionContainer}>
-          <Text style={styles.pagesLabel}>{t('ACCOUNT')}</Text>
-          <View>
-            {accountPages.map((account, index) => (
-              <TouchableWithoutFeedback
-                key={index}
-                onPress={() => navigateToPage(account)}>
-                <View style={styles.pageContainer}>
-                  <View style={styles.pageLabelContainer}>
-                    <MUIcon name={account.icon} size={30} color="black" />
-                    <Text style={styles.pageLabel}>{account.label}</Text>
+        </View> */}
+        {!!user && (
+          <View style={styles.pagesSectionContainer}>
+            <Text style={styles.pagesLabel}>{t('ACCOUNT')}</Text>
+            <View>
+              {accountPages.map((account, index) => (
+                <TouchableWithoutFeedback
+                  key={index}
+                  onPress={() => navigateToPage(account)}>
+                  <View style={styles.pageContainer}>
+                    <View style={styles.pageLabelContainer}>
+                      <MUIcon name={account.icon} size={30} color="black" />
+                      <Text style={styles.pageLabel}>{account.label}</Text>
+                    </View>
+                    <Icon
+                      name="chevron-forward-outline"
+                      color="black"
+                      size={30}
+                    />
                   </View>
-                  <Icon
-                    name="chevron-forward-outline"
-                    color="black"
-                    size={30}
-                  />
-                </View>
-              </TouchableWithoutFeedback>
-            ))}
+                </TouchableWithoutFeedback>
+              ))}
+            </View>
           </View>
-        </View>
+        )}
 
-        <View style={styles.pagesSectionContainer}>
+        <View style={[styles.pagesSectionContainer]}>
           <Text style={styles.pagesLabel}>{t('MORE')}</Text>
           <View>
             {morePages.map((page, index) => (
@@ -140,26 +150,25 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
             ))}
           </View>
         </View>
-
-        <Button
-          onPress={handleLogout}
-          textGradient
-          start={{
-            x: 0,
-            y: 1,
-          }}
-          end={{
-            x: 0.65,
-            y: 0.4,
-          }}
-          gradientColors={['#AA00FF', '#AA00FF', '#00E0FF']}
-          style={{
-            container: styles.buttonContainer,
-            text: styles.buttonText,
-          }}>
-          {t('LOG_OUT')}
-        </Button>
       </ScrollView>
+      <Button
+        onPress={handleLogout}
+        textGradient
+        start={{
+          x: 0,
+          y: 1,
+        }}
+        end={{
+          x: 0.65,
+          y: 0.4,
+        }}
+        gradientColors={['#AA00FF', '#AA00FF', '#00E0FF']}
+        style={{
+          container: styles.buttonContainer,
+          text: styles.buttonText,
+        }}>
+        {t('LOG_OUT')}
+      </Button>
     </View>
   );
 };
@@ -240,7 +249,7 @@ const styles = StyleSheet.create({
     padding: 16,
     marginTop: 8,
     marginBottom: 30,
-    marginHorizontal: 0,
+    marginHorizontal: 25,
   },
   buttonText: {
     color: '#FFF',

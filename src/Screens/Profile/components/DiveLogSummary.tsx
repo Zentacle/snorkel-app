@@ -54,22 +54,28 @@ const DiveLogSummary: FunctionComponent<DiveLogSummaryProps> = ({
         <View style={styles.diveLogSummaryBox}>
           <View style={styles.summary}>
             <View style={styles.summaryItem}>
-              <Image
-                style={{ width: 25, height: 25, marginBottom: 5 }}
-                source={Clock}
-              />
+              <View style={styles.iconContainer}>
+                <Image
+                  style={{ width: 25, height: 25, marginBottom: 5 }}
+                  source={Clock}
+                />
+              </View>
               <Text style={styles.summaryValue}>
                 {calculateTotalDiveTime(diveLogs) || '0:00:00'}
               </Text>
               <Text style={styles.summaryLabel}>{t('TOTAL_DIVE_TIME')}</Text>
             </View>
             <View style={styles.summaryItem}>
-              <Snorkel width={15} />
+              <View style={styles.iconContainer}>
+                <Snorkel width={25} height={25} />
+              </View>
               <Text style={styles.summaryValue}>{diveLogs.length}</Text>
               <Text style={styles.summaryLabel}>{t('DIVE_LOGS')}</Text>
             </View>
             <View style={styles.summaryItem}>
-              <Location width={15} />
+              <View style={styles.iconContainer}>
+                <Location width={25} height={25} />
+              </View>
 
               <Text style={styles.summaryValue}>
                 {calculateVisitedSites(diveLogs)}
@@ -110,20 +116,25 @@ const styles = StyleSheet.create({
   },
   summaryItem: {
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     width: '30%',
   },
   summaryLabel: {
-    marginVertical: 3,
     color: 'black',
     textAlign: 'center',
+    height: 40,
+    marginTop: 10,
   },
   summaryValue: {
     fontWeight: '600',
     fontSize: 18,
     marginVertical: 3,
+    marginTop: 10,
     color: 'black',
     textAlign: 'center',
+  },
+  iconContainer: {
+    height: 30,
   },
 });
 

@@ -6,7 +6,6 @@ import {
   SafeAreaView,
   Dimensions,
   Platform,
-  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
@@ -19,6 +18,8 @@ import type {
   RootStackParamList,
   OnboardingStackParamList,
 } from '_utils/interfaces';
+import { useAppSelector } from '_redux/hooks';
+import { selectUser } from '_redux/slices/user';
 
 import GradientCircle from '_components/ui/GradientCircle';
 import Button from '_components/ui/Buttons/Button';
@@ -38,9 +39,15 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
   navigation,
 }) => {
   const { t } = useTranslation();
-
+  const user = useAppSelector(selectUser);
   const navigateToMeasurementType = () => {
     navigation.navigate('MeasurementType');
+  };
+
+  const navigateToApp = () => {
+    navigation.navigate('App', {
+      screen: 'Explore',
+    });
   };
 
   const handleLocationPermissions = async () => {
@@ -51,7 +58,9 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
         );
 
         if (PermissionsLocationAndroid === RESULTS.GRANTED) {
-          navigateToMeasurementType();
+          user ? navigateToMeasurementType() : navigateToApp();
+        } else {
+          user ? navigateToMeasurementType() : navigateToApp();
         }
       } else {
         const PermissionsLocationIOS = await request(
@@ -59,7 +68,9 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
         );
 
         if (PermissionsLocationIOS === RESULTS.GRANTED) {
-          navigateToMeasurementType();
+          user ? navigateToMeasurementType() : navigateToApp();
+        } else {
+          user ? navigateToMeasurementType() : navigateToApp();
         }
       }
     } catch (err) {
@@ -113,9 +124,7 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
           {t('ENABLE')}
         </Button>
         <Button
-          onPress={() => {
-            Alert.alert('We need to handle this case');
-          }}
+          onPress={navigateToMeasurementType}
           textGradient
           start={{
             x: 0,

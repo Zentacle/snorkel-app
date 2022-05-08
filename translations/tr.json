@@ -269,5 +269,12 @@
   "LOGS": "Kütükler",
   "PROFILE": "Profil",
   "COMPLETING": "Tamamlanıyor",
-  "SIGN_UP_ERROR": "Hesap oluşturulurken bir hata oluştu, lütfen tekrar deneyin."
+  "SIGN_UP_ERROR": "Hesap oluşturulurken bir hata oluştu, lütfen tekrar deneyin.",
+  "FRIEND": "arkadaş",
+  "LOGIN_TO_CONTINUE": "Devam etmek için giriş yapın",
+  "NEED_TO_BE_LOGGED_IN": "Giriş yapmanız gerekiyor!",
+  "REQUIRE_ACCOUNT_SUBTEXT": "Bu sayfada gerçekleştirilen işlemler bir hesabınızın olmasını gerektirir.",
+  "LOGIN_OR_SIGNUP": "Giriş veya kayıt olun",
+  "ENTER_USERNAME": "Kullanıcı adı girin",
+  "REVIEW": "eleştiri"
 }

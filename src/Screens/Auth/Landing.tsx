@@ -5,8 +5,11 @@ import {
   View,
   ImageBackground,
   TouchableWithoutFeedback,
+  Pressable,
+  Platform,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -55,6 +58,18 @@ const Landing: FunctionComponent<LandingProps> = props => {
     props.navigation.navigate('SignIn');
   };
 
+  const navigateToTerms = () => {
+    props.navigation.navigate('SettingsStack', {
+      screen: 'TermsAndConditions',
+    });
+  };
+
+  const navigateToPrivacy = () => {
+    props.navigation.navigate('SettingsStack', {
+      screen: 'PrivacyPolicy',
+    });
+  };
+
   const navigateToEmailRegister = () => {
     props.navigation.navigate('EmailSignUp');
   };
@@ -75,6 +90,51 @@ const Landing: FunctionComponent<LandingProps> = props => {
     props.navigation.navigate('OnBoarding', {
       screen: 'CameraPermissions',
     });
+  };
+
+  const navigateToLocationPermissions = () => {
+    props.navigation.navigate('OnBoarding', {
+      screen: 'LocationPermissions',
+    });
+  };
+
+  const checkLocationPermissions = async () => {
+    if (Platform.OS === 'ios') {
+      const locationAlways = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
+      const locationWhenInUse = await check(
+        PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+      );
+
+      if (
+        locationAlways === RESULTS.GRANTED ||
+        locationWhenInUse === RESULTS.GRANTED
+      ) {
+        // navigate straight to app if not loggged in or if user has settings filled out
+        // else navigate to settings
+        return true;
+      }
+
+      return false;
+    } else {
+      const fineLocation = await check(
+        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+      );
+
+      if (fineLocation === RESULTS.GRANTED) {
+        return true;
+      }
+
+      return false;
+    }
+  };
+
+  const handleSkip = async () => {
+    const locationPermissions = await checkLocationPermissions();
+    if (!locationPermissions) {
+      navigateToLocationPermissions();
+    } else {
+      navigateToApp();
+    }
   };
 
   const handleSocialAuth = async (actionButton: ActionButtons) => {
@@ -215,13 +275,13 @@ const Landing: FunctionComponent<LandingProps> = props => {
         <View style={styles.privacyContainer}>
           <Text style={styles.privacyText}>
             {t('landing.privacy._1')}&nbsp;
-            <TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={navigateToTerms}>
               <Text style={styles.privacyLink}>
                 {t('landing.privacy._2')}&nbsp;
               </Text>
             </TouchableWithoutFeedback>
             {t('landing.privacy._3')}&nbsp;
-            <TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={navigateToPrivacy}>
               <Text style={styles.privacyLink}>{t('landing.privacy._4')}.</Text>
             </TouchableWithoutFeedback>
           </Text>
@@ -233,6 +293,13 @@ const Landing: FunctionComponent<LandingProps> = props => {
               <Text style={styles.signInHighlight}>{t('SIGN_IN')}</Text>
             </TouchableWithoutFeedback>
           </Text>
+        </View>
+
+        <View style={styles.skipContainer}>
+          <Text style={styles.skipAltText}>{t('OR')}</Text>
+          <Pressable onPress={handleSkip}>
+            <Text style={styles.skipButtonText}>{t('SKIP')}</Text>
+          </Pressable>
         </View>
       </View>
     </ImageBackground>
@@ -291,6 +358,22 @@ const styles = StyleSheet.create({
   signInHighlight: {
     color: '#AA00FF',
     fontWeight: '700',
+  },
+  skipContainer: {
+    alignItems: 'center',
+    marginTop: 25,
+  },
+  skipAltText: {
+    textTransform: 'capitalize',
+    fontSize: 16,
+    fontWeight: '500',
+    color: 'white',
+  },
+  skipButtonText: {
+    fontSize: 16,
+    fontWeight: '800',
+    marginTop: 15,
+    color: 'white',
   },
 });
 

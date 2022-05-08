@@ -5,14 +5,14 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import {
-  LoginManager,
-  AccessToken,
-  AuthenticationToken,
-} from 'react-native-fbsdk-next';
+// import {
+//   LoginManager,
+//   AccessToken,
+//   AuthenticationToken,
+// } from 'react-native-fbsdk-next';
 
 import AppleLogo from '_assets/logos/apple-logo/AppleLogo.png';
-import FacebookLogo from '_assets/logos/facebook-logo/FacebookLogo.png';
+// import FacebookLogo from '_assets/logos/facebook-logo/FacebookLogo.png';
 import GoogleLogo from '_assets/logos/google-logo/GoogleLogo.png';
 import type { ActionButtons } from './interfaces';
 
@@ -26,28 +26,28 @@ async function appleSignIn() {
 
     // get current authentication state for user
     // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
-    // const credentialState = await appleAuth.getCredentialStateForUser(
-    //   appleAuthRequestResponse.user,
-    // );
+    const credentialState = await appleAuth.getCredentialStateForUser(
+      appleAuthRequestResponse.user,
+    );
 
     console.log('apple auth response', appleAuthRequestResponse);
 
     // use credentialState response to ensure the user is authenticated
-    // if (credentialState === appleAuth.State.AUTHORIZED) {
-    // user is authenticated
-    return {
-      code: appleAuthRequestResponse.authorizationCode,
-      id_token: appleAuthRequestResponse.identityToken,
-      // state: credentialState,
-      user: {
-        email: appleAuthRequestResponse.email,
-        name: {
-          firstName: appleAuthRequestResponse.fullName?.givenName,
-          lastName: appleAuthRequestResponse.fullName?.familyName,
+    if (credentialState === appleAuth.State.AUTHORIZED) {
+      // user is authenticated
+      return {
+        code: appleAuthRequestResponse.authorizationCode,
+        id_token: appleAuthRequestResponse.identityToken,
+        state: credentialState,
+        user: {
+          email: appleAuthRequestResponse.email,
+          name: {
+            firstName: appleAuthRequestResponse.fullName?.givenName,
+            lastName: appleAuthRequestResponse.fullName?.familyName,
+          },
         },
-      },
-      // };
-    };
+      };
+    }
 
     return null;
   } catch (err) {
@@ -78,32 +78,32 @@ async function googleSignIn() {
   }
 }
 
-function facebookAuth() {
-  // Attempt a login using the Facebook login dialog asking for default permissions.
-  return LoginManager.logInWithPermissions(['public_profile']).then(
-    async function (result) {
-      if (result.isCancelled) {
-        return;
-      } else {
-      }
+// function facebookAuth() {
+//   // Attempt a login using the Facebook login dialog asking for default permissions.
+//   return LoginManager.logInWithPermissions(['public_profile']).then(
+//     async function (result) {
+//       if (result.isCancelled) {
+//         return;
+//       } else {
+//       }
 
-      let fbAuthToken;
-      if (Platform.OS === 'ios') {
-        const response = await AuthenticationToken.getAuthenticationTokenIOS();
-        fbAuthToken = response?.authenticationToken;
-      } else {
-        const response = await AccessToken.getCurrentAccessToken();
-        fbAuthToken = response?.accessToken;
-      }
-      return {
-        credential: fbAuthToken,
-      };
-    },
-    function (error) {
-      console.log('Login fail with error: ' + error);
-    },
-  );
-}
+//       let fbAuthToken;
+//       if (Platform.OS === 'ios') {
+//         const response = await AuthenticationToken.getAuthenticationTokenIOS();
+//         fbAuthToken = response?.authenticationToken;
+//       } else {
+//         const response = await AccessToken.getCurrentAccessToken();
+//         fbAuthToken = response?.accessToken;
+//       }
+//       return {
+//         credential: fbAuthToken,
+//       };
+//     },
+//     function (error) {
+//       console.log('Login fail with error: ' + error);
+//     },
+//   );
+// }
 
 const androidActionButtons: ActionButtons[] = [
   {
@@ -112,12 +112,12 @@ const androidActionButtons: ActionButtons[] = [
     action: () => googleSignIn(),
     imageSource: GoogleLogo,
   },
-  {
-    name: 'Facebook',
-    icon: '',
-    action: () => facebookAuth(),
-    imageSource: FacebookLogo,
-  },
+  // {
+  //   name: 'Facebook',
+  //   icon: '',
+  //   action: () => facebookAuth(),
+  //   imageSource: FacebookLogo,
+  // },
 ];
 
 const iOSActionButtons: ActionButtons[] = [
@@ -133,12 +133,12 @@ const iOSActionButtons: ActionButtons[] = [
     action: () => googleSignIn(),
     imageSource: GoogleLogo,
   },
-  {
-    name: 'Facebook',
-    icon: '',
-    action: () => facebookAuth(),
-    imageSource: FacebookLogo,
-  },
+  // {
+  //   name: 'Facebook',
+  //   icon: '',
+  //   action: () => facebookAuth(),
+  //   imageSource: FacebookLogo,
+  // },
 ];
 
 export const actionButtons =

@@ -86,8 +86,6 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>Zentacle wants to use your media library to take update your profile and add dive images.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Zentacle wants to use your camera to take update your profile and add dive images.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -100,6 +98,8 @@
 	<string>Zentacle wants to use your microphone to record videos of your dive.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Zentacle wants to use your photo library to take update your profile and add dive images.</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>Zentacle needs to track your activity to better recommend dive locationns near you</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

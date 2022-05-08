@@ -5,6 +5,8 @@ import {
   Text,
   View,
   TouchableWithoutFeedback,
+  Pressable,
+  Platform,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -12,6 +14,7 @@ import { Form, Field } from 'react-final-form';
 import validate from 'validate.js';
 import { FORM_ERROR } from 'final-form';
 import { useTranslation } from 'react-i18next';
+import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -41,6 +44,7 @@ import {
 } from '_utils/interfaces/data/user';
 
 import { isBelowHeightThreshold, HEIGHT } from '_utils/constants';
+import GradientText from '_components/ui/GradientText';
 
 type LandingScreenNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<AuthtackParamList, 'SignIn'>,
@@ -69,6 +73,18 @@ const SignIn: FunctionComponent<SignInProps> = props => {
     }
   };
 
+  const navigateToTerms = () => {
+    props.navigation.navigate('SettingsStack', {
+      screen: 'TermsAndConditions',
+    });
+  };
+
+  const navigateToPrivacy = () => {
+    props.navigation.navigate('SettingsStack', {
+      screen: 'PrivacyPolicy',
+    });
+  };
+
   const navigateToSignUp = () => {
     props.navigation.navigate('EmailSignUp');
   };
@@ -95,6 +111,51 @@ const SignIn: FunctionComponent<SignInProps> = props => {
     props.navigation.navigate('App', {
       screen: 'Explore',
     });
+  };
+
+  const navigateToLocationPermissions = () => {
+    props.navigation.navigate('OnBoarding', {
+      screen: 'LocationPermissions',
+    });
+  };
+
+  const checkLocationPermissions = async () => {
+    if (Platform.OS === 'ios') {
+      const locationAlways = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
+      const locationWhenInUse = await check(
+        PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+      );
+
+      if (
+        locationAlways === RESULTS.GRANTED ||
+        locationWhenInUse === RESULTS.GRANTED
+      ) {
+        // navigate straight to app if not loggged in or if user has settings filled out
+        // else navigate to settings
+        return true;
+      }
+
+      return false;
+    } else {
+      const fineLocation = await check(
+        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+      );
+
+      if (fineLocation === RESULTS.GRANTED) {
+        return true;
+      }
+
+      return false;
+    }
+  };
+
+  const handleSkip = async () => {
+    const locationPermissions = await checkLocationPermissions();
+    if (!locationPermissions) {
+      navigateToLocationPermissions();
+    } else {
+      navigateToApp();
+    }
   };
 
   const constraints = {
@@ -127,7 +188,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
 
             if (googleRegister.fulfilled.match(response)) {
               if (userPreviouslyFilledOnBoardingData) {
-                navigateToApp();
+                navigateToCameraPermissions();
               } else if (
                 (response.payload as GoogleLoginResponse).user.username
               ) {
@@ -329,13 +390,13 @@ const SignIn: FunctionComponent<SignInProps> = props => {
         <View style={styles.privacyContainer}>
           <Text style={styles.privacyText}>
             {t('landing.privacy._1')}&nbsp;
-            <TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={navigateToTerms}>
               <Text style={styles.privacyLink}>
                 {t('landing.privacy._2')}&nbsp;
               </Text>
             </TouchableWithoutFeedback>
             {t('landing.privacy._3')}&nbsp;
-            <TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={navigateToPrivacy}>
               <Text style={styles.privacyLink}>{t('landing.privacy._4')}.</Text>
             </TouchableWithoutFeedback>
           </Text>
@@ -347,6 +408,26 @@ const SignIn: FunctionComponent<SignInProps> = props => {
               <Text style={styles.signInHighlight}>{t('SIGN_UP')}</Text>
             </TouchableWithoutFeedback>
           </Text>
+        </View>
+
+        <View style={styles.skipContainer}>
+          <Text style={styles.skipAltText}>{t('OR')}</Text>
+          <Pressable onPress={handleSkip}>
+            <GradientText
+              gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+              start={{
+                x: 0,
+                y: 0,
+              }}
+              end={{
+                x: 0.06,
+                y: 1.8,
+              }}
+              gradientLocations={[0.01, 1, 1]}
+              style={styles.skipButtonText}>
+              {t('SKIP')}
+            </GradientText>
+          </Pressable>
         </View>
       </KeyboardAwareScrollView>
     </SafeAreaView>
@@ -424,6 +505,21 @@ const styles = StyleSheet.create({
   errorText: {
     textAlign: 'center',
     color: 'red',
+  },
+  skipContainer: {
+    alignItems: 'center',
+    marginTop: 25,
+  },
+  skipAltText: {
+    textTransform: 'capitalize',
+    fontSize: 16,
+    fontWeight: '500',
+    color: 'black',
+  },
+  skipButtonText: {
+    fontSize: 16,
+    fontWeight: '800',
+    marginTop: 15,
   },
 });
 
