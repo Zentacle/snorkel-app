@@ -11,7 +11,6 @@ import {
   handleAppleregister,
 } from './api';
 import { User } from '_utils/interfaces/data/user';
-import { makeCookieHeaders } from '_utils/functions';
 import { AppThunk, RootState } from '../../store';
 
 const ACTIVE_USER = 'active_user';
