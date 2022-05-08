@@ -4,13 +4,14 @@ import {
   Text,
   StyleSheet,
   Dimensions,
-  Image,
   SafeAreaView,
-  TouchableWithoutFeedback,
+  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { useTranslation } from 'react-i18next';
+import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
+import { Form, Field } from 'react-final-form';
+import validate from 'validate.js';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -24,8 +25,8 @@ import { useAppSelector } from '_redux/hooks';
 import { selectSettings } from '_redux/slices/settings';
 
 import Button from '_components/ui/Buttons/Button';
-import UploadAvatarIcon from '_assets/UploadAvatarIcon.png';
-import ImagePickerModal from '_components/reusables/ImagePickerModal';
+import { selectUser } from '_redux/slices/user';
+import ImageFormComponent from './components/ImageFormComponent';
 
 const HEIGHT = Dimensions.get('window').width;
 
@@ -38,29 +39,16 @@ interface ChooseAvatarProps {
   navigation: ChooseAvatarScreenNavigationProps;
 }
 
-interface PhotoOptions {
-  name: string;
-  action: () => Promise<void>;
+interface InitialValues {
+  profile_pic: string;
 }
 
 const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
   const settings = useAppSelector(selectSettings);
+  const user = useAppSelector(selectUser);
   const { t } = useTranslation();
-  const [cameraImage, setCameraImage] = React.useState('');
   const navigateBack = () => {
     props.navigation.goBack();
-  };
-
-  const [cameralModalIsVisible, setCameraModalVisibility] =
-    React.useState(false);
-
-  const openCameraModal = () => {
-    console.log('triggered');
-    setCameraModalVisibility(true);
-  };
-
-  const closeCameraModal = () => {
-    setCameraModalVisibility(false);
   };
 
   const navigateToLovationPermissions = () => {
@@ -73,116 +61,129 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
     });
   };
 
-  const handleLaunchCamera = async () => {
-    const result = await launchCamera({
-      mediaType: 'photo',
-      // includeBase64: true,
+  const navigateToSettings = () => {
+    props.navigation.navigate('OnBoarding', {
+      screen: 'MeasurementType',
     });
+  };
 
-    closeCameraModal();
-    if (result.assets && result.assets[0].uri) {
-      setCameraImage(result.assets[0].uri);
+  const handleContinuePress = async () => {
+    if (Platform.OS === 'ios') {
+      const locationAlways = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
+      const locationWhenInUse = await check(
+        PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+      );
+
+      if (
+        locationAlways === RESULTS.GRANTED ||
+        locationWhenInUse === RESULTS.GRANTED
+      ) {
+        // navigate straight to app if not loggged in or if user has settings filled out
+        // else navigate to settings
+        if (!user || (user && settings.measurementType)) {
+          navigateToApp();
+        } else {
+          navigateToSettings();
+        }
+      } else {
+        navigateToLovationPermissions();
+      }
+    } else {
+      const fineLocation = await check(
+        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+      );
+
+      if (fineLocation === RESULTS.GRANTED) {
+        if (settings.measurementType) {
+          navigateToApp();
+        } else {
+          navigateToSettings();
+        }
+      } else {
+        navigateToLovationPermissions();
+      }
     }
   };
 
-  const handleLaunchPhotoLibrary = async () => {
-    const result = await launchImageLibrary({
-      mediaType: 'photo',
-      // includeBase64: true,
-    });
-
-    closeCameraModal();
-    if (result.assets && result.assets[0].uri) {
-      setCameraImage(result.assets[0].uri);
-    }
+  const initialValues: InitialValues = {
+    profile_pic: user?.profile_pic || '',
   };
 
-  const photoOptions: PhotoOptions[] = [
-    {
-      name: t('CAMERA'),
-      action: handleLaunchCamera,
-    },
-    {
-      name: t('PHOTO_LIBRARY'),
-      action: handleLaunchPhotoLibrary,
-    },
-  ];
+  // const showImageOptions = () => {
+  //   if (user?.profile_pic) {
+  //     return (
+  //       <Image
+  //         style={{ width: 168, height: 168, borderRadius: 84 }}
+  //         source={{ uri: user?.profile_pic ?? cameraImage }}
+  //       />
+  //     );
+  //   } else if (cameraImage)
+  // };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.contentContainer}>
-        <View style={styles.iconBackContainer}>
-          <Icon
-            onPress={navigateBack}
-            name="chevron-back"
-            color="black"
-            size={25}
-          />
-        </View>
-        <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>
-            {t('choose_avatar.DESCRIPTION_MAIN_TEXT')}
-          </Text>
-          <Text style={styles.headerSubtext}>
-            {t('choose_avatar.DESCRIPTION_SUB_TEXT')}
-          </Text>
-        </View>
-        <View style={styles.iconAddContainer}>
-          {cameraImage ? (
-            <Image
-              style={{ width: 168, height: 168, borderRadius: 84 }}
-              source={{ uri: cameraImage }}
-            />
-          ) : (
-            <TouchableWithoutFeedback onPress={openCameraModal}>
-              <Image source={UploadAvatarIcon} />
-            </TouchableWithoutFeedback>
-          )}
-        </View>
-      </View>
+      <Form
+        validate={values => validate(values, {})}
+        onSubmit={() => {}}
+        initialValues={initialValues}
+        render={({}) => {
+          return (
+            <>
+              <View style={styles.contentContainer}>
+                <View style={styles.iconBackContainer}>
+                  <Icon
+                    onPress={navigateBack}
+                    name="chevron-back"
+                    color="black"
+                    size={25}
+                  />
+                </View>
+                <View style={styles.headerContainer}>
+                  <Text style={styles.headerText}>
+                    {t('choose_avatar.DESCRIPTION_MAIN_TEXT')}
+                  </Text>
+                  <Text style={styles.headerSubtext}>
+                    {t('choose_avatar.DESCRIPTION_SUB_TEXT')}
+                  </Text>
+                </View>
 
-      <View style={styles.footer}>
-        <Button
-          onPress={
-            // if measuremennt type is set, assume user has gone through the
-            // rest of this section and navigate to app
-            settings.measurementType
-              ? navigateToApp
-              : navigateToLovationPermissions
-          }
-          gradient
-          gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-          gradientLocations={[0.0, 1, 1]}
-          start={{
-            x: 0,
-            y: 0,
-          }}
-          end={{
-            x: 0.06,
-            y: 2.3,
-          }}
-          style={{
-            container: {
-              backgroundColor: 'white',
-              borderRadius: 12,
-              padding: HEIGHT < 400 ? 12 : 16,
-              marginVertical: HEIGHT < 400 ? 10 : 20,
-              marginHorizontal: 0,
-            },
-            text: {
-              color: '#FFF',
-              fontSize: 16,
-              fontWeight: '800',
-            },
-          }}>
-          {t('CONTINUE')}
-        </Button>
-      </View>
+                <Field name="profile_pic" component={ImageFormComponent} />
+              </View>
 
-      <ImagePickerModal
-        modalIsVisible={cameralModalIsVisible}
-        closeModal={closeCameraModal}
-        photoOptions={photoOptions}
+              <View style={styles.footer}>
+                <Button
+                  onPress={handleContinuePress}
+                  gradient
+                  gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+                  gradientLocations={[0.0, 1, 1]}
+                  start={{
+                    x: 0,
+                    y: 0,
+                  }}
+                  end={{
+                    x: 0.06,
+                    y: 2.3,
+                  }}
+                  style={{
+                    container: {
+                      backgroundColor: 'white',
+                      borderRadius: 12,
+                      padding: HEIGHT < 400 ? 12 : 16,
+                      marginVertical: HEIGHT < 400 ? 10 : 20,
+                      marginHorizontal: 0,
+                    },
+                    text: {
+                      color: '#FFF',
+                      fontSize: 16,
+                      fontWeight: '800',
+                    },
+                  }}>
+                  {t('CONTINUE')}
+                </Button>
+              </View>
+            </>
+          );
+        }}
       />
     </SafeAreaView>
   );
@@ -205,16 +206,6 @@ const styles = StyleSheet.create({
   headerSubtext: {
     color: 'black',
     marginTop: 8,
-  },
-  iconAddContainer: {
-    backgroundColor: '#FFF',
-    width: 168,
-    height: 168,
-    borderRadius: 84,
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
   },
   contentContainer: {
     flex: 1,
