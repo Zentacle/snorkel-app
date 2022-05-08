@@ -94,8 +94,6 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
             PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
           );
 
-          console.log('perms', locationAlways, locationWhenInUse);
-
           if (
             locationAlways === RESULTS.GRANTED ||
             locationWhenInUse === RESULTS.GRANTED
