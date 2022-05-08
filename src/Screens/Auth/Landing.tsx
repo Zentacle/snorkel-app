@@ -6,8 +6,10 @@ import {
   ImageBackground,
   TouchableWithoutFeedback,
   Pressable,
+  Platform,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -33,7 +35,6 @@ import {
   AppleLoginResponse,
   GoogleLoginResponse,
 } from '_utils/interfaces/data/user';
-import GradientText from '_components/ui/GradientText';
 
 import { isBelowHeightThreshold, HEIGHT } from '_utils/constants';
 
@@ -89,6 +90,34 @@ const Landing: FunctionComponent<LandingProps> = props => {
     props.navigation.navigate('OnBoarding', {
       screen: 'CameraPermissions',
     });
+  };
+
+  const handleSkip = async () => {
+    if (Platform.OS === 'ios') {
+      const locationAlways = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
+      const locationWhenInUse = await check(
+        PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+      );
+
+      if (
+        locationAlways === RESULTS.GRANTED ||
+        locationWhenInUse === RESULTS.GRANTED
+      ) {
+        navigateToApp();
+      } else {
+        navigateToCameraPermissions();
+      }
+    } else {
+      const fineLocation = await check(
+        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+      );
+
+      if (fineLocation === RESULTS.GRANTED) {
+        navigateToApp();
+      } else {
+        navigateToCameraPermissions();
+      }
+    }
   };
 
   const handleSocialAuth = async (actionButton: ActionButtons) => {
@@ -251,7 +280,7 @@ const Landing: FunctionComponent<LandingProps> = props => {
 
         <View style={styles.skipContainer}>
           <Text style={styles.skipAltText}>{t('OR')}</Text>
-          <Pressable onPress={navigateToApp}>
+          <Pressable onPress={handleSkip}>
             <Text style={styles.skipButtonText}>{t('SKIP')}</Text>
           </Pressable>
         </View>

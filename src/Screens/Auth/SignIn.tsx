@@ -6,6 +6,7 @@ import {
   View,
   TouchableWithoutFeedback,
   Pressable,
+  Platform,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -13,6 +14,7 @@ import { Form, Field } from 'react-final-form';
 import validate from 'validate.js';
 import { FORM_ERROR } from 'final-form';
 import { useTranslation } from 'react-i18next';
+import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -109,6 +111,34 @@ const SignIn: FunctionComponent<SignInProps> = props => {
     props.navigation.navigate('App', {
       screen: 'Explore',
     });
+  };
+
+  const handleSkip = async () => {
+    if (Platform.OS === 'ios') {
+      const locationAlways = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
+      const locationWhenInUse = await check(
+        PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+      );
+
+      if (
+        locationAlways === RESULTS.GRANTED ||
+        locationWhenInUse === RESULTS.GRANTED
+      ) {
+        navigateToApp();
+      } else {
+        navigateToCameraPermissions();
+      }
+    } else {
+      const fineLocation = await check(
+        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+      );
+
+      if (fineLocation === RESULTS.GRANTED) {
+        navigateToApp();
+      } else {
+        navigateToCameraPermissions();
+      }
+    }
   };
 
   const constraints = {
@@ -365,7 +395,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
 
         <View style={styles.skipContainer}>
           <Text style={styles.skipAltText}>{t('OR')}</Text>
-          <Pressable onPress={navigateToApp}>
+          <Pressable onPress={handleSkip}>
             <GradientText
               gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
               start={{
