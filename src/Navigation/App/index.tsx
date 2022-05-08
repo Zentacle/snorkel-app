@@ -51,11 +51,12 @@ const AppTabsNavigator: React.FC<AppTabsNavigatorProps> = ({ navigation }) => {
         <AuthModal
           isVisible={authmodalIsVisible}
           subtext={t('REQUIRE_ACCOUNT_SUBTEXT')}
-          modalAction={() =>
+          modalAction={() => {
+            setAuthModalVisible(false);
             navigation.navigate('Auth', {
               screen: 'Landing',
-            })
-          }
+            });
+          }}
           modalCancelAction={() => setAuthModalVisible(false)}
           cancelActionText={t('CANCEL')}
           actionText={t('LOGIN_OR_SIGNUP')}
