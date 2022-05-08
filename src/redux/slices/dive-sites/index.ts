@@ -5,7 +5,12 @@ import {
   createAsyncThunk,
 } from '@reduxjs/toolkit';
 
-import { fetchDiveSites, fetchDiveSite, fetchRecommended } from './api';
+import {
+  fetchDiveSites,
+  fetchDiveSite,
+  fetchRecommended,
+  fetchDiveSiteImages,
+} from './api';
 import { Spot } from '_utils/interfaces/data/spot';
 import { RootState } from '../../store';
 import type { RecommendedArgs } from '_utils/interfaces/data/spot';
@@ -63,7 +68,19 @@ export const handleFetchDiveSite = createAsyncThunk(
     if (!response.data) {
       return thunkApi.rejectWithValue(response.msg);
     }
-    return response.data;
+    const images = await fetchDiveSiteImages(id);
+
+    if (response.data.hero_img) {
+      return {
+        ...response.data,
+        images: [{ signedurl: response.data.hero_img }, ...images.data],
+      };
+    }
+
+    return {
+      ...response.data,
+      images: [...images.data],
+    };
   },
 );
 

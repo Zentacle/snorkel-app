@@ -9,6 +9,7 @@ import {
   Share,
   Alert,
   Platform,
+  Dimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FEIcon from 'react-native-vector-icons/Feather';
@@ -25,6 +26,28 @@ import DiveSite2 from '_assets/DiveSite2.jpg';
 import DiveSite3 from '_assets/DiveSite3.jpg';
 import DiveSite4 from '_assets/DiveSite4.jpg';
 import { isBelowHeightThreshold, WIDTH } from '_utils/constants';
+
+function makeActiveRange(arr: any[], curr: number) {
+  const returnedRange = 5;
+  const bandwidthRange = Math.floor(returnedRange / 2);
+
+  //  length is less than 5
+  if (arr.length < returnedRange) {
+    return [0, arr.length];
+  }
+
+  // activeIndex less than 5
+  if (curr < 5) {
+    return [0, returnedRange];
+  }
+
+  // active index at the end of the array,
+  if (curr === arr.length - 1) {
+    return [curr - bandwidthRange - 2, arr.length];
+  }
+
+  return [curr - returnedRange + 1, curr + 1];
+}
 
 enum Directions {
   initial = 'initial',
@@ -54,9 +77,9 @@ const defaultImages: Images[] = [
 interface ImageCarouselProps {
   goBack: () => void;
   images?: {
-    uri: string;
+    signedurl: string;
     type?: string;
-    name: string;
+    name?: string;
   }[];
   shareUrl?: string;
 }
@@ -111,6 +134,11 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = props => {
   };
 
   const [focusedImageIndex, setFocusedImageIndex] = React.useState(0);
+  let activeRange = makeActiveRange(
+    props.images?.length ? props.images : defaultImages,
+    focusedImageIndex,
+  );
+
   if (props.images && props.images.length) {
     return (
       <View style={styles.header}>
@@ -119,13 +147,21 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = props => {
           pagingEnabled
           onScroll={handleScroll}
           showsHorizontalScrollIndicator={false}>
-          {props.images.map((image, index) => (
-            <Image
-              key={index}
-              style={styles.headerImage}
-              source={{ uri: image.uri }}
-            />
-          ))}
+          {props.images.length
+            ? props.images.map((image, index) => (
+                <Image
+                  key={index}
+                  style={styles.headerImage}
+                  source={{ uri: image.signedurl }}
+                />
+              ))
+            : defaultImages.map((image, index) => (
+                <Image
+                  key={index}
+                  style={styles.headerImage}
+                  source={image.source}
+                />
+              ))}
         </ScrollView>
         <View style={styles.headerIconsContainer}>
           <TouchableWithoutFeedback onPress={props.goBack}>
@@ -148,20 +184,23 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = props => {
           )}
         </View>
         <View style={styles.headerBottomContainer}>
-          <View style={styles.photoDots}>
-            {props.images.map((_dot, index) => {
-              return (
-                <View
-                  key={index}
-                  style={
-                    index === focusedImageIndex
-                      ? styles.whitePhotoDot
-                      : styles.blackPhotoDot
-                  }
-                />
-              );
-            })}
-          </View>
+          <ScrollView contentContainerStyle={styles.photoDots}>
+            {props.images
+              .map((_dot, index) => {
+                // const range =
+                return (
+                  <View
+                    key={index}
+                    style={
+                      index === focusedImageIndex
+                        ? styles.whitePhotoDot
+                        : styles.blackPhotoDot
+                    }
+                  />
+                );
+              })
+              .slice(...activeRange)}
+          </ScrollView>
           <View style={styles.imageCountContainer}>
             <Icon name="image-outline" size={18} color="#FFF" />
             <Text style={styles.imageCountText}>{`${focusedImageIndex + 1}/${
@@ -205,18 +244,20 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = props => {
       </View>
       <View style={styles.headerBottomContainer}>
         <View style={styles.photoDots}>
-          {defaultImages.map((_dot, index) => {
-            return (
-              <View
-                key={index}
-                style={
-                  index === focusedImageIndex
-                    ? styles.whitePhotoDot
-                    : styles.blackPhotoDot
-                }
-              />
-            );
-          })}
+          {defaultImages
+            .map((_dot, index) => {
+              return (
+                <View
+                  key={index}
+                  style={
+                    index === focusedImageIndex
+                      ? styles.whitePhotoDot
+                      : styles.blackPhotoDot
+                  }
+                />
+              );
+            })
+            .slice(...activeRange)}
         </View>
         <View style={styles.imageCountContainer}>
           <Icon name="image-outline" size={18} color="#FFF" />
@@ -256,10 +297,11 @@ const styles = StyleSheet.create({
     bottom: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
+    width: Dimensions.get('window').width,
   },
   photoDots: {
     flexDirection: 'row',
+    // width: Dimensions.get('window').width * 0.6,
     alignItems: 'center',
   },
   blackPhotoDot: {

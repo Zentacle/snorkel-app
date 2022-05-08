@@ -29,10 +29,24 @@ export interface Spot {
   ratings?: {
     [rating: string]: number;
   };
+  images?: Image[];
 }
 
 export interface RecommendedArgs {
   token: string;
   longitude?: number;
   latitude?: number;
+}
+
+interface Image {
+  caption?: string;
+  id?: number;
+  review_id?: number | null;
+  signedurl: string;
+  url?: string;
+}
+
+export interface ResponseWithImages {
+  data: Image[];
+  msg: string;
 }
