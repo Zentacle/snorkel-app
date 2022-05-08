@@ -53,7 +53,7 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
       } else {
         const PermissionsCamera = await request(PERMISSIONS.IOS.CAMERA);
         if (PermissionsCamera === RESULTS.GRANTED) {
-          const PermissionsMedia = await request(PERMISSIONS.IOS.MEDIA_LIBRARY);
+          const PermissionsMedia = await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
           if (
             PermissionsMedia === RESULTS.GRANTED ||
             PermissionsMedia === RESULTS.UNAVAILABLE
