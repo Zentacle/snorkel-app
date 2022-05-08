@@ -5,6 +5,7 @@ import {
   Text,
   View,
   TouchableWithoutFeedback,
+  Platform,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -18,6 +19,7 @@ import type { CompositeNavigationProp } from '@react-navigation/native';
 import type { FunctionComponent } from 'react';
 import type { RootStackParamList, AuthtackParamList } from '_utils/interfaces';
 import type { User } from '_utils/interfaces/data/user';
+import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 
 import SMButton from '_components/ui/Buttons/SM-Logins';
 import Button from '_components/ui/Buttons/Button';
@@ -102,6 +104,42 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
     });
   };
 
+  const navigateToLocationPermissions = () => {
+    props.navigation.navigate('OnBoarding', {
+      screen: 'LocationPermissions',
+    });
+  };
+
+  const checkLocationPermissions = async () => {
+    if (Platform.OS === 'ios') {
+      const locationAlways = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
+      const locationWhenInUse = await check(
+        PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+      );
+
+      if (
+        locationAlways === RESULTS.GRANTED ||
+        locationWhenInUse === RESULTS.GRANTED
+      ) {
+        // navigate straight to app if not loggged in or if user has settings filled out
+        // else navigate to settings
+        return true;
+      }
+
+      return false;
+    } else {
+      const fineLocation = await check(
+        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+      );
+
+      if (fineLocation === RESULTS.GRANTED) {
+        return true;
+      }
+
+      return false;
+    }
+  };
+
   const handleSocialAuth = async (actionButton: ActionButtons) => {
     setSelectedLogin(actionButton.name as SelectedLogin);
     switch (actionButton.name) {
@@ -121,7 +159,12 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
 
             if (googleRegister.fulfilled.match(response)) {
               if (userPreviouslyFilledOnBoardingData) {
-                navigateToApp();
+                const locationPermissions = await checkLocationPermissions();
+                if (!locationPermissions) {
+                  navigateToLocationPermissions();
+                } else {
+                  navigateToApp();
+                }
               } else if (
                 (response.payload as GoogleLoginResponse).user.username
               ) {
@@ -155,7 +198,12 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
 
             if (appleRegister.fulfilled.match(response)) {
               if (userPreviouslyFilledOnBoardingData) {
-                navigateToApp();
+                const locationPermissions = await checkLocationPermissions();
+                if (!locationPermissions) {
+                  navigateToLocationPermissions();
+                } else {
+                  navigateToApp();
+                }
               } else if (
                 (response.payload as AppleLoginResponse).user.username
               ) {

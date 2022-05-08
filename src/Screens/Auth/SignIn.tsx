@@ -113,7 +113,13 @@ const SignIn: FunctionComponent<SignInProps> = props => {
     });
   };
 
-  const handleSkip = async () => {
+  const navigateToLocationPermissions = () => {
+    props.navigation.navigate('OnBoarding', {
+      screen: 'LocationPermissions',
+    });
+  };
+
+  const checkLocationPermissions = async () => {
     if (Platform.OS === 'ios') {
       const locationAlways = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
       const locationWhenInUse = await check(
@@ -124,20 +130,31 @@ const SignIn: FunctionComponent<SignInProps> = props => {
         locationAlways === RESULTS.GRANTED ||
         locationWhenInUse === RESULTS.GRANTED
       ) {
-        navigateToApp();
-      } else {
-        navigateToCameraPermissions();
+        // navigate straight to app if not loggged in or if user has settings filled out
+        // else navigate to settings
+        return true;
       }
+
+      return false;
     } else {
       const fineLocation = await check(
         PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
       );
 
       if (fineLocation === RESULTS.GRANTED) {
-        navigateToApp();
-      } else {
-        navigateToCameraPermissions();
+        return true;
       }
+
+      return false;
+    }
+  };
+
+  const handleSkip = async () => {
+    const locationPermissions = await checkLocationPermissions();
+    if (!locationPermissions) {
+      navigateToLocationPermissions();
+    } else {
+      navigateToApp();
     }
   };
 
@@ -171,7 +188,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
 
             if (googleRegister.fulfilled.match(response)) {
               if (userPreviouslyFilledOnBoardingData) {
-                navigateToApp();
+                navigateToCameraPermissions();
               } else if (
                 (response.payload as GoogleLoginResponse).user.username
               ) {
