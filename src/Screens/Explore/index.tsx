@@ -102,7 +102,33 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
           ) {
             Geolocation.getCurrentPosition(
               position => {
-                console.log(position);
+                dispatch(
+                  handleFetchRecommended({
+                    token: authToken as string,
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                  }),
+                );
+              },
+              error => {
+                console.log(error.code, error.message);
+              },
+              { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+            );
+          } else {
+            dispatch(
+              handleFetchRecommended({
+                token: authToken as string,
+              }),
+            );
+          }
+        } else {
+          const fineLocation = await check(
+            PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+          );
+          if (fineLocation === RESULTS.GRANTED) {
+            Geolocation.getCurrentPosition(
+              position => {
                 dispatch(
                   handleFetchRecommended({
                     token: authToken as string,
