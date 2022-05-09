@@ -156,7 +156,12 @@ const Landing: FunctionComponent<LandingProps> = props => {
 
             if (googleRegister.fulfilled.match(response)) {
               if (userPreviouslyFilledOnBoardingData) {
-                navigateToApp();
+                const locationPermissions = await checkLocationPermissions();
+                if (!locationPermissions) {
+                  navigateToLocationPermissions();
+                } else {
+                  navigateToApp();
+                }
               } else if (
                 (response.payload as GoogleLoginResponse).user.username
               ) {
@@ -190,7 +195,12 @@ const Landing: FunctionComponent<LandingProps> = props => {
 
             if (appleRegister.fulfilled.match(response)) {
               if (userPreviouslyFilledOnBoardingData) {
-                navigateToApp();
+                const locationPermissions = await checkLocationPermissions();
+                if (!locationPermissions) {
+                  navigateToLocationPermissions();
+                } else {
+                  navigateToApp();
+                }
               } else if (
                 (response.payload as AppleLoginResponse).user.username
               ) {
