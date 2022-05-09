@@ -15,7 +15,7 @@ import {
   isDiveSiteDetailinState,
   selectLoadingState,
 } from '_redux/slices/dive-sites';
-import { fetchDiveSiteImages, fetchNearby } from '_redux/slices/dive-sites/api';
+import { fetchNearby } from '_redux/slices/dive-sites/api';
 import {
   handleFetchReviews,
   selectReviewById,
@@ -106,13 +106,9 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
 
     // because we need to fetch images as well, we're making calls to the api unless the
     // site we  want has had its images downloaded
-    if (!diveSiteInState && !diveSite.images?.length) {
+    if (!diveSiteInState || (diveSiteInState && !diveSite.images)) {
       dispatch(handleFetchDiveSite(currentSpotId));
     }
-
-    // fetchDiveSiteImages(diveSite.id).then(results => {
-    //   console.log('images', results);
-    // });
   }, [currentSpotId, dispatch, reviewInState, diveSiteInState, diveSite]);
 
   const navigateToDiveSite = (diveSpotId: number) => {

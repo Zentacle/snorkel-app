@@ -104,30 +104,29 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
 
   const _renderItem = (item: { item: TypeaheadResponse }) => {
     return (
-      <Pressable onPress={() => setPlace(item.item.text)}>
-        <View style={styles.resultContainer}>
-          {item.item.type === 'site' ? (
-            <>
+      <View style={styles.resultContainer}>
+        {item.item.type === 'site' ? (
+          <Pressable onPress={() => handleNavigationToDiveSite(item.item.id)}>
+            <View style={styles.resultItemContainer}>
               <Image source={LocationImage} />
-              <Pressable
-                onPress={() => handleNavigationToDiveSite(item.item.id)}>
-                <View style={styles.placeContainer}>
-                  <Text style={styles.place}>{item.item.text}</Text>
-                  <Text style={styles.placeSubText}>{item.item.subtext}</Text>
-                </View>
-              </Pressable>
-            </>
-          ) : (
-            <>
+              <View style={styles.placeContainer}>
+                <Text style={styles.place}>{item.item.text}</Text>
+                <Text style={styles.placeSubText}>{item.item.subtext}</Text>
+              </View>
+            </View>
+          </Pressable>
+        ) : (
+          <Pressable onPress={() => setPlace(item.item.text)}>
+            <View style={styles.resultItemContainer}>
               <Image source={FlagImage} />
               <View style={styles.placeContainer}>
                 <Text style={styles.place}>{item.item.text}</Text>
                 <Text style={styles.placeSubText}>{item.item.subtext}</Text>
               </View>
-            </>
-          )}
-        </View>
-      </Pressable>
+            </View>
+          </Pressable>
+        )}
+      </View>
     );
   };
 
@@ -207,9 +206,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   resultContainer: {
+    marginVertical: 10,
+  },
+  resultItemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 10,
   },
   placeContainer: {
     marginLeft: 15,
