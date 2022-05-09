@@ -4,6 +4,7 @@ import type {
   RecommendedArgs,
   ResponseWithImages,
 } from '_utils/interfaces/data/spot';
+import { NearbyExplore } from '.';
 
 interface ResponseWithSpots {
   data: Spot[];
@@ -15,9 +16,16 @@ interface ResponseWithSpot {
   msg: string;
 }
 
-export async function fetchDiveSites(): Promise<ResponseWithSpots> {
+export async function fetchDiveSites(
+  coords: NearbyExplore,
+): Promise<ResponseWithSpots> {
   try {
-    const url = `${config.API_ENDPOINT}/spots/get`;
+    let url = `${config.API_ENDPOINT}/spots/get`;
+
+    if (coords.latitude && coords.longitude) {
+      url = `${config.API_ENDPOINT}/spots/nearby?lat=${coords.latitude}&lng=${coords.longitude}`;
+    }
+
     const response = fetch(url, {
       method: 'GET',
       headers: {

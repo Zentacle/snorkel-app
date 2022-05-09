@@ -36,6 +36,11 @@ const initialState: DiveSpotState = {
   },
 };
 
+export interface NearbyExplore {
+  latitude?: number;
+  longitude?: number;
+}
+
 export const handleFetchRecommended = createAsyncThunk(
   'dive-sites/recommended',
   async (args: RecommendedArgs, thunkApi) => {
@@ -52,8 +57,8 @@ export const handleFetchRecommended = createAsyncThunk(
 
 export const handleFetchDiveSites = createAsyncThunk(
   'dive-sites/fetchdiveSites',
-  async (_, thunkApi) => {
-    const response = await fetchDiveSites();
+  async (coords: NearbyExplore, thunkApi) => {
+    const response = await fetchDiveSites(coords);
     if (!response.data) {
       return thunkApi.rejectWithValue(response.msg);
     }
