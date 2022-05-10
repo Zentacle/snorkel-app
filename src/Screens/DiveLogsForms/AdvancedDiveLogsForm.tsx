@@ -167,7 +167,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     delete arrangedValues.location;
     delete arrangedValues.date_posted;
 
-    const response = await handleUpdateDiveLog(
+    await handleUpdateDiveLog(
       {
         ...arrangedValues,
         beach_id: values.location?.beach_id,
@@ -175,8 +175,6 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
       authToken as string,
     );
     setFormSubmitting(false);
-
-    console.log('resp', response);
 
     callback();
 

@@ -138,7 +138,7 @@ const SimpleDiveLogsForms: FunctionComponent<
         },
         authToken as string,
       );
-      console.log(response);
+
       if (response.msg) {
         throw new Error(response.msg);
       }
