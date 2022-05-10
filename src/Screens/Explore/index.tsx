@@ -86,7 +86,6 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   React.useEffect(() => {
     navigation.addListener('focus', () => {
       const handleRecommenndedSitesRequest = async () => {
-        console.log('hers, check');
         if (Platform.OS === 'ios') {
           const locationAlways = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
           const locationWhenInUse = await check(
