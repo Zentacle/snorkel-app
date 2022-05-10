@@ -177,13 +177,6 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     setFormSubmitting(false);
 
     callback();
-
-    // console.log('full dl', response);
-    // dispatch(
-    //   editDiveLog({
-    //     ...arrangedValues,
-    //   }),
-    // );
   };
 
   const openModal = () => {
