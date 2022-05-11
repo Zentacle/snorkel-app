@@ -26,7 +26,11 @@ import GradientBox from '_components/ui/GradientBox';
 
 import { capitalize } from '_utils/functions';
 import { useAppDispatch, useAppSelector } from '_redux/hooks';
-import { updateSettings, selectSettings } from '_redux/slices/settings';
+import {
+  updateSettings,
+  selectSettings,
+  MeasurementTypes,
+} from '_redux/slices/settings';
 
 type TypeUnitsTypeNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<SettingStackParamList, 'TypeUnits'>,
@@ -48,7 +52,7 @@ const TypeUnits: FunctionComponent<TypeUnitsTypeProps> = ({ navigation }) => {
     navigation.goBack();
   };
 
-  const submitForm = (val: string) => {
+  const submitForm = (val: MeasurementTypes) => {
     dispatch(
       updateSettings({
         measurementType: val,
@@ -56,15 +60,18 @@ const TypeUnits: FunctionComponent<TypeUnitsTypeProps> = ({ navigation }) => {
     );
   };
 
-  const measurementTypes = [
+  interface MeasurementTypesForView {
+    name: MeasurementTypes;
+    types: string[];
+  }
+
+  const measurementTypes: MeasurementTypesForView[] = [
     {
       name: t('IMPERIAL'),
-      label: t('IMPERIAL_UNITS'),
       types: ['ft', 'lb', 'psi', 'f'],
     },
     {
       name: t('METRIC'),
-      label: t('METRIC_UNITS'),
       types: ['m', 'kg', 'bar', 'C'],
     },
   ];
@@ -131,9 +138,16 @@ const TypeUnits: FunctionComponent<TypeUnitsTypeProps> = ({ navigation }) => {
                       style={styles.selectionText}>
                       {capitalize(measurement.name)}
                     </GradientText>
-                    <Text style={styles.selectionLabel}>
-                      {measurement.types.map(type => `${type} `)}
-                    </Text>
+                    <View style={styles.selectionLabelContainer}>
+                      {measurement.types.map((type, mIndex) => (
+                        <Fragment key={mIndex}>
+                          <Text style={styles.selectionLabel}>{type}</Text>
+                          {mIndex !== measurement.types.length - 1 && (
+                            <View style={styles.dot} />
+                          )}
+                        </Fragment>
+                      ))}
+                    </View>
                   </View>
                 </GradientBox>
               </TouchableWithoutFeedback>
