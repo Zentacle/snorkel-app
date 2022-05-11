@@ -23,12 +23,9 @@ import GradientBox from '_components/ui/GradientBox';
 import MeasurementImage from '_assets/Measurement.png';
 import GradientText from '_components/ui/GradientText';
 import { useAppDispatch, useAppSelector } from '_redux/hooks';
-import {
-  MeasurementTypes,
-  updateSettings,
-  selectSettings,
-} from '_redux/slices/settings';
+import { selectUser, updateUser } from '_redux/slices/user';
 import { capitalize } from '_utils/functions';
+import { MeasurementUnit } from '_utils/interfaces/data/user';
 
 const WIDTH = Dimensions.get('window').width;
 
@@ -45,7 +42,7 @@ const MeasurementType: FunctionComponent<MeasurementTypeProps> = ({
   navigation,
 }) => {
   const dispatch = useAppDispatch();
-  const settings = useAppSelector(selectSettings);
+  const user = useAppSelector(selectUser);
 
   const { t } = useTranslation();
   const navigateToActivityType = () => {
@@ -53,7 +50,7 @@ const MeasurementType: FunctionComponent<MeasurementTypeProps> = ({
   };
 
   interface MeasurementTypesForView {
-    name: MeasurementTypes;
+    name: MeasurementUnit;
     types: string[];
   }
 
@@ -68,10 +65,10 @@ const MeasurementType: FunctionComponent<MeasurementTypeProps> = ({
     },
   ];
 
-  const submitForm = (val: MeasurementTypes) => {
-    dispatch(
-      updateSettings({
-        measurementType: val,
+  const submitForm = async (val: MeasurementUnit) => {
+    await dispatch(
+      updateUser({
+        unit: val,
       }),
     );
     navigateToActivityType();
@@ -104,7 +101,7 @@ const MeasurementType: FunctionComponent<MeasurementTypeProps> = ({
       </View>
       <View style={styles.selectionContainer}>
         {measurementTypes.map((measurement, index) => {
-          if (measurement.name === settings.measurementType) {
+          if (measurement.name === user?.unit) {
             return (
               <TouchableWithoutFeedback
                 onPress={() => submitForm(measurement.name)}

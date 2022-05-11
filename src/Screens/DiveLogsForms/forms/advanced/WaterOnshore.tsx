@@ -10,6 +10,8 @@ import GradientBox from '_components/ui/GradientBox';
 import GradientCircle from '_components/ui/GradientCircle';
 import { WIDTH } from '_utils/constants';
 import { capitalize } from '_utils/functions';
+import { useAppSelector } from '_redux/hooks';
+import { selectUser } from '_redux/slices/user';
 
 const EntryActiveComp = (entry: string) => (
   <View style={styles.selectedShadow}>
@@ -26,6 +28,7 @@ const EntryActiveComp = (entry: string) => (
 
 const WaterOnshore = () => {
   const { t } = useTranslation();
+  const user = useAppSelector(selectUser);
   const entries = [t('SHORE').toLowerCase(), t('BOAT').toLowerCase()];
 
   const EntryInctiveComp = (entry: string) => {
@@ -46,24 +49,36 @@ const WaterOnshore = () => {
       <View style={{ marginTop: 30 }}>
         <Field
           name="water_temp"
-          label={`${t('WATER_TEMP')} . C`}
+          label={`${t('WATER_TEMP')} . ${
+            user?.unit === 'imperial' ? 'f' : 'C'
+          }`}
           component={SliderComp}
-          trackMarks={[0, 10, 20, 30, 40, 50, 60]}
-          benchMarks={[0, 30, 60]}
-          minimumValue={0}
-          maximumValue={60}
+          trackMarks={
+            user?.unit === 'imperial'
+              ? [32, 50, 68, 86, 104, 122, 140]
+              : [0, 10, 20, 30, 40, 50, 60]
+          }
+          benchMarks={user?.unit === 'imperial' ? [32, 86, 140] : [0, 30, 60]}
+          minimumValue={user?.unit === 'imperial' ? 32 : 0}
+          maximumValue={user?.unit === 'imperial' ? 140 : 60}
         />
       </View>
 
       <View style={{ marginTop: 30, marginBottom: 20 }}>
         <Field
           name="air_temp"
-          label={`${t('AIR_TEMP')} . C`}
+          label={`${t('AIR_TEMP')} . ${user?.unit === 'imperial' ? 'f' : 'C'}`}
           component={SliderComp}
-          trackMarks={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
-          benchMarks={[0, 50, 100]}
-          minimumValue={0}
-          maximumValue={100}
+          trackMarks={
+            user?.unit === 'imperial'
+              ? // the temperature inn farenheight  do not corresponnd to the ones in celsius
+                // they are calculated by getting the average distance of start and end * number of points (apart from start)
+                [32, 50, 68, 86, 104, 122, 140, 158, 176, 194, 212]
+              : [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+          }
+          benchMarks={user?.unit === 'imperial' ? [32, 122, 212] : [0, 50, 100]}
+          minimumValue={user?.unit === 'imperial' ? 32 : 0}
+          maximumValue={user?.unit === 'imperial' ? 212 : 100}
         />
       </View>
 

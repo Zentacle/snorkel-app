@@ -26,11 +26,8 @@ import GradientBox from '_components/ui/GradientBox';
 
 import { capitalize } from '_utils/functions';
 import { useAppDispatch, useAppSelector } from '_redux/hooks';
-import {
-  updateSettings,
-  selectSettings,
-  MeasurementTypes,
-} from '_redux/slices/settings';
+import { selectUser, updateUser } from '_redux/slices/user';
+import type { MeasurementUnit } from '_utils/interfaces/data/user';
 
 type TypeUnitsTypeNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<SettingStackParamList, 'TypeUnits'>,
@@ -46,22 +43,22 @@ const WIDTH = Dimensions.get('window').width;
 const TypeUnits: FunctionComponent<TypeUnitsTypeProps> = ({ navigation }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const settings = useAppSelector(selectSettings);
+  const user = useAppSelector(selectUser);
 
   const navigateBack = () => {
     navigation.goBack();
   };
 
-  const submitForm = (val: MeasurementTypes) => {
-    dispatch(
-      updateSettings({
-        measurementType: val,
+  const submitForm = async (val: MeasurementUnit) => {
+    await dispatch(
+      updateUser({
+        unit: val,
       }),
     );
   };
 
   interface MeasurementTypesForView {
-    name: MeasurementTypes;
+    name: MeasurementUnit;
     types: string[];
   }
 
@@ -117,7 +114,7 @@ const TypeUnits: FunctionComponent<TypeUnitsTypeProps> = ({ navigation }) => {
 
       <View style={styles.selectionContainer}>
         {measurementTypes.map((measurement, index) => {
-          if (measurement.name === settings.measurementType) {
+          if (measurement.name === user?.unit) {
             return (
               <TouchableWithoutFeedback
                 onPress={() => submitForm(measurement.name)}

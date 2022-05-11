@@ -46,6 +46,7 @@ import {
   isBelowWidthThreshold,
 } from '_utils/constants';
 import { handleUpdateDiveLog } from '_redux/slices/dive-logs/api';
+import { selectUser } from '_redux/slices/user';
 
 type AdvancedDiveLogsFormsNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<LogsFormStackParamList, 'AdvancedDiveLogsForm'>,
@@ -68,6 +69,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
 }) => {
   const { t } = useTranslation();
   const authToken = useAppSelector(selectAuthToken);
+  const user = useAppSelector(selectUser);
   const [page, switchPage] = React.useState(1);
   const [modalIsOpen, toggleModal] = React.useState(false);
   const [logDate, setLogDate] = React.useState<Date>();
@@ -197,11 +199,21 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     dive_length: simpleDiveLogsForm.dive_length
       ? simpleDiveLogsForm.dive_length
       : 45,
-    max_depth: simpleDiveLogsForm.max_depth ? simpleDiveLogsForm.max_depth : 40,
+    max_depth: simpleDiveLogsForm.max_depth
+      ? simpleDiveLogsForm.max_depth
+      : user?.unit === 'imperial'
+      ? 40
+      : 12.2,
     water_temp: simpleDiveLogsForm.water_temp
       ? simpleDiveLogsForm.water_temp
+      : user?.unit === 'imperial'
+      ? 57.2
       : 14,
-    air_temp: simpleDiveLogsForm.air_temp ? simpleDiveLogsForm.air_temp : 20,
+    air_temp: simpleDiveLogsForm.air_temp
+      ? simpleDiveLogsForm.air_temp
+      : user?.unit === 'imperial'
+      ? 60
+      : 20,
     visibility: simpleDiveLogsForm.visibility
       ? simpleDiveLogsForm.visibility
       : 1,
@@ -216,9 +228,21 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     startTime: simpleDiveLogsForm.date_dived
       ? new Date(simpleDiveLogsForm.date_dived)
       : logDate,
-    weight: simpleDiveLogsForm.weight ? simpleDiveLogsForm.weight : 5,
-    start_air: simpleDiveLogsForm.start_air ? simpleDiveLogsForm.start_air : 40,
-    end_air: simpleDiveLogsForm.end_air ? simpleDiveLogsForm.end_air : 40,
+    weight: simpleDiveLogsForm.weight
+      ? simpleDiveLogsForm.weight
+      : user?.unit === 'imperial'
+      ? 11
+      : 5,
+    start_air: simpleDiveLogsForm.start_air
+      ? simpleDiveLogsForm.start_air
+      : user?.unit === 'imperial'
+      ? 1160
+      : 40,
+    end_air: simpleDiveLogsForm.end_air
+      ? simpleDiveLogsForm.end_air
+      : user?.unit === 'imperial'
+      ? 1160
+      : 40,
     air_type: simpleDiveLogsForm.air_type
       ? simpleDiveLogsForm.air_type
       : t('NORMAL').toLowerCase(),

@@ -94,7 +94,7 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
       );
 
       if (fineLocation === RESULTS.GRANTED) {
-        if (settings.measurementType) {
+        if (settings.activityType) {
           navigateToApp();
         } else {
           navigateToSettings();
