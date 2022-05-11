@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from 'react-i18next';
 
@@ -61,6 +61,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   const currentSpotId = route.params.diveSpotId;
   const { t } = useTranslation();
   const [nearby, setNearby] = React.useState<Spot[]>([]);
+  const [seeFullDesc, setFullDesc] = React.useState(false);
 
   const activities: Activity[] = [
     {
@@ -212,6 +213,24 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
             <Icon name="star" size={20} color="#aa00ff" />
             <Text style={styles.ratingsCount}>({diveSite.num_reviews})</Text>
           </View>
+
+          {seeFullDesc ? (
+            <View style={[styles.descriptionContainer]}>
+              <Text style={styles.descriptionText}>{diveSite.description}</Text>
+              <Pressable onPress={() => setFullDesc(false)}>
+                <Text style={styles.seeMoreText}>See less</Text>
+              </Pressable>
+            </View>
+          ) : (
+            <View style={[styles.descriptionContainer]}>
+              <Text numberOfLines={4} style={styles.descriptionText}>
+                {diveSite.description}
+              </Text>
+              <Pressable onPress={() => setFullDesc(true)}>
+                <Text style={styles.seeMoreText}>See more</Text>
+              </Pressable>
+            </View>
+          )}
 
           {siteHasCoordinates ? (
             <DiveLocation
@@ -457,6 +476,18 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: 'black',
     marginHorizontal: 5,
+  },
+  descriptionContainer: {
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  descriptionText: {
+    color: 'black',
+  },
+  seeMoreText: {
+    marginTop: 3,
+    color: '#AA00FF',
+    fontWeight: '500',
   },
 });
 
