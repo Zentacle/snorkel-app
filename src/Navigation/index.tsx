@@ -47,7 +47,7 @@ const Navigator: React.FC = () => {
     // handle fetching of dive sites and logs here
     // to improve user experience
     dispatch(handleCheckExistingUser());
-    dispatch(handleFetchDiveSites());
+    dispatch(handleFetchDiveSites({}));
     dispatch(autoAuth()).then(() => {
       SplashScreen.hide();
     });

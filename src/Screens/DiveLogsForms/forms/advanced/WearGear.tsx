@@ -8,6 +8,8 @@ import GradientCircle from '_components/ui/GradientCircle';
 import GradientBox from '_components/ui/GradientBox';
 import { capitalize } from '_utils/functions';
 import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
+import { useAppSelector } from '_redux/hooks';
+import { selectUser } from '_redux/slices/user';
 
 const WIDTH = Dimensions.get('window').width;
 
@@ -34,18 +36,23 @@ const air_typeInactiveComponent = (air_type: string) => (
 const WearGear = () => {
   const { t } = useTranslation();
   const air_typeTypes = [t('NORMAL').toLowerCase(), 'EANx32', 'EANx36'];
+  const user = useAppSelector(selectUser);
 
   return (
     <View style={styles.container}>
       <View style={{ marginTop: 30 }}>
         <Field
           name="weight"
-          label={`${t('WEIGHT')} . kg`}
+          label={`${t('WEIGHT')} . ${user?.unit === 'imperial' ? 'lb' : 'kg'}`}
           component={SliderComp}
-          trackMarks={[0, 5, 10, 15, 20, 25, 30, 35, 40]}
-          benchMarks={[0, 20, 40]}
+          trackMarks={
+            user?.unit === 'imperial'
+              ? [0, 11, 22, 33, 44, 55, 66, 77, 88]
+              : [0, 5, 10, 15, 20, 25, 30, 35, 40]
+          }
+          benchMarks={user?.unit === 'imperial' ? [0, 44, 88] : [0, 20, 40]}
           minimumValue={0}
-          maximumValue={40}
+          maximumValue={user?.unit === 'imperial' ? 88 : 40}
         />
       </View>
 
@@ -57,22 +64,30 @@ const WearGear = () => {
 
       <Field
         name="start_air"
-        label={`${t('START')} . bar`}
+        label={`${t('START')} . ${user?.unit === 'imperial' ? 'psi' : 'bar'}`}
         component={SliderComp}
-        trackMarks={[0, 40, 80, 120, 160, 200, 240, 280, 320, 360, 400]}
-        benchMarks={[0, 200, 400]}
+        trackMarks={
+          user?.unit === 'imperial'
+            ? [0, 580, 1160, 1740, 2320, 2900, 3480, 4061, 4641, 5221, 5801]
+            : [0, 40, 80, 120, 160, 200, 240, 280, 320, 360, 400]
+        }
+        benchMarks={user?.unit === 'imperial' ? [0, 2900, 5801] : [0, 200, 400]}
         minimumValue={0}
-        maximumValue={400}
+        maximumValue={user?.unit === 'imperial' ? 5801 : 400}
       />
 
       <Field
         name="end_air"
-        label={`${t('END')} . bar`}
+        label={`${t('END')} . ${user?.unit === 'imperial' ? 'psi' : 'bar'}`}
         component={SliderComp}
-        trackMarks={[0, 40, 80, 120, 160, 200, 240, 280, 320, 360, 400]}
-        benchMarks={[0, 200, 400]}
+        trackMarks={
+          user?.unit === 'imperial'
+            ? [0, 580, 1160, 1740, 2320, 2900, 3480, 4061, 4641, 5221, 5801]
+            : [0, 40, 80, 120, 160, 200, 240, 280, 320, 360, 400]
+        }
+        benchMarks={user?.unit === 'imperial' ? [0, 2900, 5801] : [0, 200, 400]}
         minimumValue={0}
-        maximumValue={400}
+        maximumValue={user?.unit === 'imperial' ? 5801 : 400}
       />
 
       <View style={styles.gearTypesContainer}>

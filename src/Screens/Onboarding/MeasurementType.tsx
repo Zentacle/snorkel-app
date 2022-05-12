@@ -19,11 +19,13 @@ import type {
 } from '_utils/interfaces';
 
 import GradientCircle from '_components/ui/GradientCircle';
+import GradientBox from '_components/ui/GradientBox';
 import MeasurementImage from '_assets/Measurement.png';
 import GradientText from '_components/ui/GradientText';
-import { useAppDispatch } from '_redux/hooks';
-import { updateSettings } from '_redux/slices/settings';
+import { useAppDispatch, useAppSelector } from '_redux/hooks';
+import { selectUser, updateUser } from '_redux/slices/user';
 import { capitalize } from '_utils/functions';
+import { MeasurementUnit } from '_utils/interfaces/data/user';
 
 const WIDTH = Dimensions.get('window').width;
 
@@ -40,12 +42,19 @@ const MeasurementType: FunctionComponent<MeasurementTypeProps> = ({
   navigation,
 }) => {
   const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
+
   const { t } = useTranslation();
   const navigateToActivityType = () => {
     navigation.navigate('ActivityType');
   };
 
-  const measurementTypes = [
+  interface MeasurementTypesForView {
+    name: MeasurementUnit;
+    types: string[];
+  }
+
+  const measurementTypes: MeasurementTypesForView[] = [
     {
       name: t('IMPERIAL'),
       types: ['ft', 'lb', 'psi', 'f'],
@@ -56,10 +65,10 @@ const MeasurementType: FunctionComponent<MeasurementTypeProps> = ({
     },
   ];
 
-  const submitForm = (val: string) => {
-    dispatch(
-      updateSettings({
-        measurementType: val,
+  const submitForm = async (val: MeasurementUnit) => {
+    await dispatch(
+      updateUser({
+        unit: val,
       }),
     );
     navigateToActivityType();
@@ -91,38 +100,77 @@ const MeasurementType: FunctionComponent<MeasurementTypeProps> = ({
         </View>
       </View>
       <View style={styles.selectionContainer}>
-        {measurementTypes.map((measurement, index) => (
-          <TouchableWithoutFeedback
-            onPress={() => submitForm(measurement.name)}
-            key={index}>
-            <View style={styles.selection}>
-              <GradientText
-                gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-                start={{
-                  x: 0,
-                  y: 0,
-                }}
-                end={{
-                  x: 0.06,
-                  y: 1.8,
-                }}
-                gradientLocations={[0.01, 1, 1]}
-                style={styles.selectionText}>
-                {capitalize(measurement.name)}
-              </GradientText>
-              <View style={styles.selectionLabelContainer}>
-                {measurement.types.map((type, mIndex) => (
-                  <Fragment key={mIndex}>
-                    <Text style={styles.selectionLabel}>{type}</Text>
-                    {mIndex !== measurement.types.length - 1 && (
-                      <View style={styles.dot} />
-                    )}
-                  </Fragment>
-                ))}
+        {measurementTypes.map((measurement, index) => {
+          if (measurement.name === user?.unit) {
+            return (
+              <TouchableWithoutFeedback
+                onPress={() => submitForm(measurement.name)}
+                key={index}>
+                <GradientBox style={styles.selectedType}>
+                  <View style={styles.selection}>
+                    <GradientText
+                      gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+                      start={{
+                        x: 0,
+                        y: 0,
+                      }}
+                      end={{
+                        x: 0.06,
+                        y: 1.8,
+                      }}
+                      gradientLocations={[0.01, 1, 1]}
+                      style={styles.selectionText}>
+                      {capitalize(measurement.name)}
+                    </GradientText>
+                    <View style={styles.selectionLabelContainer}>
+                      {measurement.types.map((type, mIndex) => (
+                        <Fragment key={mIndex}>
+                          <Text style={styles.selectionLabel}>{type}</Text>
+                          {mIndex !== measurement.types.length - 1 && (
+                            <View style={styles.dot} />
+                          )}
+                        </Fragment>
+                      ))}
+                    </View>
+                  </View>
+                </GradientBox>
+              </TouchableWithoutFeedback>
+            );
+          }
+
+          return (
+            <TouchableWithoutFeedback
+              onPress={() => submitForm(measurement.name)}
+              key={index}>
+              <View style={styles.selection}>
+                <GradientText
+                  gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+                  start={{
+                    x: 0,
+                    y: 0,
+                  }}
+                  end={{
+                    x: 0.06,
+                    y: 1.8,
+                  }}
+                  gradientLocations={[0.01, 1, 1]}
+                  style={styles.selectionText}>
+                  {capitalize(measurement.name)}
+                </GradientText>
+                <View style={styles.selectionLabelContainer}>
+                  {measurement.types.map((type, mIndex) => (
+                    <Fragment key={mIndex}>
+                      <Text style={styles.selectionLabel}>{type}</Text>
+                      {mIndex !== measurement.types.length - 1 && (
+                        <View style={styles.dot} />
+                      )}
+                    </Fragment>
+                  ))}
+                </View>
               </View>
-            </View>
-          </TouchableWithoutFeedback>
-        ))}
+            </TouchableWithoutFeedback>
+          );
+        })}
       </View>
     </SafeAreaView>
   );
@@ -178,6 +226,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 15,
+  },
+  selectedType: {
+    borderRadius: 12,
+    paddingVertical: 1.5,
+    paddingHorizontal: 1.5,
+    elevation: 2,
   },
   dot: {
     width: 2.4,

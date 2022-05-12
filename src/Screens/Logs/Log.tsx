@@ -35,6 +35,8 @@ import UnavailableLocationBox from './components/UnavailabbleLocationDetailBox';
 
 import Snorkel from '_assets/scuba_icons/snorkel.svg';
 import Location from '_assets/scuba_icons/Location.svg';
+import { selectUser } from '_redux/slices/user';
+import { useAppSelector } from '_redux/hooks';
 
 type LogNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<LogsStackParamList, 'LogDetail'>,
@@ -51,7 +53,10 @@ interface LogProps {
 const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
   const [hasLoaded, setHasLoaded] = React.useState(false);
   const [diveLog, setDiveLog] = React.useState<AdvancedDiveLogReturnValues>();
+  const user = useAppSelector(selectUser);
   const { t } = useTranslation();
+
+  const airLimit = user?.unit === 'imperial' ? 5221 : 400;
 
   React.useEffect(() => {
     handleFetchSingleDiveLog(route.params.diveLogId)
@@ -236,7 +241,9 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                         <Text style={styles.itemText}>
                           {diveLog.review.max_depth}
                         </Text>
-                        <Text style={styles.measurement}>m</Text>
+                        <Text style={styles.measurement}>
+                          {user?.unit === 'imperial' ? 'ft' : 'm'}
+                        </Text>
                       </View>
                       <Text style={styles.itemLabel}>{t('MAX_DEPTH')}</Text>
                     </View>
@@ -254,7 +261,9 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                         <Text style={styles.itemText}>
                           {diveLog.review.weight}
                         </Text>
-                        <Text style={styles.measurement}>kg</Text>
+                        <Text style={styles.measurement}>
+                          {user?.unit === 'imperial' ? 'lb' : 'kg'}
+                        </Text>
                       </View>
                       <Text style={styles.itemLabel}>{t('WEIGHT')}</Text>
                     </View>
@@ -269,7 +278,9 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                         <Text style={styles.itemText}>
                           {diveLog.review.water_temp}
                         </Text>
-                        <Text style={styles.measurement}>c</Text>
+                        <Text style={styles.measurement}>
+                          {user?.unit === 'imperial' ? 'f' : 'c'}
+                        </Text>
                       </View>
                       <Text style={styles.itemLabel}>{t('WATER_TEMP')}</Text>
                     </View>
@@ -287,7 +298,9 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                         <Text style={styles.itemText}>
                           {diveLog.review.air_temp}
                         </Text>
-                        <Text style={styles.measurement}>c</Text>
+                        <Text style={styles.measurement}>
+                          {user?.unit === 'imperial' ? 'f' : 'c'}
+                        </Text>
                       </View>
                       <Text style={styles.itemLabel}>{t('AIR_TEMP')}</Text>
                     </View>
@@ -305,7 +318,10 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                           </Text>
                         </View>
                         <View style={styles.airTankMeasurementContainer}>
-                          <Text style={styles.capacityText}>400 bar</Text>
+                          <Text style={styles.capacityText}>
+                            {airLimit}{' '}
+                            {user?.unit === 'imperial' ? 'psi' : 'bar'}
+                          </Text>
                           <Text style={styles.divider}>|</Text>
                           <Text style={styles.airTankTypetext}>
                             {diveLog.review.air_type}
@@ -317,7 +333,9 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                           style={{
                             ...styles.gradientLine,
                             width: `${
-                              ((diveLog.review.start_air as number) / 400) * 100
+                              ((diveLog.review.start_air as number) /
+                                airLimit) *
+                              100
                             }%`,
                           }}
                         />
@@ -325,7 +343,8 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                       <View style={styles.divingGearValueContainer}>
                         <View style={styles.airTankValuelabelContainer}>
                           <Text style={styles.airTankValueText}>
-                            {diveLog.review.start_air}&nbsp;bar
+                            {diveLog.review.start_air}&nbsp;
+                            {user?.unit === 'imperial' ? 'psi' : 'bar'}
                           </Text>
                           <Text style={styles.divider}>|</Text>
                           <Text style={styles.airTankUsedText}>
@@ -334,7 +353,8 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                         </View>
                         <View style={styles.airTankMeasurementContainer}>
                           <Text style={styles.airTankRemainderText}>
-                            {400 - (diveLog.review.start_air || 0)}&nbsp;bar
+                            {airLimit - (diveLog.review.start_air || 0)}&nbsp;
+                            {user?.unit === 'imperial' ? 'psi' : 'bar'}
                           </Text>
                           <Text style={styles.divider}>|</Text>
                           <Text style={styles.airTankRemainderLabel}>
@@ -352,7 +372,10 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                           </Text>
                         </View>
                         <View style={styles.airTankMeasurementContainer}>
-                          <Text style={styles.capacityText}>400 bar</Text>
+                          <Text style={styles.capacityText}>
+                            {airLimit}{' '}
+                            {user?.unit === 'imperial' ? 'psi' : 'bar'}
+                          </Text>
                           <Text style={styles.divider}>|</Text>
                           <Text style={styles.airTankTypetext}>
                             {diveLog.review.air_type}
@@ -364,7 +387,8 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                           style={{
                             ...styles.gradientLine,
                             width: `${
-                              ((diveLog.review.end_air as number) / 400) * 100
+                              ((diveLog.review.end_air as number) / airLimit) *
+                              100
                             }%`,
                           }}
                         />
@@ -372,7 +396,8 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                       <View style={styles.divingGearValueContainer}>
                         <View style={styles.airTankValuelabelContainer}>
                           <Text style={styles.airTankValueText}>
-                            {diveLog.review.end_air}&nbsp;bar
+                            {diveLog.review.end_air}&nbsp;
+                            {user?.unit === 'imperial' ? 'psi' : 'bar'}
                           </Text>
                           <Text style={styles.divider}>|</Text>
                           <Text style={styles.airTankUsedText}>
@@ -381,7 +406,8 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                         </View>
                         <View style={styles.airTankMeasurementContainer}>
                           <Text style={styles.airTankRemainderText}>
-                            {400 - (diveLog.review.end_air || 0)}&nbsp;bar
+                            {airLimit - (diveLog.review.end_air || 0)}&nbsp;
+                            {user?.unit === 'imperial' ? 'psi' : 'bar'}
                           </Text>
                           <Text style={styles.divider}>|</Text>
                           <Text style={styles.airTankRemainderLabel}>

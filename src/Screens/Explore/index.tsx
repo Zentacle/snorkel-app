@@ -85,8 +85,6 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
 
   React.useEffect(() => {
     navigation.addListener('focus', () => {
-      dispatch(handleFetchDiveSites());
-
       const handleRecommenndedSitesRequest = async () => {
         if (Platform.OS === 'ios') {
           const locationAlways = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
@@ -101,24 +99,41 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
             Geolocation.getCurrentPosition(
               position => {
                 dispatch(
-                  handleFetchRecommended({
-                    token: authToken as string,
+                  handleFetchDiveSites({
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude,
                   }),
                 );
+                user &&
+                  dispatch(
+                    handleFetchRecommended({
+                      token: authToken as string,
+                      latitude: position.coords.latitude,
+                      longitude: position.coords.longitude,
+                    }),
+                  );
               },
               error => {
                 console.log(error.code, error.message);
+                // fallback: fetch without lat/lng values
+                dispatch(handleFetchDiveSites({}));
+                user &&
+                  dispatch(
+                    handleFetchRecommended({
+                      token: authToken as string,
+                    }),
+                  );
               },
               { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
             );
           } else {
-            dispatch(
-              handleFetchRecommended({
-                token: authToken as string,
-              }),
-            );
+            dispatch(handleFetchDiveSites({}));
+            user &&
+              dispatch(
+                handleFetchRecommended({
+                  token: authToken as string,
+                }),
+              );
           }
         } else {
           const fineLocation = await check(
@@ -128,31 +143,48 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
             Geolocation.getCurrentPosition(
               position => {
                 dispatch(
-                  handleFetchRecommended({
-                    token: authToken as string,
+                  handleFetchDiveSites({
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude,
                   }),
                 );
+                user &&
+                  dispatch(
+                    handleFetchRecommended({
+                      token: authToken as string,
+                      latitude: position.coords.latitude,
+                      longitude: position.coords.longitude,
+                    }),
+                  );
               },
               error => {
                 console.log(error.code, error.message);
+                // fallback: fetch without lat/lng values
+                dispatch(handleFetchDiveSites({}));
+                user &&
+                  dispatch(
+                    handleFetchRecommended({
+                      token: authToken as string,
+                    }),
+                  );
               },
               { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
             );
           } else {
-            dispatch(
-              handleFetchRecommended({
-                token: authToken as string,
-              }),
-            );
+            dispatch(handleFetchDiveSites({}));
+            user &&
+              dispatch(
+                handleFetchRecommended({
+                  token: authToken as string,
+                }),
+              );
           }
         }
       };
 
       handleRecommenndedSitesRequest();
     });
-  }, [navigation, dispatch, authToken]);
+  }, [navigation, dispatch, authToken, user]);
 
   const navigateToDiveSite = (diveSpotId: number) => {
     navigation.navigate('ExploreStack', {

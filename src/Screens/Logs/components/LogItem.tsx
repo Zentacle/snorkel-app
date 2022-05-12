@@ -13,6 +13,8 @@ import { isBelowHeightThreshold } from '_utils/constants';
 import UnavailableLocationBox from './UnavailableLocationListBox';
 import Snorkel from '_assets/scuba_icons/snorkel.svg';
 import Location from '_assets/scuba_icons/Location.svg';
+import { selectUser } from '_redux/slices/user';
+import { useAppSelector } from '_redux/hooks';
 
 interface LogItemProps {
   diveLog: DiveLogsState;
@@ -24,6 +26,7 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
   // !!(diveLog.dive_length && diveLog.max_depth);
   const logLat = diveLog.spot.latitude;
   const logLng = diveLog.spot.longitude;
+  const user = useAppSelector(selectUser);
 
   const logHasCoordinates = !!(diveLog.spot.latitude && diveLog.spot.longitude);
   return (
@@ -90,7 +93,8 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
               <View style={styles.timeDepthTextContainer}>
                 <Text style={styles.timeDepthLabel}>{t('MAX_DEPTH')}</Text>
                 <Text style={styles.timeDepthText}>
-                  {diveLog.max_depth}&nbsp;m
+                  {diveLog.max_depth}&nbsp;
+                  {user?.unit === 'imperial' ? 'ft' : 'm'}
                 </Text>
               </View>
             </View>

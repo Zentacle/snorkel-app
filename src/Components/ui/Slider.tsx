@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
 import { Slider } from '_components/modules/slider';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -76,9 +76,11 @@ const SliderComp: FunctionComponent<ComponentProps> = ({
         <Text style={styles.labelText}>{value}</Text>
       </View>
       <View style={styles.sliderContainer}>
-        <View style={styles.iconContainer}>
-          <Image style={styles.iconImage} source={MinusIcon} />
-        </View>
+        <Pressable onPress={() => onChange(Number(value) - 1)}>
+          <View style={styles.iconContainer}>
+            <Image style={styles.iconImage} source={MinusIcon} />
+          </View>
+        </Pressable>
         <Slider
           value={value}
           animateTransitions
@@ -96,9 +98,11 @@ const SliderComp: FunctionComponent<ComponentProps> = ({
           renderTrackMarkComponent={TrackMarkComponent}
           containerStyle={{ alignSelf: 'stretch', width: '82%' }}
         />
-        <View style={styles.iconContainer}>
-          <Image style={styles.iconImage} source={PlusIcon} />
-        </View>
+        <Pressable onPress={() => onChange(Number(value) + 1)}>
+          <View style={styles.iconContainer}>
+            <Image style={styles.iconImage} source={PlusIcon} />
+          </View>
+        </Pressable>
       </View>
     </View>
   );
