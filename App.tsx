@@ -9,7 +9,7 @@ import './i18n.config';
 
 import Navigator from './src/Navigation';
 import store from '_redux/store';
-import { StatusBar } from 'react-native';
+import { Platform, StatusBar } from 'react-native';
 
 export default function App() {
   useEffect(() => {
@@ -23,7 +23,9 @@ export default function App() {
   return (
     <Suspense fallback="loading">
       <Provider store={store}>
-        <StatusBar barStyle="dark-content" />
+        <StatusBar
+          barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'}
+        />
         <Navigator />
       </Provider>
     </Suspense>
