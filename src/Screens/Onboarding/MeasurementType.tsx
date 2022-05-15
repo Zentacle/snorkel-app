@@ -6,7 +6,7 @@ import {
   SafeAreaView,
   Dimensions,
   Image,
-  TouchableWithoutFeedback,
+  Pressable,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
@@ -66,6 +66,7 @@ const MeasurementType: FunctionComponent<MeasurementTypeProps> = ({
   ];
 
   const submitForm = async (val: MeasurementUnit) => {
+    console.log('clicked', val);
     await dispatch(
       updateUser({
         unit: val,
@@ -103,7 +104,7 @@ const MeasurementType: FunctionComponent<MeasurementTypeProps> = ({
         {measurementTypes.map((measurement, index) => {
           if (measurement.name === user?.unit) {
             return (
-              <TouchableWithoutFeedback
+              <Pressable
                 onPress={() => submitForm(measurement.name)}
                 key={index}>
                 <GradientBox style={styles.selectedType}>
@@ -134,14 +135,12 @@ const MeasurementType: FunctionComponent<MeasurementTypeProps> = ({
                     </View>
                   </View>
                 </GradientBox>
-              </TouchableWithoutFeedback>
+              </Pressable>
             );
           }
 
           return (
-            <TouchableWithoutFeedback
-              onPress={() => submitForm(measurement.name)}
-              key={index}>
+            <Pressable onPress={() => submitForm(measurement.name)} key={index}>
               <View style={styles.selection}>
                 <GradientText
                   gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
@@ -168,7 +167,7 @@ const MeasurementType: FunctionComponent<MeasurementTypeProps> = ({
                   ))}
                 </View>
               </View>
-            </TouchableWithoutFeedback>
+            </Pressable>
           );
         })}
       </View>
