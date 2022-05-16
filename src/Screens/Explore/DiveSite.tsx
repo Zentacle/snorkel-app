@@ -330,6 +330,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
         </View> */}
       </ScrollView>
       <Footer
+        reviewCount={diveSite.num_reviews}
         navigateToAuth={navigateToAuth}
         navigateToDiveLogForm={navigateToDiveLogForm}
       />

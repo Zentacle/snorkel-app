@@ -19,7 +19,7 @@ export interface Spot {
   max_depth?: number;
   name: string;
   noaa_station_id: string;
-  num_reviews: string;
+  num_reviews: number;
   rating: string;
   shorediving_data?: any;
   submitter_id?: number;

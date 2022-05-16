@@ -12,6 +12,7 @@ import { isBelowHeightThreshold } from '_utils/constants';
 interface DiveSiteFooterProps {
   navigateToDiveLogForm: () => void;
   navigateToAuth: () => void;
+  reviewCount: number;
 }
 
 const DiveSiteFooter: FunctionComponent<DiveSiteFooterProps> = props => {
@@ -21,8 +22,10 @@ const DiveSiteFooter: FunctionComponent<DiveSiteFooterProps> = props => {
   return (
     <View style={styles.container}>
       <View style={styles.logContainer}>
-        <Text style={styles.logCount}>463</Text>
-        <Text style={styles.logLabel}>{t('DIVE_LOGS')}</Text>
+        <Text style={styles.logCount}>{props.reviewCount}</Text>
+        <Text style={styles.logLabel}>
+          {props.reviewCount === 1 ? t('DIVE_LOG') : t('DIVE_LOGS')}
+        </Text>
       </View>
       <Button
         onPress={user ? props.navigateToDiveLogForm : props.navigateToAuth}
