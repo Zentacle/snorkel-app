@@ -7,7 +7,7 @@
     "android-prod": "ENVFILE=config/.env.prod react-native run-android",
     "android-test-dev-release": "ENVFILE=config/.env.dev react-native run-android --variant=release",
     "android-test-release": "ENVFILE=config/.env.prod react-native run-android --variant=release",
-    "build-android-prod": "export ENVFILE=config/.env.prod && cd android && ./gradlew assembleRelease && cd ..",
+    "build-android-prod": "export ENVFILE=config/.env.prod && cd android && ./gradlew bundleRelease && cd ..",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
