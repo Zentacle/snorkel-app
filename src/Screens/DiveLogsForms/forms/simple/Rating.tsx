@@ -8,7 +8,7 @@ import GradientBox from '_components/ui/GradientBox';
 import RatingsInputComp from '_components/ui/RatingsInputComp';
 import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
 import { capitalize } from '_utils/functions';
-import { isBelowWidthThreshold, WIDTH } from '_utils/constants';
+import { WIDTH } from '_utils/constants';
 
 const Rating = () => {
   const { t } = useTranslation();
