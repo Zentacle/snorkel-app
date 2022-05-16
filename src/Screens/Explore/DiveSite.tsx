@@ -192,7 +192,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
         showsVerticalScrollIndicator={false}>
         <ImageCarousel
           goBack={navigateBack}
-          shareUrl={`https://zentacle.com/Beach/${diveSite.id}/${diveSite.name}`}
+          shareUrl={`https://zentacle.com/${diveSite.url}`}
           images={diveSite.images}
         />
 
