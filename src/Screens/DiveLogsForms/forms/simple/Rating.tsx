@@ -66,7 +66,7 @@ const Rating = () => {
   return (
     <ScrollView style={styles.container}>
       <View>
-        <Text style={styles.headerLabel}>{t('RATING')}</Text>
+        <Text style={styles.headerLabel}>{capitalize(t('RATING'))}</Text>
         <Field name="rating" component={RatingsInputComp} />
       </View>
 
