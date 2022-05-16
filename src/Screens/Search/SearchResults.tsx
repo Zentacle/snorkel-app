@@ -7,7 +7,6 @@ import {
   ScrollView,
   SafeAreaView,
   Image,
-  FlatList,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import get from 'lodash/get';
@@ -58,10 +57,7 @@ const SearchResults: FunctionComponent<SearchResultsProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-  const diveSites = Object.values(useAppSelector(selectSearchResults)).slice(
-    0,
-    50,
-  );
+  const diveSites = Object.values(useAppSelector(selectSearchResults));
   const resultsLength = useAppSelector(selectSearchResultsLength);
   const [sortModalIsOpen, toggleSortModal] = React.useState(false);
   let formRef = React.useRef<FormApi>();
