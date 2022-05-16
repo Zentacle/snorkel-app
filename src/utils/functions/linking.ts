@@ -20,7 +20,9 @@ const config = {
     },
     ExploreStack: {
       screens: {
-        DiveSite: 'Beach/:diveSpotId',
+        DiveSite: {
+          path: 'Beach/:diveSpotId/:wildcard?',
+        },
       },
     },
     NotFound: '*',
