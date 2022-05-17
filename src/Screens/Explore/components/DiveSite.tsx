@@ -4,7 +4,7 @@ import {
   Text,
   StyleSheet,
   Image,
-  TouchableWithoutFeedback,
+  TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from 'react-i18next';
@@ -79,12 +79,13 @@ const DiveSite: FunctionComponent<DiveSiteProps> = props => {
 
   if (props.onPressContainer && typeof props.onPressContainer === 'function') {
     return (
-      <TouchableWithoutFeedback
+      <TouchableOpacity
+        activeOpacity={0.8}
         onPress={() =>
           props.onPressContainer && props.onPressContainer(props.site.id)
         }>
         {content}
-      </TouchableWithoutFeedback>
+      </TouchableOpacity>
     );
   }
   return content;

@@ -216,7 +216,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
         nestedScrollEnabled
         keyboardShouldPersistTaps="handled">
         <Text style={styles.welcomeText}>
-          {t('WELCOME')},&nbsp; {user ? user.first_name : t('FRIEND')}!
+          {t('WELCOME')},&nbsp;{user ? user.first_name : t('FRIEND')}!
         </Text>
         <Form
           onSubmit={() => {}}
