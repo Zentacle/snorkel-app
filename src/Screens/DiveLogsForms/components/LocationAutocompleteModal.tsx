@@ -73,6 +73,7 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     if (response.data) {
       setSuggestions(response.data);
       setLoading(false);
+      Keyboard.dismiss();
     }
   });
 
@@ -155,6 +156,7 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
             <FlatList
               keyExtractor={_keyExtractor}
               renderItem={_renderItem}
+              showsVerticalScrollIndicator={false}
               data={suggestions}
               keyboardShouldPersistTaps="handled"
             />
@@ -173,6 +175,7 @@ const styles = StyleSheet.create({
   listContainer: {
     marginHorizontal: 25,
     marginTop: 10,
+    marginBottom: 100,
   },
   modal: {},
   searchContainer: {

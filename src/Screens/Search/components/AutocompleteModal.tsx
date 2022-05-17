@@ -60,6 +60,7 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     if (response.data) {
       setSuggestions(response.data);
       setLoading(false);
+      Keyboard.dismiss();
     }
   });
 
@@ -160,6 +161,7 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
               renderItem={_renderItem}
               data={suggestions}
               keyboardShouldPersistTaps="always"
+              showsVerticalScrollIndicator={false}
             />
           </View>
         )}
@@ -176,6 +178,7 @@ const styles = StyleSheet.create({
   listContainer: {
     marginHorizontal: 25,
     marginTop: 10,
+    marginBottom: 100,
   },
   modal: {},
   searchContainer: {
