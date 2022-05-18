@@ -1,16 +1,48 @@
 import config from 'react-native-config';
+import { Platform } from 'react-native';
 import {
   SimpleFormInitialValues,
   AdvancedFormInitialValues,
   SimpleDiveLogReturnValues,
   AdvancedDiveLogReturnValues,
   DiveLogsState,
+  FormImages,
 } from '_utils/interfaces/data/logs';
 interface OwnDiveLogsResponse {
   data: {
     reviews: DiveLogsState[];
   };
   msg: string;
+}
+
+export async function handleUploadDiveLogImages(
+  body: FormImages[],
+  auth_token: string,
+) {
+  try {
+    const formData = new FormData();
+    body.forEach(asset => {
+      formData.append('file', {
+        uri:
+          Platform.OS === 'android'
+            ? asset.uri
+            : asset.uri.replace('file://', ''),
+        name: asset.name,
+        type: asset.type,
+      });
+    });
+    const url = `${config.API_ENDPOINT}/review/upload`;
+    const response = fetch(url, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        Authorization: `Bearer ${auth_token}`,
+      },
+    }).then(res => res.json());
+    return response;
+  } catch (err) {
+    throw err;
+  }
 }
 
 export async function handleCreateDiveLog(

@@ -25,6 +25,7 @@ interface ImageType {
   uri: string;
   type?: string;
   name: string;
+  base64?: string;
 }
 
 type FinalFormProps = FieldArrayRenderProps<ImageType, any>;
@@ -51,7 +52,7 @@ const ImagePickerArray: FunctionComponent<ImagePickerArrayProps> = ({
   const selectImageFromCamera = async () => {
     const result = await launchCamera({
       mediaType: 'photo',
-      // includeBase64: true,
+      includeBase64: true,
     });
 
     closeCameraModal();
@@ -61,12 +62,14 @@ const ImagePickerArray: FunctionComponent<ImagePickerArrayProps> = ({
         uri: result.assets[0].uri,
         type: result.assets[0].type,
         name: result.assets[0].fileName,
+        base64: result.assets[0].base64,
       });
     }
   };
   const selectImageFromGallery = async () => {
     const result = await launchImageLibrary({
       mediaType: 'photo',
+      includeBase64: true,
     });
 
     // performance improvement: close early
@@ -79,7 +82,32 @@ const ImagePickerArray: FunctionComponent<ImagePickerArrayProps> = ({
             uri: asset.uri,
             type: asset.type,
             name: asset.fileName,
+            base64: asset.base64,
           });
+
+          // const data = new FormData();
+          // data.append('file', {
+          //   name: asset.fileName,
+          //   type: asset.type,
+          //   uri:
+          //     Platform.OS === 'ios'
+          //       ? asset.uri.replace('file://', '')
+          //       : asset.uri,
+          // });
+          // fetch(`https://www.zentacle.com/apireview/upload`, {
+          //   method: 'POST',
+          //   body: data,
+          //   headers: {
+          //     Authorization: `Bearer ${token}`, // need to add token
+          //   },
+          // })
+          //   .then(response => response.json())
+          //   .then(response => {
+          //     console.log('response', response);
+          //   })
+          //   .catch(error => {
+          //     console.log('error', error);
+          //   });
         }
       });
     }
