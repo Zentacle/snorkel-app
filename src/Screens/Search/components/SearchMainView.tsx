@@ -39,7 +39,7 @@ const SearchMainView: React.FunctionComponent<SearchMainViewProps> = ({
 
   return (
     <View style={styles.mainBody}>
-      <View style={styles.recentSearchesContainer}>
+      {/* <View style={styles.recentSearchesContainer}>
         <Text style={styles.headerLabel}>{t('RECENT_SEARCHES')}</Text>
         <ScrollView
           style={styles.recentSearches}
@@ -51,9 +51,9 @@ const SearchMainView: React.FunctionComponent<SearchMainViewProps> = ({
             </View>
           ))}
         </ScrollView>
-      </View>
+      </View> */}
 
-      <View style={styles.destinationsContainer}>
+      {/* <View style={styles.destinationsContainer}>
         <View style={styles.destinationLabelContainer}>
           <Text style={styles.headerLabel}>{t('DESTINATION')}</Text>
           <GradientText
@@ -92,7 +92,7 @@ const SearchMainView: React.FunctionComponent<SearchMainViewProps> = ({
             </View>
           ))}
         </ScrollView>
-      </View>
+      </View> */}
 
       {/* <View style={styles.diveShopsContainer}>
         <View style={styles.diveShopLabelContainer}>

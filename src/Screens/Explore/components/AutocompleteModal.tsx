@@ -60,7 +60,6 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     if (response.data) {
       setSuggestions(response.data);
       setLoading(false);
-      Keyboard.dismiss();
     }
   });
 

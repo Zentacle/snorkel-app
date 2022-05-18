@@ -49,7 +49,6 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
   const { t } = useTranslation();
   const [text, changeText] = React.useState('');
   const [suggestions, setSuggestions] = React.useState<TypeaheadResponse[]>([]);
-  const [loading, setLoading] = React.useState(false);
 
   const makeRequest = debounce(async (val: string) => {
     const queryObj = {
@@ -59,41 +58,31 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     const response = await handleTypeAhead(queryString);
     if (response.data) {
       setSuggestions(response.data);
-      setLoading(false);
       Keyboard.dismiss();
     }
   });
 
-  // React.useEffect(() => {
-  //   Keyboard.
-  // })
-
   const handleTextChange = (val: string) => {
     if (val.trim().length) {
-      setLoading(true);
       changeText(val);
       makeRequest(val);
     } else {
       changeText(val);
       setSuggestions([]);
-      setLoading(false);
     }
   };
 
   const setPlace = async (place: string) => {
     changeText(place);
     setSuggestions([]);
-    setLoading(true);
     Keyboard.dismiss();
     onChange(place);
-    setLoading(false);
     closeModal();
   };
 
   const handleCloseModal = () => {
     onChange('');
     closeModal();
-    setLoading(false);
     setSuggestions([]);
     changeText('');
   };
@@ -131,7 +120,7 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     );
   };
 
-  const _keyExtractor = (item: any) => item.url;
+  const _keyExtractor = (item: any) => `${item.id}_${item.url}`;
 
   return (
     <Modal visible={isVisible} onRequestClose={closeModal} style={styles.modal}>
@@ -152,19 +141,14 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
             </View>
           </TouchableWithoutFeedback>
         </View>
-        {loading ? (
-          <ActivityIndicator size="small" color="black" />
-        ) : (
-          <View style={styles.listContainer}>
-            <FlatList
-              keyExtractor={_keyExtractor}
-              renderItem={_renderItem}
-              data={suggestions}
-              keyboardShouldPersistTaps="always"
-              showsVerticalScrollIndicator={false}
-            />
-          </View>
-        )}
+        <View style={styles.listContainer}>
+          <FlatList
+            keyExtractor={_keyExtractor}
+            renderItem={_renderItem}
+            data={suggestions}
+            keyboardShouldPersistTaps="always"
+          />
+        </View>
       </SafeAreaView>
     </Modal>
   );
@@ -176,8 +160,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   listContainer: {
-    marginHorizontal: 25,
-    marginTop: 10,
     marginBottom: 100,
   },
   modal: {},
@@ -209,6 +191,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   resultContainer: {
+    paddingHorizontal: 25,
     marginVertical: 10,
   },
   resultItemContainer: {
