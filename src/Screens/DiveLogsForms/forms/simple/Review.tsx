@@ -309,8 +309,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     paddingVertical: 20,
-    paddingHorizontal: 20,
     width: '48%',
   },
   shareText: {
