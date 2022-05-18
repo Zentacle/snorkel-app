@@ -155,34 +155,34 @@ const SearchResults: FunctionComponent<SearchResultsProps> = ({
         }}
       />
       <View style={styles.contentContainer}>
-        <ScrollView
-          contentContainerStyle={styles.diveSitesCardsContainer}
-          showsVerticalScrollIndicator={false}>
-          <View style={styles.diveSitesHeaderContainer}>
-            <Text style={styles.diveSitesHeaderCount}>
-              {resultsLength} {t('SITES')}
-            </Text>
-            <View style={styles.diveSitesSortContainer}>
-              <Text style={styles.diveSitesSortText}>{t('SORT_BY')}</Text>
-              <Icon
-                onPress={handleToggleSortModal}
-                name="chevron-down-outline"
-                color="black"
-                size={23}
-              />
-            </View>
+        <View style={styles.diveSitesHeaderContainer}>
+          <Text style={styles.diveSitesHeaderCount}>
+            {resultsLength} {t('SITES')}
+          </Text>
+          <View style={styles.diveSitesSortContainer}>
+            <Text style={styles.diveSitesSortText}>{t('SORT_BY')}</Text>
+            <Icon
+              onPress={handleToggleSortModal}
+              name="chevron-down-outline"
+              color="black"
+              size={23}
+            />
           </View>
+        </View>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.diveSitesListContainer}>
-            {diveSites.slice(5).map(item => (
-              <DiveSite
-                key={item.id}
-                site={item}
-                containerStyle={styles.diveSiteItemContainer}
-                imageContainerStyle={styles.diveSiteItemContainer}
-                imageStyle={styles.diveSiteItemImage}
-                onPressContainer={navigateToDiveSite}
-              />
-            ))}
+            {diveSites.map(item => {
+              return (
+                <DiveSite
+                  key={item.id}
+                  site={item}
+                  containerStyle={styles.diveSiteItemContainer}
+                  imageContainerStyle={styles.diveSiteItemContainer}
+                  imageStyle={styles.diveSiteItemImage}
+                  onPressContainer={navigateToDiveSite}
+                />
+              );
+            })}
           </View>
         </ScrollView>
       </View>
@@ -249,6 +249,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // marginHorizontal: 25,
     marginBottom: 20,
+    marginTop: 20,
   },
   diveSitesListContainer: {
     alignItems: 'center',
