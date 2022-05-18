@@ -5,7 +5,6 @@ export interface FormImages {
   uri: string;
   type?: string;
   name: string;
-  base64?: string;
 }
 export interface SimpleFormInitialValues {
   id: number;

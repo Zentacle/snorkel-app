@@ -79,30 +79,6 @@ const ImagePickerArray: FunctionComponent<ImagePickerArrayProps> = ({
             type: asset.type,
             name: asset.fileName,
           });
-
-          // const data = new FormData();
-          // data.append('file', {
-          //   name: asset.fileName,
-          //   type: asset.type,
-          //   uri:
-          //     Platform.OS === 'ios'
-          //       ? asset.uri.replace('file://', '')
-          //       : asset.uri,
-          // });
-          // fetch(`https://www.zentacle.com/apireview/upload`, {
-          //   method: 'POST',
-          //   body: data,
-          //   headers: {
-          //     Authorization: `Bearer ${token}`, // need to add token
-          //   },
-          // })
-          //   .then(response => response.json())
-          //   .then(response => {
-          //     console.log('response', response);
-          //   })
-          //   .catch(error => {
-          //     console.log('error', error);
-          //   });
         }
       });
     }
