@@ -142,6 +142,7 @@ const SimpleDiveLogsForms: FunctionComponent<
         {
           ...values,
           beach_id: values.location?.beach_id,
+          images,
         },
         authToken as string,
       );
