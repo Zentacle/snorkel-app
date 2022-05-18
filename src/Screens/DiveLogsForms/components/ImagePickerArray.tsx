@@ -51,7 +51,6 @@ const ImagePickerArray: FunctionComponent<ImagePickerArrayProps> = ({
   const selectImageFromCamera = async () => {
     const result = await launchCamera({
       mediaType: 'photo',
-      // includeBase64: true,
     });
 
     closeCameraModal();

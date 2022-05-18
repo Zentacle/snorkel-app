@@ -1,5 +1,11 @@
 import { Spot } from './spot';
 import { User } from './user';
+
+export interface FormImages {
+  uri: string;
+  type?: string;
+  name: string;
+}
 export interface SimpleFormInitialValues {
   id: number;
   rating: number;
@@ -15,11 +21,7 @@ export interface SimpleFormInitialValues {
     beach_id: number;
   };
   beach_id?: number;
-  images: {
-    uri: string;
-    type?: string;
-    name: string;
-  }[];
+  images: FormImages[];
 }
 
 export interface AdvancedFormInitialValues extends SimpleFormInitialValues {

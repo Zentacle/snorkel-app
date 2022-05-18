@@ -44,7 +44,10 @@ import {
 } from '_utils/constants';
 import { Stage } from './utils/interfaces';
 import { selectAuthToken } from '_redux/slices/user';
-import { handleCreateDiveLog } from '_redux/slices/dive-logs/api';
+import {
+  handleCreateDiveLog,
+  handleUploadDiveLogImages,
+} from '_redux/slices/dive-logs/api';
 
 type SimpleDiveLogsFormsNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<AppTabsParamList, 'LogsForm'>,
@@ -131,10 +134,15 @@ const SimpleDiveLogsForms: FunctionComponent<
   const submitLog = async (values: InitialValues, callback: () => void) => {
     try {
       setFormSubmitting(true);
+      const images = await handleUploadDiveLogImages(
+        values.images,
+        authToken as string,
+      );
       const response = await handleCreateDiveLog(
         {
           ...values,
           beach_id: values.location?.beach_id,
+          images,
         },
         authToken as string,
       );
