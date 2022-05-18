@@ -140,6 +140,7 @@ const SimpleDiveLogsForms: FunctionComponent<
       );
 
       if (response.msg) {
+        setFormSubmitting(false);
         throw new Error(response.msg);
       }
       saveDiveLogId(response.review.id as number);

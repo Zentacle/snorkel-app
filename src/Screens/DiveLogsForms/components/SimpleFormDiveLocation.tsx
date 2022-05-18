@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   locationDetails: {
-    paddingVertical: 10,
+    paddingVertical: 20,
     paddingHorizontal: 20,
     backgroundColor: 'white',
     width: '100%',
@@ -120,7 +120,6 @@ const styles = StyleSheet.create({
   },
   descContainer: {
     flexDirection: 'row',
-    marginTop: 10,
   },
   descText: {
     marginLeft: 5,
