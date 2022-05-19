@@ -75,7 +75,7 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
       setLoading(false);
       Keyboard.dismiss();
     }
-  }, 100);
+  }, 500);
 
   const handleTextChange = (val: string) => {
     if (val.trim().length) {

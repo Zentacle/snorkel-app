@@ -59,7 +59,7 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     if (response.data) {
       setSuggestions(response.data);
     }
-  }, 100);
+  }, 500);
 
   const handleTextChange = (val: string) => {
     if (val.trim().length) {
@@ -93,64 +93,73 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
 
   const _renderItem = (item: { item: TypeaheadResponse }) => {
     return (
-      <View style={styles.resultContainer}>
-        {item.item.type === 'site' ? (
-          <Pressable onPress={() => handleNavigationToDiveSite(item.item.id)}>
-            <View style={styles.resultItemContainer}>
-              <Image source={LocationImage} />
-              <View style={styles.placeContainer}>
-                <Text style={styles.place}>{item.item.text}</Text>
-                <Text style={styles.placeSubText}>{item.item.subtext}</Text>
+        item.item.type === 'site' ? (
+          <Pressable
+            onPress={() => handleNavigationToDiveSite(item.item.id)}
+            style={({ pressed }) => [
+              {
+                backgroundColor: pressed ? '#cecece' : 'transparent',
+              }
+            ]}
+          >
+            <View style={styles.resultContainer}>
+              <View style={styles.resultItemContainer}>
+                <Image source={LocationImage} />
+                <View style={styles.placeContainer}>
+                  <Text style={styles.place}>{item.item.text}</Text>
+                  <Text style={styles.placeSubText}>{item.item.subtext}</Text>
+                </View>
               </View>
             </View>
           </Pressable>
         ) : (
           <Pressable onPress={() => setPlace(item.item.text)}>
-            <View style={styles.resultItemContainer}>
-              <Image source={FlagImage} />
-              <View style={styles.placeContainer}>
-                <Text style={styles.place}>{item.item.text}</Text>
-                <Text style={styles.placeSubText}>{item.item.subtext}</Text>
+            <View style={styles.resultContainer}>
+              <View style={styles.resultItemContainer}>
+                <Image source={FlagImage} />
+                <View style={styles.placeContainer}>
+                  <Text style={styles.place}>{item.item.text}</Text>
+                  <Text style={styles.placeSubText}>{item.item.subtext}</Text>
+                </View>
               </View>
             </View>
           </Pressable>
-        )}
-      </View>
+        )
     );
   };
 
-  const _keyExtractor = (item: any) => `${item.id}_${item.url}`;
+const _keyExtractor = (item: any) => `${item.id}_${item.url}`;
 
-  return (
-    <Modal visible={isVisible} onRequestClose={closeModal} style={styles.modal}>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.searchContainer}>
-          <PlainSearchInput
-            onChange={handleTextChange}
-            value={text}
-            containerStyle={styles.inputCompContainer}
-            style={styles.search}
-            placeholder="Search"
-            placeholderTextColor="#BFBFBF"
-            autoFocus
-          />
-          <TouchableWithoutFeedback onPress={handleCloseModal}>
-            <View style={styles.searchBar}>
-              <Text style={styles.searchLabel}>{t('CANCEL')}</Text>
-            </View>
-          </TouchableWithoutFeedback>
-        </View>
-        <View style={styles.listContainer}>
-          <FlatList
-            keyExtractor={_keyExtractor}
-            renderItem={_renderItem}
-            data={suggestions}
-            keyboardShouldPersistTaps="always"
-          />
-        </View>
-      </SafeAreaView>
-    </Modal>
-  );
+return (
+  <Modal visible={isVisible} onRequestClose={closeModal} style={styles.modal}>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.searchContainer}>
+        <PlainSearchInput
+          onChange={handleTextChange}
+          value={text}
+          containerStyle={styles.inputCompContainer}
+          style={styles.search}
+          placeholder="Search"
+          placeholderTextColor="#BFBFBF"
+          autoFocus
+        />
+        <TouchableWithoutFeedback onPress={handleCloseModal}>
+          <View style={styles.searchBar}>
+            <Text style={styles.searchLabel}>{t('CANCEL')}</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
+      <View style={styles.listContainer}>
+        <FlatList
+          keyExtractor={_keyExtractor}
+          renderItem={_renderItem}
+          data={suggestions}
+          keyboardShouldPersistTaps="always"
+        />
+      </View>
+    </SafeAreaView>
+  </Modal>
+);
 };
 
 const styles = StyleSheet.create({
@@ -191,7 +200,7 @@ const styles = StyleSheet.create({
   },
   resultContainer: {
     paddingHorizontal: 25,
-    marginVertical: 10,
+    marginVertical: 16,
   },
   resultItemContainer: {
     flexDirection: 'row',
@@ -203,9 +212,11 @@ const styles = StyleSheet.create({
   place: {
     color: 'black',
     fontSize: 15,
+    fontWeight: "500",
   },
   placeSubText: {
     color: 'grey',
+    fontSize: 13,
   },
 });
 

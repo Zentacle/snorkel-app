@@ -61,7 +61,7 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
       setSuggestions(response.data);
       setLoading(false);
     }
-  }, 100);
+  }, 500);
 
   const handleTextChange = (val: string) => {
     if (val.trim().length) {
