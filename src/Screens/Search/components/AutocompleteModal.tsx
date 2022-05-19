@@ -50,7 +50,7 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
   const [text, changeText] = React.useState('');
   const [suggestions, setSuggestions] = React.useState<TypeaheadResponse[]>([]);
 
-  const makeRequest = debounce(async (val: string) => {
+  const makeRequest = React.useMemo(() => debounce(async (val: string) => {
     const queryObj = {
       query: val,
     };
@@ -59,7 +59,7 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     if (response.data) {
       setSuggestions(response.data);
     }
-  }, 500);
+  }, 500), []);
 
   const handleTextChange = (val: string) => {
     if (val.trim().length) {
