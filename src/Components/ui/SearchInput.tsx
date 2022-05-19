@@ -5,7 +5,6 @@ import {
   TextInput,
   Image,
   TouchableWithoutFeedback,
-  Dimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -14,8 +13,6 @@ import type { ViewStyle, TextStyle, ColorValue } from 'react-native';
 import type { FieldRenderProps } from 'react-final-form';
 
 import FilterIcon from '_assets/Filter.png';
-
-const HEIGHT = Dimensions.get('window').height;
 
 type FinalFormProps = FieldRenderProps<string, any>;
 
@@ -93,7 +90,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginHorizontal: 25,
     borderRadius: 12,
-    marginTop: HEIGHT * 0.045,
+    marginTop: 20,
   },
   input: {
     width: '90%',
