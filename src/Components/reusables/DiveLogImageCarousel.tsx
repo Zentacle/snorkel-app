@@ -16,11 +16,9 @@ import FEIcon from 'react-native-vector-icons/Feather';
 import type {
   NativeSyntheticEvent,
   NativeScrollEvent,
-  ImageSourcePropType,
 } from 'react-native';
 import type { FunctionComponent } from 'react';
 
-import DivingPlaceholder from '_assets/diving-placeholder.jpeg';
 import { isBelowHeightThreshold, WIDTH } from '_utils/constants';
 
 enum Directions {
@@ -29,21 +27,21 @@ enum Directions {
   left = 'left',
 }
 
-interface Image {
+interface ImageType {
   uri: string;
   type?: string;
   name?: string;
 }
 
-const defaultImages: Image[] = [
+const defaultImages: ImageType[] = [
   {
-    uri: DivingPlaceholder,
+    uri: 'https://snorkel.s3.amazonaws.com/default/default_hero_background.png',
   },
 ];
 
 interface DiveLogImageCarouselProps {
   goBack: () => void;
-  images?: Image[];
+  images?: ImageType[];
   shareUrl?: string;
 }
 
@@ -159,9 +157,9 @@ const DiveLogImageCarousel: FunctionComponent<
         </View>
         <View style={styles.imageCountContainer}>
           <Icon name="image-outline" size={18} color="#FFF" />
-          <Text style={styles.imageCountText}>{`${focusedImageIndex + 1}/${
-            images.length
-          }`}</Text>
+          <Text style={styles.imageCountText}>
+            {`${focusedImageIndex + 1}/${images.length}`}
+          </Text>
         </View>
       </View>
     </View>
