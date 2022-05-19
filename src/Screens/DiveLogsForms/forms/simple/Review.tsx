@@ -117,18 +117,15 @@ const Review: FunctionComponent<ReviewProps> = ({
             </View>
           </>
         ) : (
-          <>
-            <Image style={styles.image} source={DivingPlaceholder} />
-            <View style={styles.imageCountContainer}>
-              <Icon name="image-outline" size={18} color="#FFF" />
-              <Text style={styles.imageCountText}>0</Text>
-            </View>
-          </>
+          <></>
         )}
       </View>
 
       <View style={styles.details}>
         <Text style={styles.detailsTitle}>{formValues.title}</Text>
+        <Text style={styles.locationTimestamp}>
+          {new Date().toDateString()}
+        </Text>
         <View style={styles.descContainer}>
           <Snorkel width={15} />
           <Text style={styles.descText}>{formValues.location?.desc}</Text>
@@ -137,10 +134,6 @@ const Review: FunctionComponent<ReviewProps> = ({
           <Location width={15} />
           <Text style={styles.locationText}>
             {formValues.location?.location_city}
-          </Text>
-          {/* <View style={styles.dot} /> */}
-          <Text style={styles.locationTimestamp}>
-            {new Date().toDateString()}
           </Text>
         </View>
       </View>
@@ -260,7 +253,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   detailsTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '600',
     color: 'black',
   },
@@ -286,7 +279,6 @@ const styles = StyleSheet.create({
   },
   locationTimestamp: {
     color: 'grey',
-    marginLeft: 5,
   },
   dot: {
     width: 2.4,

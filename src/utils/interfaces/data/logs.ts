@@ -38,7 +38,7 @@ export interface AdvancedFormInitialValues extends SimpleFormInitialValues {
   end_air?: number;
   air_type?: string;
   date_dived?: string;
-  date_posted?: string;
+  date_posted: string;
 }
 
 interface DiveLogDetailReview extends AdvancedFormInitialValues {

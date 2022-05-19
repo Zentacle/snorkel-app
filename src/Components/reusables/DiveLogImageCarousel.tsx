@@ -16,11 +16,9 @@ import FEIcon from 'react-native-vector-icons/Feather';
 import type {
   NativeSyntheticEvent,
   NativeScrollEvent,
-  ImageSourcePropType,
 } from 'react-native';
 import type { FunctionComponent } from 'react';
 
-import DivingPlaceholder from '_assets/diving-placeholder.jpeg';
 import { isBelowHeightThreshold, WIDTH } from '_utils/constants';
 
 enum Directions {
@@ -29,23 +27,21 @@ enum Directions {
   left = 'left',
 }
 
-interface Images {
-  source: ImageSourcePropType;
+interface ImageType {
+  uri: string;
+  type?: string;
+  name?: string;
 }
 
-const defaultImages: Images[] = [
+const defaultImages: ImageType[] = [
   {
-    source: DivingPlaceholder,
+    uri: 'https://snorkel.s3.amazonaws.com/default/default_hero_background.png',
   },
 ];
 
 interface DiveLogImageCarouselProps {
   goBack: () => void;
-  images?: {
-    uri: string;
-    type?: string;
-    name: string;
-  }[];
+  images?: ImageType[];
   shareUrl?: string;
 }
 
@@ -101,67 +97,9 @@ const DiveLogImageCarousel: FunctionComponent<
   };
 
   const [focusedImageIndex, setFocusedImageIndex] = React.useState(0);
-  if (props.images && props.images.length) {
-    return (
-      <View style={styles.header}>
-        <ScrollView
-          horizontal
-          pagingEnabled
-          onScroll={handleScroll}
-          showsHorizontalScrollIndicator={false}>
-          {props.images.map((image, index) => (
-            <Image
-              key={index}
-              style={styles.headerImage}
-              source={{ uri: image.uri }}
-            />
-          ))}
-        </ScrollView>
-        <View style={styles.headerIconsContainer}>
-          <TouchableWithoutFeedback onPress={props.goBack}>
-            <View style={styles.headerIcon}>
-              <FEIcon name="chevron-left" color="black" size={25} />
-            </View>
-          </TouchableWithoutFeedback>
-          {props.shareUrl ? (
-            <TouchableWithoutFeedback onPress={onShare}>
-              <View style={styles.headerIcon}>
-                <FEIcon name="share" color="black" size={25} />
-              </View>
-            </TouchableWithoutFeedback>
-          ) : (
-            <TouchableWithoutFeedback>
-              <View style={styles.headerIcon}>
-                <FEIcon name="share" color="black" size={25} />
-              </View>
-            </TouchableWithoutFeedback>
-          )}
-        </View>
-        <View style={styles.headerBottomContainer}>
-          <View style={styles.photoDots}>
-            {props.images.map((_dot, index) => {
-              return (
-                <View
-                  key={index}
-                  style={
-                    index === focusedImageIndex
-                      ? styles.whitePhotoDot
-                      : styles.blackPhotoDot
-                  }
-                />
-              );
-            })}
-          </View>
-          <View style={styles.imageCountContainer}>
-            <Icon name="image-outline" size={18} color="#FFF" />
-            <Text style={styles.imageCountText}>{`${focusedImageIndex + 1}/${
-              props.images.length
-            }`}</Text>
-          </View>
-        </View>
-      </View>
-    );
-  }
+  const images = (props.images && props.images.length)
+    ? props.images
+    : defaultImages
   return (
     <View style={styles.header}>
       <ScrollView
@@ -169,8 +107,17 @@ const DiveLogImageCarousel: FunctionComponent<
         pagingEnabled
         onScroll={handleScroll}
         showsHorizontalScrollIndicator={false}>
-        {defaultImages.map((image, index) => (
-          <Image key={index} style={styles.headerImage} source={image.source} />
+        {images.map((image, index) => (
+          <Image
+            key={index}
+            style={[
+              styles.headerImage,
+              !props.images ? {
+                height: 130
+              } : {}
+            ]}
+            source={{ uri: image.uri }}
+          />
         ))}
       </ScrollView>
       <View style={styles.headerIconsContainer}>
@@ -195,7 +142,7 @@ const DiveLogImageCarousel: FunctionComponent<
       </View>
       <View style={styles.headerBottomContainer}>
         <View style={styles.photoDots}>
-          {defaultImages.map((_dot, index) => {
+          {images.map((_dot, index) => {
             return (
               <View
                 key={index}
@@ -210,7 +157,9 @@ const DiveLogImageCarousel: FunctionComponent<
         </View>
         <View style={styles.imageCountContainer}>
           <Icon name="image-outline" size={18} color="#FFF" />
-          <Text style={styles.imageCountText}>0/0</Text>
+          <Text style={styles.imageCountText}>
+            {`${focusedImageIndex + 1}/${images.length}`}
+          </Text>
         </View>
       </View>
     </View>

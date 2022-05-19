@@ -63,9 +63,12 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
         </View>
       </View>
 
-      <View style={styles.details}>
-        <View style={styles.simpleDetailsContainer}>
+      <View>
+        <View>
           <Text style={styles.detailsTitle}>{diveLog.title}</Text>
+          <View style={styles.descContainer}>
+            <Text>{new Date(diveLog.date_dived || diveLog.date_posted).toLocaleDateString()}</Text>
+          </View>
           <View style={styles.descContainer}>
             <Snorkel width={15} />
             <Text style={styles.descText}>{diveLog.spot.name}</Text>
@@ -110,9 +113,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 22,
     marginBottom: isBelowHeightThreshold ? 20 : 30,
+    padding: 20,
   },
   mapRatingsContainer: {
-    margin: 20,
+    marginBottom: 12,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -127,7 +131,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   ratingsActivityContainer: {
-    flexDirection: 'column',
     alignItems: 'center',
   },
   ratingsContainer: {
@@ -136,8 +139,8 @@ const styles = StyleSheet.create({
   activity_typeContainer: {
     backgroundColor: '#0B94EF',
     alignSelf: 'flex-start',
-    paddingVertical: 5,
-    paddingHorizontal: 10,
+    paddingVertical: 2,
+    paddingHorizontal: 8,
     marginTop: 10,
     borderRadius: 5,
   },
@@ -147,17 +150,14 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textTransform: 'capitalize',
   },
-  details: {
-    marginHorizontal: 20,
-  },
   detailsTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '600',
     color: 'black',
   },
   descContainer: {
+    marginVertical: 4,
     flexDirection: 'row',
-    marginTop: 10,
   },
   descText: {
     marginLeft: 5,
@@ -166,7 +166,6 @@ const styles = StyleSheet.create({
   },
   locationContainer: {
     flexDirection: 'row',
-    marginTop: 6,
     alignItems: 'center',
   },
   locationText: {
@@ -177,15 +176,12 @@ const styles = StyleSheet.create({
   timeDepthContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 15,
+    marginTop: 15,
     alignItems: 'center',
     backgroundColor: '#EFF6F9',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 12,
-  },
-  simpleDetailsContainer: {
-    marginBottom: 15,
   },
   timeDepthItem: {
     flexDirection: 'row',
