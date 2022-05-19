@@ -35,6 +35,7 @@ import {
   selectLoadingState,
 } from '_redux/slices/reviews';
 import { selectDiveSiteById } from '_redux/slices/dive-sites';
+import { autoAuth } from '_redux/slices/user';
 
 function calculatePercentage(count: number, total: number): string {
   const percentage = (count / total) * 80; // factor width offset into calc
@@ -133,20 +134,10 @@ const Reviews: FunctionComponent<ReviewProps> = ({ navigation, route }) => {
 
                   <View style={styles.nameSourceContainer}>
                     <Text style={styles.profileName}>
-                      {item.user.first_name}
+                      {item.user.display_name}
                     </Text>
                     <View
-                      style={[
-                        styles.activityTypeContainer,
-                        {
-                          width:
-                            item.activity_type === 'scuba'
-                              ? 55
-                              : item.activity_type === 'snorkel'
-                              ? 65
-                              : 80,
-                        },
-                      ]}>
+                      style={styles.activityTypeContainer}>
                       <Text style={styles.activityType}>
                         {item.activity_type}
                       </Text>
@@ -277,12 +268,14 @@ const styles = StyleSheet.create({
   activityType: {
     color: '#FFF',
     textTransform: 'capitalize',
+    textAlign: 'center',
   },
   activityTypeContainer: {
     backgroundColor: '#0B94EF',
     borderRadius: 5,
-    paddingVertical: 3.5,
-    paddingHorizontal: 5.5,
+    paddingVertical: 2,
+    paddingHorizontal: 8,
+    alignSelf: 'flex-start',
   },
   ratingsIconsContainer: {
     flexDirection: 'row',

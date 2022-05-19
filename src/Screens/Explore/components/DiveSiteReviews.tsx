@@ -39,7 +39,7 @@ const DiveSiteReviews: FunctionComponent<DiveSiteReviewsProps> = ({
         <View style={styles.reviewDot} />
         <Text style={styles.reviewRatingsCount}>
           {/* {diveSite.num_reviews} {t('REVIEWS')} */}
-          {diveSite.num_reviews.length === 1
+          {diveSite.num_reviews === 1
             ? `${diveSite.num_reviews} ${t('REVIEWS')}`
             : `${diveSite.num_reviews} ${t('REVIEW')}`}
         </Text>
@@ -60,18 +60,7 @@ const DiveSiteReviews: FunctionComponent<DiveSiteReviewsProps> = ({
                 <Text style={styles.profileName}>
                   {selectedReview.user.first_name}
                 </Text>
-                <View
-                  style={[
-                    styles.activityTypeContainer,
-                    {
-                      width:
-                        selectedReview.activity_type === 'scuba'
-                          ? 55
-                          : selectedReview.activity_type === 'snorkel'
-                          ? 65
-                          : 80,
-                    },
-                  ]}>
+                <View style={styles.activityTypeContainer}>
                   <Text style={styles.activityType}>
                     {capitalize(selectedReview.activity_type)}
                   </Text>
@@ -153,6 +142,12 @@ const styles = StyleSheet.create({
     elevation: 1.5,
     padding: 20,
     zIndex: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.15,
+    shadowOffset: {
+      'height': 6,
+      'width': 0,
+    },
   },
   reviewCardShadow1: {
     width: '97%',
@@ -165,6 +160,12 @@ const styles = StyleSheet.create({
     elevation: 1.2,
     opacity: 0.9,
     zIndex: 3,
+    shadowColor: '#000',
+    shadowOpacity: 0.12,
+    shadowOffset: {
+      'height': 6,
+      'width': 0,
+    },
   },
   reviewCardShadow2: {
     width: '93%',
@@ -176,6 +177,12 @@ const styles = StyleSheet.create({
     left: 11,
     elevation: 1,
     opacity: 0.7,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: {
+      'height': 6,
+      'width': 0,
+    },
   },
   reviewHeaderContainer: {
     flexDirection: 'row',
@@ -221,12 +228,14 @@ const styles = StyleSheet.create({
   },
   activityType: {
     color: '#FFF',
+    textAlign: 'center',
   },
   activityTypeContainer: {
     backgroundColor: '#0B94EF',
     borderRadius: 5,
-    paddingVertical: 3.5,
-    paddingHorizontal: 5.5,
+    paddingVertical: 2,
+    paddingHorizontal: 8,
+    alignSelf: 'flex-start',
   },
   ratingsIconsContainer: {
     flexDirection: 'row',
