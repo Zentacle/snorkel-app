@@ -58,7 +58,6 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     const response = await handleTypeAhead(queryString);
     if (response.data) {
       setSuggestions(response.data);
-      Keyboard.dismiss();
     }
   });
 
