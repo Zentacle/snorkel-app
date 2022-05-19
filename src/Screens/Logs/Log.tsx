@@ -440,8 +440,8 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                 }>
                 <Text style={styles.editLogText}>
                   {isAdvancedLog
-                    ? 'Edit Advanced dive log'
-                    : 'Edit Simple dive log'}
+                    ? 'Edit dive log'
+                    : 'Add full dive log details'}
                 </Text>
               </TouchableWithoutFeedback>
             </View>
