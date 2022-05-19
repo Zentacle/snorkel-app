@@ -93,7 +93,6 @@ const DiveSite: FunctionComponent<DiveSiteProps> = props => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 251,
     width: 300,
     backgroundColor: '#FFF',
     borderRadius: 18,
@@ -125,10 +124,9 @@ const styles = StyleSheet.create({
     opacity: 1,
   },
   descriptionContainer: {
-    paddingHorizontal: 15,
-    paddingVertical: 7,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
     justifyContent: 'center',
-    marginTop: 5,
   },
   descriptionText: {
     color: 'black',
@@ -138,11 +136,11 @@ const styles = StyleSheet.create({
   locationContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 3,
+    marginVertical: 2,
   },
   locationText: {
     color: 'black',
-    marginLeft: 10,
+    marginLeft: 4,
   },
   ratingsContainer: {
     flexDirection: 'row',
@@ -156,8 +154,8 @@ const styles = StyleSheet.create({
     height: 2.4,
     borderRadius: 1.2,
     backgroundColor: '#828993',
-    marginLeft: 10,
-    marginTop: 4,
+    marginHorizontal: 8,
+    marginTop: 2,
   },
   ratingsIconsContainer: {
     flexDirection: 'row',
@@ -166,7 +164,7 @@ const styles = StyleSheet.create({
   },
   ratingsText: {
     color: 'black',
-    marginHorizontal: 5,
+    marginRight: 5,
   },
   ratingsCount: {
     color: 'black',

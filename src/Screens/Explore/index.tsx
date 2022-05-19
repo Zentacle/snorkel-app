@@ -38,7 +38,7 @@ import BeachLoading from '_components/reusables/Placeholders/BeachLoading/index'
 // import Newest from '_assets/tags/newest.png';
 // import Popular from '_assets/tags/popular.png';
 // import TopRating from '_assets/tags/top-rating.png';
-import AutocompleteModal from './components/AutocompleteModal';
+import AutocompleteModal from '../Search/components/AutocompleteModal';
 
 import { WIDTH, HEIGHT, isBelowWidthThreshold } from '_utils/constants';
 
