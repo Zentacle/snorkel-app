@@ -16,7 +16,7 @@ interface OwnDiveLogsResponse {
 }
 
 export async function handleUploadDiveLogImages(
-  body: FormImages[],
+  body: FormImages[] = [],
   auth_token: string,
 ) {
   try {
