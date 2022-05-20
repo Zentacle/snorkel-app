@@ -10,7 +10,7 @@ import {
   FlatList,
   Keyboard,
   SafeAreaView,
-  TouchableWithoutFeedback,
+  Pressable,
 } from 'react-native';
 import debounce from 'lodash/debounce';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -62,7 +62,7 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     }
   }, [isVisible, value]);
 
-  const makeRequest = debounce(async (val: string) => {
+  const makeRequest = React.useMemo(() => debounce(async (val: string) => {
     const queryObj = {
       query: val,
       beach_only: 'True',
@@ -73,9 +73,8 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     if (response.data) {
       setSuggestions(response.data);
       setLoading(false);
-      Keyboard.dismiss();
     }
-  }, 500);
+  }, 500), []);
 
   const handleTextChange = (val: string) => {
     if (val.trim().length) {
@@ -114,7 +113,14 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
 
   const _renderItem = (item: { item: TypeaheadResponse }) => {
     return (
-      <TouchableWithoutFeedback onPress={() => setPlace(item.item)}>
+      <Pressable
+        onPress={() => setPlace(item.item)}
+        style={({ pressed }) => [
+          {
+            backgroundColor: pressed ? '#cecece' : 'transparent',
+          }
+        ]}
+      >
         <View style={styles.resultContainer}>
           <Image source={LocationImage} />
           <View style={styles.placeContainer}>
@@ -122,7 +128,7 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
             <Text style={styles.placeSubText}>{item.item.subtext}</Text>
           </View>
         </View>
-      </TouchableWithoutFeedback>
+      </Pressable>
     );
   };
 
@@ -149,19 +155,15 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
             autoFocus
           />
         </View>
-        {loading ? (
-          <ActivityIndicator size="small" color="black" />
-        ) : (
-          <View style={styles.listContainer}>
-            <FlatList
-              keyExtractor={_keyExtractor}
-              renderItem={_renderItem}
-              showsVerticalScrollIndicator={false}
-              data={suggestions}
-              keyboardShouldPersistTaps="handled"
-            />
-          </View>
-        )}
+        <View style={styles.listContainer}>
+          <FlatList
+            keyExtractor={_keyExtractor}
+            renderItem={_renderItem}
+            showsVerticalScrollIndicator={false}
+            data={suggestions}
+            keyboardShouldPersistTaps="handled"
+          />
+        </View>
       </SafeAreaView>
     </Modal>
   );
@@ -173,8 +175,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   listContainer: {
-    marginHorizontal: 25,
-    marginTop: 10,
     marginBottom: 100,
   },
   modal: {},
@@ -223,6 +223,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 10,
+    paddingHorizontal: 25,
   },
   placeContainer: {
     marginLeft: 15,
@@ -230,9 +231,11 @@ const styles = StyleSheet.create({
   place: {
     color: 'black',
     fontSize: 15,
+    fontWeight: "500",
   },
   placeSubText: {
     color: 'grey',
+    fontSize: 13,
   },
 });
 
