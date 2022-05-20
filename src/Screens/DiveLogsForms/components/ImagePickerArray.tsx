@@ -29,7 +29,7 @@ interface ImageType {
 
 type FinalFormProps = FieldArrayRenderProps<ImageType, any>;
 
-interface BaseProps {}
+interface BaseProps { }
 
 type ImagePickerArrayProps = BaseProps & FinalFormProps;
 
@@ -110,27 +110,34 @@ const ImagePickerArray: FunctionComponent<ImagePickerArrayProps> = ({
       {fields.length ? (
         <View>
           {fields.length < 10 && (
-            <View style={styles.subContainer}>
-              <Pressable onPress={openCameraModal}>
+            <Pressable
+              onPress={openCameraModal}
+              style={({ pressed }) => [
+                {
+                  transform: pressed ? [{ scale: 0.95 }] : [{ scale: 1.0 }],
+                }
+              ]}
+            >
+              <View style={styles.subContainer}>
                 <GradientCircle style={styles.iconContainer}>
                   <IOIcon name="add-outline" size={30} color="white" />
                 </GradientCircle>
-              </Pressable>
-              <GradientText
-                gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-                start={{
-                  x: 0,
-                  y: 0,
-                }}
-                end={{
-                  x: 0.06,
-                  y: 1.8,
-                }}
-                gradientLocations={[0.01, 1, 1]}
-                style={styles.actionText}>
-                {t('ADD_PHOTOS_OR_VIDEOS')}
-              </GradientText>
-            </View>
+                <GradientText
+                  gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+                  start={{
+                    x: 0,
+                    y: 0,
+                  }}
+                  end={{
+                    x: 0.06,
+                    y: 1.8,
+                  }}
+                  gradientLocations={[0.01, 1, 1]}
+                  style={styles.actionText}>
+                  {t('ADD_PHOTOS_OR_VIDEOS')}
+                </GradientText>
+              </View>
+            </Pressable>
           )}
           <ScrollView
             horizontal
@@ -153,27 +160,34 @@ const ImagePickerArray: FunctionComponent<ImagePickerArrayProps> = ({
           </ScrollView>
         </View>
       ) : (
-        <View style={styles.subContainer}>
-          <Pressable onPress={openCameraModal}>
+        <Pressable
+          onPress={openCameraModal}
+          style={({ pressed }) => [
+            {
+              transform: pressed ? [{ scale: 0.95 }] : [{ scale: 1.0 }],
+            }
+          ]}
+        >
+          <View style={styles.subContainer}>
             <GradientCircle style={styles.iconContainer}>
               <IOIcon name="add-outline" size={30} color="white" />
             </GradientCircle>
-          </Pressable>
-          <GradientText
-            gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-            start={{
-              x: 0,
-              y: 0,
-            }}
-            end={{
-              x: 0.06,
-              y: 1.8,
-            }}
-            gradientLocations={[0.01, 1, 1]}
-            style={styles.actionText}>
-            {t('ADD_PHOTOS_OR_VIDEOS')}
-          </GradientText>
-        </View>
+            <GradientText
+              gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+              start={{
+                x: 0,
+                y: 0,
+              }}
+              end={{
+                x: 0.06,
+                y: 1.8,
+              }}
+              gradientLocations={[0.01, 1, 1]}
+              style={styles.actionText}>
+              {t('ADD_PHOTOS_OR_VIDEOS')}
+            </GradientText>
+          </View>
+        </Pressable>
       )}
 
       <ImagePickerModal
@@ -212,7 +226,7 @@ const styles = StyleSheet.create({
   },
   mediaContainer: {
     marginTop: isBelowHeightThreshold ? 20 : 30,
-    marginBottom: isBelowHeightThreshold ? 15 : 25,
+    marginBottom: 8,
   },
   optionalContainer: {},
   optionaltext: {
