@@ -29,7 +29,7 @@ interface ImageType {
 
 type FinalFormProps = FieldArrayRenderProps<ImageType, any>;
 
-interface BaseProps { }
+interface BaseProps {}
 
 type ImagePickerArrayProps = BaseProps & FinalFormProps;
 
@@ -115,9 +115,8 @@ const ImagePickerArray: FunctionComponent<ImagePickerArrayProps> = ({
               style={({ pressed }) => [
                 {
                   transform: pressed ? [{ scale: 0.95 }] : [{ scale: 1.0 }],
-                }
-              ]}
-            >
+                },
+              ]}>
               <View style={styles.subContainer}>
                 <GradientCircle style={styles.iconContainer}>
                   <IOIcon name="add-outline" size={30} color="white" />
@@ -165,9 +164,8 @@ const ImagePickerArray: FunctionComponent<ImagePickerArrayProps> = ({
           style={({ pressed }) => [
             {
               transform: pressed ? [{ scale: 0.95 }] : [{ scale: 1.0 }],
-            }
-          ]}
-        >
+            },
+          ]}>
           <View style={styles.subContainer}>
             <GradientCircle style={styles.iconContainer}>
               <IOIcon name="add-outline" size={30} color="white" />
