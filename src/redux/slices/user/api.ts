@@ -2,17 +2,15 @@ import { AppleAuthReturn } from './../../../Screens/Auth/utils/interfaces';
 import config from 'react-native-config';
 import {
   User,
-  Auth,
   LoginResponse,
   UpdateUserReturn,
-  GoogleLoginResponse,
 } from '_utils/interfaces/data/user';
 
 interface GetCurrentUserResponse extends User {
   cookie_header: string;
 }
 
-export async function handleRegister(body: User): Promise<Auth> {
+export async function handleRegister(body: User): Promise<LoginResponse> {
   try {
     const url = `${config.API_ENDPOINT}/user/register`;
     const response = fetch(url, {
@@ -87,7 +85,7 @@ export async function handleGetCurrentUser(
 
 export async function handleGoogleregister(body: {
   credential: string;
-}): Promise<GoogleLoginResponse> {
+}): Promise<LoginResponse> {
   try {
     const url = `${config.API_ENDPOINT}/user/google_register`;
     const response = fetch(url, {
@@ -105,7 +103,7 @@ export async function handleGoogleregister(body: {
 
 export async function handleAppleregister(
   body: AppleAuthReturn,
-): Promise<GoogleLoginResponse> {
+): Promise<LoginResponse> {
   try {
     const url = `${config.API_ENDPOINT}/user/apple_register`;
     const response = fetch(url, {

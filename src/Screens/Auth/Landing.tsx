@@ -32,8 +32,7 @@ import {
   appleRegister,
 } from '_redux/slices/user';
 import {
-  AppleLoginResponse,
-  GoogleLoginResponse,
+  LoginResponse,
 } from '_utils/interfaces/data/user';
 
 import { isBelowHeightThreshold, HEIGHT } from '_utils/constants';
@@ -150,8 +149,8 @@ const Landing: FunctionComponent<LandingProps> = props => {
 
             // assume user has filled onBoarding if username and profile_pic exist
             const userPreviouslyFilledOnBoardingData = !!(
-              (response.payload as GoogleLoginResponse).user.username &&
-              (response.payload as GoogleLoginResponse).user.profile_pic
+              (response.payload as LoginResponse).user.username &&
+              (response.payload as LoginResponse).user.profile_pic
             );
 
             if (googleRegister.fulfilled.match(response)) {
@@ -163,7 +162,7 @@ const Landing: FunctionComponent<LandingProps> = props => {
                   navigateToApp();
                 }
               } else if (
-                (response.payload as GoogleLoginResponse).user.username
+                (response.payload as LoginResponse).user.username
               ) {
                 navigateToCameraPermissions();
               } else {
@@ -189,8 +188,8 @@ const Landing: FunctionComponent<LandingProps> = props => {
 
             // assume user has filled onBoarding if username and profile_pic exist
             const userPreviouslyFilledOnBoardingData = !!(
-              (response.payload as AppleLoginResponse).user.username &&
-              (response.payload as AppleLoginResponse).user.profile_pic
+              (response.payload as LoginResponse).user.username &&
+              (response.payload as LoginResponse).user.profile_pic
             );
 
             if (appleRegister.fulfilled.match(response)) {
@@ -202,7 +201,7 @@ const Landing: FunctionComponent<LandingProps> = props => {
                   navigateToApp();
                 }
               } else if (
-                (response.payload as AppleLoginResponse).user.username
+                (response.payload as LoginResponse).user.username
               ) {
                 navigateToCameraPermissions();
               } else {
