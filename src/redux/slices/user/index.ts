@@ -81,11 +81,11 @@ export const registerUser = createAsyncThunk(
   'user/register',
   async (user: User, thunkApi) => {
     const response = await handleRegister(user);
-    if (!response.auth_token) {
+    if (!response.data.auth_token) {
       return thunkApi.rejectWithValue(response.msg);
     }
 
-    await setStorage(null, response.auth_token, response.refresh_token);
+    await setStorage(null, response.data.auth_token, response.data.refresh_token);
     await flagExistingUser();
     return {
       ...response,
@@ -248,9 +248,9 @@ export const userSlice = createSlice({
             : 'There was an error logging in. Please try again later';
       })
       .addCase(registerUser.fulfilled, (state, action) => {
-        state.auth_token = action.payload.auth_token;
+        state.auth_token = action.payload.data.auth_token;
         state.existing_user = true;
-        state.refresh_token = action.payload.refresh_token;
+        state.refresh_token = action.payload.data.refresh_token;
       })
       .addCase(autoAuth.pending, state => {
         state.autoAuthLoading = true;
