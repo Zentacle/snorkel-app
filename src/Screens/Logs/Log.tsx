@@ -56,7 +56,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
   const user = useAppSelector(selectUser);
   const { t } = useTranslation();
 
-  const airLimit = user?.unit === 'imperial' ? 5221 : 400;
+  const airLimit = user?.unit === 'imperial' ? 3400 : 400;
 
   React.useEffect(() => {
     handleFetchSingleDiveLog(route.params.diveLogId)
@@ -314,7 +314,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                       <View style={styles.divingGearLabelContainer}>
                         <View style={styles.airTankLabelContainer}>
                           <Text style={styles.airTankLabelText}>
-                            {t('AIR_TANK')} 1
+                            {t('AIR_TANK')} {t('START')}
                           </Text>
                         </View>
                         <View style={styles.airTankMeasurementContainer}>
@@ -368,7 +368,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                       <View style={styles.divingGearLabelContainer}>
                         <View style={styles.airTankLabelContainer}>
                           <Text style={styles.airTankLabelText}>
-                            {t('AIR_TANK')} 2
+                            {t('AIR_TANK')} {t('END')}
                           </Text>
                         </View>
                         <View style={styles.airTankMeasurementContainer}>
