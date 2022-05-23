@@ -22,6 +22,7 @@ target 'Zentacle' do
   pod 'react-native-google-maps', :path => rn_maps_path
   pod 'GoogleMaps'
   pod 'Google-Maps-iOS-Utils'
+  pod 'react-native-branch', path: '../node_modules/react-native-branch'
 
   use_react_native!(
     :path => config[:reactNativePath],
