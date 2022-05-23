@@ -30,6 +30,15 @@
         <data android:scheme="zentacle"/>
         <data android:scheme="https" android:host="www.zentacle.com" />
       </intent-filter>
+      <intent-filter android:autoVerify="true">
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="https" android:host="zentacle.app.link" />
+        <data android:scheme="https" android:host="zentacle-alternate.app.link" />
+      </intent-filter>
     </activity>
+
+     <meta-data android:name="io.branch.sdk.BranchKey" android:value="@string/BRANCH_KEY"/>
   </application>
 </manifest>
