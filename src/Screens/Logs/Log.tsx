@@ -314,12 +314,12 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                       <View style={styles.divingGearLabelContainer}>
                         <View style={styles.airTankLabelContainer}>
                           <Text style={styles.airTankLabelText}>
-                            {t('AIR_TANK')} {t('START')}
+                            {t('AIR_TANK')}
                           </Text>
                         </View>
                         <View style={styles.airTankMeasurementContainer}>
                           <Text style={styles.capacityText}>
-                            {airLimit}{' '}
+                            {diveLog.review.start_air}{' '}
                             {user?.unit === 'imperial' ? 'psi' : 'bar'}
                           </Text>
                           <Text style={styles.divider}>|</Text>
@@ -332,18 +332,17 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                         <GradientBox
                           style={{
                             ...styles.gradientLine,
-                            width: `${
-                              ((diveLog.review.start_air as number) /
-                                airLimit) *
+                            width: `${((diveLog.review.end_air as number) /
+                                (diveLog.review.start_air as number)) *
                               100
-                            }%`,
+                              }%`,
                           }}
                         />
                       </View>
                       <View style={styles.divingGearValueContainer}>
                         <View style={styles.airTankValuelabelContainer}>
                           <Text style={styles.airTankValueText}>
-                            {diveLog.review.start_air}&nbsp;
+                            {(diveLog.review.start_air || airLimit) - (diveLog.review.end_air || 0)}&nbsp;
                             {user?.unit === 'imperial' ? 'psi' : 'bar'}
                           </Text>
                           <Text style={styles.divider}>|</Text>
@@ -353,60 +352,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                         </View>
                         <View style={styles.airTankMeasurementContainer}>
                           <Text style={styles.airTankRemainderText}>
-                            {airLimit - (diveLog.review.start_air || 0)}&nbsp;
-                            {user?.unit === 'imperial' ? 'psi' : 'bar'}
-                          </Text>
-                          <Text style={styles.divider}>|</Text>
-                          <Text style={styles.airTankRemainderLabel}>
-                            {t('LEFT')}
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-
-                    <View style={styles.divingGearItemContainer}>
-                      <View style={styles.divingGearLabelContainer}>
-                        <View style={styles.airTankLabelContainer}>
-                          <Text style={styles.airTankLabelText}>
-                            {t('AIR_TANK')} {t('END')}
-                          </Text>
-                        </View>
-                        <View style={styles.airTankMeasurementContainer}>
-                          <Text style={styles.capacityText}>
-                            {airLimit}{' '}
-                            {user?.unit === 'imperial' ? 'psi' : 'bar'}
-                          </Text>
-                          <Text style={styles.divider}>|</Text>
-                          <Text style={styles.airTankTypetext}>
-                            {diveLog.review.air_type}
-                          </Text>
-                        </View>
-                      </View>
-                      <View style={styles.progressContainer}>
-                        <GradientBox
-                          style={{
-                            ...styles.gradientLine,
-                            width: `${
-                              ((diveLog.review.end_air as number) / airLimit) *
-                              100
-                            }%`,
-                          }}
-                        />
-                      </View>
-                      <View style={styles.divingGearValueContainer}>
-                        <View style={styles.airTankValuelabelContainer}>
-                          <Text style={styles.airTankValueText}>
-                            {diveLog.review.end_air}&nbsp;
-                            {user?.unit === 'imperial' ? 'psi' : 'bar'}
-                          </Text>
-                          <Text style={styles.divider}>|</Text>
-                          <Text style={styles.airTankUsedText}>
-                            {t('USED')}
-                          </Text>
-                        </View>
-                        <View style={styles.airTankMeasurementContainer}>
-                          <Text style={styles.airTankRemainderText}>
-                            {airLimit - (diveLog.review.end_air || 0)}&nbsp;
+                            {(diveLog.review.end_air || 0)}&nbsp;
                             {user?.unit === 'imperial' ? 'psi' : 'bar'}
                           </Text>
                           <Text style={styles.divider}>|</Text>
