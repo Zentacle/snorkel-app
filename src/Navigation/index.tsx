@@ -7,6 +7,7 @@ import {
   requestTrackingPermission,
   getTrackingStatus,
 } from 'react-native-tracking-transparency';
+import { Amplitude } from '@amplitude/react-native';
 
 import type { RootStackParamList } from '_utils/interfaces';
 
@@ -42,6 +43,11 @@ const Navigator: React.FC = () => {
   const [_appStateVisible, setAppStateVisible] = React.useState(
     appState.current,
   );
+
+  React.useEffect(() => {
+    const ampInstance = Amplitude.getInstance();
+    ampInstance.init('b628782272a6f671076be09a7b6fb6b7');
+  })
 
   React.useEffect(() => {
     // handle fetching of dive sites and logs here

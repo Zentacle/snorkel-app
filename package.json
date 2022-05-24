@@ -16,6 +16,7 @@
     "set-env": "export $(cat .env | xargs)"
   },
   "dependencies": {
+    "@amplitude/react-native": "^2.11.0",
     "@invertase/react-native-apple-authentication": "^2.1.5",
     "@react-native-clipboard/clipboard": "^1.8.5",
     "@react-native-community/async-storage": "^1.12.1",
