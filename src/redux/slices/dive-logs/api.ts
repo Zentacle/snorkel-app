@@ -32,14 +32,14 @@ export async function handleUploadDiveLogImages(
       });
     });
     const url = `${config.API_ENDPOINT}/review/upload`;
-    const response = fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
       body: formData,
       headers: {
         Authorization: `Bearer ${auth_token}`,
       },
     }).then(res => res.json());
-    return response;
+    return response.data;
   } catch (err) {
     throw err;
   }
