@@ -134,26 +134,45 @@ const SimpleDiveLogsForms: FunctionComponent<
   const submitLog = async (values: InitialValues, callback: () => void) => {
     try {
       setFormSubmitting(true);
-      const images = await handleUploadDiveLogImages(
-        values.images,
-        authToken as string,
-      );
-      const response = await handleCreateDiveLog(
-        {
-          ...values,
-          beach_id: values.location?.beach_id,
-          images,
-        },
-        authToken as string,
-      );
+      if (values.images) {
+        const images = await handleUploadDiveLogImages(
+          values.images,
+          authToken as string,
+        );
 
-      if (response.msg) {
+        const response = await handleCreateDiveLog(
+          {
+            ...values,
+            beach_id: values.location?.beach_id,
+            images,
+          },
+          authToken as string,
+        );
+
+        if (response.msg) {
+          setFormSubmitting(false);
+          throw new Error(response.msg);
+        }
+        saveDiveLogId(response.review.id as number);
         setFormSubmitting(false);
-        throw new Error(response.msg);
+        callback();
+      } else {
+        const response = await handleCreateDiveLog(
+          {
+            ...values,
+            beach_id: values.location?.beach_id,
+          },
+          authToken as string,
+        );
+
+        if (response.msg) {
+          setFormSubmitting(false);
+          throw new Error(response.msg);
+        }
+        saveDiveLogId(response.review.id as number);
+        setFormSubmitting(false);
+        callback();
       }
-      saveDiveLogId(response.review.id as number);
-      setFormSubmitting(false);
-      callback();
     } catch (err) {
       console.log(err);
     }
