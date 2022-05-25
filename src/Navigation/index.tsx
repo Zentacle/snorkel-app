@@ -48,6 +48,7 @@ const Navigator: React.FC = () => {
   React.useEffect(() => {
     const ampInstance = Amplitude.getInstance();
     ampInstance.init(config.AMPLITUDE_KEY);
+    ampInstance.logEvent('view_app');
   }, []);
 
   React.useEffect(() => {
