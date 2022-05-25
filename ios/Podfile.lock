@@ -1,4 +1,10 @@
 PODS:
+  - Amplitude (8.10.0):
+    - AnalyticsConnector (~> 1.0.0)
+  - amplitude-react-native (2.11.0):
+    - Amplitude (= 8.10.0)
+    - React-Core
+  - AnalyticsConnector (1.0.0)
   - AppAuth (1.4.0):
     - AppAuth/Core (= 1.4.0)
     - AppAuth/ExternalUserAgent (= 1.4.0)
@@ -471,6 +477,7 @@ PODS:
     - Yoga (~> 1.14)
 
 DEPENDENCIES:
+  - "amplitude-react-native (from `../node_modules/@amplitude/react-native`)"
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
@@ -560,6 +567,8 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - Amplitude
+    - AnalyticsConnector
     - AppAuth
     - Branch
     - CocoaAsyncSocket
@@ -588,6 +597,8 @@ SPEC REPOS:
     - YogaKit
 
 EXTERNAL SOURCES:
+  amplitude-react-native:
+    :path: "../node_modules/@amplitude/react-native"
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   BVLinearGradient:
@@ -712,6 +723,9 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  Amplitude: 2904f346250510b9e19a4e2262017bcf1d4368f9
+  amplitude-react-native: 7f8cc2d9394b8122fea079a1e7e184630aea9047
+  AnalyticsConnector: 4c386d5972ac9da86e22d668564dbbac97558754
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   Branch: bd6c472d6cab03206877ac86c1241327a3f217d1
