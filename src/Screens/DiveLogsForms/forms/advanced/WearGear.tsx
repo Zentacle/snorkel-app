@@ -47,12 +47,12 @@ const WearGear = () => {
           component={SliderComp}
           trackMarks={
             user?.unit === 'imperial'
-              ? [0, 11, 22, 33, 44, 55, 66, 77, 88]
-              : [0, 5, 10, 15, 20, 25, 30, 35, 40]
+              ? [0, 5, 10, 15, 20, 25, 30, 35, 40]
+              : [0, 2.5, 5, 7.5, 10, 12.5, 15, 17.5, 20]
           }
-          benchMarks={user?.unit === 'imperial' ? [0, 44, 88] : [0, 20, 40]}
+          benchMarks={user?.unit === 'imperial' ? [0, 20, 40] : [0, 10, 20]}
           minimumValue={0}
-          maximumValue={user?.unit === 'imperial' ? 88 : 40}
+          maximumValue={user?.unit === 'imperial' ? 40 : 20}
         />
       </View>
 
@@ -68,12 +68,12 @@ const WearGear = () => {
         component={SliderComp}
         trackMarks={
           user?.unit === 'imperial'
-            ? [0, 580, 1160, 1740, 2320, 2900, 3480, 4061, 4641, 5221, 5801]
+            ? [0, 340, 680, 1020, 1360, 1700, 2040, 2380, 2720, 3060, 3400]
             : [0, 40, 80, 120, 160, 200, 240, 280, 320, 360, 400]
         }
-        benchMarks={user?.unit === 'imperial' ? [0, 2900, 5801] : [0, 200, 400]}
+        benchMarks={user?.unit === 'imperial' ? [0, 1700, 3400] : [0, 200, 400]}
         minimumValue={0}
-        maximumValue={user?.unit === 'imperial' ? 5801 : 400}
+        maximumValue={user?.unit === 'imperial' ? 3400 : 400}
       />
 
       <Field
@@ -82,12 +82,12 @@ const WearGear = () => {
         component={SliderComp}
         trackMarks={
           user?.unit === 'imperial'
-            ? [0, 580, 1160, 1740, 2320, 2900, 3480, 4061, 4641, 5221, 5801]
+            ? [0, 340, 680, 1020, 1360, 1700, 2040, 2380, 2720, 3060, 3400]
             : [0, 40, 80, 120, 160, 200, 240, 280, 320, 360, 400]
         }
-        benchMarks={user?.unit === 'imperial' ? [0, 2900, 5801] : [0, 200, 400]}
+        benchMarks={user?.unit === 'imperial' ? [0, 1700, 3400] : [0, 200, 400]}
         minimumValue={0}
-        maximumValue={user?.unit === 'imperial' ? 5801 : 400}
+        maximumValue={user?.unit === 'imperial' ? 3400 : 400}
       />
 
       <View style={styles.gearTypesContainer}>
