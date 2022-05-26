@@ -10,7 +10,7 @@ import type { RootStackParamList, AppTabsParamList } from '_utils/interfaces';
 import type { LocationSearchInitialValues } from '_utils/interfaces/data/search';
 
 import SearchInput from '_components/ui/SearchInput';
-import AutocompleteModal from './components/AutocompleteModal';
+import AutocompleteModal from '_components/ui/AutocompleteModal';
 import SearchMainView from './components/SearchMainView';
 import { isBelowHeightThreshold } from '_utils/constants';
 

@@ -23,6 +23,8 @@ interface BaseProps {
   onChange?: (val: string) => void;
   value?: string;
   autoFocus?: boolean;
+  enableClearInput?: boolean;
+  handleClearInput?: () => void;
 }
 
 const PlainSearchInput: FunctionComponent<BaseProps> = ({
@@ -35,6 +37,8 @@ const PlainSearchInput: FunctionComponent<BaseProps> = ({
   value,
   style,
   autoFocus,
+  enableClearInput,
+  handleClearInput,
 }) => {
   return (
     <View style={[styles.container, containerStyle]}>
@@ -47,6 +51,14 @@ const PlainSearchInput: FunctionComponent<BaseProps> = ({
         onChangeText={onChange}
         autoFocus={autoFocus ?? false}
       />
+      {enableClearInput && (
+        <Icon
+          onPress={handleClearInput}
+          name="close-outline"
+          color="black"
+          size={30}
+        />
+      )}
       {withFilterIcon && (
         <TouchableWithoutFeedback onPress={onClickFilterIcon}>
           <Image source={FilterIcon} />
