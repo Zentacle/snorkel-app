@@ -55,12 +55,12 @@ const WaterOnshore = () => {
           component={SliderComp}
           trackMarks={
             user?.unit === 'imperial'
-              ? [32, 50, 68, 86, 104, 122, 140]
+              ? [32, 41.6, 51.2, 60.8, 70.4, 80, 90]
               : [0, 10, 20, 30, 40, 50, 60]
           }
-          benchMarks={user?.unit === 'imperial' ? [32, 86, 140] : [0, 30, 60]}
+          benchMarks={user?.unit === 'imperial' ? [32, 60.8, 90] : [0, 30, 60]}
           minimumValue={user?.unit === 'imperial' ? 32 : 0}
-          maximumValue={user?.unit === 'imperial' ? 140 : 60}
+          maximumValue={user?.unit === 'imperial' ? 90 : 60}
         />
       </View>
 
@@ -73,12 +73,14 @@ const WaterOnshore = () => {
             user?.unit === 'imperial'
               ? // the temperature inn farenheight  do not corresponnd to the ones in celsius
                 // they are calculated by getting the average distance of start and end * number of points (apart from start)
-                [32, 50, 68, 86, 104, 122, 140, 158, 176, 194, 212]
-              : [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+                [0, 12, 24, 36, 48, 60, 72, 84, 96, 108, 120]
+              : [-15, -8.5, -2, 4.5, 11, 17.5, 24, 30.5, 37, 43.5, 50]
           }
-          benchMarks={user?.unit === 'imperial' ? [32, 122, 212] : [0, 50, 100]}
-          minimumValue={user?.unit === 'imperial' ? 32 : 0}
-          maximumValue={user?.unit === 'imperial' ? 212 : 100}
+          benchMarks={
+            user?.unit === 'imperial' ? [0, 60, 120] : [-15, 17.5, 50]
+          }
+          minimumValue={user?.unit === 'imperial' ? 0 : -15}
+          maximumValue={user?.unit === 'imperial' ? 120 : 50}
         />
       </View>
 
