@@ -73,6 +73,7 @@ const WearGear = () => {
         }
         benchMarks={user?.unit === 'imperial' ? [0, 1700, 3400] : [0, 200, 400]}
         minimumValue={0}
+        incrementValue={user?.unit === 'imperial' ? 100 : 10}
         maximumValue={user?.unit === 'imperial' ? 3400 : 400}
       />
 
@@ -87,6 +88,7 @@ const WearGear = () => {
         }
         benchMarks={user?.unit === 'imperial' ? [0, 1700, 3400] : [0, 200, 400]}
         minimumValue={0}
+        incrementValue={user?.unit === 'imperial' ? 100 : 10}
         maximumValue={user?.unit === 'imperial' ? 3400 : 400}
       />
 

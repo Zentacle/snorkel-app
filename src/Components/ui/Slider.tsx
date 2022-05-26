@@ -17,6 +17,7 @@ interface SliderCompProps {
   benchMarks: number[];
   minimumValue: number;
   maximumValue: number;
+  incrementValue: number;
 }
 
 type FinalFormProps = FieldRenderProps<number, any>;
@@ -37,6 +38,7 @@ const SliderComp: FunctionComponent<ComponentProps> = ({
   benchMarks,
   minimumValue,
   maximumValue,
+  incrementValue,
 }) => {
   const TrackMarkComponent = (index: number) => {
     const fullNum = trackMarks[index];
@@ -76,7 +78,7 @@ const SliderComp: FunctionComponent<ComponentProps> = ({
         <Text style={styles.labelText}>{value}</Text>
       </View>
       <View style={styles.sliderContainer}>
-        <Pressable onPress={() => onChange(Number(value) - 1)}>
+        <Pressable onPress={() => onChange(Number(value) - incrementValue)}>
           <View style={styles.iconContainer}>
             <Image style={styles.iconImage} source={MinusIcon} />
           </View>
@@ -98,7 +100,7 @@ const SliderComp: FunctionComponent<ComponentProps> = ({
           renderTrackMarkComponent={TrackMarkComponent}
           containerStyle={{ alignSelf: 'stretch', width: '82%' }}
         />
-        <Pressable onPress={() => onChange(Number(value) + 1)}>
+        <Pressable onPress={() => onChange(Number(value) + incrementValue)}>
           <View style={styles.iconContainer}>
             <Image style={styles.iconImage} source={PlusIcon} />
           </View>
@@ -106,6 +108,10 @@ const SliderComp: FunctionComponent<ComponentProps> = ({
       </View>
     </View>
   );
+};
+
+SliderComp.defaultProps = {
+  incrementValue: 1,
 };
 
 const styles = StyleSheet.create({

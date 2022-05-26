@@ -236,13 +236,13 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     start_air: simpleDiveLogsForm.start_air
       ? simpleDiveLogsForm.start_air
       : user?.unit === 'imperial'
-      ? 1160
-      : 40,
+      ? 3000
+      : 200,
     end_air: simpleDiveLogsForm.end_air
       ? simpleDiveLogsForm.end_air
       : user?.unit === 'imperial'
-      ? 1160
-      : 40,
+      ? 800
+      : 50,
     air_type: simpleDiveLogsForm.air_type
       ? simpleDiveLogsForm.air_type
       : t('NORMAL').toLowerCase(),
