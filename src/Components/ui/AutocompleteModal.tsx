@@ -6,7 +6,6 @@ import {
   Image,
   Dimensions,
   Modal,
-  ActivityIndicator,
   FlatList,
   Keyboard,
   Pressable,
@@ -50,16 +49,20 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
   const [text, changeText] = React.useState('');
   const [suggestions, setSuggestions] = React.useState<TypeaheadResponse[]>([]);
 
-  const makeRequest = React.useMemo(() => debounce(async (val: string) => {
-    const queryObj = {
-      query: val,
-    };
-    const queryString = stringify(queryObj);
-    const response = await handleTypeAhead(queryString);
-    if (response.data) {
-      setSuggestions(response.data);
-    }
-  }, 500), []);
+  const makeRequest = React.useMemo(
+    () =>
+      debounce(async (val: string) => {
+        const queryObj = {
+          query: val,
+        };
+        const queryString = stringify(queryObj);
+        const response = await handleTypeAhead(queryString);
+        if (response.data) {
+          setSuggestions(response.data);
+        }
+      }, 500),
+    [],
+  );
 
   const handleTextChange = (val: string) => {
     if (val.trim().length) {
@@ -86,80 +89,84 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     changeText('');
   };
 
+  const handleClearInput = () => {
+    changeText('');
+    setSuggestions([]);
+  };
+
   const handleNavigationToDiveSite = (diveSiteId: number) => {
     navigateToDiveSite(diveSiteId);
     handleCloseModal();
   };
 
   const _renderItem = (item: { item: TypeaheadResponse }) => {
-    return (
-        item.item.type === 'site' ? (
-          <Pressable
-            onPress={() => handleNavigationToDiveSite(item.item.id)}
-            style={({ pressed }) => [
-              {
-                backgroundColor: pressed ? '#cecece' : 'transparent',
-              }
-            ]}
-          >
-            <View style={styles.resultContainer}>
-              <View style={styles.resultItemContainer}>
-                <Image source={LocationImage} />
-                <View style={styles.placeContainer}>
-                  <Text style={styles.place}>{item.item.text}</Text>
-                  <Text style={styles.placeSubText}>{item.item.subtext}</Text>
-                </View>
-              </View>
+    return item.item.type === 'site' ? (
+      <Pressable
+        onPress={() => handleNavigationToDiveSite(item.item.id)}
+        style={({ pressed }) => [
+          {
+            backgroundColor: pressed ? '#cecece' : 'transparent',
+          },
+        ]}>
+        <View style={styles.resultContainer}>
+          <View style={styles.resultItemContainer}>
+            <Image source={LocationImage} />
+            <View style={styles.placeContainer}>
+              <Text style={styles.place}>{item.item.text}</Text>
+              <Text style={styles.placeSubText}>{item.item.subtext}</Text>
             </View>
-          </Pressable>
-        ) : (
-          <Pressable onPress={() => setPlace(item.item.text)}>
-            <View style={styles.resultContainer}>
-              <View style={styles.resultItemContainer}>
-                <Image source={FlagImage} />
-                <View style={styles.placeContainer}>
-                  <Text style={styles.place}>{item.item.text}</Text>
-                  <Text style={styles.placeSubText}>{item.item.subtext}</Text>
-                </View>
-              </View>
+          </View>
+        </View>
+      </Pressable>
+    ) : (
+      <Pressable onPress={() => setPlace(item.item.text)}>
+        <View style={styles.resultContainer}>
+          <View style={styles.resultItemContainer}>
+            <Image source={FlagImage} />
+            <View style={styles.placeContainer}>
+              <Text style={styles.place}>{item.item.text}</Text>
+              <Text style={styles.placeSubText}>{item.item.subtext}</Text>
             </View>
-          </Pressable>
-        )
+          </View>
+        </View>
+      </Pressable>
     );
   };
 
-const _keyExtractor = (item: any) => `${item.id}_${item.url}`;
+  const _keyExtractor = (item: any) => `${item.id}_${item.url}`;
 
-return (
-  <Modal visible={isVisible} onRequestClose={closeModal} style={styles.modal}>
-    <SafeAreaView style={styles.container}>
-      <View style={styles.searchContainer}>
-        <PlainSearchInput
-          onChange={handleTextChange}
-          value={text}
-          containerStyle={styles.inputCompContainer}
-          style={styles.search}
-          placeholder="Search"
-          placeholderTextColor="#BFBFBF"
-          autoFocus
-        />
-        <TouchableWithoutFeedback onPress={handleCloseModal}>
-          <View style={styles.searchBar}>
-            <Text style={styles.searchLabel}>{t('CANCEL')}</Text>
-          </View>
-        </TouchableWithoutFeedback>
-      </View>
-      <View style={styles.listContainer}>
-        <FlatList
-          keyExtractor={_keyExtractor}
-          renderItem={_renderItem}
-          data={suggestions}
-          keyboardShouldPersistTaps="always"
-        />
-      </View>
-    </SafeAreaView>
-  </Modal>
-);
+  return (
+    <Modal visible={isVisible} onRequestClose={closeModal} style={styles.modal}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.searchContainer}>
+          <PlainSearchInput
+            onChange={handleTextChange}
+            value={text}
+            containerStyle={styles.inputCompContainer}
+            style={styles.search}
+            placeholder="Search"
+            placeholderTextColor="#BFBFBF"
+            autoFocus
+            enableClearInput
+            handleClearInput={handleClearInput}
+          />
+          <TouchableWithoutFeedback onPress={handleCloseModal}>
+            <View style={styles.searchBar}>
+              <Text style={styles.searchLabel}>{t('CANCEL')}</Text>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+        <View style={styles.listContainer}>
+          <FlatList
+            keyExtractor={_keyExtractor}
+            renderItem={_renderItem}
+            data={suggestions}
+            keyboardShouldPersistTaps="always"
+          />
+        </View>
+      </SafeAreaView>
+    </Modal>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -197,6 +204,7 @@ const styles = StyleSheet.create({
   search: {
     color: 'black',
     fontSize: 16,
+    width: '60%',
   },
   resultContainer: {
     paddingHorizontal: 25,
@@ -212,7 +220,7 @@ const styles = StyleSheet.create({
   place: {
     color: 'black',
     fontSize: 15,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   placeSubText: {
     color: 'grey',
