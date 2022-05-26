@@ -332,17 +332,20 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                         <GradientBox
                           style={{
                             ...styles.gradientLine,
-                            width: `${((diveLog.review.end_air as number) /
+                            width: `${
+                              ((diveLog.review.end_air as number) /
                                 (diveLog.review.start_air as number)) *
                               100
-                              }%`,
+                            }%`,
                           }}
                         />
                       </View>
                       <View style={styles.divingGearValueContainer}>
                         <View style={styles.airTankValuelabelContainer}>
                           <Text style={styles.airTankValueText}>
-                            {(diveLog.review.start_air || airLimit) - (diveLog.review.end_air || 0)}&nbsp;
+                            {(diveLog.review.start_air || airLimit) -
+                              (diveLog.review.end_air || 0)}
+                            &nbsp;
                             {user?.unit === 'imperial' ? 'psi' : 'bar'}
                           </Text>
                           <Text style={styles.divider}>|</Text>
@@ -352,7 +355,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                         </View>
                         <View style={styles.airTankMeasurementContainer}>
                           <Text style={styles.airTankRemainderText}>
-                            {(diveLog.review.end_air || 0)}&nbsp;
+                            {diveLog.review.end_air || 0}&nbsp;
                             {user?.unit === 'imperial' ? 'psi' : 'bar'}
                           </Text>
                           <Text style={styles.divider}>|</Text>
