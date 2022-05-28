@@ -54,7 +54,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = props => {
         <View style={styles.locationContainer}>
           <Location width={15} />
           <Text style={styles.locationText}>
-            {props.site.location_city.split(',')[0]}
+            {props.site.location_city}
           </Text>
         </View>
         <View style={styles.ratingsContainer}>

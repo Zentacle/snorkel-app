@@ -6,73 +6,99 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useTranslation } from 'react-i18next';
-
+import config from 'react-native-config';
 import type { FunctionComponent } from 'react';
 import type { ViewStyle, ImageStyle } from 'react-native';
-import type { Spot } from '_utils/interfaces/data/spot';
 
-import DiveSiteImage from '_assets/DiveSite.jpg';
+import type { User } from '_utils/interfaces/data/user';
+import DiveBuddyImage from '_assets/DiveSite.jpg';
 import Location from '_assets/scuba_icons/Location.svg';
+import Button from '_components/ui/Buttons/Button';
+import { selectAuthToken } from '_redux/slices/user';
+import { useAppSelector } from '_redux/hooks';
 
-import { attachIcons, capitalize } from '_utils/functions';
-
-interface DiveSiteProps {
+interface DiveBuddyProps {
   containerStyle?: ViewStyle;
   imageContainerStyle?: ViewStyle;
   imageStyle?: ImageStyle;
   onPressContainer?: (diveSpotId: number) => void;
-  site: Spot;
+  buddy: User;
 }
 
-const DiveSite: FunctionComponent<DiveSiteProps> = props => {
-  const { t } = useTranslation();
+const DiveBuddy: FunctionComponent<DiveBuddyProps> = (props) => {
+  const auth_token = useAppSelector(selectAuthToken);
+  const [isMessaged, setIsMessaged] = React.useState<boolean>(false);
+  const makeRequest = async (id: number) => {
+    const uri = `${config.API_ENDPOINT}/buddy/connect`;
+    await fetch(uri, {
+      method: 'POST',
+      body: JSON.stringify({
+        'userId': id,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${auth_token}`,
+      }
+    });
+  }
 
   const content = (
     <View style={[styles.container, props.containerStyle]}>
       <View style={[styles.imageContainer, props.imageContainerStyle]}>
-        {props.site.hero_img ? (
+        {props.buddy.profile_pic ? (
           <Image
             style={[styles.image, props.imageStyle]}
             source={{
-              uri: props.site.hero_img,
+              uri: props.buddy.profile_pic,
             }}
           />
         ) : (
           <Image
             style={[styles.image, props.imageStyle]}
-            source={DiveSiteImage}
+            source={DiveBuddyImage}
           />
         )}
-        {/* <View style={styles.imageCountContainer}>
-          <Icon name="image-outline" size={18} color="#FFF" />
-          <Text style={styles.imageCountText}>24</Text>
-        </View> */}
       </View>
       <View style={styles.descriptionContainer}>
         <Text numberOfLines={1} style={styles.descriptionText}>
-          {props.site.name}
+          {props.buddy.display_name}
         </Text>
         <View style={styles.locationContainer}>
           <Location width={15} />
           <Text style={styles.locationText}>
-            {props.site.location_city}
+            {props.buddy.hometown}
           </Text>
         </View>
-        <View style={styles.ratingsContainer}>
-          <Text style={styles.ratingsLevelText}>
-            {capitalize(props.site.difficulty) || t('BEGINNER')}
+        <View style={styles.locationContainer}>
+          <Text style={styles.locationText}>
+            {props.buddy.bio}
           </Text>
-          <View style={styles.dot} />
-          <Text style={styles.ratingsText}>
-            {Number(props.site.rating).toFixed(1)}
-          </Text>
-          <View style={styles.ratingsIconsContainer}>
-            {attachIcons(Number(props.site.rating))}
-          </View>
-          <Text style={styles.ratingsCount}>({props.site.num_reviews})</Text>
         </View>
+        <Button
+          gradient
+          gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+          gradientLocations={[0.01, 1, 1]}
+          start={{
+            x: 0,
+            y: 0,
+          }}
+          end={{
+            x: 0.06,
+            y: 2.2,
+          }}
+          style={{
+            container: styles.buttonContainer,
+            text: styles.buttonText,
+          }}
+          onPress={() => {
+            if (!isMessaged) {
+              makeRequest(props.buddy.id!)
+              setIsMessaged(true);
+            }
+          }}
+        >
+          { isMessaged ? 'Message Sent' : 'Message' }
+        </Button>
       </View>
     </View>
   );
@@ -81,15 +107,13 @@ const DiveSite: FunctionComponent<DiveSiteProps> = props => {
     return (
       <TouchableOpacity
         activeOpacity={0.8}
-        onPress={() =>
-          props.onPressContainer && props.onPressContainer(props.site.id)
-        }>
+      >
         {content}
       </TouchableOpacity>
     );
   }
   return content;
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -142,13 +166,6 @@ const styles = StyleSheet.create({
     color: 'black',
     marginLeft: 4,
   },
-  ratingsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  ratingsLevelText: {
-    color: '#0b94ef',
-  },
   dot: {
     width: 2.4,
     height: 2.4,
@@ -157,19 +174,19 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     marginTop: 2,
   },
-  ratingsIconsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: 2,
+  buttonContainer: {
+    backgroundColor: 'white',
+    borderRadius: 12,
+    padding: 16,
+    marginVertical: 8,
+    marginHorizontal: 0,
+    width: '100%',
   },
-  ratingsText: {
-    color: 'black',
-    marginRight: 5,
-  },
-  ratingsCount: {
-    color: 'black',
-    marginLeft: 5,
+  buttonText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: '800',
   },
 });
 
-export default DiveSite;
+export default DiveBuddy;
