@@ -1,5 +1,6 @@
 export type MeasurementUnit = 'imperial' | 'metric';
 export interface User {
+  bio?: string;
   display_name?: string;
   first_name?: string;
   last_name?: string;

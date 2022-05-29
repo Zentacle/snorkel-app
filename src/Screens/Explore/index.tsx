@@ -16,6 +16,7 @@ import SearchInput from '_components/ui/SearchInput';
 // import Tag from '_components/ui/Tag';
 // import GradientText from '_components/ui/GradientText';
 import DiveSite from './components/DiveSite';
+import DiveBuddy from './components/DiveBuddy';
 // import DiveShop from './components/DiveShop';
 import { useAppDispatch, useAppSelector } from '_redux/hooks';
 import {
@@ -25,6 +26,10 @@ import {
   handleFetchRecommended,
   selectRecommendedSites,
 } from '_redux/slices/dive-sites';
+import {
+  handleFetchNearbyBuddies,
+  selectNearbyBuddies,
+} from '_redux/slices/buddies';
 import { selectUser, selectAuthToken } from '_redux/slices/user';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -64,6 +69,8 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   const recommended =
     Object.values(useAppSelector(selectRecommendedSites)) || [];
   const diveSitesIsLoading = useAppSelector(selectLoadingState);
+  const nearbyBuddies =
+    Object.values(useAppSelector(selectNearbyBuddies)) || [];
   const user = useAppSelector(selectUser);
   const [autocompleteModalOpen, toggleAutocompleteModal] =
     React.useState(false);
@@ -105,6 +112,12 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
                     longitude: position.coords.longitude,
                   }),
                 );
+                dispatch(
+                  handleFetchNearbyBuddies({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                  }),
+                );
                 user &&
                   dispatch(
                     handleFetchRecommended({
@@ -129,6 +142,12 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
             );
           } else {
             dispatch(handleFetchDiveSites({}));
+            dispatch(
+              handleFetchNearbyBuddies({
+                latitude: 1,
+                longitude: 1,
+              }),
+            );
             user &&
               dispatch(
                 handleFetchRecommended({
@@ -303,6 +322,30 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
             ))}
           </ScrollView>
         </View>
+        {!!nearbyBuddies.length && (
+          <View style={styles.nearbySites}>
+            <View style={styles.nearbySitesTextContainer}>
+              <Text style={styles.nearbySitesMainText}>
+                {t('explore.NEARBY_BUDDIES_MAIN_TEXT')}
+              </Text>
+            </View>
+            <ScrollView
+              horizontal
+              contentContainerStyle={styles.nearbySitesCardsContainer}
+              showsHorizontalScrollIndicator={false}>
+              {nearbyBuddies.map(item => (
+                <DiveBuddy
+                  key={item.id}
+                  buddy={item}
+                  containerStyle={styles.nearbySiteItemContainer}
+                  imageContainerStyle={styles.nearbySiteItemContainer}
+                  imageStyle={styles.nearbySiteItemImage}
+                  onPressContainer={navigateToDiveSite}
+                />
+              ))}
+            </ScrollView>
+          </View>
+        )}
         {/* <View style={styles.diveShops}>
           <View style={styles.diveShopsTextContainer}>
             <Text style={styles.diveShopsMainText}>{t('DIVE_SHOPS')}</Text>
