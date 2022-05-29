@@ -39,6 +39,7 @@ interface BaseProps {
   reset: () => void;
   navigateToDiveSite: (id: number) => void;
   navigateToSearchResults?: (values: LocationSearchInitialValues) => void;
+  initialSearchTerm?: string;
 }
 type FinalFormProps = FieldRenderProps<string, any>;
 
@@ -52,11 +53,18 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
   input: { onChange },
   navigateToDiveSite,
   navigateToSearchResults,
+  initialSearchTerm,
 }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const [text, changeText] = React.useState('');
+  const [text, changeText] = React.useState(initialSearchTerm ?? '');
   const [suggestions, setSuggestions] = React.useState<TypeaheadResponse[]>([]);
+
+  React.useEffect(() => {
+    if (initialSearchTerm) {
+      handleTextChange(initialSearchTerm);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const makeRequest = React.useMemo(
     () =>

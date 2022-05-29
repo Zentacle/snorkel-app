@@ -22,10 +22,12 @@ import { Spot } from '_utils/interfaces/data/spot';
 
 interface SearchMainViewProps {
   navigateToDiveSite: (id: number) => void;
+  openAutocompleteForDestination: (value: string) => void;
 }
 
 const SearchMainView: React.FunctionComponent<SearchMainViewProps> = ({
   navigateToDiveSite,
+  openAutocompleteForDestination,
 }) => {
   const diveSites = Object.values(useAppSelector(selectAllDiveSites));
   const { t } = useTranslation();
@@ -39,21 +41,28 @@ const SearchMainView: React.FunctionComponent<SearchMainViewProps> = ({
 
   return (
     <View style={styles.mainBody}>
-      {/* <View style={styles.recentSearchesContainer}>
+      <View style={styles.recentSearchesContainer}>
         <Text style={styles.headerLabel}>{t('RECENT_SEARCHES')}</Text>
         <ScrollView
           style={styles.recentSearches}
           horizontal
           showsHorizontalScrollIndicator={false}>
           {recentSearches.map((item, index) => (
-            <View style={styles.recentSearch} key={index}>
-              <Text style={styles.recentSearchesText}>{item}</Text>
-            </View>
+            <Pressable
+              key={index}
+              style={state => ({
+                opacity: state.pressed ? 0.7 : 1,
+              })}
+              onPress={() => openAutocompleteForDestination(item)}>
+              <View style={styles.recentSearch}>
+                <Text style={styles.recentSearchesText}>{item}</Text>
+              </View>
+            </Pressable>
           ))}
         </ScrollView>
-      </View> */}
+      </View>
 
-      {/* <View style={styles.destinationsContainer}>
+      <View style={styles.destinationsContainer}>
         <View style={styles.destinationLabelContainer}>
           <Text style={styles.headerLabel}>{t('DESTINATION')}</Text>
           <GradientText
@@ -76,23 +85,30 @@ const SearchMainView: React.FunctionComponent<SearchMainViewProps> = ({
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.destinations}>
           {destinations.map((destination, index) => (
-            <View style={styles.destination} key={index}>
-              <Image
-                source={destination.image}
-                style={styles.destinationImage}
-              />
-              <View style={styles.destinationTextContainer}>
-                <Text style={styles.destinationMainText}>
-                  {destination.place}
-                </Text>
-                <Text style={styles.destinationSubtext}>
-                  {destination.country}
-                </Text>
+            <Pressable
+              key={index}
+              style={state => ({
+                opacity: state.pressed ? 0.7 : 1,
+              })}
+              onPress={() => openAutocompleteForDestination(destination.place)}>
+              <View style={styles.destination}>
+                <Image
+                  source={destination.image}
+                  style={styles.destinationImage}
+                />
+                <View style={styles.destinationTextContainer}>
+                  <Text style={styles.destinationMainText}>
+                    {destination.place}
+                  </Text>
+                  <Text style={styles.destinationSubtext}>
+                    {destination.country}
+                  </Text>
+                </View>
               </View>
-            </View>
+            </Pressable>
           ))}
         </ScrollView>
-      </View> */}
+      </View>
 
       {/* <View style={styles.diveShopsContainer}>
         <View style={styles.diveShopLabelContainer}>
@@ -210,7 +226,7 @@ const styles = StyleSheet.create({
   recentSearches: {
     flexDirection: 'row',
     paddingLeft: 25,
-    marginTop: 15,
+    marginTop: 25,
   },
   recentSearchesText: {
     color: 'black',
