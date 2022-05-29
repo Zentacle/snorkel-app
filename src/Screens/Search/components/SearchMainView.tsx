@@ -65,7 +65,7 @@ const SearchMainView: React.FunctionComponent<SearchMainViewProps> = ({
       <View style={styles.destinationsContainer}>
         <View style={styles.destinationLabelContainer}>
           <Text style={styles.headerLabel}>{t('DESTINATION')}</Text>
-          <GradientText
+          {/* <GradientText
             gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
             start={{
               x: 0,
@@ -78,7 +78,7 @@ const SearchMainView: React.FunctionComponent<SearchMainViewProps> = ({
             gradientLocations={[0.01, 1, 1]}
             style={styles.headerLabelGradient}>
             {t('SEE_ALL')}
-          </GradientText>
+          </GradientText> */}
         </View>
         <ScrollView
           horizontal
@@ -157,7 +157,7 @@ const SearchMainView: React.FunctionComponent<SearchMainViewProps> = ({
       <View style={styles.diveSitesContainer}>
         <View style={styles.diveSiteLabelContainer}>
           <Text style={styles.headerLabel}>{t('POPULAR_DIVE_SITES')}</Text>
-          <GradientText
+          {/* <GradientText
             gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
             start={{
               x: 0,
@@ -170,7 +170,7 @@ const SearchMainView: React.FunctionComponent<SearchMainViewProps> = ({
             gradientLocations={[0.01, 1, 1]}
             style={styles.headerLabelGradient}>
             {t('SEE_ALL')}
-          </GradientText>
+          </GradientText> */}
         </View>
         <ScrollView
           horizontal
