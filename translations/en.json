@@ -71,7 +71,8 @@
   "WELCOME": "Welcome",
   "explore": {
     "SEARCH_PLACEHOLDER": "Search for a location",
-    "NEARBY_SITES_MAIN_TEXT": "Dive Sites Nearby"
+    "NEARBY_SITES_MAIN_TEXT": "Dive Sites Nearby",
+    "NEARBY_BUDDIES_MAIN_TEXT": "Dive Buddies Nearby"
   },
   "RECOMMENDED": "Recommended",
   "VIEW_MAP": "View Map",

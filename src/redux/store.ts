@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import buddiesReducer from './slices/buddies';
 import diveSitesReducer from './slices/dive-sites';
 import diveLogsReducer from './slices/dive-logs';
 import reviewReducer from './slices/reviews';
@@ -11,6 +12,7 @@ import type { ThunkAction, Action } from '@reduxjs/toolkit';
 
 const store = configureStore({
   reducer: {
+    buddies: buddiesReducer,
     dive_sites: diveSitesReducer,
     dive_logs: diveLogsReducer,
     reviews: reviewReducer,
