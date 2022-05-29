@@ -26,7 +26,10 @@ import {
   handleFetchRecommended,
   selectRecommendedSites,
 } from '_redux/slices/dive-sites';
-import { handleFetchNearbyBuddies, selectNearbyBuddies } from '_redux/slices/buddies';
+import {
+  handleFetchNearbyBuddies,
+  selectNearbyBuddies,
+} from '_redux/slices/buddies';
 import { selectUser, selectAuthToken } from '_redux/slices/user';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -65,7 +68,8 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   const recommended =
     Object.values(useAppSelector(selectRecommendedSites)) || [];
   const diveSitesIsLoading = useAppSelector(selectLoadingState);
-  const nearbyBuddies = Object.values(useAppSelector(selectNearbyBuddies)) || [];
+  const nearbyBuddies =
+    Object.values(useAppSelector(selectNearbyBuddies)) || [];
   const user = useAppSelector(selectUser);
   const [autocompleteModalOpen, toggleAutocompleteModal] =
     React.useState(false);
@@ -234,7 +238,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
           {t('WELCOME')},&nbsp;{user ? user.first_name : t('FRIEND')}!
         </Text>
         <Form
-          onSubmit={() => { }}
+          onSubmit={() => {}}
           initialValues={{}}
           keepDirtyOnReinitialize
           render={() => {
@@ -307,28 +311,30 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
             ))}
           </ScrollView>
         </View>
-        {nearbyBuddies.length ? <View style={styles.nearbySites}>
-          <View style={styles.nearbySitesTextContainer}>
-            <Text style={styles.nearbySitesMainText}>
-              {t('explore.NEARBY_BUDDIES_MAIN_TEXT')}
-            </Text>
+        {!!nearbyBuddies.length && (
+          <View style={styles.nearbySites}>
+            <View style={styles.nearbySitesTextContainer}>
+              <Text style={styles.nearbySitesMainText}>
+                {t('explore.NEARBY_BUDDIES_MAIN_TEXT')}
+              </Text>
+            </View>
+            <ScrollView
+              horizontal
+              contentContainerStyle={styles.nearbySitesCardsContainer}
+              showsHorizontalScrollIndicator={false}>
+              {nearbyBuddies.map(item => (
+                <DiveBuddy
+                  key={item.id}
+                  buddy={item}
+                  containerStyle={styles.nearbySiteItemContainer}
+                  imageContainerStyle={styles.nearbySiteItemContainer}
+                  imageStyle={styles.nearbySiteItemImage}
+                  onPressContainer={navigateToDiveSite}
+                />
+              ))}
+            </ScrollView>
           </View>
-          <ScrollView
-            horizontal
-            contentContainerStyle={styles.nearbySitesCardsContainer}
-            showsHorizontalScrollIndicator={false}>
-            {nearbyBuddies.map(item => (
-              <DiveBuddy
-                key={item.id}
-                buddy={item}
-                containerStyle={styles.nearbySiteItemContainer}
-                imageContainerStyle={styles.nearbySiteItemContainer}
-                imageStyle={styles.nearbySiteItemImage}
-                onPressContainer={navigateToDiveSite}
-              />
-            ))}
-          </ScrollView>
-        </View> : <></>}
+        )}
         {/* <View style={styles.diveShops}>
           <View style={styles.diveShopsTextContainer}>
             <Text style={styles.diveShopsMainText}>{t('DIVE_SHOPS')}</Text>
@@ -384,18 +390,6 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
             showsHorizontalScrollIndicator={false}>
             {recommended.length
               ? recommended.map(item => (
-                <DiveSite
-                  key={item.id}
-                  site={item}
-                  containerStyle={styles.diveSiteItemContainer}
-                  imageContainerStyle={styles.diveSiteItemContainer}
-                  imageStyle={styles.diveSiteItemImage}
-                  onPressContainer={navigateToDiveSite}
-                />
-              ))
-              : diveSites
-                .slice(Math.floor(diveSites.length / 2))
-                .map(item => (
                   <DiveSite
                     key={item.id}
                     site={item}
@@ -404,7 +398,19 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
                     imageStyle={styles.diveSiteItemImage}
                     onPressContainer={navigateToDiveSite}
                   />
-                ))}
+                ))
+              : diveSites
+                  .slice(Math.floor(diveSites.length / 2))
+                  .map(item => (
+                    <DiveSite
+                      key={item.id}
+                      site={item}
+                      containerStyle={styles.diveSiteItemContainer}
+                      imageContainerStyle={styles.diveSiteItemContainer}
+                      imageStyle={styles.diveSiteItemImage}
+                      onPressContainer={navigateToDiveSite}
+                    />
+                  ))}
           </ScrollView>
         </View>
       </ScrollView>
