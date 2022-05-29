@@ -142,12 +142,6 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
             );
           } else {
             dispatch(handleFetchDiveSites({}));
-            dispatch(
-              handleFetchNearbyBuddies({
-                latitude: 1,
-                longitude: 1,
-              }),
-            );
             user &&
               dispatch(
                 handleFetchRecommended({
@@ -164,6 +158,12 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
               position => {
                 dispatch(
                   handleFetchDiveSites({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                  }),
+                );
+                dispatch(
+                  handleFetchNearbyBuddies({
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude,
                   }),
