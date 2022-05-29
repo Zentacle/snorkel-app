@@ -126,21 +126,11 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
   };
 
   const initialValues: InitialSearchValues = {
-    difficulty: passedInLocationValues.difficulty
-      ? passedInLocationValues.difficulty
-      : t('BEGINNER').toLowerCase(),
-    preference: passedInLocationValues.preference
-      ? passedInLocationValues.preference
-      : t('SCUBA').toLowerCase(),
-    entry: passedInLocationValues.entry
-      ? passedInLocationValues.entry
-      : t('SHORE').toLowerCase(),
-    search_term: passedInLocationValues.search_term
-      ? passedInLocationValues.search_term
-      : '',
+    difficulty: passedInLocationValues.difficulty ?? '',
+    preference: passedInLocationValues.preference ?? '',
+    entry: passedInLocationValues.entry ?? '',
+    search_term: passedInLocationValues.search_term ?? '',
   };
-
-  // console.log('loc', passedInLocationValues);
 
   /**
    * since initial state is passed in from navigation params,

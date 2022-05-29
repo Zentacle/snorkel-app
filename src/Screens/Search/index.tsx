@@ -32,9 +32,25 @@ const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
     toggleAutocompleteModal(true);
   };
 
+  const [initialSearchTerm, setInitialSearchTerm] = React.useState('');
+
   const navigateToFilters = (values: LocationSearchInitialValues) => {
     navigation.navigate('SearchStack', {
       screen: 'SearchFilters',
+      params: {
+        search: values,
+      },
+    });
+  };
+
+  const openAutocompleteForDestination = (value: string) => {
+    setInitialSearchTerm(value);
+    toggleAutocompleteModal(true);
+  };
+
+  const navigateToSearchResults = (values: LocationSearchInitialValues) => {
+    navigation.navigate('SearchStack', {
+      screen: 'SearchResults',
       params: {
         search: values,
       },
@@ -71,13 +87,17 @@ const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
           render={({ values }) => {
             return (
               <View>
-                <Field
-                  name="search_term"
-                  isVisible={autocompleteModalOpen}
-                  component={AutocompleteModal}
-                  closeModal={() => toggleAutocompleteModal(false)}
-                  navigateToDiveSite={navigateToDiveSite}
-                />
+                {autocompleteModalOpen && (
+                  <Field
+                    name="search_term"
+                    isVisible={autocompleteModalOpen}
+                    component={AutocompleteModal}
+                    closeModal={() => toggleAutocompleteModal(false)}
+                    navigateToDiveSite={navigateToDiveSite}
+                    navigateToSearchResults={navigateToSearchResults}
+                    initialSearchTerm={initialSearchTerm}
+                  />
+                )}
                 <Field
                   name="search_term"
                   component={SearchInput}
@@ -91,7 +111,10 @@ const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
           }}
         />
 
-        <SearchMainView navigateToDiveSite={navigateToDiveSite} />
+        <SearchMainView
+          navigateToDiveSite={navigateToDiveSite}
+          openAutocompleteForDestination={openAutocompleteForDestination}
+        />
       </ScrollView>
     </SafeAreaView>
   );

@@ -69,7 +69,11 @@ const SearchResults: FunctionComponent<SearchResultsProps> = ({
   };
 
   const initialValues: InitialSearchValues = {
-    ...searchValues,
+    difficulty: searchValues.difficulty ?? '',
+    preference: searchValues.preference ?? '',
+    entry: searchValues.entry ?? '',
+    sort: searchValues.sort ?? '',
+    search_term: searchValues.search_term ?? '',
   };
 
   const handleToggleSortModal = () => {
@@ -137,7 +141,7 @@ const SearchResults: FunctionComponent<SearchResultsProps> = ({
                 size={30}
               />
               <Field
-                name="location"
+                name="search_term"
                 component={SearchInput}
                 style={styles.searchInput}
                 containerStyle={styles.searchContainer}
