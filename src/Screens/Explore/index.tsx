@@ -41,6 +41,7 @@ import BeachLoading from '_components/reusables/Placeholders/BeachLoading/index'
 import AutocompleteModal from '_components/ui/AutocompleteModal';
 
 import { WIDTH, HEIGHT, isBelowWidthThreshold } from '_utils/constants';
+import type { LocationSearchInitialValues } from '_utils/interfaces/data/search';
 
 // interface TagInterface {
 //   name: string;
@@ -195,6 +196,15 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
     });
   };
 
+  const navigateToSearchResults = (values: LocationSearchInitialValues) => {
+    navigation.navigate('SearchStack', {
+      screen: 'SearchResults',
+      params: {
+        search: values,
+      },
+    });
+  };
+
   const handleInputFocus = () => {
     toggleAutocompleteModal(true);
   };
@@ -226,14 +236,15 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
             return (
               <View>
                 <Field
-                  name="search"
+                  name="search_term"
                   isVisible={autocompleteModalOpen}
                   component={AutocompleteModal}
                   closeModal={() => toggleAutocompleteModal(false)}
                   navigateToDiveSite={navigateToDiveSite}
+                  navigateToSearchResults={navigateToSearchResults}
                 />
                 <Field
-                  name="search"
+                  name="search_term"
                   placeholder={t('explore.SEARCH_PLACEHOLDER')}
                   handleInputFocus={handleInputFocus}
                   placeholderTextColor="#BFBFBF"

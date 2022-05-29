@@ -41,6 +41,15 @@ const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
     });
   };
 
+  const navigateToSearchResults = (values: LocationSearchInitialValues) => {
+    navigation.navigate('SearchStack', {
+      screen: 'SearchResults',
+      params: {
+        search: values,
+      },
+    });
+  };
+
   const navigateToDiveSite = (id: number) => {
     navigation.navigate('ExploreStack', {
       screen: 'DiveSite',
@@ -77,6 +86,7 @@ const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
                   component={AutocompleteModal}
                   closeModal={() => toggleAutocompleteModal(false)}
                   navigateToDiveSite={navigateToDiveSite}
+                  navigateToSearchResults={navigateToSearchResults}
                 />
                 <Field
                   name="search_term"

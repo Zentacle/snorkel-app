@@ -21,17 +21,24 @@ import type { FieldRenderProps } from 'react-final-form';
 import PlainSearchInput from '_components/ui/PlainSearchInput';
 
 import { handleTypeAhead } from '_redux/slices/search/api';
-import { TypeaheadResponse } from '_utils/interfaces/data/search';
+import {
+  TypeaheadResponse,
+  LocationSearchInitialValues,
+} from '_utils/interfaces/data/search';
 
 import LocationImage from '_assets/LocationLargish.png';
 import FlagImage from '_assets/Flag.png';
 import { isBelowHeightThreshold } from '_utils/constants';
+
+import { useAppDispatch } from '_redux/hooks';
+import { search } from '_redux/slices/search';
 
 interface BaseProps {
   isVisible: boolean;
   closeModal: () => void;
   reset: () => void;
   navigateToDiveSite: (id: number) => void;
+  navigateToSearchResults?: (values: LocationSearchInitialValues) => void;
 }
 type FinalFormProps = FieldRenderProps<string, any>;
 
@@ -44,8 +51,10 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
   closeModal,
   input: { onChange },
   navigateToDiveSite,
+  navigateToSearchResults,
 }) => {
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
   const [text, changeText] = React.useState('');
   const [suggestions, setSuggestions] = React.useState<TypeaheadResponse[]>([]);
 
@@ -94,6 +103,18 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     setSuggestions([]);
   };
 
+  const handleNavigationToSearchResults = async (
+    values: LocationSearchInitialValues,
+  ) => {
+    await dispatch(search(values));
+    if (navigateToSearchResults) {
+      navigateToSearchResults(values);
+      handleCloseModal();
+    } else {
+      setPlace(values.search_term as string);
+    }
+  };
+
   const handleNavigationToDiveSite = (diveSiteId: number) => {
     navigateToDiveSite(diveSiteId);
     handleCloseModal();
@@ -119,7 +140,10 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
         </View>
       </Pressable>
     ) : (
-      <Pressable onPress={() => setPlace(item.item.text)}>
+      <Pressable
+        onPress={() =>
+          handleNavigationToSearchResults({ search_term: item.item.text })
+        }>
         <View style={styles.resultContainer}>
           <View style={styles.resultItemContainer}>
             <Image source={FlagImage} />
