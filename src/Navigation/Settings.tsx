@@ -13,37 +13,28 @@ import PrivacyPolicy from '_screens/Settings/PrivacyPolicy';
 import HelpCenter from '_screens/Settings/HelpCenter';
 import Language from '_screens/Settings/Language';
 
-const OnboardingNavigator: React.FC = () => {
-  const OnboardingStack = createNativeStackNavigator<SettingStackParamList>();
+const SettingNavigator: React.FC = () => {
+  const SettingStack = createNativeStackNavigator<SettingStackParamList>();
   return (
-    <OnboardingStack.Navigator
+    <SettingStack.Navigator
       initialRouteName="Settings"
       screenOptions={{
         headerShown: false,
       }}>
-      <OnboardingStack.Screen name="Settings" component={Settings} />
-      <OnboardingStack.Screen
-        name="ChangePassword"
-        component={ChangePassword}
-      />
-      <OnboardingStack.Screen
-        name="ProfileSettings"
-        component={ProfileSettings}
-      />
-      <OnboardingStack.Screen name="TypeUnits" component={TypeUnits} />
-      <OnboardingStack.Screen
-        name="DiveActivities"
-        component={DiveActivities}
-      />
-      <OnboardingStack.Screen
+      <SettingStack.Screen name="Settings" component={Settings} />
+      <SettingStack.Screen name="ChangePassword" component={ChangePassword} />
+      <SettingStack.Screen name="ProfileSettings" component={ProfileSettings} />
+      <SettingStack.Screen name="TypeUnits" component={TypeUnits} />
+      <SettingStack.Screen name="DiveActivities" component={DiveActivities} />
+      <SettingStack.Screen
         name="TermsAndConditions"
         component={TermsAndConditions}
       />
-      <OnboardingStack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
-      <OnboardingStack.Screen name="HelpCenter" component={HelpCenter} />
-      <OnboardingStack.Screen name="Language" component={Language} />
-    </OnboardingStack.Navigator>
+      <SettingStack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
+      <SettingStack.Screen name="HelpCenter" component={HelpCenter} />
+      <SettingStack.Screen name="Language" component={Language} />
+    </SettingStack.Navigator>
   );
 };
 
-export default OnboardingNavigator;
+export default SettingNavigator;
