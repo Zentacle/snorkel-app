@@ -4,6 +4,10 @@ import {
   StyleSheet,
   Image,
   TouchableWithoutFeedback,
+  ViewStyle,
+  ImageStyle,
+  Text,
+  Pressable,
 } from 'react-native';
 import type { FieldRenderProps } from 'react-final-form';
 import type { FunctionComponent } from 'react';
@@ -15,7 +19,11 @@ import UploadAvatarIcon from '_assets/UploadAvatarIcon.png';
 
 type FinalFormProps = FieldRenderProps<string, any>;
 
-interface BaseProps {}
+interface BaseProps {
+  iconContaineStyle: ViewStyle;
+  placeholderStyle?: ImageStyle;
+  imageStyling?: ImageStyle;
+}
 
 type ImageFormComponentProps = BaseProps & FinalFormProps;
 
@@ -26,6 +34,9 @@ interface PhotoOptions {
 
 const ImageFormComponent: FunctionComponent<ImageFormComponentProps> = ({
   input: { value, onChange },
+  iconContaineStyle,
+  placeholderStyle,
+  imageStyling,
 }) => {
   const { t } = useTranslation();
   const [cameralModalIsVisible, setCameraModalVisibility] =
@@ -76,15 +87,29 @@ const ImageFormComponent: FunctionComponent<ImageFormComponentProps> = ({
 
   return (
     <View style={styles.container}>
-      <View style={styles.iconAddContainer}>
+      <View style={iconContaineStyle}>
         {value ? (
-          <Image
-            style={{ width: 168, height: 168, borderRadius: 84 }}
-            source={{ uri: value }}
-          />
+          <View>
+            <Image
+              style={[styles.imageStyling, imageStyling]}
+              source={{ uri: value }}
+            />
+            <Pressable
+              onPress={openCameraModal}
+              style={state => ({
+                opacity: state.pressed ? 0.8 : 1,
+              })}>
+              <View style={styles.editContainer}>
+                <Text style={styles.editText}>Edit</Text>
+              </View>
+            </Pressable>
+          </View>
         ) : (
           <TouchableWithoutFeedback onPress={openCameraModal}>
-            <Image source={UploadAvatarIcon} />
+            <Image
+              style={[styles.placeholderStyle, placeholderStyle]}
+              source={UploadAvatarIcon}
+            />
           </TouchableWithoutFeedback>
         )}
       </View>
@@ -98,21 +123,23 @@ const ImageFormComponent: FunctionComponent<ImageFormComponentProps> = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // backgroundColor: '#2c3e50',
-  },
-  iconAddContainer: {
-    backgroundColor: '#FFF',
+  container: {},
+  imageStyling: {
     width: 168,
     height: 168,
     borderRadius: 84,
+  },
+  placeholderStyle: {},
+  editContainer: {
     alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
+    backgroundColor: '#0B94EF',
+    paddingVertical: 5,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+  },
+  editText: {
+    color: 'white',
+    fontSize: 14,
   },
 });
 
