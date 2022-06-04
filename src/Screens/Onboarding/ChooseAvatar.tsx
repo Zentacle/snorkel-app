@@ -26,7 +26,7 @@ import { selectSettings } from '_redux/slices/settings';
 
 import Button from '_components/ui/Buttons/Button';
 import { selectUser } from '_redux/slices/user';
-import ImageFormComponent from './components/ImageFormComponent';
+import ImageFormComponent from '_components/ui/ImageFormComponent';
 
 const HEIGHT = Dimensions.get('window').width;
 
@@ -147,7 +147,11 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
                   </Text>
                 </View>
 
-                <Field name="profile_pic" component={ImageFormComponent} />
+                <Field
+                  name="profile_pic"
+                  iconContaineStyle={styles.iconContainer}
+                  component={ImageFormComponent}
+                />
               </View>
 
               <View style={styles.footer}>
@@ -217,6 +221,17 @@ const styles = StyleSheet.create({
   iconBackContainer: {
     marginTop: 20,
   },
+  iconContainer: {
+    backgroundColor: '#FFF',
+    width: 168,
+    height: 168,
+    borderRadius: 84,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  imageStyling: {},
 });
 
 export default ChooseAvatar;

@@ -12,6 +12,7 @@ import TermsAndConditions from '_screens/Settings/TermsAndConditions';
 import PrivacyPolicy from '_screens/Settings/PrivacyPolicy';
 import HelpCenter from '_screens/Settings/HelpCenter';
 import Language from '_screens/Settings/Language';
+import DiveShopForm from '_screens/Settings/DiveShopForm';
 
 const SettingNavigator: React.FC = () => {
   const SettingStack = createNativeStackNavigator<SettingStackParamList>();
@@ -33,6 +34,7 @@ const SettingNavigator: React.FC = () => {
       <SettingStack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
       <SettingStack.Screen name="HelpCenter" component={HelpCenter} />
       <SettingStack.Screen name="Language" component={Language} />
+      <SettingStack.Screen name="DiveShopForm" component={DiveShopForm} />
     </SettingStack.Navigator>
   );
 };
