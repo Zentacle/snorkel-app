@@ -17,8 +17,9 @@ import IOIcon from 'react-native-vector-icons/Ionicons';
 import ImagePickerModal from '_components/reusables/ImagePickerModal';
 import GradientText from '_components/ui/GradientText';
 import GradientCircle from '_components/ui/GradientCircle';
+import { FormImages } from '_utils/interfaces/data/logs';
 
-type FinalFormProps = FieldRenderProps<string, any>;
+type FinalFormProps = FieldRenderProps<FormImages, any>;
 
 interface BaseProps {
   iconContaineStyle: ViewStyle;
@@ -58,7 +59,11 @@ const StampImageComponent: FunctionComponent<StampImageComponentProps> = ({
 
     closeCameraModal();
     if (result.assets && result.assets[0].uri) {
-      onChange(result.assets[0].uri);
+      onChange({
+        uri: result.assets[0].uri,
+        type: result.assets[0].type,
+        name: result.assets[0].fileName,
+      });
     }
   };
 
@@ -70,7 +75,11 @@ const StampImageComponent: FunctionComponent<StampImageComponentProps> = ({
 
     closeCameraModal();
     if (result.assets && result.assets[0].uri) {
-      onChange(result.assets[0].uri);
+      onChange({
+        uri: result.assets[0].uri,
+        type: result.assets[0].type,
+        name: result.assets[0].fileName,
+      });
     }
   };
 
@@ -96,7 +105,7 @@ const StampImageComponent: FunctionComponent<StampImageComponentProps> = ({
                 imageStyling,
                 { alignSelf: 'center' },
               ]}
-              source={{ uri: value }}
+              source={{ uri: value.uri }}
             />
             <Pressable
               onPress={openCameraModal}

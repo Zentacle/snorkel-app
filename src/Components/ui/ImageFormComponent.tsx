@@ -16,8 +16,9 @@ import { useTranslation } from 'react-i18next';
 
 import ImagePickerModal from '_components/reusables/ImagePickerModal';
 import UploadAvatarIcon from '_assets/UploadAvatarIcon.png';
+import { FormImages } from '_utils/interfaces/data/logs';
 
-type FinalFormProps = FieldRenderProps<string, any>;
+type FinalFormProps = FieldRenderProps<FormImages, any>;
 
 interface BaseProps {
   iconContaineStyle: ViewStyle;
@@ -53,24 +54,30 @@ const ImageFormComponent: FunctionComponent<ImageFormComponentProps> = ({
   const handleLaunchCamera = async () => {
     const result = await launchCamera({
       mediaType: 'photo',
-      // includeBase64: true,
     });
 
     closeCameraModal();
     if (result.assets && result.assets[0].uri) {
-      onChange(result.assets[0].uri);
+      onChange({
+        uri: result.assets[0].uri,
+        type: result.assets[0].type,
+        name: result.assets[0].fileName,
+      });
     }
   };
 
   const handleLaunchPhotoLibrary = async () => {
     const result = await launchImageLibrary({
       mediaType: 'photo',
-      // includeBase64: true,
     });
 
     closeCameraModal();
     if (result.assets && result.assets[0].uri) {
-      onChange(result.assets[0].uri);
+      onChange({
+        uri: result.assets[0].uri,
+        type: result.assets[0].type,
+        name: result.assets[0].fileName,
+      });
     }
   };
 
@@ -97,7 +104,7 @@ const ImageFormComponent: FunctionComponent<ImageFormComponentProps> = ({
             <View>
               <Image
                 style={[styles.imageStyling, imageStyling]}
-                source={{ uri: value }}
+                source={{ uri: value.uri }}
               />
             </View>
             <Pressable
