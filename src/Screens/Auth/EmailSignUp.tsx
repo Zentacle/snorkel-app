@@ -33,9 +33,7 @@ import {
   appleRegister,
 } from '_redux/slices/user';
 import { isBelowHeightThreshold, HEIGHT } from '_utils/constants';
-import {
-  LoginResponse,
-} from '_utils/interfaces/data/user';
+import { LoginResponse } from '_utils/interfaces/data/user';
 import type {
   ActionButtons,
   GoogleAuthReturn,
@@ -164,9 +162,7 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
                 } else {
                   navigateToApp();
                 }
-              } else if (
-                (response.payload as LoginResponse).user.username
-              ) {
+              } else if ((response.payload as LoginResponse).user.username) {
                 navigateToCameraPermissions();
               } else {
                 navigateToOnboarding();
@@ -203,9 +199,7 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
                 } else {
                   navigateToApp();
                 }
-              } else if (
-                (response.payload as LoginResponse).user.username
-              ) {
+              } else if ((response.payload as LoginResponse).user.username) {
                 navigateToCameraPermissions();
               } else {
                 navigateToOnboarding();
