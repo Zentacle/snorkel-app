@@ -87,13 +87,19 @@ const ImageFormComponent: FunctionComponent<ImageFormComponentProps> = ({
 
   return (
     <View style={styles.container}>
-      <View style={iconContaineStyle}>
+      <View
+        style={[
+          iconContaineStyle,
+          { backgroundColor: value ? 'none' : 'white' },
+        ]}>
         {value ? (
-          <View>
-            <Image
-              style={[styles.imageStyling, imageStyling]}
-              source={{ uri: value }}
-            />
+          <>
+            <View>
+              <Image
+                style={[styles.imageStyling, imageStyling]}
+                source={{ uri: value }}
+              />
+            </View>
             <Pressable
               onPress={openCameraModal}
               style={state => ({
@@ -103,7 +109,7 @@ const ImageFormComponent: FunctionComponent<ImageFormComponentProps> = ({
                 <Text style={styles.editText}>Edit</Text>
               </View>
             </Pressable>
-          </View>
+          </>
         ) : (
           <TouchableWithoutFeedback onPress={openCameraModal}>
             <Image
@@ -136,6 +142,8 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 12,
     borderRadius: 8,
+    position: 'absolute',
+    bottom: -15,
   },
   editText: {
     color: 'white',

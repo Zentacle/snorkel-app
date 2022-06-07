@@ -286,5 +286,7 @@
   "STATE": "State",
   "ADDRESS_LINE_1": "Address Line 1",
   "ADDRESS_LINE_2": "Address Line 2",
-  "STAMP": "Stamp"
+  "STAMP": "Stamp",
+  "ADD_PHOTO": "Add Photo",
+  "CONFIRM": "Confirm"
 }
