@@ -66,25 +66,19 @@ const DiveShopForm: FunctionComponent<DiveShopFormTypeProps> = ({
       const diveShop = await handleCreateDiveShop(values, authToken as string);
 
       if (values.imageObj) {
-        const imageUrlResponse = await handleUploadDiveShopImage(
+        await handleUploadDiveShopImage(
           values.imageObj as FormImages,
           authToken as string,
           diveShop.id,
         );
-
-        values.logo_img = imageUrlResponse;
-        delete values.imageObj;
       }
 
       if (values.stampImageObj) {
-        const stampImageUrlResponse = await handleUploadStampImage(
+        await handleUploadStampImage(
           values.stampImageObj as FormImages,
           authToken as string,
           diveShop.id,
         );
-
-        values.stamp_url = stampImageUrlResponse;
-        delete values.stampImageObj;
       }
 
       navigateBack();
