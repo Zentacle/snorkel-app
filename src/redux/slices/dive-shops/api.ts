@@ -13,7 +13,7 @@ export async function handleCreateDiveShop(
 ): Promise<DiveShopFull> {
   try {
     const url = `${config.API_ENDPOINT}/shop/create`;
-    const response = fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
       body: JSON.stringify(body),
       headers: {
@@ -21,7 +21,7 @@ export async function handleCreateDiveShop(
         Authorization: `Bearer ${auth_token}`,
       },
     }).then(res => res.json());
-    return response;
+    return response.data;
   } catch (err) {
     throw err;
   }
@@ -30,6 +30,7 @@ export async function handleCreateDiveShop(
 export async function handleUploadDiveShopImage(
   body: FormImages,
   auth_token: string,
+  id: number,
 ) {
   try {
     const formData = new FormData();
@@ -39,7 +40,7 @@ export async function handleUploadDiveShopImage(
       filename: body.name,
       type: body.type,
     });
-    const url = `${config.API_ENDPOINT}/shop/upload`;
+    const url = `${config.API_ENDPOINT}/shop/${id}/logo`;
     const response = await fetch(url, {
       method: 'POST',
       body: formData,
@@ -56,6 +57,7 @@ export async function handleUploadDiveShopImage(
 export async function handleUploadStampImage(
   body: FormImages,
   auth_token: string,
+  id: number,
 ) {
   try {
     const formData = new FormData();
@@ -65,7 +67,7 @@ export async function handleUploadStampImage(
       filename: body.name,
       type: body.type,
     });
-    const url = `${config.API_ENDPOINT}/shop/stamp_image`;
+    const url = `${config.API_ENDPOINT}/shop/${id}/stamp_image`;
     const response = await fetch(url, {
       method: 'POST',
       body: formData,

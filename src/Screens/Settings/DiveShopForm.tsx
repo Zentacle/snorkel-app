@@ -56,13 +56,21 @@ const DiveShopForm: FunctionComponent<DiveShopFormTypeProps> = ({
 
   const onSubmit = async (values: DiveShopInitialValues) => {
     try {
+      const filteredValues: DiveShopInitialValues = {
+        ...values,
+      };
+
+      delete filteredValues.stampImageObj;
+      delete filteredValues.imageObj;
+
+      const diveShop = await handleCreateDiveShop(values, authToken as string);
+
       if (values.imageObj) {
         const imageUrlResponse = await handleUploadDiveShopImage(
           values.imageObj as FormImages,
           authToken as string,
+          diveShop.id,
         );
-
-        // console.log('image url response', imageUrlResponse);
 
         values.logo_img = imageUrlResponse;
         delete values.imageObj;
@@ -72,15 +80,13 @@ const DiveShopForm: FunctionComponent<DiveShopFormTypeProps> = ({
         const stampImageUrlResponse = await handleUploadStampImage(
           values.stampImageObj as FormImages,
           authToken as string,
+          diveShop.id,
         );
-
-        // console.log('stamp image url response', stampImageUrlResponse);
 
         values.stamp_url = stampImageUrlResponse;
         delete values.stampImageObj;
       }
 
-      await handleCreateDiveShop(values, authToken as string);
       navigateBack();
     } catch (err) {
       console.log('error in  creating shop', err);
