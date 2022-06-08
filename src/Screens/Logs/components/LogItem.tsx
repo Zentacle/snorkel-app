@@ -9,7 +9,6 @@ import type { DiveLogsState } from '_utils/interfaces/data/logs';
 
 import DepthArrow from '_assets/ArrowsDownUp.png';
 import DiveTimeClock from '_assets/ClockClockwise.png';
-import { isBelowHeightThreshold } from '_utils/constants';
 import UnavailableLocationBox from './UnavailableLocationListBox';
 import Snorkel from '_assets/scuba_icons/snorkel.svg';
 import Location from '_assets/scuba_icons/Location.svg';
@@ -110,7 +109,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
     borderRadius: 22,
-    marginBottom: isBelowHeightThreshold ? 20 : 30,
+    marginBottom: 16,
     padding: 16,
   },
   mapRatingsContainer: {
