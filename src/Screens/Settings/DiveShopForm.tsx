@@ -15,6 +15,8 @@ import ImageFormComponent from '_components/ui/ImageFormComponent';
 import StampImageComponent from '_components/ui/StampImageComponent';
 import Input from '_components/ui/FormManagementInput';
 import Button from '_components/ui/Buttons/Button';
+import { useAppSelector } from '_redux/hooks';
+import { selectAuthToken } from '_redux/slices/user';
 
 import { HEIGHT } from '_utils/constants';
 
@@ -25,6 +27,13 @@ import type {
   RootStackParamList,
   SettingStackParamList,
 } from '_utils/interfaces';
+import type { DiveShopInitialValues } from '_utils/interfaces/data/shops';
+import {
+  handleCreateDiveShop,
+  handleUploadDiveShopImage,
+  handleUploadStampImage,
+} from '_redux/slices/dive-shops/api';
+import { FormImages } from '_utils/interfaces/data/logs';
 
 type DiveShopFormTypeNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<SettingStackParamList, 'DiveShopForm'>,
@@ -39,17 +48,58 @@ const DiveShopForm: FunctionComponent<DiveShopFormTypeProps> = ({
   navigation,
 }) => {
   const { t } = useTranslation();
+  const authToken = useAppSelector(selectAuthToken);
+
   const navigateBack = () => {
     navigation.goBack();
   };
 
-  const initialValues = {};
+  const onSubmit = async (values: DiveShopInitialValues) => {
+    try {
+      if (values.imageObj) {
+        const imageUrlResponse = await handleUploadDiveShopImage(
+          values.imageObj as FormImages,
+          authToken as string,
+        );
+
+        // console.log('image url response', imageUrlResponse);
+
+        values.logo_img = imageUrlResponse;
+        delete values.imageObj;
+      }
+
+      if (values.stampImageObj) {
+        const stampImageUrlResponse = await handleUploadStampImage(
+          values.stampImageObj as FormImages,
+          authToken as string,
+        );
+
+        // console.log('stamp image url response', stampImageUrlResponse);
+
+        values.stamp_url = stampImageUrlResponse;
+        delete values.stampImageObj;
+      }
+
+      await handleCreateDiveShop(values, authToken as string);
+      navigateBack();
+    } catch (err) {
+      console.log('error in  creating shop', err);
+    }
+  };
+
+  const initialValues: DiveShopInitialValues = {};
+  const constraints = {
+    name: true,
+    city: true,
+    state: true,
+    address1: true,
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <Form
-        validate={values => validate(values, {})}
-        onSubmit={() => {}}
+        validate={values => validate(values, constraints)}
+        onSubmit={onSubmit}
         initialValues={initialValues}
         render={({
           handleSubmit,
@@ -72,7 +122,7 @@ const DiveShopForm: FunctionComponent<DiveShopFormTypeProps> = ({
                 </View>
 
                 <Field
-                  name="logo_img"
+                  name="imageObj"
                   iconContaineStyle={styles.iconContainer}
                   component={ImageFormComponent}
                   placeholderStyle={styles.placeholderStyle}
@@ -138,7 +188,7 @@ const DiveShopForm: FunctionComponent<DiveShopFormTypeProps> = ({
                       <Text style={styles.optionaltext}>{t('OPTIONAL')}</Text>
                     </View>
                     <Field
-                      name="stamp_uri"
+                      name="stampImageObj"
                       // iconContaineStyle={styles.iconContainer}
                       component={StampImageComponent}
                       // placeholderStyle={styles.placeholderStyle}
@@ -175,7 +225,7 @@ const DiveShopForm: FunctionComponent<DiveShopFormTypeProps> = ({
                       fontWeight: '800',
                     },
                   }}>
-                  {t('CONFIRM')}
+                  {submitting ? 'Submitting' : t('CONFIRM')}
                 </Button>
               </KeyboardAvoidingView>
             </ScrollView>

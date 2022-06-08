@@ -27,23 +27,45 @@ export async function handleCreateDiveShop(
   }
 }
 
-export async function handleUploadDiveShopImages(
-  body: FormImages[] = [],
+export async function handleUploadDiveShopImage(
+  body: FormImages,
   auth_token: string,
 ) {
   try {
     const formData = new FormData();
-    body.forEach(asset => {
-      formData.append('file', {
-        uri:
-          Platform.OS === 'android'
-            ? asset.uri
-            : asset.uri.replace('file://', ''),
-        name: asset.name,
-        type: asset.type,
-      });
+    formData.append('file', {
+      uri:
+        Platform.OS === 'android' ? body.uri : body.uri.replace('file://', ''),
+      filename: body.name,
+      type: body.type,
     });
     const url = `${config.API_ENDPOINT}/shop/upload`;
+    const response = await fetch(url, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        Authorization: `Bearer ${auth_token}`,
+      },
+    }).then(res => res.json());
+    return response.data;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function handleUploadStampImage(
+  body: FormImages,
+  auth_token: string,
+) {
+  try {
+    const formData = new FormData();
+    formData.append('file', {
+      uri:
+        Platform.OS === 'android' ? body.uri : body.uri.replace('file://', ''),
+      filename: body.name,
+      type: body.type,
+    });
+    const url = `${config.API_ENDPOINT}/shop/stamp_image`;
     const response = await fetch(url, {
       method: 'POST',
       body: formData,

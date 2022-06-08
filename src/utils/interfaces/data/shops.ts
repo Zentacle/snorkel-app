@@ -1,3 +1,4 @@
+import { FormImages } from './logs';
 import type { User } from './user';
 export interface DiveShopSimple {
   id: number;
@@ -20,11 +21,13 @@ export interface DiveShopFull extends DiveShopSimple {
 }
 
 export interface DiveShopInitialValues {
-  name: string;
-  city: string;
-  state: string;
-  address1: string;
-  address2: string;
-  imageObj: {};
-  logo_img: string;
+  name?: string;
+  city?: string;
+  state?: string;
+  address1?: string;
+  address2?: string;
+  imageObj?: FormImages;
+  logo_img?: string;
+  stampImageObj?: FormImages;
+  stamp_url?: string;
 }
