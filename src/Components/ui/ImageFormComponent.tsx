@@ -18,7 +18,7 @@ import ImagePickerModal from '_components/reusables/ImagePickerModal';
 import UploadAvatarIcon from '_assets/UploadAvatarIcon.png';
 import { FormImages } from '_utils/interfaces/data/logs';
 
-type FinalFormProps = FieldRenderProps<FormImages, any>;
+type FinalFormProps = FieldRenderProps<FormImages | string, any>;
 
 interface BaseProps {
   iconContaineStyle: ViewStyle;
@@ -102,10 +102,17 @@ const ImageFormComponent: FunctionComponent<ImageFormComponentProps> = ({
         {value ? (
           <>
             <View>
-              <Image
-                style={[styles.imageStyling, imageStyling]}
-                source={{ uri: value.uri }}
-              />
+              {typeof value === 'string' ? (
+                <Image
+                  style={[styles.imageStyling, imageStyling]}
+                  source={{ uri: value }}
+                />
+              ) : (
+                <Image
+                  style={[styles.imageStyling, imageStyling]}
+                  source={{ uri: value.uri }}
+                />
+              )}
             </View>
             <Pressable
               onPress={openCameraModal}

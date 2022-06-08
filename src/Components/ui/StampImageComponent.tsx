@@ -19,7 +19,7 @@ import GradientText from '_components/ui/GradientText';
 import GradientCircle from '_components/ui/GradientCircle';
 import { FormImages } from '_utils/interfaces/data/logs';
 
-type FinalFormProps = FieldRenderProps<FormImages, any>;
+type FinalFormProps = FieldRenderProps<FormImages | string, any>;
 
 interface BaseProps {
   iconContaineStyle: ViewStyle;
@@ -99,14 +99,25 @@ const StampImageComponent: FunctionComponent<StampImageComponentProps> = ({
       <View style={iconContaineStyle}>
         {value ? (
           <View>
-            <Image
-              style={[
-                styles.imageStyling,
-                imageStyling,
-                { alignSelf: 'center' },
-              ]}
-              source={{ uri: value.uri }}
-            />
+            {typeof value === 'string' ? (
+              <Image
+                style={[
+                  styles.imageStyling,
+                  imageStyling,
+                  { alignSelf: 'center' },
+                ]}
+                source={{ uri: value }}
+              />
+            ) : (
+              <Image
+                style={[
+                  styles.imageStyling,
+                  imageStyling,
+                  { alignSelf: 'center' },
+                ]}
+                source={{ uri: value.uri }}
+              />
+            )}
             <Pressable
               onPress={openCameraModal}
               style={state => ({
