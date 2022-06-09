@@ -136,8 +136,8 @@ android {
         applicationId "com.zentacle"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 5
-        versionName "1.0"
+        versionCode 13
+        versionName "1.4"
         multiDexEnabled true
         manifestPlaceholders.googleMapsApiKey = "$System.env.GOOGLE_MAPS_API_KEY"
     }

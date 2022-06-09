@@ -107,23 +107,28 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
           <View style={styles.pagesSectionContainer}>
             <Text style={styles.pagesLabel}>{t('ACCOUNT')}</Text>
             <View>
-              {accountPages.map((account, index) => (
-                <TouchableWithoutFeedback
-                  key={index}
-                  onPress={() => navigateToPage(account)}>
-                  <View style={styles.pageContainer}>
-                    <View style={styles.pageLabelContainer}>
-                      <MUIcon name={account.icon} size={30} color="black" />
-                      <Text style={styles.pageLabel}>{account.label}</Text>
+              {accountPages.map((account, index) => {
+                if (account.label === t('DIVE_SHOPS') && !user.admin) {
+                  return null;
+                }
+                return (
+                  <TouchableWithoutFeedback
+                    key={index}
+                    onPress={() => navigateToPage(account)}>
+                    <View style={styles.pageContainer}>
+                      <View style={styles.pageLabelContainer}>
+                        <MUIcon name={account.icon} size={30} color="black" />
+                        <Text style={styles.pageLabel}>{account.label}</Text>
+                      </View>
+                      <Icon
+                        name="chevron-forward-outline"
+                        color="black"
+                        size={30}
+                      />
                     </View>
-                    <Icon
-                      name="chevron-forward-outline"
-                      color="black"
-                      size={30}
-                    />
-                  </View>
-                </TouchableWithoutFeedback>
-              ))}
+                  </TouchableWithoutFeedback>
+                );
+              })}
             </View>
           </View>
         )}
