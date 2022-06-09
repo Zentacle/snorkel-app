@@ -34,10 +34,11 @@ export async function handleUploadDiveShopImage(
 ) {
   try {
     const formData = new FormData();
+    console.log('form i', body);
     formData.append('file', {
       uri:
         Platform.OS === 'android' ? body.uri : body.uri.replace('file://', ''),
-      filename: body.name,
+      name: body.name,
       type: body.type,
     });
     const url = `${config.API_ENDPOINT}/shop/${id}/logo`;
@@ -64,7 +65,7 @@ export async function handleUploadStampImage(
     formData.append('file', {
       uri:
         Platform.OS === 'android' ? body.uri : body.uri.replace('file://', ''),
-      filename: body.name,
+      name: body.name,
       type: body.type,
     });
     const url = `${config.API_ENDPOINT}/shop/${id}/stamp_image`;
