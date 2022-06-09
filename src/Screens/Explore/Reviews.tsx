@@ -173,10 +173,10 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     borderBottomColor: '#CECECE',
     borderBottomWidth: StyleSheet.hairlineWidth,
-    marginBottom: 30,
   },
   mainContent: {
     marginHorizontal: 25,
+    paddingTop: 30,
   },
   reviewLabelContainer: {
     flexDirection: 'row',
