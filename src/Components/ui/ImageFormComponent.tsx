@@ -4,6 +4,10 @@ import {
   StyleSheet,
   Image,
   TouchableWithoutFeedback,
+  ViewStyle,
+  ImageStyle,
+  Text,
+  Pressable,
 } from 'react-native';
 import type { FieldRenderProps } from 'react-final-form';
 import type { FunctionComponent } from 'react';
@@ -12,10 +16,15 @@ import { useTranslation } from 'react-i18next';
 
 import ImagePickerModal from '_components/reusables/ImagePickerModal';
 import UploadAvatarIcon from '_assets/UploadAvatarIcon.png';
+import { FormImages } from '_utils/interfaces/data/logs';
 
-type FinalFormProps = FieldRenderProps<string, any>;
+type FinalFormProps = FieldRenderProps<FormImages | string, any>;
 
-interface BaseProps {}
+interface BaseProps {
+  iconContaineStyle: ViewStyle;
+  placeholderStyle?: ImageStyle;
+  imageStyling?: ImageStyle;
+}
 
 type ImageFormComponentProps = BaseProps & FinalFormProps;
 
@@ -26,6 +35,9 @@ interface PhotoOptions {
 
 const ImageFormComponent: FunctionComponent<ImageFormComponentProps> = ({
   input: { value, onChange },
+  iconContaineStyle,
+  placeholderStyle,
+  imageStyling,
 }) => {
   const { t } = useTranslation();
   const [cameralModalIsVisible, setCameraModalVisibility] =
@@ -42,24 +54,30 @@ const ImageFormComponent: FunctionComponent<ImageFormComponentProps> = ({
   const handleLaunchCamera = async () => {
     const result = await launchCamera({
       mediaType: 'photo',
-      // includeBase64: true,
     });
 
     closeCameraModal();
     if (result.assets && result.assets[0].uri) {
-      onChange(result.assets[0].uri);
+      onChange({
+        uri: result.assets[0].uri,
+        type: result.assets[0].type,
+        name: result.assets[0].fileName,
+      });
     }
   };
 
   const handleLaunchPhotoLibrary = async () => {
     const result = await launchImageLibrary({
       mediaType: 'photo',
-      // includeBase64: true,
     });
 
     closeCameraModal();
     if (result.assets && result.assets[0].uri) {
-      onChange(result.assets[0].uri);
+      onChange({
+        uri: result.assets[0].uri,
+        type: result.assets[0].type,
+        name: result.assets[0].fileName,
+      });
     }
   };
 
@@ -76,15 +94,42 @@ const ImageFormComponent: FunctionComponent<ImageFormComponentProps> = ({
 
   return (
     <View style={styles.container}>
-      <View style={styles.iconAddContainer}>
+      <View
+        style={[
+          iconContaineStyle,
+          { backgroundColor: value ? 'none' : 'white' },
+        ]}>
         {value ? (
-          <Image
-            style={{ width: 168, height: 168, borderRadius: 84 }}
-            source={{ uri: value }}
-          />
+          <>
+            <View>
+              {typeof value === 'string' ? (
+                <Image
+                  style={[styles.imageStyling, imageStyling]}
+                  source={{ uri: value }}
+                />
+              ) : (
+                <Image
+                  style={[styles.imageStyling, imageStyling]}
+                  source={{ uri: value.uri }}
+                />
+              )}
+            </View>
+            <Pressable
+              onPress={openCameraModal}
+              style={state => ({
+                opacity: state.pressed ? 0.8 : 1,
+              })}>
+              <View style={styles.editContainer}>
+                <Text style={styles.editText}>Edit</Text>
+              </View>
+            </Pressable>
+          </>
         ) : (
           <TouchableWithoutFeedback onPress={openCameraModal}>
-            <Image source={UploadAvatarIcon} />
+            <Image
+              style={[styles.placeholderStyle, placeholderStyle]}
+              source={UploadAvatarIcon}
+            />
           </TouchableWithoutFeedback>
         )}
       </View>
@@ -98,21 +143,25 @@ const ImageFormComponent: FunctionComponent<ImageFormComponentProps> = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // backgroundColor: '#2c3e50',
-  },
-  iconAddContainer: {
-    backgroundColor: '#FFF',
+  container: {},
+  imageStyling: {
     width: 168,
     height: 168,
     borderRadius: 84,
+  },
+  placeholderStyle: {},
+  editContainer: {
     alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
+    backgroundColor: '#0B94EF',
+    paddingVertical: 5,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    position: 'absolute',
+    bottom: -15,
+  },
+  editText: {
+    color: 'white',
+    fontSize: 14,
   },
 });
 

@@ -278,5 +278,15 @@
   "REQUIRE_ACCOUNT_SUBTEXT": "The actions performed on this page require you to have an account",
   "LOGIN_OR_SIGNUP": "Login or Signup",
   "ENTER_USERNAME": "Enter Username",
-  "REVIEW": "review"
+  "REVIEW": "review",
+  "ADD_DIVE_SHOP": "Add Dive Shop",
+  "SHOP_NAME": "Shop Name",
+  "SHOP_ADDRESS": "Shop Address",
+  "CITY": "City",
+  "STATE": "State",
+  "ADDRESS_LINE_1": "Address Line 1",
+  "ADDRESS_LINE_2": "Address Line 2",
+  "STAMP": "Stamp",
+  "ADD_PHOTO": "Add Photo",
+  "CONFIRM": "Confirm"
 }

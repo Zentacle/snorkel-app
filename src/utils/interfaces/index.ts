@@ -52,6 +52,7 @@ export type SettingStackParamList = {
   PrivacyPolicy: undefined;
   HelpCenter: undefined;
   Language: undefined;
+  DiveShopForm: undefined;
 };
 
 export type SearchStackParamList = {

@@ -31,9 +31,7 @@ import {
   selectLoadingState,
   appleRegister,
 } from '_redux/slices/user';
-import {
-  LoginResponse,
-} from '_utils/interfaces/data/user';
+import { LoginResponse } from '_utils/interfaces/data/user';
 
 import { isBelowHeightThreshold, HEIGHT } from '_utils/constants';
 
@@ -161,9 +159,7 @@ const Landing: FunctionComponent<LandingProps> = props => {
                 } else {
                   navigateToApp();
                 }
-              } else if (
-                (response.payload as LoginResponse).user.username
-              ) {
+              } else if ((response.payload as LoginResponse).user.username) {
                 navigateToCameraPermissions();
               } else {
                 navigateToOnBoarding();
@@ -200,9 +196,7 @@ const Landing: FunctionComponent<LandingProps> = props => {
                 } else {
                   navigateToApp();
                 }
-              } else if (
-                (response.payload as LoginResponse).user.username
-              ) {
+              } else if ((response.payload as LoginResponse).user.username) {
                 navigateToCameraPermissions();
               } else {
                 navigateToOnBoarding();

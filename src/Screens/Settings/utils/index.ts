@@ -31,6 +31,11 @@ export function usePages() {
       icon: 'diving-snorkel',
       component: 'DiveActivities',
     },
+    {
+      label: t('DIVE_SHOPS'),
+      icon: 'store-outline',
+      component: 'DiveShopForm',
+    },
   ];
 
   const morePages: Page[] = [
