@@ -20,14 +20,14 @@ const DiveLogDisplay: FunctionComponent<DiveLogDisplayProps> = ({
   const handleNavigateToDiveLog = () => navigateToDiveLog(diveLog.id as number);
   return (
     <View style={styles.container}>
-      <LogCarousel images={diveLog.images} />
-      <Text style={styles.diveLogLabel}>{diveLog.name}</Text>
+      { diveLog.images.length > 0 && <LogCarousel images={diveLog.images} /> }
+      <Text style={styles.diveLogLabel}>{diveLog.title}</Text>
       <View style={styles.diveLogLinkContainer}>
         <TouchableWithoutFeedback onPress={handleNavigateToDiveLog}>
           <Text style={styles.diveLogLink}>{t('VIEW_DIVE_LOG')}</Text>
         </TouchableWithoutFeedback>
         <View style={styles.diveLogDot} />
-        <Text style={styles.diveLogDate}>{diveLog.startDate}</Text>
+        <Text style={styles.diveLogDate}>{diveLog.date_dived || diveLog.date_posted}</Text>
       </View>
     </View>
   );
