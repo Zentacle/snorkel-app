@@ -12,12 +12,9 @@ const UnavailableLocationBox: React.FunctionComponent<
     <View style={styles.container}>
       <View style={styles.coordsContainer}>
         <Image source={CoordsIndicator} style={styles.coordsIndicator} />
-        <View style={styles.locationTextContainer}>
-          <Text style={styles.locationName}>{desc}</Text>
-          <Text style={styles.locationAvailabilityText}>
-            No Location coordinates available
-          </Text>
-        </View>
+        <Text style={styles.locationAvailabilityText}>
+          No coordinates available
+        </Text>
       </View>
     </View>
   );
@@ -25,9 +22,8 @@ const UnavailableLocationBox: React.FunctionComponent<
 
 const styles = StyleSheet.create({
   container: {
-    height: 70,
+    height: 100,
     backgroundColor: 'white',
-    marginTop: 12,
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
@@ -40,11 +36,7 @@ const styles = StyleSheet.create({
     height: 40,
   },
   coordsContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
-  },
-  locationTextContainer: {
-    marginLeft: 5,
   },
   locationName: {
     color: 'black',
@@ -56,6 +48,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontSize: 10,
     width: 100,
+    textAlign: 'center',
   },
 });
 

@@ -9,7 +9,6 @@ import type { DiveLogsState } from '_utils/interfaces/data/logs';
 
 import DepthArrow from '_assets/ArrowsDownUp.png';
 import DiveTimeClock from '_assets/ClockClockwise.png';
-import { isBelowHeightThreshold } from '_utils/constants';
 import UnavailableLocationBox from './UnavailableLocationListBox';
 import Snorkel from '_assets/scuba_icons/snorkel.svg';
 import Location from '_assets/scuba_icons/Location.svg';
@@ -54,6 +53,8 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
         )}
 
         <View style={styles.ratingsActivityContainer}>
+          <Text style={styles.date}>{new Date(diveLog.date_dived || diveLog.date_posted!).toLocaleDateString()}</Text>
+          <Text style={styles.detailsTitle}>{diveLog.title}</Text>
           <View style={styles.ratingsContainer}>
             {attachIcons(diveLog.rating, 25)}
           </View>
@@ -65,10 +66,6 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
 
       <View>
         <View>
-          <Text style={styles.detailsTitle}>{diveLog.title}</Text>
-          <View style={styles.descContainer}>
-            <Text>{new Date(diveLog.date_dived || diveLog.date_posted).toLocaleDateString()}</Text>
-          </View>
           <View style={styles.descContainer}>
             <Snorkel width={15} />
             <Text style={styles.descText}>{diveLog.spot.name}</Text>
@@ -112,26 +109,25 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
     borderRadius: 22,
-    marginBottom: isBelowHeightThreshold ? 20 : 30,
-    padding: 20,
+    marginBottom: 16,
+    padding: 16,
   },
   mapRatingsContainer: {
-    marginBottom: 12,
+    marginBottom: 4,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
   },
   map: {
-    height: 70,
+    height: 100,
     borderRadius: 12,
   },
   mapContainer: {
     borderRadius: 12,
-    width: '55%',
+    width: 100,
     overflow: 'hidden',
   },
   ratingsActivityContainer: {
-    alignItems: 'center',
+    marginLeft: 12,
   },
   ratingsContainer: {
     flexDirection: 'row',
@@ -141,7 +137,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     paddingVertical: 2,
     paddingHorizontal: 8,
-    marginTop: 10,
+    marginTop: 4,
     borderRadius: 5,
   },
   activity_type: {
@@ -150,10 +146,15 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textTransform: 'capitalize',
   },
+  date: {
+    fontSize: 12,
+    color: '#828993',
+  },
   detailsTitle: {
     fontSize: 18,
     fontWeight: '600',
     color: 'black',
+    marginTop: 4,
   },
   descContainer: {
     marginVertical: 4,
@@ -170,6 +171,7 @@ const styles = StyleSheet.create({
   },
   locationText: {
     marginLeft: 5,
+    marginTop: 2,
     fontSize: 15,
     color: 'black',
   },
@@ -200,8 +202,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   unavailableLocationContainer: {
-    width: '55%',
-    padding: 5,
+    width: 100,
     borderRadius: 12,
   },
 });
