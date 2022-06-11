@@ -16,6 +16,8 @@ import UnavailableLocationBox from '_screens/DiveLogsForms/components/Unavailabl
 import type { FunctionComponent } from 'react';
 import ImagePickerArray from '_screens/DiveLogsForms/components/ImagePickerArray';
 import { isBelowHeightThreshold } from '_utils/constants';
+import { selectUser } from '_redux/slices/user';
+import { useAppSelector } from '_redux/hooks';
 import { DiveShop } from '_utils/interfaces/data/logs';
 
 interface LocationAndImageProps {
@@ -33,6 +35,7 @@ const Location: FunctionComponent<LocationAndImageProps> = ({
   dive_shop,
 }) => {
   const { t } = useTranslation();
+  const user = useAppSelector(selectUser);
   const [autocompleteModalOpen, toggleAutocompleteModal] =
     React.useState(false);
 
@@ -133,52 +136,54 @@ const Location: FunctionComponent<LocationAndImageProps> = ({
         </View>
       )}
 
-      <View style={styles.diveShopContainer}>
-        <View style={styles.diveShopLabelContainer}>
-          <Text style={styles.headerLabel}>{t('DIVE_SHOP')}</Text>
-          <Text style={styles.optionaltext}>{t('OPTIONAL')}</Text>
-        </View>
-        {isValidDiveShop ? (
-          <View style={styles.diveShopValuesContainer}>
-            <MUIcon
-              style={styles.diveShopIcon}
-              name="store-outline"
-              size={40}
-              color="black"
-            />
-            <View style={styles.diveShopValuesTextContainer}>
-              <Text style={styles.diveShopName}>{dive_shop.name}</Text>
-              <Text style={styles.diveShopLocation}>
-                {dive_shop.location_city}
-              </Text>
-            </View>
+      {!!user?.admin && (
+        <View style={styles.diveShopContainer}>
+          <View style={styles.diveShopLabelContainer}>
+            <Text style={styles.headerLabel}>{t('DIVE_SHOP')}</Text>
+            <Text style={styles.optionaltext}>{t('OPTIONAL')}</Text>
           </View>
-        ) : (
-          <Pressable onPress={openDiveShopModal}>
-            <View style={styles.subContainer}>
-              <Pressable onPress={openDiveShopModal}>
-                <GradientCircle style={styles.iconContainer}>
-                  <MUIcon name="store-outline" size={25} color="white" />
-                </GradientCircle>
-              </Pressable>
-              <GradientText
-                gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-                start={{
-                  x: 0,
-                  y: 0,
-                }}
-                end={{
-                  x: 0.06,
-                  y: 1.8,
-                }}
-                gradientLocations={[0.01, 1, 1]}
-                style={styles.actionText}>
-                {t('ADD_DIVE_SHOP')}
-              </GradientText>
+          {isValidDiveShop ? (
+            <View style={styles.diveShopValuesContainer}>
+              <MUIcon
+                style={styles.diveShopIcon}
+                name="store-outline"
+                size={40}
+                color="black"
+              />
+              <View style={styles.diveShopValuesTextContainer}>
+                <Text style={styles.diveShopName}>{dive_shop.name}</Text>
+                <Text style={styles.diveShopLocation}>
+                  {dive_shop.location_city}
+                </Text>
+              </View>
             </View>
-          </Pressable>
-        )}
-      </View>
+          ) : (
+            <Pressable onPress={openDiveShopModal}>
+              <View style={styles.subContainer}>
+                <Pressable onPress={openDiveShopModal}>
+                  <GradientCircle style={styles.iconContainer}>
+                    <MUIcon name="store-outline" size={25} color="white" />
+                  </GradientCircle>
+                </Pressable>
+                <GradientText
+                  gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+                  start={{
+                    x: 0,
+                    y: 0,
+                  }}
+                  end={{
+                    x: 0.06,
+                    y: 1.8,
+                  }}
+                  gradientLocations={[0.01, 1, 1]}
+                  style={styles.actionText}>
+                  {t('ADD_DIVE_SHOP')}
+                </GradientText>
+              </View>
+            </Pressable>
+          )}
+        </View>
+      )}
       <FieldArray name="images" component={ImagePickerArray} />
     </ScrollView>
   );
