@@ -254,7 +254,6 @@ const SimpleDiveLogsForms: FunctionComponent<
       // keepDirtyOnReinitialize
       render={({ values, form }) => {
         formRef.current = form;
-        console.log('form', values);
         return (
           <SafeAreaView style={styles.container}>
             <ExitModal
