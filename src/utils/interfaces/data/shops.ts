@@ -35,12 +35,5 @@ export interface DiveShopInitialValues {
 export interface DiveShopTypeaheadResponse {
   id: number;
   text: string;
-  type: string;
-  url: string;
   subtext: string;
-  data: {
-    location_city: string;
-    latitude: number;
-    longitude: number;
-  };
 }
