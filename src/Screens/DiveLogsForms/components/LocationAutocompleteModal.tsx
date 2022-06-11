@@ -6,7 +6,6 @@ import {
   Image,
   Dimensions,
   Modal,
-  ActivityIndicator,
   FlatList,
   Keyboard,
   SafeAreaView,
@@ -52,7 +51,6 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
   const { t } = useTranslation();
   const [text, changeText] = React.useState('');
   const [suggestions, setSuggestions] = React.useState<TypeaheadResponse[]>([]);
-  const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
     if (value) {
@@ -62,36 +60,36 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     }
   }, [isVisible, value]);
 
-  const makeRequest = React.useMemo(() => debounce(async (val: string) => {
-    const queryObj = {
-      query: val,
-      beach_only: 'True',
-    };
-    const queryString = stringify(queryObj);
-    const response = await handleTypeAhead(queryString);
+  const makeRequest = React.useMemo(
+    () =>
+      debounce(async (val: string) => {
+        const queryObj = {
+          query: val,
+          beach_only: 'True',
+        };
+        const queryString = stringify(queryObj);
+        const response = await handleTypeAhead(queryString);
 
-    if (response.data) {
-      setSuggestions(response.data);
-      setLoading(false);
-    }
-  }, 500), []);
+        if (response.data) {
+          setSuggestions(response.data);
+        }
+      }, 500),
+    [],
+  );
 
   const handleTextChange = (val: string) => {
     if (val.trim().length) {
-      setLoading(true);
       changeText(val);
       makeRequest(val);
     } else {
       changeText(val);
       setSuggestions([]);
-      setLoading(false);
     }
   };
 
   const setPlace = async (place: TypeaheadResponse) => {
     changeText(place.text);
     setSuggestions([]);
-    setLoading(true);
     Keyboard.dismiss();
 
     onChange({
@@ -101,13 +99,11 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
       lat: place.data.latitude,
       lng: place.data.longitude,
     });
-    setLoading(false);
     closeModal();
   };
 
   const handleCloseModal = () => {
     closeModal();
-    setLoading(false);
     setSuggestions([]);
   };
 
@@ -118,9 +114,8 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
         style={({ pressed }) => [
           {
             backgroundColor: pressed ? '#cecece' : 'transparent',
-          }
-        ]}
-      >
+          },
+        ]}>
         <View style={styles.resultContainer}>
           <Image source={LocationImage} />
           <View style={styles.placeContainer}>
@@ -231,7 +226,7 @@ const styles = StyleSheet.create({
   place: {
     color: 'black',
     fontSize: 15,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   placeSubText: {
     color: 'grey',
