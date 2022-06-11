@@ -288,5 +288,7 @@
   "ADDRESS_LINE_2": "Address Line 2",
   "STAMP": "Stamp",
   "ADD_PHOTO": "Add Photo",
-  "CONFIRM": "Confirm"
+  "CONFIRM": "Confirm",
+  "DIVE_SHOP": "Dive Shop",
+  "DIVE_SHOP_PLACEHOLDER": "Search for a Dive Shop"
 }

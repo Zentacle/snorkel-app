@@ -6,6 +6,12 @@ export interface FormImages {
   type?: string;
   name: string;
 }
+
+export interface DiveShop {
+  shop_id: number;
+  name: string;
+  location_city: string;
+}
 export interface SimpleFormInitialValues {
   id: number;
   rating: number;
@@ -22,6 +28,8 @@ export interface SimpleFormInitialValues {
   };
   beach_id?: number;
   images: FormImages[];
+  dive_shop?: DiveShop;
+  dive_shop_id?: number;
 }
 
 export interface AdvancedFormInitialValues extends SimpleFormInitialValues {

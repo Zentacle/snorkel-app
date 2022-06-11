@@ -144,6 +144,7 @@ const SimpleDiveLogsForms: FunctionComponent<
           {
             ...values,
             beach_id: values.location?.beach_id,
+            dive_shop_id: values.dive_shop?.shop_id,
             images,
           },
           authToken as string,
@@ -161,6 +162,7 @@ const SimpleDiveLogsForms: FunctionComponent<
           {
             ...values,
             beach_id: values.location?.beach_id,
+            dive_shop_id: values.dive_shop?.shop_id,
           },
           authToken as string,
         );
@@ -193,6 +195,7 @@ const SimpleDiveLogsForms: FunctionComponent<
     // @ts-ignore
     // images: [],
     ...passedInLog,
+    dive_shop: undefined,
   };
 
   React.useEffect(() => {
@@ -251,6 +254,7 @@ const SimpleDiveLogsForms: FunctionComponent<
       // keepDirtyOnReinitialize
       render={({ values, form }) => {
         formRef.current = form;
+        console.log('form', values);
         return (
           <SafeAreaView style={styles.container}>
             <ExitModal
@@ -315,7 +319,12 @@ const SimpleDiveLogsForms: FunctionComponent<
                 />
               )}
 
-              {page === 0 && <Location location={values.location} />}
+              {page === 0 && (
+                <Location
+                  location={values.location}
+                  dive_shop={values.dive_shop}
+                />
+              )}
               {page === 1 && <Rating />}
               {page === 2 && <Name />}
               {page === 3 && <Notes />}
