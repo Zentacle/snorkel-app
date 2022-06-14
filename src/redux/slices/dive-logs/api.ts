@@ -53,7 +53,10 @@ export async function handleCreateDiveLog(
     const url = `${config.API_ENDPOINT}/review/add`;
     const response = fetch(url, {
       method: 'POST',
-      body: JSON.stringify(body),
+      body: JSON.stringify({
+        ...body,
+        // include_wallet: 'true',
+      }),
       headers: {
         'content-type': 'application/json',
         Authorization: `Bearer ${auth_token}`,
