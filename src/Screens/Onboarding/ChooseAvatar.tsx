@@ -25,8 +25,10 @@ import { useAppSelector } from '_redux/hooks';
 import { selectSettings } from '_redux/slices/settings';
 
 import Button from '_components/ui/Buttons/Button';
-import { selectUser } from '_redux/slices/user';
+import { selectUser, selectAuthToken } from '_redux/slices/user';
 import ImageFormComponent from '_components/ui/ImageFormComponent';
+import { handleUploadProfilePic } from '_redux/slices/user/api';
+import { FormImages } from '_utils/interfaces/data/logs';
 
 const HEIGHT = Dimensions.get('window').width;
 
@@ -41,11 +43,13 @@ interface ChooseAvatarProps {
 
 interface InitialValues {
   profile_pic: string;
+  profileObj?: FormImages;
 }
 
 const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
   const settings = useAppSelector(selectSettings);
   const user = useAppSelector(selectUser);
+  const authToken = useAppSelector(selectAuthToken);
   const { t } = useTranslation();
   const navigateBack = () => {
     props.navigation.goBack();
@@ -105,28 +109,26 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
     }
   };
 
+  const submitForm = async (values: InitialValues) => {
+    await handleUploadProfilePic(
+      values.profileObj as FormImages,
+      authToken as string,
+    );
+
+    await handleContinuePress();
+  };
+
   const initialValues: InitialValues = {
     profile_pic: user?.profile_pic || '',
   };
-
-  // const showImageOptions = () => {
-  //   if (user?.profile_pic) {
-  //     return (
-  //       <Image
-  //         style={{ width: 168, height: 168, borderRadius: 84 }}
-  //         source={{ uri: user?.profile_pic ?? cameraImage }}
-  //       />
-  //     );
-  //   } else if (cameraImage)
-  // };
 
   return (
     <SafeAreaView style={styles.container}>
       <Form
         validate={values => validate(values, {})}
-        onSubmit={() => {}}
+        onSubmit={submitForm}
         initialValues={initialValues}
-        render={({}) => {
+        render={({ handleSubmit, submitting, values }) => {
           return (
             <>
               <View style={styles.contentContainer}>
@@ -148,7 +150,7 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
                 </View>
 
                 <Field
-                  name="profile_pic"
+                  name="profileObj"
                   iconContaineStyle={styles.iconContainer}
                   component={ImageFormComponent}
                 />
@@ -156,7 +158,9 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
 
               <View style={styles.footer}>
                 <Button
-                  onPress={handleContinuePress}
+                  onPress={
+                    values.profileObj ? handleSubmit : handleContinuePress
+                  }
                   gradient
                   gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
                   gradientLocations={[0.0, 1, 1]}
@@ -182,7 +186,7 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
                       fontWeight: '800',
                     },
                   }}>
-                  {t('CONTINUE')}
+                  {submitting ? t('SUBMITTING') : t('CONTINUE')}
                 </Button>
               </View>
             </>
