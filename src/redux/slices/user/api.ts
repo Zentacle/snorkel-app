@@ -1,4 +1,7 @@
-import { AppleAuthReturn } from './../../../Screens/Auth/utils/interfaces';
+import { FormImages } from '_utils/interfaces/data/logs';
+import { AppleAuthReturn } from '_screens/Auth/utils/interfaces';
+import { Platform } from 'react-native';
+
 import config from 'react-native-config';
 import {
   User,
@@ -60,6 +63,32 @@ export async function handleUpdateUser(
       },
     }).then(res => res.json());
     return response;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function handleUploadProfilePic(
+  body: FormImages,
+  auth_token: string,
+) {
+  try {
+    const formData = new FormData();
+    formData.append('file', {
+      uri:
+        Platform.OS === 'android' ? body.uri : body.uri.replace('file://', ''),
+      name: body.name,
+      type: body.type,
+    });
+    const url = `${config.API_ENDPOINT}/user/profile_pic`;
+    const response = await fetch(url, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        Authorization: `Bearer ${auth_token}`,
+      },
+    }).then(res => res.json());
+    return response.data;
   } catch (err) {
     throw err;
   }
