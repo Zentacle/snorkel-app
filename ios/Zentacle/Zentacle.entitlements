@@ -10,6 +10,9 @@
 	<array>
 		<string>zentacle.app.link</string>
 		<string>zentacle-alternate.app.link</string>
+		<string>applinks:zentacle.com</string>
+		<string>applinks:www.zentacle.com</string>
+		<string>applinks:https://zentacle.com</string>
 	</array>
 </dict>
 </plist>

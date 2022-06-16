@@ -93,7 +93,7 @@ const ProfileSettings: FunctionComponent<ProfileSettingsTypeProps> = ({
 
           <Text style={styles.nameLabel}>{t('EMAIL')}</Text>
           <View style={styles.nameContainer}>
-            <Text style={styles.nameText}>email should be here</Text>
+            <Text style={styles.nameText}>{user?.email}</Text>
           </View>
         </View>
       </View>
