@@ -231,7 +231,6 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     paddingVertical: 20,
-    paddingHorizontal: 10,
   },
   search: {
     color: 'black',
