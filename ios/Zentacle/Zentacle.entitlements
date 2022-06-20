@@ -13,6 +13,7 @@
 		<string>applinks:zentacle.com</string>
 		<string>applinks:www.zentacle.com</string>
 		<string>applinks:https://zentacle.com</string>
+		<string>https://zentacle.com</string>
 	</array>
 </dict>
 </plist>
