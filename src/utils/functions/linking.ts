@@ -30,6 +30,10 @@ const config = {
 };
 
 export const linking: LinkingOptions<RootStackParamList> = {
-  prefixes: ['zentacle://', 'https://www.zentacle.com/'],
+  prefixes: [
+    'zentacle://',
+    'https://zentacle.com/',
+    'https://zentacle.app.link/',
+  ],
   config,
 };
