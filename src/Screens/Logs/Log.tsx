@@ -35,8 +35,13 @@ import UnavailableLocationBox from './components/UnavailabbleLocationDetailBox';
 
 import Snorkel from '_assets/scuba_icons/snorkel.svg';
 import Location from '_assets/scuba_icons/Location.svg';
+import Shop from '_assets/scuba_icons/Shop.svg';
 import { selectUser } from '_redux/slices/user';
 import { useAppSelector } from '_redux/hooks';
+import NoDiveShop from './components/NoDiveShop';
+import DiveShopView from './components/DIveShop';
+import DiveShopStampView from './components/DiveShopStamp';
+import FullScreenDiveStamp from './components/FullScreenDiveStamp';
 
 type LogNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<LogsStackParamList, 'LogDetail'>,
@@ -148,8 +153,6 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
       diveLog.spot.latitude && diveLog.spot.longitude
     );
 
-    console.log('dv', diveLog);
-
     return (
       <View style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -171,6 +174,14 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                 {diveLog.spot.location_city}
               </Text>
             </View>
+            {diveLog.dive_shop?.name && (
+              <View style={styles.diveShopContainer}>
+                <Shop width={15} />
+                <Text style={styles.diveShopText}>
+                  {diveLog.dive_shop?.name}
+                </Text>
+              </View>
+            )}
             <View style={styles.ratingsContainer}>
               <Text style={styles.ratingsLevelText}>
                 {diveLog.review.difficulty}
@@ -394,6 +405,8 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                 </Text>
               </TouchableWithoutFeedback>
             </View>
+
+            <DiveShopStampView />
           </View>
         </ScrollView>
       </View>
@@ -646,7 +659,7 @@ const styles = StyleSheet.create({
   },
   editLogContainer: {
     marginTop: 50,
-    marginBottom: 30,
+    marginBottom: 10,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -656,6 +669,16 @@ const styles = StyleSheet.create({
     textDecorationStyle: 'dotted',
     fontSize: 15,
     marginLeft: 10,
+    color: 'black',
+  },
+  diveShopContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 5,
+  },
+  diveShopText: {
+    marginLeft: 5,
+    fontSize: 15,
     color: 'black',
   },
 });

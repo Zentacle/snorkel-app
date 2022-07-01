@@ -57,12 +57,14 @@ export interface AdvancedDiveLogReturnValues {
   review: DiveLogDetailReview;
   spot: Spot;
   msg: string;
+  dive_shop?: DiveShop;
 }
 
 export interface SimpleDiveLogReturnValues {
   review: SimpleFormInitialValues;
   spot: Spot;
   msg: string;
+  dive_shop?: DiveShop;
 }
 
 type DiveLogsStateStarter = Omit<
