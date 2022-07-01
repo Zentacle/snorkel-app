@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Platform,
+  SafeAreaView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MUIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -66,7 +67,7 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.headerContainer}>
         <Icon
           name="chevron-back-outline"
@@ -75,7 +76,7 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
           onPress={navigateBack}
         />
         <Text style={styles.headerText}>{t('SETTINGS')}</Text>
-        <View />
+        <View style={{ width: 20 }} />
       </View>
       <ScrollView
         style={styles.contentContainer}
@@ -174,7 +175,7 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
         }}>
         {t('LOG_OUT')}
       </Button>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -191,14 +192,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginTop: 20,
     marginHorizontal: 25,
-    marginTop: Platform.OS === 'ios' ? 50 : 30,
   },
   headerText: {
     textAlign: 'center',
     fontSize: 30,
     fontWeight: '700',
     color: 'black',
+    alignSelf: 'center',
   },
   subscriptionContainer: {
     marginVertical: isBelowHeightThreshold ? 10 : 20,
