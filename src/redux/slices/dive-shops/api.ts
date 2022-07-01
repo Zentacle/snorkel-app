@@ -39,7 +39,6 @@ export async function handleUploadDiveShopImage(
 ) {
   try {
     const formData = new FormData();
-    console.log('form i', body);
     formData.append('file', {
       uri:
         Platform.OS === 'android' ? body.uri : body.uri.replace('file://', ''),
