@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TouchableNativeFeedback } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
 
@@ -123,9 +123,13 @@ export const Button: FunctionComponent<ButtonProps & GradientProps> = (
     return button;
   }
   return (
-    <TouchableNativeFeedback onPress={props.onPress}>
+    <Pressable
+      style={state => ({
+        opacity: state.pressed ? 0.8 : 1,
+      })}
+      onPress={props.onPress}>
       {button}
-    </TouchableNativeFeedback>
+    </Pressable>
   );
 };
 
