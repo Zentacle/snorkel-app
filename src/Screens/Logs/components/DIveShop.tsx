@@ -12,7 +12,7 @@ interface DiveShop {
 }
 
 const DiveShopView: React.FunctionComponent<DiveShop> = ({ diveShop }) => {
-  console.log('dicve shop', diveShop);
+  const [stampRequested, requestStamp] = React.useState(false);
   return (
     <View style={styles.container}>
       <View style={styles.labelContainer}>
@@ -37,6 +37,7 @@ const DiveShopView: React.FunctionComponent<DiveShop> = ({ diveShop }) => {
         )}
       </View>
       <Button
+        onPress={() => requestStamp(true)}
         gradient
         gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
         gradientLocations={[0.01, 1, 1]}
@@ -52,7 +53,7 @@ const DiveShopView: React.FunctionComponent<DiveShop> = ({ diveShop }) => {
           container: styles.buttonContainer,
           text: styles.buttonText,
         }}>
-        Request Stamp
+        {stampRequested ? 'Stamp Requested' : 'Request Stamp'}
       </Button>
     </View>
   );

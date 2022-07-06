@@ -42,9 +42,7 @@ import {
 import NoDiveShop from './components/NoDiveShop';
 import DiveShopView from './components/DIveShop';
 import DiveShopStampView from './components/DiveShopStamp';
-import FullScreenDiveStamp from './components/FullScreenDiveStamp';
 import { DiveShopFull } from '_utils/interfaces/data/shops';
-import { DiveShopSearchResult } from '_utils/interfaces/data/logs';
 
 type LogNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<LogsStackParamList, 'LogDetail'>,
@@ -420,7 +418,14 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
             </View>
 
             {Object.keys(diveLog.dive_shop as DiveShopFull).length ? (
-              <DiveShopView diveShop={diveLog.dive_shop as DiveShopFull} />
+              diveLog.dive_shop?.stamp_uri ? (
+                <DiveShopStampView
+                  diveShop={diveLog.dive_shop as DiveShopFull}
+                  dateDived={diveLog.review.date_dived as string}
+                />
+              ) : (
+                <DiveShopView diveShop={diveLog.dive_shop as DiveShopFull} />
+              )
             ) : (
               <NoDiveShop loadDiveLog={loadDiveLog} diveLog={diveLog} />
             )}

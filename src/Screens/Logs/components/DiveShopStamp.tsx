@@ -3,13 +3,21 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 
 import Button from '_components/ui/Buttons/Button';
 import { isBelowHeightThreshold } from '_utils/constants';
-import StockDiveShopStamp from 'assets/stock-dive-shop-stamp.png';
 import StockDiveShopLogo from 'assets/stock-dive-shop-logo.png';
 import NFTSymbol from 'assets/scuba_icons/nft-symbol.svg';
 import GradientCircle from '_components/ui/GradientCircle';
 import FullScreenDiveStamp from './FullScreenDiveStamp';
+import { DiveShopFull } from '_utils/interfaces/data/shops';
 
-const DiveShopStampView: React.FunctionComponent = () => {
+interface DiveStampProps {
+  diveShop: DiveShopFull;
+  dateDived: string;
+}
+
+const DiveShopStampView: React.FunctionComponent<DiveStampProps> = ({
+  diveShop,
+  dateDived,
+}) => {
   const [fullScreenStamp, toggleFullScreenStamp] = React.useState(false);
 
   const openFullScreenStamp = () => {
@@ -24,14 +32,26 @@ const DiveShopStampView: React.FunctionComponent = () => {
       <FullScreenDiveStamp
         isVisible={fullScreenStamp}
         closeModal={closeFullScreenStamp}
+        diveShop={diveShop}
+        dateDived={dateDived}
       />
 
       <View style={styles.labelContainer}>
-        <Image source={StockDiveShopLogo} style={styles.diveShopLogo} />
-        <Text style={styles.label}>Kona Shore Divers</Text>
+        {diveShop.logo_img ? (
+          <Image
+            source={{ uri: diveShop.logo_img }}
+            style={styles.diveShopLogo}
+          />
+        ) : (
+          <Image source={StockDiveShopLogo} style={styles.diveShopLogo} />
+        )}
+        <Text style={styles.label}>{diveShop.name}</Text>
       </View>
       <View style={styles.contentContainer}>
-        <Image source={StockDiveShopStamp} style={styles.diveShopImage} />
+        <Image
+          source={{ uri: diveShop.stamp_uri }}
+          style={styles.diveShopImage}
+        />
         <GradientCircle
           gradientColors={['#DFA4FC', '#ACF3FD', '#ACF3FD']}
           style={styles.nftSymbolOuterContainer}>
