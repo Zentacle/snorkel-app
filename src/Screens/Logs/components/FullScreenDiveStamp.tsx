@@ -1,23 +1,27 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, Modal } from 'react-native';
 import IoIcon from 'react-native-vector-icons/Ionicons';
+import { format } from 'date-fns';
 import NFTSymbol from 'assets/scuba_icons/nft-symbol-large.svg';
 import NFTLarge from 'assets/NFTLarge.png';
 import GradientCircle from '_components/ui/GradientCircle';
 import GradientBox from '_components/ui/GradientBox';
 import StockDiveShopLogo from 'assets/stock-dive-shop-logo.png';
 import OpenSea from 'assets/scuba_icons/opensea.svg';
+import { DiveShopFull } from '_utils/interfaces/data/shops';
 
 import { HEIGHT, WIDTH } from '_utils/constants';
 
 interface FullScreenDiveStampProps {
   isVisible: boolean;
   closeModal(): void;
+  diveShop: DiveShopFull;
+  dateDived: string;
 }
 
 const FullScreenDiveStamp: React.FunctionComponent<
   FullScreenDiveStampProps
-> = ({ isVisible, closeModal }) => {
+> = ({ isVisible, closeModal, diveShop, dateDived }) => {
   return (
     <Modal
       transparent
@@ -44,17 +48,19 @@ const FullScreenDiveStamp: React.FunctionComponent<
         </View>
 
         <GradientBox style={styles.nftBoxContainer}>
-          <Image source={NFTLarge} style={styles.nftItem} />
+          <Image source={{ uri: diveShop.stamp_uri }} style={styles.nftItem} />
         </GradientBox>
 
         <View style={styles.diveShopContainer}>
           <View style={styles.diveShopLabelContainer}>
             <Image source={StockDiveShopLogo} style={styles.diveShopLogo} />
-            <Text style={styles.diveShopLabel}>Kona Shore Divers</Text>
+            <Text style={styles.diveShopLabel}>{diveShop.name}</Text>
           </View>
           <View style={styles.diveShopSubTextContainer}>
             <Text style={styles.verifiedText}>Verified Dive Stamp</Text>
-            <Text style={styles.dateStamp}>Date</Text>
+            <Text style={styles.dateStamp}>
+              {format(new Date(dateDived), 'MM/dd/yyyy')}
+            </Text>
           </View>
         </View>
 
