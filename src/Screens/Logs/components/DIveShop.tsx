@@ -5,17 +5,36 @@ import Button from '_components/ui/Buttons/Button';
 import { isBelowHeightThreshold } from '_utils/constants';
 import StockDiveShop from 'assets/stock-dive-shop.png';
 import StockDiveShopLogo from 'assets/stock-dive-shop-logo.png';
+import { DiveShopFull } from '_utils/interfaces/data/shops';
 
-const DiveShopView: React.FunctionComponent = () => {
+interface DiveShop {
+  diveShop: DiveShopFull;
+}
+
+const DiveShopView: React.FunctionComponent<DiveShop> = ({ diveShop }) => {
+  console.log('dicve shop', diveShop);
   return (
     <View style={styles.container}>
       <View style={styles.labelContainer}>
-        <Image source={StockDiveShopLogo} style={styles.diveShopLogo} />
-
-        <Text style={styles.label}>Kona Shore Divers</Text>
+        {diveShop.logo_img ? (
+          <Image
+            source={{ uri: diveShop.logo_img }}
+            style={styles.diveShopLogo}
+          />
+        ) : (
+          <Image source={StockDiveShopLogo} style={styles.diveShopLogo} />
+        )}
+        <Text style={styles.label}>{diveShop.name}</Text>
       </View>
       <View style={styles.contentContainer}>
-        <Image source={StockDiveShop} style={styles.diveShopImage} />
+        {diveShop.logo_img ? (
+          <Image
+            source={{ uri: diveShop.logo_img }}
+            style={styles.diveShopImage}
+          />
+        ) : (
+          <Image source={StockDiveShop} style={styles.diveShopImage} />
+        )}
       </View>
       <Button
         gradient

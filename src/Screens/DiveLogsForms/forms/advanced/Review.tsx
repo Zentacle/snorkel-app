@@ -27,6 +27,7 @@ import DepthArrow from '_assets/ArrowsDownUp.png';
 import DiveTimeClock from '_assets/ClockClockwise.png';
 import Snorkel from '_assets/scuba_icons/snorkel.svg';
 import Location from '_assets/scuba_icons/Location.svg';
+import Shop from '_assets/scuba_icons/Shop.svg';
 
 import { useAppSelector } from '_redux/hooks';
 import { selectUser } from '_redux/slices/user';
@@ -48,6 +49,7 @@ const Review: FunctionComponent<ReviewProps> = ({
   const { t } = useTranslation();
   const [copyMessageSet, setCopymessage] = React.useState(false);
   const activeUser = useAppSelector(selectUser);
+  console.log('form values', formValues);
   const onShare = async () => {
     const url = `https://zentacle.com/dive-log/${formValues.id}`;
     try {
@@ -139,6 +141,14 @@ const Review: FunctionComponent<ReviewProps> = ({
               {new Date(formValues.startDate as Date).toDateString()}
             </Text>
           </View>
+          {formValues.dive_shop && (
+            <View style={styles.diveShopContainer}>
+              <Shop width={15} />
+              <Text style={styles.diveShopText}>
+                {formValues.dive_shop?.name}
+              </Text>
+            </View>
+          )}
           <View style={styles.timeDepthContainer}>
             <View style={styles.timeDepthItem}>
               <Image source={DiveTimeClock} />
@@ -299,7 +309,7 @@ const styles = StyleSheet.create({
   locationContainer: {
     flexDirection: 'row',
     marginTop: 10,
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   locationText: {
     marginLeft: 5,
@@ -377,6 +387,16 @@ const styles = StyleSheet.create({
   timeDepthLabel: {
     color: 'gray',
     marginBottom: 15,
+  },
+  diveShopContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 5,
+  },
+  diveShopText: {
+    marginLeft: 5,
+    fontSize: 15,
+    color: 'black',
   },
 });
 

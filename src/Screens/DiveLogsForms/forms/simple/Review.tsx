@@ -24,9 +24,9 @@ import type { SimpleFormInitialValues as InitialValues } from '_utils/interfaces
 
 import Snorkel from '_assets/scuba_icons/snorkel.svg';
 import Location from '_assets/scuba_icons/Location.svg';
-import DivingPlaceholder from '_assets/diving-placeholder.jpeg';
 import CopyIcon from '_assets/CopySimple.png';
 import UploadIcon from '_assets/UploadSimple.png';
+import Shop from '_assets/scuba_icons/Shop.svg';
 import { useAppSelector } from '_redux/hooks';
 import { selectUser } from '_redux/slices/user';
 import {
@@ -136,6 +136,14 @@ const Review: FunctionComponent<ReviewProps> = ({
             {formValues.location?.location_city}
           </Text>
         </View>
+        {formValues.dive_shop && (
+          <View style={styles.diveShopContainer}>
+            <Shop width={15} />
+            <Text style={styles.diveShopText}>
+              {formValues.dive_shop?.name}
+            </Text>
+          </View>
+        )}
       </View>
 
       <View style={styles.shareContainer}>
@@ -324,6 +332,16 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 16,
     fontWeight: '800',
+  },
+  diveShopContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  diveShopText: {
+    marginLeft: 5,
+    fontSize: 15,
+    color: 'black',
   },
 });
 

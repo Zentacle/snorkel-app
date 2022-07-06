@@ -31,7 +31,7 @@ import { isBelowHeightThreshold } from '_utils/constants';
 interface BaseProps {
   isVisible: boolean;
   closeModal: () => void;
-  reset: () => void;
+  reset?: () => void;
 }
 type FinalFormProps = FieldRenderProps<
   {

@@ -50,12 +50,13 @@ export async function handleCreateDiveLog(
   auth_token: string,
 ): Promise<SimpleDiveLogReturnValues> {
   try {
+    console.log('body', body);
     const url = `${config.API_ENDPOINT}/review/add`;
     const response = fetch(url, {
       method: 'POST',
       body: JSON.stringify({
         ...body,
-        // include_wallet: 'true',
+        include_wallet: 'true',
       }),
       headers: {
         'content-type': 'application/json',
@@ -76,7 +77,10 @@ export async function handleUpdateDiveLog(
     const url = `${config.API_ENDPOINT}/review/patch`;
     const response = fetch(url, {
       method: 'PATCH',
-      body: JSON.stringify(body),
+      body: JSON.stringify({
+        ...body,
+        include_wallet: 'true',
+      }),
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${auth_token}`,

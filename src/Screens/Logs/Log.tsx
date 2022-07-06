@@ -25,11 +25,7 @@ import type { RootStackParamList, LogsStackParamList } from '_utils/interfaces';
 import { attachIcons } from '_utils/functions';
 import ProfileImage from '_assets/Profile.jpg';
 import GradientBox from '_components/ui/GradientBox';
-
-import { AdvancedDiveLogReturnValues } from '_utils/interfaces/data/logs';
 import NoLog from './components/NoLog';
-import { handleFetchSingleDiveLog } from '_redux/slices/dive-logs/api';
-
 import DiveLogLoading from '_components/reusables/Placeholders/DiveLogs/DiveLog';
 import UnavailableLocationBox from './components/UnavailabbleLocationDetailBox';
 
@@ -37,11 +33,18 @@ import Snorkel from '_assets/scuba_icons/snorkel.svg';
 import Location from '_assets/scuba_icons/Location.svg';
 import Shop from '_assets/scuba_icons/Shop.svg';
 import { selectUser } from '_redux/slices/user';
-import { useAppSelector } from '_redux/hooks';
+import { useAppSelector, useAppDispatch } from '_redux/hooks';
+import {
+  selectDiveLogsLoadingState,
+  selectActiveDiveLog,
+  fetchSingleDiveLog,
+} from '_redux/slices/dive-logs';
 import NoDiveShop from './components/NoDiveShop';
 import DiveShopView from './components/DIveShop';
 import DiveShopStampView from './components/DiveShopStamp';
 import FullScreenDiveStamp from './components/FullScreenDiveStamp';
+import { DiveShopFull } from '_utils/interfaces/data/shops';
+import { DiveShopSearchResult } from '_utils/interfaces/data/logs';
 
 type LogNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<LogsStackParamList, 'LogDetail'>,
@@ -56,23 +59,24 @@ interface LogProps {
 }
 
 const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
-  const [hasLoaded, setHasLoaded] = React.useState(false);
-  const [diveLog, setDiveLog] = React.useState<AdvancedDiveLogReturnValues>();
+  // const [hasLoaded, setHasLoaded] = React.useState(false);
+  // const [diveLog, setDiveLog] = React.useState<AdvancedDiveLogReturnValues>();
   const user = useAppSelector(selectUser);
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+  const isLoading = useAppSelector(selectDiveLogsLoadingState);
+  const diveLog = useAppSelector(selectActiveDiveLog);
+  console.log('dive log', diveLog);
 
   const airLimit = user?.unit === 'imperial' ? 3400 : 400;
 
+  const loadDiveLog = async () => {
+    dispatch(fetchSingleDiveLog(route.params.diveLogId));
+  };
+
   React.useEffect(() => {
-    handleFetchSingleDiveLog(route.params.diveLogId)
-      .then(response => {
-        setDiveLog(response);
-        setHasLoaded(true);
-      })
-      .catch(() => {
-        setHasLoaded(true);
-      });
-  }, [route.params.diveLogId]);
+    loadDiveLog();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const navigateBack = () => {
     navigation.navigate('App', {
@@ -80,11 +84,15 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
     });
   };
 
-  if (!hasLoaded) {
+  if (diveLog?.review.id !== route.params.diveLogId) {
+    return null;
+  }
+
+  if (isLoading) {
     return <DiveLogLoading />;
   }
 
-  if (hasLoaded && !diveLog) {
+  if (!isLoading && !diveLog) {
     return <NoLog goBack={navigateBack} />;
   }
 
@@ -144,6 +152,11 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
               diveLog.review.date_dived && new Date(diveLog.review.date_dived),
             startTime:
               diveLog.review.date_dived && new Date(diveLog.review.date_dived),
+            dive_shop: diveLog.dive_shop && {
+              shop_id: diveLog.dive_shop.id,
+              location_city: `${diveLog.dive_shop.city}, ${diveLog.dive_shop?.state}`,
+              name: diveLog.dive_shop.name,
+            },
           },
         },
       });
@@ -406,7 +419,11 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
               </TouchableWithoutFeedback>
             </View>
 
-            <DiveShopStampView />
+            {Object.keys(diveLog.dive_shop as DiveShopFull).length ? (
+              <DiveShopView diveShop={diveLog.dive_shop as DiveShopFull} />
+            ) : (
+              <NoDiveShop loadDiveLog={loadDiveLog} diveLog={diveLog} />
+            )}
           </View>
         </ScrollView>
       </View>

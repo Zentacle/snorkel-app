@@ -15,6 +15,7 @@ import Location from '_assets/scuba_icons/Location.svg';
 import Shop from '_assets/scuba_icons/Shop.svg';
 import { selectUser } from '_redux/slices/user';
 import { useAppSelector } from '_redux/hooks';
+import { WIDTH } from '_utils/constants';
 
 interface LogItemProps {
   diveLog: DiveLogsState;
@@ -166,6 +167,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: 'black',
     marginTop: 4,
+    width: WIDTH * 0.5,
+    marginRight: 40,
   },
   descContainer: {
     marginVertical: 4,

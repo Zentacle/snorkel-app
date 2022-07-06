@@ -255,6 +255,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     images: simpleDiveLogsForm.images,
     title: simpleDiveLogsForm.title,
     text: simpleDiveLogsForm.text,
+    dive_shop: simpleDiveLogsForm.dive_shop,
     // ...simpleDiveLogsForm,
   };
 
