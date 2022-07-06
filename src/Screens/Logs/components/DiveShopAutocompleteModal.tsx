@@ -10,6 +10,7 @@ import {
   Keyboard,
   SafeAreaView,
   Pressable,
+  ActivityIndicator,
 } from 'react-native';
 import debounce from 'lodash/debounce';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -50,6 +51,7 @@ const DiveShopAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
   const authToken = useAppSelector(selectAuthToken);
   const { t } = useTranslation();
   const [text, changeText] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
   const [suggestions, setSuggestions] = React.useState<
     DiveShopTypeaheadResponse[]
   >([]);
@@ -85,6 +87,7 @@ const DiveShopAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     changeText(place.text);
     setSuggestions([]);
     Keyboard.dismiss();
+    setLoading(true);
     await handleUpdateDiveLog(
       {
         id: diveLogId,
@@ -95,6 +98,7 @@ const DiveShopAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     );
 
     await loadDiveLog();
+    setLoading(false);
     closeModal();
   };
 
@@ -145,6 +149,9 @@ const DiveShopAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
             placeholderTextColor="grey"
             autoFocus
           />
+          {loading && (
+            <ActivityIndicator size="small" style={{ marginLeft: 10 }} />
+          )}
         </View>
         <View style={styles.listContainer}>
           <FlatList
@@ -191,7 +198,7 @@ const styles = StyleSheet.create({
   search: {
     color: 'black',
     fontSize: 16,
-    minWidth: isBelowHeightThreshold ? '70%' : '75%',
+    minWidth: isBelowHeightThreshold ? '65%' : '70%',
   },
   countryContainer: {
     flexDirection: 'row',
