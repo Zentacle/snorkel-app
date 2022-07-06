@@ -5,8 +5,11 @@ import {
 } from '@reduxjs/toolkit';
 
 import { RootState } from '../../store';
-import { DiveLogsState } from '_utils/interfaces/data/logs';
-import { handleFetchOwnDiveLogs } from './api';
+import {
+  DiveLogsState,
+  AdvancedDiveLogReturnValues,
+} from '_utils/interfaces/data/logs';
+import { handleFetchOwnDiveLogs, handleFetchSingleDiveLog } from './api';
 
 interface DiveLogsStoreState {
   diveLogs: {
@@ -17,6 +20,7 @@ interface DiveLogsStoreState {
     status: boolean;
     message: string | null;
   };
+  activeDiveLog: AdvancedDiveLogReturnValues | null;
 }
 
 interface NormalizedObj {
@@ -30,6 +34,7 @@ const initialState: DiveLogsStoreState = {
     status: false,
     message: null,
   },
+  activeDiveLog: null,
 };
 
 const normalizeData = (data: DiveLogsState[]) => {
@@ -44,6 +49,18 @@ interface UserAuthCookie {
   auth_token: string;
   username: string;
 }
+
+export const fetchSingleDiveLog = createAsyncThunk(
+  'dive-logs/fetch-single-dive-log',
+  async (id: number, thunkApi) => {
+    const response = await handleFetchSingleDiveLog(id);
+    console.log('single resp', response);
+    if (response.msg) {
+      return thunkApi.rejectWithValue(response.msg);
+    }
+    return response;
+  },
+);
 
 export const fetchOwnDiveLogs = createAsyncThunk(
   'dive-logs/fetch-dive-logs',
@@ -84,6 +101,27 @@ export const diveLogsSlice = createSlice({
         state.error.status = false;
         state.error.message = null;
         state.diveLogs = normalizeData(action.payload.reviews);
+      })
+      .addCase(fetchSingleDiveLog.pending, state => {
+        state.loading = true;
+        state.error.status = false;
+        state.error.message = null;
+        state.activeDiveLog = null;
+      })
+      .addCase(fetchSingleDiveLog.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error.status = false;
+        state.error.message = null;
+        state.activeDiveLog = action.payload;
+      })
+      .addCase(fetchSingleDiveLog.rejected, (state, action) => {
+        state.loading = false;
+        state.error.status = false;
+        state.error.message =
+          typeof action.payload === 'string'
+            ? action.payload
+            : 'There was an fetching dive logs. Please try again later';
+        state.activeDiveLog = null;
       });
   },
 });
@@ -100,5 +138,8 @@ export const selectDiveLogById = (id: number) => {
 
   return selectedDiveLog;
 };
+
+export const selectActiveDiveLog = (state: RootState) =>
+  state.dive_logs.activeDiveLog;
 
 export default diveLogsSlice.reducer;

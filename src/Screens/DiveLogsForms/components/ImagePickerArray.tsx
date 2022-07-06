@@ -198,7 +198,9 @@ const ImagePickerArray: FunctionComponent<ImagePickerArrayProps> = ({
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    marginBottom: 20,
+  },
   subContainer: {
     height: 130,
     backgroundColor: '#fff',

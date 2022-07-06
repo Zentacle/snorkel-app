@@ -31,3 +31,9 @@ export interface DiveShopInitialValues {
   stampImageObj?: FormImages;
   stamp_url?: string;
 }
+
+export interface DiveShopTypeaheadResponse {
+  id: number;
+  text: string;
+  subtext: string;
+}

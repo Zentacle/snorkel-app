@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import MAIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MapView, { Marker } from 'react-native-maps';
 import { Field } from 'react-final-form';
@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 import GradientCircle from '_components/ui/GradientCircle';
 import GradientBox from '_components/ui/GradientBox';
+import GradientText from '_components/ui/GradientText';
 
 import FormManagementInput from '_components/ui/FormManagementInput';
 import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
@@ -20,6 +21,7 @@ import { capitalize } from '_utils/functions';
 import { WIDTH } from '_utils/constants';
 import UnavailableLocationBox from '_screens/DiveLogsForms/components/UnavailableLocationBox';
 import LocationAutocompleteModal from '_screens/DiveLogsForms/components/LocationAutocompleteModal';
+import DiveShopAutocompleteModal from '_screens/DiveLogsForms/components/DiveShopAutocompleteModal';
 import Snorkel from '_assets/scuba_icons/snorkel.svg';
 import Location from '_assets/scuba_icons/Location.svg';
 
@@ -78,6 +80,18 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
   const closeLocationModal = () => {
     toggleAutocompleteModal(false);
   };
+
+  const [diveShopAutocompleteModalOpen, toggleDiveShopAutocompleteModal] =
+    React.useState(false);
+
+  const openDiveShopModal = () => {
+    toggleDiveShopAutocompleteModal(true);
+  };
+
+  const closeDiveShopModal = () => {
+    toggleDiveShopAutocompleteModal(false);
+  };
+
   const levels = [
     t('BEGINNER').toLowerCase(),
     t('INTERMEDIATE').toLowerCase(),
@@ -93,6 +107,13 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
   const locationHasCoordinates =
     values.location && values.location.lat && values.location.lng;
 
+  const isValidDiveShop = !!(
+    values.dive_shop &&
+    values.dive_shop.shop_id &&
+    values.dive_shop.name &&
+    values.dive_shop.location_city
+  );
+
   return (
     <View style={styles.container}>
       <View>
@@ -101,6 +122,12 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
           isVisible={autocompleteModalOpen}
           component={LocationAutocompleteModal}
           closeModal={closeLocationModal}
+        />
+        <Field
+          name="dive_shop"
+          isVisible={diveShopAutocompleteModalOpen}
+          component={DiveShopAutocompleteModal}
+          closeModal={closeDiveShopModal}
         />
         <Text style={styles.headerLabel}>{t('DIVE_SITE_LOCATION')}</Text>
         <View style={styles.mapContainer}>
@@ -162,6 +189,67 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
           </View>
         </View>
       </View>
+
+      {/* {!!user?.admin && ( */}
+      <View style={styles.diveShopContainer}>
+        <View style={styles.diveShopLabelContainer}>
+          <Text style={styles.headerLabel}>{t('DIVE_SHOP')}</Text>
+          <Text style={styles.optionaltext}>{t('OPTIONAL')}</Text>
+        </View>
+        {isValidDiveShop ? (
+          <Pressable
+            style={state => ({
+              opacity: state.pressed ? 0.7 : 1,
+            })}
+            onPress={openDiveShopModal}>
+            <View style={styles.diveShopValuesContainer}>
+              <MAIcon
+                style={styles.diveShopIcon}
+                name="store-outline"
+                size={40}
+                color="black"
+              />
+              <View style={styles.diveShopValuesTextContainer}>
+                <Text style={styles.diveShopName}>
+                  {values.dive_shop?.name}
+                </Text>
+                <Text style={styles.diveShopLocation}>
+                  {values.dive_shop?.location_city}
+                </Text>
+              </View>
+            </View>
+          </Pressable>
+        ) : (
+          <Pressable
+            style={state => ({
+              opacity: state.pressed ? 0.7 : 1,
+            })}
+            onPress={openDiveShopModal}>
+            <View style={styles.subContainer}>
+              <Pressable onPress={openDiveShopModal}>
+                <GradientCircle style={styles.iconContainer}>
+                  <MAIcon name="store-outline" size={25} color="white" />
+                </GradientCircle>
+              </Pressable>
+              <GradientText
+                gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+                start={{
+                  x: 0,
+                  y: 0,
+                }}
+                end={{
+                  x: 0.06,
+                  y: 1.8,
+                }}
+                gradientLocations={[0.01, 1, 1]}
+                style={styles.actionText}>
+                {t('ADD_DIVE_SHOP')}
+              </GradientText>
+            </View>
+          </Pressable>
+        )}
+      </View>
+      {/* )} */}
 
       <View style={styles.mediaContainer}>
         <FieldArray name="images" component={ImagePickerArray} />
@@ -492,6 +580,38 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  diveShopContainer: {
+    marginTop: 20,
+  },
+  diveShopLabelContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  diveShopValuesContainer: {
+    height: 130,
+    backgroundColor: '#fff',
+    marginTop: 12,
+    borderRadius: 12,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  diveShopValuesTextContainer: {
+    marginLeft: 10,
+    maxWidth: '50%',
+  },
+  diveShopName: {
+    fontWeight: '600',
+    fontSize: 15,
+  },
+  diveShopLocation: {
+    fontSize: 13,
+    color: 'grey',
+  },
+  diveShopIcon: {
+    marginRight: 10,
   },
 });
 

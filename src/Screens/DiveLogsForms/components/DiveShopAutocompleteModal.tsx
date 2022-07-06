@@ -19,8 +19,11 @@ import { stringify } from 'qs';
 import type { FunctionComponent } from 'react';
 import type { FieldRenderProps } from 'react-final-form';
 import PlainSearchInput from '_components/ui/PlainSearchInput';
-import { handleTypeAhead } from '_redux/slices/search/api';
-import { TypeaheadResponse } from '_utils/interfaces/data/search';
+import { handleTypeAhead } from '_redux/slices/dive-shops/api';
+import {
+  DiveShopTypeaheadResponse,
+  // LocationSearchInitialValues,
+} from '_utils/interfaces/data/shops';
 
 import LocationImage from '_assets/LocationLargish.png';
 import { isBelowHeightThreshold } from '_utils/constants';
@@ -28,7 +31,7 @@ import { isBelowHeightThreshold } from '_utils/constants';
 interface BaseProps {
   isVisible: boolean;
   closeModal: () => void;
-  reset: () => void;
+  reset?: () => void;
 }
 type FinalFormProps = FieldRenderProps<
   {
@@ -43,14 +46,16 @@ type ModalWFinalFormProps = BaseProps & FinalFormProps;
 
 const HEIGHT = Dimensions.get('window').height;
 
-const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
+const DiveShopAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
   isVisible,
   closeModal,
   input: { onChange, value },
 }) => {
   const { t } = useTranslation();
   const [text, changeText] = React.useState('');
-  const [suggestions, setSuggestions] = React.useState<TypeaheadResponse[]>([]);
+  const [suggestions, setSuggestions] = React.useState<
+    DiveShopTypeaheadResponse[]
+  >([]);
 
   React.useEffect(() => {
     if (value) {
@@ -87,17 +92,15 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     }
   };
 
-  const setPlace = async (place: TypeaheadResponse) => {
+  const setPlace = async (place: DiveShopTypeaheadResponse) => {
     changeText(place.text);
     setSuggestions([]);
     Keyboard.dismiss();
 
     onChange({
-      beach_id: place.id,
-      desc: place.text,
+      shop_id: place.id,
+      name: place.text,
       location_city: place.subtext,
-      lat: place.data.latitude,
-      lng: place.data.longitude,
     });
     closeModal();
   };
@@ -107,7 +110,7 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     setSuggestions([]);
   };
 
-  const _renderItem = (item: { item: TypeaheadResponse }) => {
+  const _renderItem = (item: { item: DiveShopTypeaheadResponse }) => {
     return (
       <Pressable
         onPress={() => setPlace(item.item)}
@@ -127,7 +130,7 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     );
   };
 
-  const _keyExtractor = (item: any) => item.url;
+  const _keyExtractor = (item: any) => item.id;
 
   return (
     <Modal visible={isVisible} onRequestClose={closeModal} style={styles.modal}>
@@ -145,7 +148,7 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
             value={text}
             containerStyle={styles.inputCompContainer}
             style={styles.search}
-            placeholder={t('LOCATION_SITE_DIVER')}
+            placeholder={t('DIVE_SHOP_PLACEHOLDER')}
             placeholderTextColor="grey"
             autoFocus
           />
@@ -234,4 +237,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LocationAutocompleteModal;
+export default DiveShopAutocompleteModal;

@@ -12,8 +12,10 @@ import DiveTimeClock from '_assets/ClockClockwise.png';
 import UnavailableLocationBox from './UnavailableLocationListBox';
 import Snorkel from '_assets/scuba_icons/snorkel.svg';
 import Location from '_assets/scuba_icons/Location.svg';
+import Shop from '_assets/scuba_icons/Shop.svg';
 import { selectUser } from '_redux/slices/user';
 import { useAppSelector } from '_redux/hooks';
+import { WIDTH } from '_utils/constants';
 
 interface LogItemProps {
   diveLog: DiveLogsState;
@@ -53,7 +55,11 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
         )}
 
         <View style={styles.ratingsActivityContainer}>
-          <Text style={styles.date}>{new Date(diveLog.date_dived || diveLog.date_posted!).toLocaleDateString()}</Text>
+          <Text style={styles.date}>
+            {new Date(
+              diveLog.date_dived || diveLog.date_posted!,
+            ).toLocaleDateString()}
+          </Text>
           <Text style={styles.detailsTitle}>{diveLog.title}</Text>
           <View style={styles.ratingsContainer}>
             {attachIcons(diveLog.rating, 25)}
@@ -76,6 +82,12 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
               {diveLog.spot.location_city}
             </Text>
           </View>
+          {diveLog.dive_shop_id && (
+            <View style={styles.diveShopContainer}>
+              <Shop width={15} />
+              <Text style={styles.diveShopText}>{diveLog.dive_shop?.name}</Text>
+            </View>
+          )}
         </View>
         {isAdvancedLog && (
           <View style={styles.timeDepthContainer}>
@@ -155,6 +167,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: 'black',
     marginTop: 4,
+    width: WIDTH * 0.5,
+    marginRight: 40,
   },
   descContainer: {
     marginVertical: 4,
@@ -172,6 +186,16 @@ const styles = StyleSheet.create({
   locationText: {
     marginLeft: 5,
     marginTop: 2,
+    fontSize: 15,
+    color: 'black',
+  },
+  diveShopContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 5,
+  },
+  diveShopText: {
+    marginLeft: 5,
     fontSize: 15,
     color: 'black',
   },

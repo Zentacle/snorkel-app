@@ -109,9 +109,9 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
             <Text style={styles.pagesLabel}>{t('ACCOUNT')}</Text>
             <View>
               {accountPages.map((account, index) => {
-                if (account.label === t('DIVE_SHOPS') && !user.admin) {
-                  return null;
-                }
+                // if (account.label === t('DIVE_SHOPS') && !user.admin) {
+                //   return null;
+                // }
                 return (
                   <TouchableWithoutFeedback
                     key={index}

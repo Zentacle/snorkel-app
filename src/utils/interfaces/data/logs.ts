@@ -1,10 +1,16 @@
 import { Spot } from './spot';
 import { User } from './user';
-
+import { DiveShopFull } from './shops';
 export interface FormImages {
   uri: string;
   type?: string;
   name: string;
+}
+
+export interface DiveShopSearchResult {
+  shop_id: number;
+  name: string;
+  location_city: string;
 }
 export interface SimpleFormInitialValues {
   id: number;
@@ -22,6 +28,8 @@ export interface SimpleFormInitialValues {
   };
   beach_id?: number;
   images: FormImages[];
+  dive_shop?: DiveShopSearchResult;
+  dive_shop_id?: number;
 }
 
 export interface AdvancedFormInitialValues extends SimpleFormInitialValues {
@@ -49,12 +57,14 @@ export interface AdvancedDiveLogReturnValues {
   review: DiveLogDetailReview;
   spot: Spot;
   msg: string;
+  dive_shop?: DiveShopFull;
 }
 
 export interface SimpleDiveLogReturnValues {
   review: SimpleFormInitialValues;
   spot: Spot;
   msg: string;
+  dive_shop?: DiveShopSearchResult;
 }
 
 type DiveLogsStateStarter = Omit<
