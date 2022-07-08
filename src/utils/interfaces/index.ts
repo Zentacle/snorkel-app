@@ -21,7 +21,8 @@ export type OnboardingStackParamList = {
 
 export type ExploreStackParamList = {
   DiveSite: {
-    diveSpotId: number;
+    diveSpotId: number | string;
+    wildcard?: string;
   };
   // DiveShop: {
   //   diveShopId: number;

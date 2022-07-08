@@ -79,15 +79,37 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   ];
 
   const diveSiteInState = useAppSelector(
-    isDiveSiteDetailinState(currentSpotId),
+    isDiveSiteDetailinState(
+      typeof currentSpotId === 'number'
+        ? currentSpotId
+        : parseInt(currentSpotId, 10),
+    ),
   );
 
-  const reviewInState = useAppSelector(isReviewInState(currentSpotId));
+  const reviewInState = useAppSelector(
+    isReviewInState(
+      typeof currentSpotId === 'number'
+        ? currentSpotId
+        : parseInt(currentSpotId, 10),
+    ),
+  );
   const isLoading = useAppSelector(selectLoadingState);
 
-  const reviewObj = useAppSelector(selectReviewById(currentSpotId));
+  const reviewObj = useAppSelector(
+    selectReviewById(
+      typeof currentSpotId === 'number'
+        ? currentSpotId
+        : parseInt(currentSpotId, 10),
+    ),
+  );
   const reviews = reviewInState ? Object.values(reviewObj) : [];
-  const diveSite = useAppSelector(selectDiveSiteById(currentSpotId));
+  const diveSite = useAppSelector(
+    selectDiveSiteById(
+      typeof currentSpotId === 'number'
+        ? currentSpotId
+        : parseInt(currentSpotId, 10),
+    ),
+  );
 
   // const diveSiteImages = [
   //   {
@@ -98,17 +120,33 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
-    fetchNearby(currentSpotId).then(results => setNearby(results.data));
+    fetchNearby(
+      typeof currentSpotId === 'number'
+        ? currentSpotId
+        : parseInt(currentSpotId, 10),
+    ).then(results => setNearby(results.data));
     // only fetch dive site and reviews if they don't already exist
     // in their respective redux slices.
     if (!reviewInState) {
-      dispatch(handleFetchReviews(currentSpotId));
+      dispatch(
+        handleFetchReviews(
+          typeof currentSpotId === 'number'
+            ? currentSpotId
+            : parseInt(currentSpotId, 10),
+        ),
+      );
     }
 
     // because we need to fetch images as well, we're making calls to the api unless the
     // site we  want has had its images downloaded
     if (!diveSiteInState || (diveSiteInState && !diveSite.images)) {
-      dispatch(handleFetchDiveSite(currentSpotId));
+      dispatch(
+        handleFetchDiveSite(
+          typeof currentSpotId === 'number'
+            ? currentSpotId
+            : parseInt(currentSpotId, 10),
+        ),
+      );
     }
   }, [currentSpotId, dispatch, reviewInState, diveSiteInState, diveSite]);
 
@@ -158,12 +196,21 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   };
 
   const navigateBack = () => {
-    navigation.goBack();
+    if (typeof route.params.diveSpotId === 'string' || route.params.wildcard) {
+      navigation.navigate('App', {
+        screen: 'Explore',
+      });
+    } else {
+      navigation.goBack();
+    }
   };
 
   const navigateToReviews = () => {
     navigation.navigate('Reviews', {
-      id: currentSpotId,
+      id:
+        typeof currentSpotId === 'number'
+          ? currentSpotId
+          : parseInt(currentSpotId, 10),
     });
   };
 
