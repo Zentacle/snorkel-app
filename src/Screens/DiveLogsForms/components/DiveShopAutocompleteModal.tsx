@@ -133,7 +133,11 @@ const DiveShopAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
   const _keyExtractor = (item: any) => item.id;
 
   return (
-    <Modal visible={isVisible} onRequestClose={closeModal} style={styles.modal}>
+    <Modal
+      visible={isVisible}
+      animationType="slide"
+      onRequestClose={closeModal}
+      style={styles.modal}>
       <SafeAreaView style={styles.container}>
         <View style={styles.searchContainer}>
           <Icon
