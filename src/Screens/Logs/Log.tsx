@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 
 import ImageCarousel from '_components/reusables/DiveLogImageCarousel';
 import DiveLocation from './components/DiveLocation';
+import Button from '_components/ui/Buttons/Button';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type {
@@ -43,6 +44,7 @@ import NoDiveShop from './components/NoDiveShop';
 import DiveShopView from './components/DIveShop';
 import DiveShopStampView from './components/DiveShopStamp';
 import { DiveShopFull } from '_utils/interfaces/data/shops';
+import { isBelowHeightThreshold } from '_utils/constants';
 
 type LogNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<LogsStackParamList, 'LogDetail'>,
@@ -392,30 +394,45 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
               </View>
             )}
 
-            <View style={styles.editLogContainer}>
-              <Icon
-                onPress={
-                  isAdvancedLog
-                    ? navigateToAdvancedLogsForm
-                    : navigateFromSimpleLogValue
-                }
-                name="pencil-outline"
-                color="black"
-                size={30}
-              />
-              <TouchableWithoutFeedback
-                onPress={
-                  isAdvancedLog
-                    ? navigateToAdvancedLogsForm
-                    : navigateFromSimpleLogValue
-                }>
-                <Text style={styles.editLogText}>
-                  {isAdvancedLog
-                    ? 'Edit dive log'
-                    : 'Add full dive log details'}
-                </Text>
-              </TouchableWithoutFeedback>
-            </View>
+            {isAdvancedLog ? (
+              <View style={styles.editLogContainer}>
+                <Icon
+                  onPress={
+                    isAdvancedLog
+                      ? navigateToAdvancedLogsForm
+                      : navigateFromSimpleLogValue
+                  }
+                  name="pencil-outline"
+                  color="black"
+                  size={30}
+                />
+                <TouchableWithoutFeedback onPress={navigateToAdvancedLogsForm}>
+                  <Text style={styles.editLogText}>Edit dive log</Text>
+                </TouchableWithoutFeedback>
+              </View>
+            ) : (
+              <View style={styles.editLogContainer}>
+                <Button
+                  onPress={navigateFromSimpleLogValue}
+                  gradient
+                  gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+                  gradientLocations={[0.01, 1, 1]}
+                  start={{
+                    x: 0,
+                    y: 0,
+                  }}
+                  end={{
+                    x: 0.06,
+                    y: 2.2,
+                  }}
+                  style={{
+                    container: styles.buttonContainer,
+                    text: styles.buttonText,
+                  }}>
+                  Add full dive log details
+                </Button>
+              </View>
+            )}
 
             {Object.keys(diveLog.dive_shop as DiveShopFull).length ? (
               diveLog.dive_shop?.stamp_uri ? (
@@ -489,7 +506,7 @@ const styles = StyleSheet.create({
   },
   note: {
     width: '100%',
-    minHeight: 120,
+    minHeight: 80,
     borderRadius: 24,
     paddingTop: 10,
     marginVertical: 1.5,
@@ -503,6 +520,7 @@ const styles = StyleSheet.create({
   },
   noteBodyText: {
     color: 'black',
+    textAlign: 'justify',
   },
   profile: {
     flexDirection: 'row',
@@ -680,7 +698,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   editLogContainer: {
-    marginTop: 50,
+    marginTop: 10,
     marginBottom: 10,
     flexDirection: 'row',
     alignItems: 'center',
@@ -702,6 +720,17 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     fontSize: 15,
     color: 'black',
+  },
+  buttonContainer: {
+    borderRadius: 12,
+    paddingVertical: isBelowHeightThreshold ? 12 : 16,
+    marginHorizontal: 0,
+    marginVertical: isBelowHeightThreshold ? 10 : 20,
+  },
+  buttonText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: '800',
   },
 });
 
