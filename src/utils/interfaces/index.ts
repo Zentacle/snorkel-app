@@ -23,8 +23,9 @@ export type ExploreStackParamList = {
   DiveSite: {
     diveSpotId: number | string;
     wildcard?: string;
+    reset?: boolean;
   };
-  // DiveShop: {
+  // DiveShop: {s
   //   diveShopId: number;
   // };
   DiveShop: undefined;
