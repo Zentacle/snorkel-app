@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from 'react-i18next';
+import { CommonActions } from '@react-navigation/native';
 
 import ImageCarousel from '_components/reusables/ImageCarousel';
 import DiveLocation from './components/DiveLocation';
@@ -117,6 +118,46 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   //   },
   // ];
 
+  React.useEffect(() => {
+    if (typeof route.params.diveSpotId === 'string' || route.params.wildcard) {
+      if (!route.params.reset) {
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [
+              {
+                name: 'App',
+                state: {
+                  routes: [
+                    {
+                      name: 'Explore',
+                    },
+                  ],
+                },
+              },
+              {
+                name: 'ExploreStack',
+                state: {
+                  key: navigation.getParent()?.getState().key,
+                  routes: [
+                    {
+                      name: 'DiveSite',
+                      key: navigation.getState().key,
+                      params: {
+                        ...route.params,
+                        reset: true,
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          }),
+        );
+      }
+    }
+  }, [route, navigation]);
+
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
@@ -196,13 +237,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   };
 
   const navigateBack = () => {
-    if (typeof route.params.diveSpotId === 'string' || route.params.wildcard) {
-      navigation.navigate('App', {
-        screen: 'Explore',
-      });
-    } else {
-      navigation.goBack();
-    }
+    navigation.goBack();
   };
 
   const navigateToReviews = () => {

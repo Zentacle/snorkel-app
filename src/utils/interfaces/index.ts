@@ -23,6 +23,7 @@ export type ExploreStackParamList = {
   DiveSite: {
     diveSpotId: number | string;
     wildcard?: string;
+    reset?: boolean;
   };
   // DiveShop: {
   //   diveShopId: number;

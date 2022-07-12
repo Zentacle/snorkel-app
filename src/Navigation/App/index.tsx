@@ -90,7 +90,10 @@ const AppTabsNavigator: React.FC<AppTabsNavigatorProps> = ({ navigation }) => {
           options={{
             title: t('EXPLORE'),
             tabBarIcon: ({ focused }) => (
-              <Image style={styles.tabIcon} source={focused ? HomeActive : Home} />
+              <Image
+                style={styles.tabIcon}
+                source={focused ? HomeActive : Home}
+              />
             ),
           }}
           name="Explore"
@@ -100,7 +103,10 @@ const AppTabsNavigator: React.FC<AppTabsNavigatorProps> = ({ navigation }) => {
           options={{
             title: t('SEARCH'),
             tabBarIcon: ({ focused }) => (
-              <Image style={styles.tabIcon} source={focused ? SearchActive : Search} />
+              <Image
+                style={styles.tabIcon}
+                source={focused ? SearchActive : Search}
+              />
             ),
           }}
           name="Search"
@@ -134,7 +140,10 @@ const AppTabsNavigator: React.FC<AppTabsNavigatorProps> = ({ navigation }) => {
           options={{
             title: t('LOGS'),
             tabBarIcon: ({ focused }) => (
-              <Image style={styles.tabIcon} source={focused ? LogsActive : Logs} />
+              <Image
+                style={styles.tabIcon}
+                source={focused ? LogsActive : Logs}
+              />
             ),
           }}
           name="Logs"
@@ -144,7 +153,10 @@ const AppTabsNavigator: React.FC<AppTabsNavigatorProps> = ({ navigation }) => {
           options={{
             title: t('PROFILE'),
             tabBarIcon: ({ focused }) => (
-              <Image style={styles.tabIcon} source={focused ? ProfileActive : Profile} />
+              <Image
+                style={styles.tabIcon}
+                source={focused ? ProfileActive : Profile}
+              />
             ),
           }}
           name="Profile"
@@ -182,7 +194,7 @@ const styles = StyleSheet.create({
   tabIcon: {
     height: 30,
     width: 30,
-  }
+  },
 });
 
 export default AppTabsNavigator;
