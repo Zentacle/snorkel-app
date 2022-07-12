@@ -25,7 +25,7 @@ export type ExploreStackParamList = {
     wildcard?: string;
     reset?: boolean;
   };
-  // DiveShop: {s
+  // DiveShop: {
   //   diveShopId: number;
   // };
   DiveShop: undefined;
