@@ -126,6 +126,7 @@ export const Button: FunctionComponent<ButtonProps & GradientProps> = (
     <Pressable
       style={state => ({
         opacity: state.pressed ? 0.8 : 1,
+        width: '100%',
       })}
       onPress={props.onPress}>
       {button}
