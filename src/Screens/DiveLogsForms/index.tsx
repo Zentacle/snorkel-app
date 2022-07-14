@@ -13,6 +13,7 @@ import validate from 'validate.js';
 import get from 'lodash/get';
 import arrayMutators from 'final-form-arrays';
 import { useTranslation } from 'react-i18next';
+import Toast from 'react-native-toast-message';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
@@ -155,6 +156,10 @@ const SimpleDiveLogsForms: FunctionComponent<
           throw new Error(response.msg);
         }
         saveDiveLogId(response.review.id as number);
+        Toast.show({
+          type: 'info',
+          text1: 'Dive log submitted successfully!',
+        });
         setFormSubmitting(false);
         callback();
       } else {
@@ -172,11 +177,20 @@ const SimpleDiveLogsForms: FunctionComponent<
           throw new Error(response.msg);
         }
         saveDiveLogId(response.review.id as number);
+        Toast.show({
+          type: 'info',
+          text1: 'Dive log submitted successfully!',
+        });
         setFormSubmitting(false);
         callback();
       }
     } catch (err) {
       console.log(err);
+      Toast.show({
+        type: 'error',
+        text1: 'There was an error submitting this dive log!',
+      });
+      setFormSubmitting(false);
     }
   };
 
