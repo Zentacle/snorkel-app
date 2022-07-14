@@ -13,6 +13,7 @@ import validate from 'validate.js';
 import get from 'lodash/get';
 import arrayMutators from 'final-form-arrays';
 import { useTranslation } from 'react-i18next';
+import Toast from 'react-native-toast-message';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type {
@@ -155,32 +156,44 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   };
 
   const submitLog = async (values: InitialValues, callback: () => void) => {
-    setFormSubmitting(true);
-    const date = (values.startDate as Date).toDateString();
-    const time = (values.startTime as Date).toTimeString();
-    const dateConcat = `${date} ${time}`;
-    const arrangedValues = {
-      ...values,
-      date_dived: new Date(dateConcat).toISOString(),
-      beach_id: values.location?.beach_id,
-      dive_shop_id: values.dive_shop?.shop_id,
-    };
-    delete arrangedValues.startDate;
-    delete arrangedValues.startTime;
-    delete arrangedValues.location;
-    delete arrangedValues.date_posted;
-    delete arrangedValues.dive_shop;
-
-    await handleUpdateDiveLog(
-      {
-        ...arrangedValues,
+    try {
+      setFormSubmitting(true);
+      const date = (values.startDate as Date).toDateString();
+      const time = (values.startTime as Date).toTimeString();
+      const dateConcat = `${date} ${time}`;
+      const arrangedValues = {
+        ...values,
+        date_dived: new Date(dateConcat).toISOString(),
         beach_id: values.location?.beach_id,
-      },
-      authToken as string,
-    );
-    setFormSubmitting(false);
+        dive_shop_id: values.dive_shop?.shop_id,
+      };
+      delete arrangedValues.startDate;
+      delete arrangedValues.startTime;
+      delete arrangedValues.location;
+      delete arrangedValues.date_posted;
+      delete arrangedValues.dive_shop;
 
-    callback();
+      await handleUpdateDiveLog(
+        {
+          ...arrangedValues,
+          beach_id: values.location?.beach_id,
+        },
+        authToken as string,
+      );
+      Toast.show({
+        type: 'info',
+        text1: 'Dive log updated successfully!',
+      });
+      setFormSubmitting(false);
+
+      callback();
+    } catch (err) {
+      Toast.show({
+        type: 'error',
+        text1: 'There was an error updating this dive log!',
+      });
+      setFormSubmitting(false);
+    }
   };
 
   const openModal = () => {
