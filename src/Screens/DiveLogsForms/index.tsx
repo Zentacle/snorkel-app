@@ -83,12 +83,12 @@ const SimpleDiveLogsForms: FunctionComponent<
       id: 1,
       name: t('simpleformStages._1'),
     },
+    // {
+    //   id: 2,
+    //   name: t('simpleformStages._2'),
+    // },
     {
       id: 2,
-      name: t('simpleformStages._2'),
-    },
-    {
-      id: 3,
       name: t('simpleformStages._3'),
     },
   ];
@@ -156,10 +156,6 @@ const SimpleDiveLogsForms: FunctionComponent<
           throw new Error(response.msg);
         }
         saveDiveLogId(response.review.id as number);
-        Toast.show({
-          type: 'info',
-          text1: 'Dive log submitted successfully!',
-        });
         setFormSubmitting(false);
         callback();
       } else {
@@ -177,10 +173,6 @@ const SimpleDiveLogsForms: FunctionComponent<
           throw new Error(response.msg);
         }
         saveDiveLogId(response.review.id as number);
-        Toast.show({
-          type: 'info',
-          text1: 'Dive log submitted successfully!',
-        });
         setFormSubmitting(false);
         callback();
       }
@@ -237,9 +229,7 @@ const SimpleDiveLogsForms: FunctionComponent<
       case 1:
         return !!(values.rating && values.difficulty);
       case 2:
-        return !!values.title;
-      case 3:
-        return !!values.text;
+        return true;
       default:
         return true;
     }
@@ -339,9 +329,9 @@ const SimpleDiveLogsForms: FunctionComponent<
                 />
               )}
               {page === 1 && <Rating />}
-              {page === 2 && <Name />}
-              {page === 3 && <Notes />}
-              {page === 4 && (
+              {page === 2 && <Notes />}
+              {/* {page === 3 && <Notes />} */}
+              {page === 3 && (
                 <Review
                   navigateToAdvancedDiveForm={() =>
                     handleNavigateToAdvancedDiveLog(values as InitialValues)

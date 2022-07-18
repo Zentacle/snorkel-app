@@ -14,6 +14,7 @@ export interface User {
   email?: string;
   access_token?: string;
   unit?: MeasurementUnit;
+  wallet_address?: string;
 }
 
 export interface CookieHeaders {

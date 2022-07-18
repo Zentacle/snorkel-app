@@ -5,12 +5,12 @@ import {
   StyleSheet,
   ScrollView,
   TouchableWithoutFeedback,
-  Platform,
   SafeAreaView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MUIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from 'react-i18next';
+import config from 'react-native-config';
 
 // import GradientBox from '_components/ui/GradientBox';
 import Button from '_components/ui/Buttons/Button';
@@ -62,6 +62,16 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
     });
   };
 
+  const openWebview = () => {
+    const uri =
+      config.ENVIRONMENT === 'development'
+        ? `https://testnets.opensea.io/${user?.wallet_address}`
+        : `https://opensea.io/${user?.wallet_address}`;
+    navigation.navigate('HelpWebview', {
+      source: uri,
+    });
+  };
+
   const navigateToPage = (page: Page) => {
     navigation.navigate(page.component);
   };
@@ -78,6 +88,27 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
         <Text style={styles.headerText}>{t('SETTINGS')}</Text>
         <View style={{ width: 20 }} />
       </View>
+      {!!user?.wallet_address && (
+        <Button
+          onPress={openWebview}
+          gradient
+          gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
+          gradientLocations={[0.01, 1, 1]}
+          start={{
+            x: 0,
+            y: 0,
+          }}
+          end={{
+            x: 0.06,
+            y: 2.2,
+          }}
+          style={{
+            container: styles.walletButtonContainer,
+            text: styles.walletButtonText,
+          }}>
+          View wallet on OpenSea
+        </Button>
+      )}
       <ScrollView
         style={styles.contentContainer}
         showsVerticalScrollIndicator={false}>
@@ -259,6 +290,19 @@ const styles = StyleSheet.create({
     marginHorizontal: 25,
   },
   buttonText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: '800',
+  },
+  walletButtonContainer: {
+    backgroundColor: 'white',
+    borderRadius: 12,
+    padding: 12,
+    marginTop: 30,
+    marginBottom: -10,
+    marginHorizontal: 25,
+  },
+  walletButtonText: {
     color: '#FFF',
     fontSize: 16,
     fontWeight: '800',

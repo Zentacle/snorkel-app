@@ -13,6 +13,12 @@ interface GetCurrentUserResponse extends User {
   cookie_header: string;
 }
 
+interface WalletResponse {
+  id: 'string';
+  address: 'string';
+  tags: ['string'];
+}
+
 export async function handleRegister(body: User): Promise<LoginResponse> {
   try {
     const url = `${config.API_ENDPOINT}/user/register`;
@@ -92,6 +98,19 @@ export async function handleUploadProfilePic(
   } catch (err) {
     throw err;
   }
+}
+
+export async function handleFetchUserWalletAddress(
+  id: number,
+): Promise<WalletResponse> {
+  const url = `${config.WALLY_API}/wallet/user_${id.toString()}`;
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${config.WALLY_API_KEY}`,
+    },
+  }).then(res => res.json());
+  return response;
 }
 
 export async function handleGetCurrentUser(

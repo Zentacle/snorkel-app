@@ -16,7 +16,7 @@ export const toastConfig: ToastConfig = {
     return (
       <View style={styles.container}>
         <GradientBox
-          gradientColors={['#FF4600', '#FFF000', '#FFF000']}
+          gradientColors={['#FF0000', '#FF5900', '#FF5900']}
           style={styles.indicator}
         />
         <Text style={styles.text}>{text1}</Text>
