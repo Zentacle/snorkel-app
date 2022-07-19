@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   Image,
   TouchableOpacity,
+  Pressable,
 } from 'react-native';
 import config from 'react-native-config';
 import type { FunctionComponent } from 'react';
@@ -25,22 +26,28 @@ interface DiveBuddyProps {
   buddy: User;
 }
 
-const DiveBuddy: FunctionComponent<DiveBuddyProps> = (props) => {
+const DiveBuddy: FunctionComponent<DiveBuddyProps> = props => {
   const auth_token = useAppSelector(selectAuthToken);
   const [isMessaged, setIsMessaged] = React.useState<boolean>(false);
+  const [seeFullDesc, setFullDesc] = React.useState(false);
+  const [shouldSeeFullDesc, setShouldSeeFullDesc] = React.useState(false);
   const makeRequest = async (id: number) => {
     const uri = `${config.API_ENDPOINT}/buddy/connect`;
     await fetch(uri, {
       method: 'POST',
       body: JSON.stringify({
-        'userId': id,
+        userId: id,
       }),
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${auth_token}`,
-      }
+      },
     });
-  }
+  };
+
+  const onTextLayout = useCallback(e => {
+    setShouldSeeFullDesc(e.nativeEvent.lines.length >= 5);
+  }, []);
 
   const content = (
     <View style={[styles.container, props.containerStyle]}>
@@ -65,15 +72,55 @@ const DiveBuddy: FunctionComponent<DiveBuddyProps> = (props) => {
         </Text>
         <View style={styles.locationContainer}>
           <Location width={15} />
-          <Text style={styles.locationText}>
-            {props.buddy.hometown}
-          </Text>
+          <Text style={styles.locationText}>{props.buddy.hometown}</Text>
         </View>
-        <View style={styles.locationContainer}>
-          <Text style={styles.locationText}>
-            {props.buddy.bio}
-          </Text>
-        </View>
+        {shouldSeeFullDesc ? (
+          seeFullDesc ? (
+            <Pressable onPress={() => setFullDesc(false)}>
+              <View style={styles.bioContainer}>
+                <Text
+                  onTextLayout={onTextLayout}
+                  // numberOfLines={4}
+                  style={styles.bioText}>
+                  {props.buddy.bio}
+                </Text>
+              </View>
+            </Pressable>
+          ) : (
+            <Pressable onPress={() => setFullDesc(true)}>
+              <View style={styles.bioContainer}>
+                <Text
+                  onTextLayout={onTextLayout}
+                  numberOfLines={4}
+                  style={styles.bioText}>
+                  {props.buddy.bio}
+                </Text>
+              </View>
+            </Pressable>
+          )
+        ) : seeFullDesc ? (
+          <Pressable onPress={() => setFullDesc(false)}>
+            <View style={styles.bioContainer}>
+              <Text
+                onTextLayout={onTextLayout}
+                // numberOfLines={4}
+                style={styles.bioText}>
+                {props.buddy.bio}
+              </Text>
+            </View>
+          </Pressable>
+        ) : (
+          <Pressable onPress={() => setFullDesc(true)}>
+            <View style={styles.bioContainer}>
+              <Text
+                onTextLayout={onTextLayout}
+                numberOfLines={4}
+                style={styles.bioText}>
+                {props.buddy.bio}
+              </Text>
+            </View>
+          </Pressable>
+        )}
         <Button
           gradient
           gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
@@ -92,28 +139,21 @@ const DiveBuddy: FunctionComponent<DiveBuddyProps> = (props) => {
           }}
           onPress={() => {
             if (!isMessaged) {
-              makeRequest(props.buddy.id!)
+              makeRequest(props.buddy.id!);
               setIsMessaged(true);
             }
-          }}
-        >
-          { isMessaged ? 'Message Sent' : 'Message' }
+          }}>
+          {isMessaged ? 'Message Sent' : 'Message'}
         </Button>
       </View>
     </View>
   );
 
   if (props.onPressContainer && typeof props.onPressContainer === 'function') {
-    return (
-      <TouchableOpacity
-        activeOpacity={0.8}
-      >
-        {content}
-      </TouchableOpacity>
-    );
+    return <TouchableOpacity activeOpacity={0.8}>{content}</TouchableOpacity>;
   }
   return content;
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -166,6 +206,16 @@ const styles = StyleSheet.create({
     color: 'black',
     marginLeft: 4,
   },
+  bioContainer: {
+    // flexDirection: 'row',
+    // alignItems: 'center',
+    marginVertical: 2,
+    minHeight: 70,
+  },
+  bioText: {
+    color: 'black',
+    marginLeft: 4,
+  },
   dot: {
     width: 2.4,
     height: 2.4,
@@ -186,6 +236,11 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 16,
     fontWeight: '800',
+  },
+  seeMoreText: {
+    marginTop: 3,
+    color: '#AA00FF',
+    fontWeight: '500',
   },
 });
 
