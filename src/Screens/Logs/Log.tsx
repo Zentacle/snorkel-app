@@ -433,18 +433,19 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
               </View>
             )}
 
-            {Object.keys(diveLog.dive_shop as DiveShopFull).length ? (
-              diveLog.dive_shop?.stamp_uri ? (
-                <DiveShopStampView
-                  diveShop={diveLog.dive_shop as DiveShopFull}
-                  dateDived={diveLog.review.date_dived as string}
-                />
+            {!!user?.admin &&
+              (Object.keys(diveLog.dive_shop as DiveShopFull).length ? (
+                diveLog.dive_shop?.stamp_uri ? (
+                  <DiveShopStampView
+                    diveShop={diveLog.dive_shop as DiveShopFull}
+                    dateDived={diveLog.review.date_dived as string}
+                  />
+                ) : (
+                  <DiveShopView diveShop={diveLog.dive_shop as DiveShopFull} />
+                )
               ) : (
-                <DiveShopView diveShop={diveLog.dive_shop as DiveShopFull} />
-              )
-            ) : (
-              <NoDiveShop loadDiveLog={loadDiveLog} diveLog={diveLog} />
-            )}
+                <NoDiveShop loadDiveLog={loadDiveLog} diveLog={diveLog} />
+              ))}
           </View>
         </ScrollView>
       </View>
