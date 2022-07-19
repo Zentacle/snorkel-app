@@ -58,8 +58,8 @@ export const handleCheckExistingUser = createAsyncThunk(
 
 export const fetchUserWalletAddress = createAsyncThunk(
   'user/fetchWalletAddress',
-  async (id: number, thunkApi) => {
-    const response = await handleFetchUserWalletAddress(id);
+  async (auth_token: string, thunkApi) => {
+    const response = await handleFetchUserWalletAddress(auth_token);
     if (!response.address) {
       return thunkApi.rejectWithValue('there was an error fetching the wallet');
     }

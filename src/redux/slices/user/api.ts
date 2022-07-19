@@ -101,16 +101,16 @@ export async function handleUploadProfilePic(
 }
 
 export async function handleFetchUserWalletAddress(
-  id: number,
+  auth_token: string,
 ): Promise<WalletResponse> {
-  const url = `${config.WALLY_API}/wallet/user_${id.toString()}`;
+  const url = `${config.API_ENDPOINT}/user/wallet`;
   const response = await fetch(url, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${config.WALLY_API_KEY}`,
+      Authorization: `Bearer ${auth_token}`,
     },
   }).then(res => res.json());
-  return response;
+  return response.data;
 }
 
 export async function handleGetCurrentUser(

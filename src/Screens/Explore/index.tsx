@@ -209,7 +209,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
       handleRecommenndedSitesRequest();
     });
     if (user && !user.wallet_address) {
-      dispatch(fetchUserWalletAddress(user.id as number));
+      dispatch(fetchUserWalletAddress(user.access_token as string));
     }
   }, [navigation, dispatch, authToken, user]);
 
