@@ -1,12 +1,7 @@
-import {
-  createSlice,
-  createAsyncThunk,
-} from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { RootState } from '../../store';
-import {
-  fetchNearbyBuddies,
-} from './api';
+import { fetchNearbyBuddies } from './api';
 import { User } from '_utils/interfaces/data/user';
 
 interface BuddyState {
@@ -59,11 +54,10 @@ export const buddiesSlice = createSlice({
         state.loading = false;
         state.error.status = false;
         state.buddies = action.payload;
-      })
+      });
   },
 });
 
-export const selectNearbyBuddies = (state: RootState) =>
-  state.buddies.buddies;
+export const selectNearbyBuddies = (state: RootState) => state.buddies.buddies;
 
 export default buddiesSlice.reducer;
