@@ -13,6 +13,12 @@ interface GetCurrentUserResponse extends User {
   cookie_header: string;
 }
 
+interface WalletResponse {
+  id: 'string';
+  address: 'string';
+  tags: ['string'];
+}
+
 export async function handleRegister(body: User): Promise<LoginResponse> {
   try {
     const url = `${config.API_ENDPOINT}/user/register`;
@@ -92,6 +98,19 @@ export async function handleUploadProfilePic(
   } catch (err) {
     throw err;
   }
+}
+
+export async function handleFetchUserWalletAddress(
+  auth_token: string,
+): Promise<WalletResponse> {
+  const url = `${config.API_ENDPOINT}/user/wallet`;
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${auth_token}`,
+    },
+  }).then(res => res.json());
+  return response.data;
 }
 
 export async function handleGetCurrentUser(

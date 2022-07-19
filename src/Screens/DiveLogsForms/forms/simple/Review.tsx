@@ -59,7 +59,6 @@ const Review: FunctionComponent<ReviewProps> = ({
         )}`,
         url,
       });
-      console.log(result);
 
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -122,7 +121,7 @@ const Review: FunctionComponent<ReviewProps> = ({
       </View>
 
       <View style={styles.details}>
-        <Text style={styles.detailsTitle}>{formValues.title}</Text>
+        {/* <Text style={styles.detailsTitle}>{formValues.title}</Text> */}
         <Text style={styles.locationTimestamp}>
           {new Date().toDateString()}
         </Text>

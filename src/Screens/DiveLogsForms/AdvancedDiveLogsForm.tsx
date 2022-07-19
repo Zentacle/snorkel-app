@@ -180,10 +180,6 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
         },
         authToken as string,
       );
-      Toast.show({
-        type: 'info',
-        text1: 'Dive log updated successfully!',
-      });
       setFormSubmitting(false);
 
       callback();
@@ -383,7 +379,10 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
                       }
                     : next
                 }
-                disabled={!canMoveToNextPage(page, values as InitialValues)}
+                disabled={
+                  !canMoveToNextPage(page, values as InitialValues) ||
+                  formSubmitting
+                }
                 text={
                   page === stages.length - 1
                     ? formSubmitting

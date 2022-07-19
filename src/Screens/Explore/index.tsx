@@ -30,7 +30,11 @@ import {
   handleFetchNearbyBuddies,
   selectNearbyBuddies,
 } from '_redux/slices/buddies';
-import { selectUser, selectAuthToken } from '_redux/slices/user';
+import {
+  selectUser,
+  selectAuthToken,
+  fetchUserWalletAddress,
+} from '_redux/slices/user';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
@@ -204,6 +208,9 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
 
       handleRecommenndedSitesRequest();
     });
+    if (user && !user.wallet_address) {
+      dispatch(fetchUserWalletAddress(user.access_token as string));
+    }
   }, [navigation, dispatch, authToken, user]);
 
   const navigateToDiveSite = (diveSpotId: number) => {

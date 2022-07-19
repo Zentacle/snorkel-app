@@ -1,4 +1,4 @@
-import { AppleAuthReturn } from './../../../Screens/Auth/utils/interfaces';
+import { AppleAuthReturn } from 'src/screens/Auth/utils/interfaces';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -9,6 +9,7 @@ import {
   handleGoogleregister,
   handleGetCurrentUser,
   handleAppleregister,
+  handleFetchUserWalletAddress,
 } from './api';
 import { User } from '_utils/interfaces/data/user';
 import { AppThunk, RootState } from '../../store';
@@ -55,6 +56,17 @@ export const handleCheckExistingUser = createAsyncThunk(
   },
 );
 
+export const fetchUserWalletAddress = createAsyncThunk(
+  'user/fetchWalletAddress',
+  async (auth_token: string, thunkApi) => {
+    const response = await handleFetchUserWalletAddress(auth_token);
+    if (!response.address) {
+      return thunkApi.rejectWithValue('there was an error fetching the wallet');
+    }
+    return response;
+  },
+);
+
 export const loginUser = createAsyncThunk(
   'user/login',
   async (user: User, thunkApi) => {
@@ -85,7 +97,11 @@ export const registerUser = createAsyncThunk(
       return thunkApi.rejectWithValue(response.msg);
     }
 
-    await setStorage(null, response.data.auth_token, response.data.refresh_token);
+    await setStorage(
+      null,
+      response.data.auth_token,
+      response.data.refresh_token,
+    );
     await flagExistingUser();
     return {
       ...response,
@@ -337,6 +353,9 @@ export const userSlice = createSlice({
         state.active_user = action.payload.user;
         state.existing_user = true;
         state.refresh_token = action.payload.data.refresh_token as string;
+      })
+      .addCase(fetchUserWalletAddress.fulfilled, (state, action) => {
+        (state.active_user as User).wallet_address = action.payload.address;
       });
   },
 });

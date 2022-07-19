@@ -66,7 +66,6 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(selectDiveLogsLoadingState);
   const diveLog = useAppSelector(selectActiveDiveLog);
-  console.log('dive log', diveLog);
 
   const airLimit = user?.unit === 'imperial' ? 3400 : 400;
 
@@ -84,12 +83,12 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
     });
   };
 
-  if (diveLog?.review.id !== route.params.diveLogId) {
-    return null;
-  }
-
   if (isLoading) {
     return <DiveLogLoading />;
+  }
+
+  if (!isLoading && diveLog?.review.id !== route.params.diveLogId) {
+    return null;
   }
 
   if (!isLoading && !diveLog) {
