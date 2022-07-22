@@ -85,7 +85,10 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
         // navigate straight to app if not loggged in or if user has settings filled out
         // else navigate to settings
         if (!user || (user && settings.activityType)) {
-          navigateToApp();
+          // navigateToApp();
+          props.navigation.navigate('OnBoarding', {
+            screen: 'AddRecentDiveLog',
+          });
         } else {
           navigateToSettings();
         }

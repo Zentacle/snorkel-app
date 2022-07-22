@@ -12,6 +12,7 @@ import CameraPermissions from '_screens/Onboarding/CameraPermissions';
 import LocationPermissions from '_screens/Onboarding/LocationPermissions';
 import MeasurementType from '_screens/Onboarding/MeasurementType';
 import ActivityType from '_screens/Onboarding/ActivityType';
+import AddRecentDiveLog from '_screens/Onboarding/AddRecentDiveLog';
 
 const OnboardingNavigator: React.FC = () => {
   const user = useAppSelector(selectUser);
@@ -46,6 +47,10 @@ const OnboardingNavigator: React.FC = () => {
         component={MeasurementType}
       />
       <OnboardingStack.Screen name="ActivityType" component={ActivityType} />
+      <OnboardingStack.Screen
+        name="AddRecentDiveLog"
+        component={AddRecentDiveLog}
+      />
     </OnboardingStack.Navigator>
   );
 };

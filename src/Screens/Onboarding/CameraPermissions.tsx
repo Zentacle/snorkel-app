@@ -110,7 +110,7 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
             x: 1.06,
             y: 1.2,
           }}>
-          <Icon name="camera-outline" size={40} />
+          <Icon name="camera-outline" size={40} color="white" />
         </GradientCircle>
         <View style={styles.descriptionContainer}>
           <Text style={styles.descriptionMainText}>

@@ -17,6 +17,7 @@ export type OnboardingStackParamList = {
   LocationPermissions: undefined;
   MeasurementType: undefined;
   ActivityType: undefined;
+  AddRecentDiveLog: undefined;
 };
 
 export type ExploreStackParamList = {

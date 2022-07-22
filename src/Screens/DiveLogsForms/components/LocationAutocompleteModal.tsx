@@ -130,7 +130,11 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
   const _keyExtractor = (item: any) => item.url;
 
   return (
-    <Modal visible={isVisible} onRequestClose={closeModal} style={styles.modal}>
+    <Modal
+      visible={isVisible}
+      onRequestClose={closeModal}
+      animationType="slide"
+      style={styles.modal}>
       <SafeAreaView style={styles.container}>
         <View style={styles.searchContainer}>
           <Icon
