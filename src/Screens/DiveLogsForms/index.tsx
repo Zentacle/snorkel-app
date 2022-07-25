@@ -200,8 +200,8 @@ const SimpleDiveLogsForms: FunctionComponent<
     location: undefined,
     // @ts-ignore
     // images: [],
-    ...passedInLog,
     dive_shop: undefined,
+    ...passedInLog,
   };
 
   React.useEffect(() => {

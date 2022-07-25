@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,6 @@ import {
   Pressable,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import MUIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import IOIcon from 'react-native-vector-icons/Ionicons';
 import { Form, Field } from 'react-final-form';
 import validate from 'validate.js';
@@ -26,8 +25,6 @@ import type {
 import GradientCircle from '_components/ui/GradientCircle';
 import ActivityImage from '_assets/Activity.png';
 import GradientText from '_components/ui/GradientText';
-import { useAppDispatch } from '_redux/hooks';
-import { updateSettings } from '_redux/slices/settings';
 import LocationAutocompleteModal from '_screens/DiveLogsForms/components/LocationAutocompleteModal';
 import SimpleFormDiveLocation from '_screens/DiveLogsForms/components/SimpleFormDiveLocation';
 import UnavailableLocationBox from '_screens/DiveLogsForms/components/UnavailableLocationBox';
@@ -36,13 +33,29 @@ import Button from '_components/ui/Buttons/Button';
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').width;
 
-type AddRecentDiveLogProps = CompositeNavigationProp<
+type AddRecentDiveLogNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<OnboardingStackParamList, 'AddRecentDiveLog'>,
   NativeStackNavigationProp<RootStackParamList>
 >;
 
-const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = () => {
-  const dispatch = useAppDispatch();
+interface AddRecentDiveLogProps {
+  navigation: AddRecentDiveLogNavigationProps;
+}
+
+interface InitialValues {
+  location:
+    | {
+        lat: number;
+        lng: number;
+        desc: string;
+      }
+    | null
+    | undefined;
+}
+
+const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
+  navigation,
+}) => {
   const { t } = useTranslation();
 
   const [autocompleteModalOpen, toggleAutocompleteModal] =
@@ -58,8 +71,19 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = () => {
 
   const constraints = {};
 
-  const initialValues = {
-    dive_shop: undefined,
+  const initialValues: InitialValues = {
+    location: undefined,
+  };
+
+  const navigateToDiveLogForm = (values: InitialValues) => {
+    navigation.navigate('App', {
+      screen: 'LogsForm',
+      params: {
+        diveLogs: {
+          location: values.location,
+        },
+      },
+    });
   };
 
   return (
@@ -68,11 +92,7 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = () => {
         validate={values => validate(values, constraints)}
         onSubmit={() => {}}
         initialValues={initialValues}
-        // mutators={{
-        //   ...arrayMutators,
-        // }}
-        // keepDirtyOnReinitialize
-        render={({ values, form }) => {
+        render={({ values }) => {
           const isValidLocation = !!(
             values.location &&
             values.location.lat &&
@@ -175,7 +195,7 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = () => {
               </View>
               <View style={styles.footer}>
                 <Button
-                  // onPress={handleCameraPermissions}
+                  onPress={() => navigateToDiveLogForm(values as InitialValues)}
                   gradient
                   gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
                   gradientLocations={[0.01, 1, 1]}
@@ -191,7 +211,7 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = () => {
                     container: styles.buttonContainer,
                     text: styles.buttonText,
                   }}>
-                  {t('ENABLE')}
+                  Log Dive
                 </Button>
               </View>
             </>
