@@ -86,6 +86,12 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
     });
   };
 
+  const navigateToApp = () => {
+    navigation.navigate('App', {
+      screen: 'Explore',
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Form
@@ -102,7 +108,7 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
           return (
             <>
               <View style={{ flex: 1 }}>
-                <TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={navigateToApp}>
                   <View style={styles.skipContainer}>
                     <Text style={styles.skipText}>{t('SKIP')}</Text>
                   </View>

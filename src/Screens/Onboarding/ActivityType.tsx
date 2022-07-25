@@ -55,10 +55,8 @@ const ActivityType: FunctionComponent<ActivityTypeProps> = ({ navigation }) => {
     },
   ];
 
-  const navigateToApp = () => {
-    navigation.navigate('App', {
-      screen: 'Explore',
-    });
+  const navigateToRecentDiveLogForm = () => {
+    navigation.navigate('AddRecentDiveLog');
   };
 
   const submitForm = (val: string) => {
@@ -67,12 +65,12 @@ const ActivityType: FunctionComponent<ActivityTypeProps> = ({ navigation }) => {
         activityType: val,
       }),
     );
-    navigateToApp();
+    navigateToRecentDiveLogForm();
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableWithoutFeedback onPress={navigateToApp}>
+      <TouchableWithoutFeedback onPress={navigateToRecentDiveLogForm}>
         <View style={styles.skipContainer}>
           <Text style={styles.skipText}>{t('SKIP')}</Text>
         </View>
