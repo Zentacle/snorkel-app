@@ -141,7 +141,7 @@ const AppTabsNavigator: React.FC<AppTabsNavigatorProps> = ({ navigation }) => {
             title: t('LOGS'),
             tabBarIcon: ({ focused }) => (
               <Image
-                style={styles.tabIcon}
+                style={[styles.tabIcon, { width: 37 }]}
                 source={focused ? LogsActive : Logs}
               />
             ),
@@ -192,8 +192,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   tabIcon: {
-    height: 30,
-    width: 30,
+    height: 35,
+    width: 35,
   },
 });
 
