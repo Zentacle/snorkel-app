@@ -38,9 +38,7 @@ import type {
   GoogleAuthReturn,
   AppleAuthReturn,
 } from './utils/interfaces';
-import {
-  LoginResponse,
-} from '_utils/interfaces/data/user';
+import { LoginResponse } from '_utils/interfaces/data/user';
 
 import { isBelowHeightThreshold, HEIGHT } from '_utils/constants';
 import GradientText from '_components/ui/GradientText';
@@ -188,9 +186,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
             if (googleRegister.fulfilled.match(response)) {
               if (userPreviouslyFilledOnBoardingData) {
                 navigateToCameraPermissions();
-              } else if (
-                (response.payload as LoginResponse).user.username
-              ) {
+              } else if ((response.payload as LoginResponse).user.username) {
                 navigateToCameraPermissions();
               } else {
                 navigateToOnBoarding();
@@ -222,9 +218,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
             if (appleRegister.fulfilled.match(response)) {
               if (userPreviouslyFilledOnBoardingData) {
                 navigateToApp();
-              } else if (
-                (response.payload as LoginResponse).user.username
-              ) {
+              } else if ((response.payload as LoginResponse).user.username) {
                 navigateToCameraPermissions();
               } else {
                 navigateToOnBoarding();
