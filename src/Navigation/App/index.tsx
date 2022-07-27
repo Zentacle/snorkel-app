@@ -88,7 +88,7 @@ const AppTabsNavigator: React.FC<AppTabsNavigatorProps> = ({ navigation }) => {
         }}>
         <AppTabs.Screen
           options={{
-            title: t('EXPLORE'),
+            title: 'Home',
             tabBarIcon: ({ focused }) => (
               <Image
                 style={styles.tabIcon}
