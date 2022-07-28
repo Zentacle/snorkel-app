@@ -28,7 +28,7 @@ import { handleFetchDiveSites } from '_redux/slices/dive-sites';
 import {
   autoAuth,
   selectLoggedInState,
-  selectUser,
+  // selectUser,
   selectAutoAuthLoadingState,
   getCurrentUser,
   handleCheckExistingUser,
@@ -65,14 +65,14 @@ const Navigator: React.FC = () => {
 
   const loadingState = useAppSelector(selectAutoAuthLoadingState);
   const loggedInState = useAppSelector(selectLoggedInState);
-  const user = useAppSelector(selectUser);
-  const userHasUsername = user && user.username;
-  const userHasProfilePic = user && user.profile_pic;
+  // const user = useAppSelector(selectUser);
+  // const userHasUsername = user && user.username;
+  // const userHasProfilePic = user && user.profile_pic;
 
   // assume user has filled onBoarding if username and profile_pic exist
-  const userPreviouslyFilledOnBoardingData = !!(
-    userHasUsername && userHasProfilePic
-  );
+  // const userPreviouslyFilledOnBoardingData = !!(
+  //   userHasUsername && userHasProfilePic
+  // );
 
   React.useEffect(() => {
     const subscription = AppState.addEventListener('change', nextAppState => {
@@ -125,13 +125,7 @@ const Navigator: React.FC = () => {
   return (
     <NavigationContainer linking={linking}>
       <Stack.Navigator
-        initialRouteName={
-          loggedInState
-            ? userPreviouslyFilledOnBoardingData
-              ? 'App'
-              : 'OnBoarding'
-            : 'Auth'
-        }
+        initialRouteName={loggedInState ? 'App' : 'Auth'}
         screenOptions={{
           headerShown: false,
         }}>
