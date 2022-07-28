@@ -18,7 +18,7 @@ import SearchInput from '_components/ui/SearchInput';
 import DiveSite from './components/DiveSite';
 import DiveBuddy from './components/DiveBuddy';
 // import DiveShop from './components/DiveShop';
-import ProUpsell from '_components/reusables/ProUpsell';
+import ProUpsell from '_components/reusables/pro-upsell/ProUpsellButton';
 import { useAppDispatch, useAppSelector } from '_redux/hooks';
 import {
   handleFetchDiveSites,
