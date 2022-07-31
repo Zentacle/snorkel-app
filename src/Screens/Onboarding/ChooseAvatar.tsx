@@ -25,7 +25,11 @@ import { useAppSelector } from '_redux/hooks';
 import { selectSettings } from '_redux/slices/settings';
 
 import Button from '_components/ui/Buttons/Button';
-import { selectUser, selectAuthToken } from '_redux/slices/user';
+import {
+  selectUser,
+  selectAuthToken,
+  selectAuthType,
+} from '_redux/slices/user';
 import ImageFormComponent from '_components/ui/ImageFormComponent';
 import { handleUploadProfilePic } from '_redux/slices/user/api';
 import { FormImages } from '_utils/interfaces/data/logs';
@@ -50,6 +54,7 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
   const settings = useAppSelector(selectSettings);
   const user = useAppSelector(selectUser);
   const authToken = useAppSelector(selectAuthToken);
+  const authType = useAppSelector(selectAuthType);
   const { t } = useTranslation();
   const navigateBack = () => {
     props.navigation.goBack();
@@ -65,46 +70,48 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
     });
   };
 
-  const navigateToSettings = () => {
-    props.navigation.navigate('OnBoarding', {
-      screen: 'MeasurementType',
-    });
+  const navigateToMeasurementType = () => {
+    props.navigation.navigate('MeasurementType');
   };
 
   const handleContinuePress = async () => {
-    if (Platform.OS === 'ios') {
-      const locationAlways = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
-      const locationWhenInUse = await check(
-        PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
-      );
-
-      if (
-        locationAlways === RESULTS.GRANTED ||
-        locationWhenInUse === RESULTS.GRANTED
-      ) {
-        // navigate straight to app if not loggged in or if user has settings filled out
-        // else navigate to settings
-        if (!user || (user && settings.activityType)) {
-          navigateToApp();
-        } else {
-          navigateToSettings();
-        }
-      } else {
-        navigateToLovationPermissions();
-      }
+    if (authType === 'register') {
+      navigateToLovationPermissions();
     } else {
-      const fineLocation = await check(
-        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-      );
+      if (Platform.OS === 'ios') {
+        const locationAlways = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
+        const locationWhenInUse = await check(
+          PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+        );
 
-      if (fineLocation === RESULTS.GRANTED) {
-        if (settings.activityType) {
-          navigateToApp();
+        if (
+          locationAlways === RESULTS.GRANTED ||
+          locationWhenInUse === RESULTS.GRANTED
+        ) {
+          // navigate straight to app if not loggged in or if user has settings filled out
+          // else navigate to settings
+          if (!user || (user && settings.activityType)) {
+            navigateToApp();
+          } else {
+            navigateToMeasurementType();
+          }
         } else {
-          navigateToSettings();
+          navigateToLovationPermissions();
         }
       } else {
-        navigateToLovationPermissions();
+        const fineLocation = await check(
+          PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+        );
+
+        if (fineLocation === RESULTS.GRANTED) {
+          if (settings.activityType) {
+            navigateToApp();
+          } else {
+            navigateToMeasurementType();
+          }
+        } else {
+          navigateToLovationPermissions();
+        }
       }
     }
   };

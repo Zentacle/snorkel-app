@@ -66,7 +66,6 @@ const MeasurementType: FunctionComponent<MeasurementTypeProps> = ({
   ];
 
   const submitForm = async (val: MeasurementUnit) => {
-    console.log('clicked', val);
     await dispatch(
       updateUser({
         unit: val,

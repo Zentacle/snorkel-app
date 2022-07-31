@@ -25,7 +25,8 @@ import type { User } from '_utils/interfaces/data/user';
 import Input from '_components/ui/FormManagementInput';
 import Button from '_components/ui/Buttons/Button';
 import { useAppDispatch, useAppSelector } from '_redux/hooks';
-import { updateUser, selectUser } from '_redux/slices/user';
+import { updateUser, selectUser, selectAuthType } from '_redux/slices/user';
+import { check, PERMISSIONS, RESULTS } from 'react-native-permissions';
 
 const HEIGHT = Dimensions.get('window').width;
 
@@ -46,15 +47,52 @@ const ChooseUserName: FunctionComponent<ChooseUserNameProps> = props => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const user = useAppSelector(selectUser);
+  const authType = useAppSelector(selectAuthType);
 
   const navigateToCameraPermissions = () => {
     props.navigation.navigate('CameraPermissions');
   };
 
+  const navigateToChooseAvatar = () => {
+    props.navigation.navigate('ChooseAvatar');
+  };
+
+  const navigateToApp = () => {
+    props.navigation.navigate('App', {
+      screen: 'Explore',
+    });
+  };
+
   const submitForm = async (values: User) => {
     const response = await dispatch(updateUser(values));
     if (updateUser.fulfilled.match(response)) {
-      navigateToCameraPermissions();
+      if (Platform.OS === 'ios') {
+        const camera_permissions = await check(PERMISSIONS.IOS.CAMERA);
+        if (authType === 'register') {
+          navigateToCameraPermissions();
+        } else if (!user?.profile_pic) {
+          if (camera_permissions === RESULTS.GRANTED) {
+            navigateToChooseAvatar();
+          } else {
+            navigateToCameraPermissions();
+          }
+        } else {
+          navigateToApp();
+        }
+      } else {
+        const camera_permissions = await check(PERMISSIONS.ANDROID.CAMERA);
+        if (authType === 'register') {
+          navigateToCameraPermissions();
+        } else if (!user?.profile_pic) {
+          if (camera_permissions === RESULTS.GRANTED) {
+            navigateToChooseAvatar();
+          } else {
+            navigateToCameraPermissions();
+          }
+        } else {
+          navigateToApp();
+        }
+      }
     } else {
       return {
         [FORM_ERROR]:

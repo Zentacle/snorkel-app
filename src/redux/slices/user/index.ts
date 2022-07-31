@@ -32,6 +32,7 @@ interface UserState {
   refresh_token: string | null;
   autoAuthLoading: boolean;
   existing_user: boolean;
+  type: 'login' | 'register' | null;
 }
 
 const initialState: UserState = {
@@ -45,6 +46,7 @@ const initialState: UserState = {
   auth_token: null,
   refresh_token: null,
   existing_user: false,
+  type: null,
 };
 
 export const handleCheckExistingUser = createAsyncThunk(
@@ -228,6 +230,7 @@ export const userSlice = createSlice({
       state.active_user = null;
       state.auth_token = null;
       state.refresh_token = null;
+      state.type = null;
     },
   },
   extraReducers: builder => {
@@ -249,6 +252,7 @@ export const userSlice = createSlice({
         state.auth_token = action.payload.data.auth_token;
         state.existing_user = true;
         state.refresh_token = action.payload.data.refresh_token;
+        state.type = 'login';
       })
       .addCase(registerUser.pending, state => {
         state.loading = true;
@@ -267,6 +271,7 @@ export const userSlice = createSlice({
         state.auth_token = action.payload.data.auth_token;
         state.existing_user = true;
         state.refresh_token = action.payload.data.refresh_token;
+        state.type = 'register';
       })
       .addCase(autoAuth.pending, state => {
         state.autoAuthLoading = true;
@@ -372,6 +377,7 @@ export const selectAutoAuthLoadingState = (state: RootState) =>
 export const selectAuthToken = (state: RootState) => state.user.auth_token;
 export const selectExistingUser = (state: RootState) =>
   state.user.existing_user;
+export const selectAuthType = (state: RootState) => state.user.type;
 
 export const logoutUser = (): AppThunk => async (dispatch, _getState) => {
   try {
