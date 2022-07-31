@@ -13,6 +13,7 @@ import {
 } from './api';
 import { User } from '_utils/interfaces/data/user';
 import { AppThunk, RootState } from '../../store';
+import { setAmplitudeUserId } from '_utils/functions/amplitude';
 
 const ACTIVE_USER = 'active_user';
 const AUTH_TOKEN = 'auth_token';
@@ -166,6 +167,7 @@ export const getCurrentUser = createAsyncThunk(
       thunkApi.dispatch(logout());
       return thunkApi.rejectWithValue('unable to fetch the current user');
     }
+    setAmplitudeUserId(response.id!);
 
     await setStorage(response, response.access_token);
     return response;
