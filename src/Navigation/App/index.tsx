@@ -192,8 +192,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   tabIcon: {
-    height: 35,
-    width: 35,
+    height: 24,
+    width: 24,
   },
 });
 
