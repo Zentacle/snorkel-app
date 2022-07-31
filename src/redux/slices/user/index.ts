@@ -72,7 +72,7 @@ export const loginUser = createAsyncThunk(
   async (user: User, thunkApi) => {
     const response = await handleLogin(user);
 
-    if (!response.data) {
+    if (!(response.data && response.data.auth_token)) {
       return thunkApi.rejectWithValue(response.msg);
     }
 
@@ -93,7 +93,7 @@ export const registerUser = createAsyncThunk(
   'user/register',
   async (user: User, thunkApi) => {
     const response = await handleRegister(user);
-    if (!response.data.auth_token) {
+    if (!(response.data && response.data.auth_token)) {
       return thunkApi.rejectWithValue(response.msg);
     }
 
@@ -177,7 +177,7 @@ export const googleRegister = createAsyncThunk(
   async (body: { credential: string }, thunkApi) => {
     const response = await handleGoogleregister(body);
 
-    if (!response.data.auth_token) {
+    if (!(response.data && response.data.auth_token)) {
       return thunkApi.rejectWithValue('Unable to register with Google');
     }
 
@@ -201,7 +201,7 @@ export const appleRegister = createAsyncThunk(
   async (body: AppleAuthReturn, thunkApi) => {
     const response = await handleAppleregister(body);
 
-    if (!response.data.auth_token) {
+    if (!(response.data && response.data.auth_token)) {
       return thunkApi.rejectWithValue('Unable to register with Apple');
     }
 
