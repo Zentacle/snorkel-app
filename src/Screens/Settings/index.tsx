@@ -12,7 +12,6 @@ import MUIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from 'react-i18next';
 import config from 'react-native-config';
 
-// import GradientBox from '_components/ui/GradientBox';
 import Button from '_components/ui/Buttons/Button';
 
 import { usePages } from './utils';
@@ -112,29 +111,6 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
       <ScrollView
         style={styles.contentContainer}
         showsVerticalScrollIndicator={false}>
-        {/* <View style={styles.subscriptionContainer}>
-          <GradientBox
-            style={styles.subscriptionBox}
-            gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-            gradientLocations={[0, 1, 1]}
-            start={{
-              x: 0,
-              y: 0.9,
-            }}
-            end={{
-              x: 1.06,
-              y: 3.4,
-            }}>
-            <View style={styles.subscriptionTextContainer}>
-              <Text style={styles.subscriptionMainText}>
-                {t('PREMIUM_MEMBERSHIP')}
-              </Text>
-              <Text style={styles.subscriptionSubtext}>
-                {t('UPGRADE_FOR_MORE')}
-              </Text>
-            </View>
-          </GradientBox>
-        </View> */}
         {!!user && (
           <View style={styles.pagesSectionContainer}>
             <Text style={styles.pagesLabel}>{t('ACCOUNT')}</Text>
@@ -235,25 +211,6 @@ const styles = StyleSheet.create({
   },
   subscriptionContainer: {
     marginVertical: isBelowHeightThreshold ? 10 : 20,
-  },
-  subscriptionBox: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-  },
-  subscriptionTextContainer: {},
-  subscriptionMainText: {
-    textAlign: 'left',
-    color: 'white',
-    fontWeight: '700',
-    fontSize: 17,
-    marginBottom: 5,
-  },
-  subscriptionSubtext: {
-    textAlign: 'left',
-    color: 'white',
-    fontSize: 15,
   },
   pagesSectionContainer: {
     marginTop: isBelowHeightThreshold ? 10 : 15,

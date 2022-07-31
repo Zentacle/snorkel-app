@@ -9,7 +9,7 @@ import {
   Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
+import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -20,7 +20,7 @@ import type {
   OnboardingStackParamList,
 } from '_utils/interfaces';
 import { useAppSelector } from '_redux/hooks';
-import { selectUser } from '_redux/slices/user';
+import { selectAuthType, selectUser } from '_redux/slices/user';
 import { sendEvent } from '_utils/functions/amplitude';
 
 import GradientCircle from '_components/ui/GradientCircle';
@@ -42,6 +42,7 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
 }) => {
   const { t } = useTranslation();
   const user = useAppSelector(selectUser);
+  const authType = useAppSelector(selectAuthType);
   const navigateToAvatar = () => {
     navigation.navigate('ChooseAvatar');
   };
@@ -49,6 +50,12 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
   const navigateToLocationPermissions = () => {
     navigation.navigate('OnBoarding', {
       screen: 'LocationPermissions',
+    });
+  };
+
+  const navigateToApp = () => {
+    navigation.navigate('App', {
+      screen: 'Explore',
     });
   };
 
@@ -63,32 +70,55 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
   const handleCameraPermissions = async () => {
     try {
       if (Platform.OS === 'android') {
-        request(PERMISSIONS.ANDROID.CAMERA).then(result => {
-          if (result === RESULTS.GRANTED) {
+        const permissionsCamera = await request(PERMISSIONS.ANDROID.CAMERA);
+        if (authType === 'register') {
+          navigateToAvatar();
+        } else {
+          if (permissionsCamera === RESULTS.GRANTED) {
             if (user && !user.profile_pic) {
               navigateToAvatar();
             } else {
-              navigateToLocationPermissions();
+              const locationPermission = await check(
+                PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+              );
+
+              if (locationPermission === RESULTS.GRANTED) {
+                navigateToApp();
+              } else {
+                navigateToLocationPermissions();
+              }
             }
           } else {
             navigateToLocationPermissions();
           }
-        });
+        }
       } else {
         const PermissionsCamera = await request(PERMISSIONS.IOS.CAMERA);
+
         if (PermissionsCamera === RESULTS.GRANTED) {
           const PermissionsMedia = await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
-          if (
-            PermissionsMedia === RESULTS.GRANTED ||
-            PermissionsMedia === RESULTS.UNAVAILABLE
-          ) {
-            if (user && !user.profile_pic) {
-              navigateToAvatar();
-            } else {
-              navigateToAvatar();
-            }
+          if (authType === 'register') {
+            navigateToAvatar();
           } else {
-            navigateToLocationPermissions();
+            if (
+              PermissionsMedia === RESULTS.GRANTED ||
+              PermissionsMedia === RESULTS.UNAVAILABLE
+            ) {
+              if (user && !user?.profile_pic) {
+                navigateToAvatar();
+              } else {
+                const locationPermission = await check(
+                  PERMISSIONS.IOS.LOCATION_ALWAYS,
+                );
+                if (locationPermission === RESULTS.GRANTED) {
+                  navigateToApp();
+                } else {
+                  navigateToLocationPermissions();
+                }
+              }
+            } else {
+              navigateToLocationPermissions();
+            }
           }
         }
       }
@@ -100,8 +130,8 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
   React.useEffect(() => {
     sendEvent('page_view', {
       screen: 'onboarding__camera',
-    })
-  }, [])
+    });
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>

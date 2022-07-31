@@ -8,7 +8,7 @@ import {
   Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
+import { PERMISSIONS, request } from 'react-native-permissions';
 import { useTranslation } from 'react-i18next';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -19,7 +19,8 @@ import type {
   OnboardingStackParamList,
 } from '_utils/interfaces';
 import { useAppSelector } from '_redux/hooks';
-import { selectUser } from '_redux/slices/user';
+import { selectAuthType, selectUser } from '_redux/slices/user';
+import { selectSettings } from '_redux/slices/settings';
 import { sendEvent } from '_utils/functions/amplitude';
 
 import GradientCircle from '_components/ui/GradientCircle';
@@ -41,6 +42,9 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
 }) => {
   const { t } = useTranslation();
   const user = useAppSelector(selectUser);
+  const authType = useAppSelector(selectAuthType);
+  const settings = useAppSelector(selectSettings);
+
   const navigateToMeasurementType = () => {
     navigation.navigate('MeasurementType');
   };
@@ -54,30 +58,34 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
   React.useEffect(() => {
     sendEvent('page_view', {
       screen: 'onboarding__location',
-    })
-  }, [])
+    });
+  }, []);
 
   const handleLocationPermissions = async () => {
     try {
       if (Platform.OS === 'android') {
-        const PermissionsLocationAndroid = await request(
-          PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-        );
+        await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
 
-        if (PermissionsLocationAndroid === RESULTS.GRANTED) {
-          user ? navigateToMeasurementType() : navigateToApp();
+        if (authType === 'register') {
+          navigateToMeasurementType();
         } else {
-          user ? navigateToMeasurementType() : navigateToApp();
+          if (!user || (user && settings.activityType)) {
+            navigateToApp();
+          } else {
+            navigateToMeasurementType();
+          }
         }
       } else {
-        const PermissionsLocationIOS = await request(
-          PERMISSIONS.IOS.LOCATION_ALWAYS,
-        );
+        await request(PERMISSIONS.IOS.LOCATION_ALWAYS);
 
-        if (PermissionsLocationIOS === RESULTS.GRANTED) {
-          user ? navigateToMeasurementType() : navigateToApp();
+        if (authType === 'register') {
+          navigateToMeasurementType();
         } else {
-          user ? navigateToMeasurementType() : navigateToApp();
+          if (!user || (user && settings.activityType)) {
+            navigateToApp();
+          } else {
+            navigateToMeasurementType();
+          }
         }
       }
     } catch (err) {
