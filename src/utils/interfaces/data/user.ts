@@ -33,7 +33,7 @@ export interface AuthData {
 }
 
 export interface LoginResponse {
-  data: AuthData;
+  data?: AuthData;
   user: User;
   msg?: string; // failed login
   cookie_header: string;

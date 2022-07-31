@@ -17,6 +17,7 @@ import type {
   RootStackParamList,
   OnboardingStackParamList,
 } from '_utils/interfaces';
+import { sendEvent } from '_utils/functions/amplitude';
 
 import GradientCircle from '_components/ui/GradientCircle';
 import GradientBox from '_components/ui/GradientBox';
@@ -73,6 +74,12 @@ const MeasurementType: FunctionComponent<MeasurementTypeProps> = ({
     );
     navigateToActivityType();
   };
+
+  React.useEffect(() => {
+    sendEvent('page_view', {
+      screen: 'onboarding__unit',
+    })
+  }, [])
 
   return (
     <SafeAreaView style={styles.container}>

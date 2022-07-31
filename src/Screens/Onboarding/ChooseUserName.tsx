@@ -21,6 +21,7 @@ import type {
   OnboardingStackParamList,
 } from '_utils/interfaces';
 import type { User } from '_utils/interfaces/data/user';
+import { sendEvent } from '_utils/functions/amplitude';
 
 import Input from '_components/ui/FormManagementInput';
 import Button from '_components/ui/Buttons/Button';
@@ -102,6 +103,12 @@ const ChooseUserName: FunctionComponent<ChooseUserNameProps> = props => {
       };
     }
   };
+
+  React.useEffect(() => {
+    sendEvent('page_view', {
+      screen: 'onboarding__username',
+    })
+  }, [])
 
   const constraints = {
     username: {

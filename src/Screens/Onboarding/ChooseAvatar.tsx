@@ -33,6 +33,7 @@ import {
 import ImageFormComponent from '_components/ui/ImageFormComponent';
 import { handleUploadProfilePic } from '_redux/slices/user/api';
 import { FormImages } from '_utils/interfaces/data/logs';
+import { sendEvent } from '_utils/functions/amplitude';
 
 const HEIGHT = Dimensions.get('window').width;
 
@@ -124,6 +125,12 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
 
     await handleContinuePress();
   };
+
+  React.useEffect(() => {
+    sendEvent('page_view', {
+      screen: 'onboarding__avatar',
+    })
+  }, [])
 
   const initialValues: InitialValues = {
     profile_pic: user?.profile_pic || '',

@@ -13,6 +13,7 @@ import {
 } from './api';
 import { User } from '_utils/interfaces/data/user';
 import { AppThunk, RootState } from '../../store';
+import { setAmplitudeUserId } from '_utils/functions/amplitude';
 
 const ACTIVE_USER = 'active_user';
 const AUTH_TOKEN = 'auth_token';
@@ -74,7 +75,7 @@ export const loginUser = createAsyncThunk(
   async (user: User, thunkApi) => {
     const response = await handleLogin(user);
 
-    if (!response.data) {
+    if (!(response.data && response.data.auth_token)) {
       return thunkApi.rejectWithValue(response.msg);
     }
 
@@ -95,7 +96,7 @@ export const registerUser = createAsyncThunk(
   'user/register',
   async (user: User, thunkApi) => {
     const response = await handleRegister(user);
-    if (!response.data.auth_token) {
+    if (!(response.data && response.data.auth_token)) {
       return thunkApi.rejectWithValue(response.msg);
     }
 
@@ -168,6 +169,7 @@ export const getCurrentUser = createAsyncThunk(
       thunkApi.dispatch(logout());
       return thunkApi.rejectWithValue('unable to fetch the current user');
     }
+    setAmplitudeUserId(response.id!);
 
     await setStorage(response, response.access_token);
     return response;
@@ -179,7 +181,7 @@ export const googleRegister = createAsyncThunk(
   async (body: { credential: string }, thunkApi) => {
     const response = await handleGoogleregister(body);
 
-    if (!response.data.auth_token) {
+    if (!(response.data && response.data.auth_token)) {
       return thunkApi.rejectWithValue('Unable to register with Google');
     }
 
@@ -203,7 +205,7 @@ export const appleRegister = createAsyncThunk(
   async (body: AppleAuthReturn, thunkApi) => {
     const response = await handleAppleregister(body);
 
-    if (!response.data.auth_token) {
+    if (!(response.data && response.data.auth_token)) {
       return thunkApi.rejectWithValue('Unable to register with Apple');
     }
 
