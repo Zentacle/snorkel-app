@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableWithoutFeedback,
+  KeyboardAvoidingView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Form } from 'react-final-form';
@@ -250,7 +251,7 @@ const SimpleDiveLogsForms: FunctionComponent<
   return (
     <Form
       validate={values => validate(values, constraints)}
-      onSubmit={() => {}}
+      onSubmit={() => { }}
       initialValues={initialValues}
       mutators={{
         ...arrayMutators,
@@ -259,112 +260,117 @@ const SimpleDiveLogsForms: FunctionComponent<
       render={({ values, form }) => {
         formRef.current = form;
         return (
-          <SafeAreaView style={styles.container}>
-            <ExitModal
-              subtext={t('diveLogForm.EXIT_MODAL_SUBTEXT_FOR_SIMPLE_FORM')}
-              isVisible={modalIsOpen}
-              modalAction={modalAction}
-              modalCancelAction={modalCancelAction}
-              actionText={t('EXIT')}
-              cancelActionText={t('CANCEL')}
-            />
-            <ScrollView
-              nestedScrollEnabled
-              keyboardShouldPersistTaps="handled"
-              style={[
-                styles.scrollContainer,
-                page !== stages.length && {
-                  marginBottom: isBelowHeightThreshold ? 100 : 80,
-                },
-              ]}>
-              <View style={styles.headerContainer}>
-                {page > 0 && page !== stages.length ? (
-                  <TouchableWithoutFeedback onPress={previous}>
+          <KeyboardAvoidingView
+            behavior='padding'
+            style={styles.container}
+          >
+            <SafeAreaView style={styles.container}>
+              <ExitModal
+                subtext={t('diveLogForm.EXIT_MODAL_SUBTEXT_FOR_SIMPLE_FORM')}
+                isVisible={modalIsOpen}
+                modalAction={modalAction}
+                modalCancelAction={modalCancelAction}
+                actionText={t('EXIT')}
+                cancelActionText={t('CANCEL')}
+              />
+              <ScrollView
+                nestedScrollEnabled
+                keyboardShouldPersistTaps="handled"
+                style={[
+                  styles.scrollContainer,
+                  page !== stages.length && {
+                    marginBottom: isBelowHeightThreshold ? 100 : 80,
+                  },
+                ]}>
+                <View style={styles.headerContainer}>
+                  {page > 0 && page !== stages.length ? (
+                    <TouchableWithoutFeedback onPress={previous}>
+                      <Icon
+                        name="chevron-back-outline"
+                        color="black"
+                        size={30}
+                        style={styles.prev}
+                      />
+                    </TouchableWithoutFeedback>
+                  ) : (
+                    <View style={styles.prevPlaceholder} />
+                  )}
+                  <View />
+                  <Text
+                    style={[styles.header, page === 0 && { marginLeft: -20 }]}>
+                    {page === stages.length
+                      ? t('DIVE_LOG_CREATED')
+                      : t('CREATE_DIVE_LOG')}
+                  </Text>
+                  <TouchableWithoutFeedback
+                    onPress={
+                      page === stages.length ? () => goToLog() : openModal
+                    }>
                     <Icon
-                      name="chevron-back-outline"
+                      style={styles.back}
+                      name="close-outline"
                       color="black"
                       size={30}
-                      style={styles.prev}
                     />
                   </TouchableWithoutFeedback>
-                ) : (
-                  <View style={styles.prevPlaceholder} />
-                )}
-                <View />
-                <Text
-                  style={[styles.header, page === 0 && { marginLeft: -20 }]}>
-                  {page === stages.length
-                    ? t('DIVE_LOG_CREATED')
-                    : t('CREATE_DIVE_LOG')}
-                </Text>
-                <TouchableWithoutFeedback
-                  onPress={
-                    page === stages.length ? () => goToLog() : openModal
-                  }>
-                  <Icon
-                    style={styles.back}
-                    name="close-outline"
-                    color="black"
-                    size={30}
+                </View>
+
+                {!!(page !== stages.length) && (
+                  <FormStates
+                    goToPage={(target: number) => {
+                      canMoveToNextPage(target - 1, values as InitialValues)
+                        ? goToPage(target)
+                        : () => { };
+                    }}
+                    activeId={page}
+                    stages={stages}
                   />
-                </TouchableWithoutFeedback>
-              </View>
+                )}
 
-              {!!(page !== stages.length) && (
-                <FormStates
-                  goToPage={(target: number) => {
-                    canMoveToNextPage(target - 1, values as InitialValues)
-                      ? goToPage(target)
-                      : () => {};
-                  }}
-                  activeId={page}
-                  stages={stages}
-                />
-              )}
-
-              {page === 0 && (
-                <Location
-                  location={values.location}
-                  dive_shop={values.dive_shop}
-                />
-              )}
-              {page === 1 && <Rating />}
-              {page === 2 && <Notes />}
-              {/* {page === 3 && <Notes />} */}
-              {page === 3 && (
-                <Review
-                  navigateToAdvancedDiveForm={() =>
-                    handleNavigateToAdvancedDiveLog(values as InitialValues)
-                  }
-                  formValues={values as InitialValues}
-                  id={savedDiveLogId}
-                />
-              )}
-            </ScrollView>
-            {page === stages.length ? (
-              <View />
-            ) : (
-              <Footer
-                next={
-                  page === stages.length - 1
-                    ? () => {
+                {page === 0 && (
+                  <Location
+                    location={values.location}
+                    dive_shop={values.dive_shop}
+                  />
+                )}
+                {page === 1 && <Rating />}
+                {page === 2 && <Notes />}
+                {/* {page === 3 && <Notes />} */}
+                {page === 3 && (
+                  <Review
+                    navigateToAdvancedDiveForm={() =>
+                      handleNavigateToAdvancedDiveLog(values as InitialValues)
+                    }
+                    formValues={values as InitialValues}
+                    id={savedDiveLogId}
+                  />
+                )}
+              </ScrollView>
+              {page === stages.length ? (
+                <View />
+              ) : (
+                <Footer
+                  next={
+                    page === stages.length - 1
+                      ? () => {
                         // submit then navigate to review
                         submitLog(values as InitialValues, next);
                         // next();
                       }
-                    : next
-                }
-                disabled={!canMoveToNextPage(page, values as InitialValues)}
-                text={
-                  page === stages.length - 1
-                    ? formSubmitting
-                      ? t('COMPLETING')
-                      : t('COMPLETE')
-                    : t('CONTINUE')
-                }
-              />
-            )}
-          </SafeAreaView>
+                      : next
+                  }
+                  disabled={!canMoveToNextPage(page, values as InitialValues)}
+                  text={
+                    page === stages.length - 1
+                      ? formSubmitting
+                        ? t('COMPLETING')
+                        : t('COMPLETE')
+                      : t('CONTINUE')
+                  }
+                />
+              )}
+            </SafeAreaView>
+          </KeyboardAvoidingView>
         );
       }}
     />
