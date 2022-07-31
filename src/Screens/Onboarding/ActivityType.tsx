@@ -23,6 +23,7 @@ import ActivityImage from '_assets/Activity.png';
 import GradientText from '_components/ui/GradientText';
 import { useAppDispatch } from '_redux/hooks';
 import { updateSettings } from '_redux/slices/settings';
+import { sendEvent } from '_utils/functions/amplitude';
 
 const WIDTH = Dimensions.get('window').width;
 
@@ -67,6 +68,12 @@ const ActivityType: FunctionComponent<ActivityTypeProps> = ({ navigation }) => {
     );
     navigateToRecentDiveLogForm();
   };
+
+  React.useEffect(() => {
+    sendEvent('page_view', {
+      screen: 'onboarding__activity',
+    })
+  }, [])
 
   return (
     <SafeAreaView style={styles.container}>

@@ -20,6 +20,7 @@ import type {
 } from '_utils/interfaces';
 import { useAppSelector } from '_redux/hooks';
 import { selectUser } from '_redux/slices/user';
+import { sendEvent } from '_utils/functions/amplitude';
 
 import GradientCircle from '_components/ui/GradientCircle';
 import Button from '_components/ui/Buttons/Button';
@@ -49,6 +50,12 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
       screen: 'Explore',
     });
   };
+
+  React.useEffect(() => {
+    sendEvent('page_view', {
+      screen: 'onboarding__location',
+    })
+  }, [])
 
   const handleLocationPermissions = async () => {
     try {

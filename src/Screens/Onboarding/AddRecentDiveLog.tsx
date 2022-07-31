@@ -29,6 +29,7 @@ import LocationAutocompleteModal from '_screens/DiveLogsForms/components/Locatio
 import SimpleFormDiveLocation from '_screens/DiveLogsForms/components/SimpleFormDiveLocation';
 import UnavailableLocationBox from '_screens/DiveLogsForms/components/UnavailableLocationBox';
 import Button from '_components/ui/Buttons/Button';
+import { sendEvent } from '_utils/functions/amplitude';
 
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').width;
@@ -92,6 +93,12 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
     });
   };
 
+  React.useEffect(() => {
+    sendEvent('page_view', {
+      screen: 'onboarding__dive_log',
+    })
+  }, [])
+
   return (
     <SafeAreaView style={styles.container}>
       <Form
@@ -108,7 +115,12 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
           return (
             <>
               <View style={{ flex: 1 }}>
-                <TouchableWithoutFeedback onPress={navigateToApp}>
+                <TouchableWithoutFeedback onPress={() => {
+                  sendEvent('skip_onboarding', {
+                    screen: 'dive_log',
+                  })
+                  navigateToApp()
+                }}>
                   <View style={styles.skipContainer}>
                     <Text style={styles.skipText}>{t('SKIP')}</Text>
                   </View>
