@@ -67,7 +67,7 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = () => {
       <View style={styles.mainBody}>
         <Image source={DiveSiteImage} style={styles.image} />
         <View style={styles.introTextContainer}>
-          <Text style={styles.mainText}>Your first week's one us</Text>
+          <Text style={styles.mainText}>Your first week is on us</Text>
           <Text style={styles.subText}>
             Get 1 week free, then only $5/month
           </Text>
