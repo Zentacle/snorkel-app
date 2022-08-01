@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import DefaultHeroBackground from 'assets/default_hero_background.png';
 import { WIDTH } from '_utils/constants';
 import Button from '_components/ui/Buttons/Button';
+import { sendEvent } from '_utils/functions/amplitude';
 
 import type { FunctionComponent } from 'react';
 
@@ -55,6 +56,12 @@ const features: Features[] = [
 interface ProUpsellDisplayProps {}
 
 const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = () => {
+  React.useEffect(() => {
+    sendEvent('page_view', {
+      screen: 'pro_upsell',
+    });
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.mainBody}>
