@@ -13,11 +13,11 @@ import LocationPermissions from '_screens/Onboarding/LocationPermissions';
 import MeasurementType from '_screens/Onboarding/MeasurementType';
 import ActivityType from '_screens/Onboarding/ActivityType';
 import AddRecentDiveLog from '_screens/Onboarding/AddRecentDiveLog';
+import ProUpsellDisplay from '_components/reusables/pro-upsell/ProUpsellDisplay';
 
 const OnboardingNavigator: React.FC = () => {
   const user = useAppSelector(selectUser);
   const userHasUsername = user && user.username;
-  const userHasProfilePic = user && user.profile_pic;
 
   const OnboardingStack =
     createNativeStackNavigator<OnboardingStackParamList>();
@@ -50,6 +50,10 @@ const OnboardingNavigator: React.FC = () => {
       <OnboardingStack.Screen
         name="AddRecentDiveLog"
         component={AddRecentDiveLog}
+      />
+      <OnboardingStack.Screen
+        name="ProUpsellDisplay"
+        component={ProUpsellDisplay}
       />
     </OnboardingStack.Navigator>
   );

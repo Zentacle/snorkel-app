@@ -15,6 +15,7 @@ export interface User {
   access_token?: string;
   unit?: MeasurementUnit;
   wallet_address?: string;
+  has_pro: boolean;
 }
 
 export interface CookieHeaders {
