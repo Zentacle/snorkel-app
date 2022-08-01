@@ -10,14 +10,19 @@ import type { FunctionComponent } from 'react';
 
 interface ProUpsellProps {
   style?: ViewStyle;
+  handlePress?: () => void;
 }
 
-const ProUpsell: FunctionComponent<ProUpsellProps> = ({ style }) => {
+const ProUpsell: FunctionComponent<ProUpsellProps> = ({
+  style,
+  handlePress,
+}) => {
   const { t } = useTranslation();
 
   return (
     <View style={[styles.container, style]}>
       <Pressable
+        onPress={handlePress}
         style={props => ({
           opacity: props.pressed ? 0.8 : 1,
         })}>

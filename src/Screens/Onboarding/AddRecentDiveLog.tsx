@@ -31,6 +31,8 @@ import UnavailableLocationBox from '_screens/DiveLogsForms/components/Unavailabl
 import Button from '_components/ui/Buttons/Button';
 import { sendEvent } from '_utils/functions/amplitude';
 
+import type { FormApi } from 'final-form';
+
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').width;
 
@@ -43,21 +45,24 @@ interface AddRecentDiveLogProps {
   navigation: AddRecentDiveLogNavigationProps;
 }
 
+type Location =
+  | {
+      lat: number;
+      lng: number;
+      desc: string;
+    }
+  | null
+  | undefined;
+
 interface InitialValues {
-  location:
-    | {
-        lat: number;
-        lng: number;
-        desc: string;
-      }
-    | null
-    | undefined;
+  location: Location;
 }
 
 const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
   navigation,
 }) => {
   const { t } = useTranslation();
+  let formRef = React.useRef<FormApi>();
 
   const [autocompleteModalOpen, toggleAutocompleteModal] =
     React.useState(false);
@@ -76,19 +81,19 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
     location: undefined,
   };
 
-  const navigateToDiveLogForm = (values: InitialValues) => {
-    navigation.navigate('App', {
+  const navigateToDiveLogForm = (location: Location) => {
+    navigation.push('App', {
       screen: 'LogsForm',
       params: {
         diveLogs: {
-          location: values.location,
+          location,
         },
       },
     });
   };
 
   const navigateToApp = () => {
-    navigation.navigate('App', {
+    navigation.push('App', {
       screen: 'Explore',
     });
   };
@@ -96,8 +101,28 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
   React.useEffect(() => {
     sendEvent('page_view', {
       screen: 'onboarding__dive_log',
-    })
-  }, [])
+    });
+  }, []);
+
+  React.useEffect(() => {
+    const location = formRef.current?.getFieldState('location')?.value;
+    const isValidLocation = !!(
+      location &&
+      location.lat &&
+      location.lng &&
+      location.desc
+    );
+    if (isValidLocation) {
+      navigateToDiveLogForm(location);
+    }
+  });
+
+  const handleSkip = () => {
+    sendEvent('skip_onboarding', {
+      screen: 'dive_log',
+    });
+    navigateToApp();
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -105,22 +130,19 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
         validate={values => validate(values, constraints)}
         onSubmit={() => {}}
         initialValues={initialValues}
-        render={({ values }) => {
+        render={({ values, form }) => {
+          formRef.current = form;
           const isValidLocation = !!(
             values.location &&
             values.location.lat &&
             values.location.lng &&
             values.location.desc
           );
+
           return (
             <>
               <View style={{ flex: 1 }}>
-                <TouchableWithoutFeedback onPress={() => {
-                  sendEvent('skip_onboarding', {
-                    screen: 'dive_log',
-                  })
-                  navigateToApp()
-                }}>
+                <TouchableWithoutFeedback onPress={handleSkip}>
                   <View style={styles.skipContainer}>
                     <Text style={styles.skipText}>{t('SKIP')}</Text>
                   </View>
@@ -213,7 +235,9 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
               </View>
               <View style={styles.footer}>
                 <Button
-                  onPress={() => navigateToDiveLogForm(values as InitialValues)}
+                  onPress={() =>
+                    navigateToDiveLogForm(values.location as Location)
+                  }
                   gradient
                   gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
                   gradientLocations={[0.01, 1, 1]}
