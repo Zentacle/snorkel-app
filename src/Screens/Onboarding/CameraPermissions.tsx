@@ -129,9 +129,9 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
 
   React.useEffect(() => {
     sendEvent('page_view', {
-      screen: 'onboarding__camera',
-    });
-  }, []);
+      type: 'onboarding__camera',
+    })
+  }, [])
 
   return (
     <SafeAreaView style={styles.container}>

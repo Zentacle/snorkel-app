@@ -71,7 +71,7 @@ const ActivityType: FunctionComponent<ActivityTypeProps> = ({ navigation }) => {
 
   React.useEffect(() => {
     sendEvent('page_view', {
-      screen: 'onboarding__activity',
+      type: 'onboarding__activity',
     })
   }, [])
 

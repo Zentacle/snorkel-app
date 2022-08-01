@@ -100,7 +100,7 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
 
   React.useEffect(() => {
     sendEvent('page_view', {
-      screen: 'onboarding__dive_log',
+      type: 'onboarding__dive_log',
     });
   }, []);
 
