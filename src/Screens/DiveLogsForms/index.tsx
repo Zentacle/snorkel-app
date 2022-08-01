@@ -251,7 +251,7 @@ const SimpleDiveLogsForms: FunctionComponent<
   return (
     <Form
       validate={values => validate(values, constraints)}
-      onSubmit={() => { }}
+      onSubmit={() => {}}
       initialValues={initialValues}
       mutators={{
         ...arrayMutators,
@@ -260,10 +260,7 @@ const SimpleDiveLogsForms: FunctionComponent<
       render={({ values, form }) => {
         formRef.current = form;
         return (
-          <KeyboardAvoidingView
-            behavior='padding'
-            style={styles.container}
-          >
+          <KeyboardAvoidingView behavior="padding" style={styles.container}>
             <SafeAreaView style={styles.container}>
               <ExitModal
                 subtext={t('diveLogForm.EXIT_MODAL_SUBTEXT_FOR_SIMPLE_FORM')}
@@ -320,7 +317,7 @@ const SimpleDiveLogsForms: FunctionComponent<
                     goToPage={(target: number) => {
                       canMoveToNextPage(target - 1, values as InitialValues)
                         ? goToPage(target)
-                        : () => { };
+                        : () => {};
                     }}
                     activeId={page}
                     stages={stages}
@@ -353,10 +350,10 @@ const SimpleDiveLogsForms: FunctionComponent<
                   next={
                     page === stages.length - 1
                       ? () => {
-                        // submit then navigate to review
-                        submitLog(values as InitialValues, next);
-                        // next();
-                      }
+                          // submit then navigate to review
+                          submitLog(values as InitialValues, next);
+                          // next();
+                        }
                       : next
                   }
                   disabled={!canMoveToNextPage(page, values as InitialValues)}

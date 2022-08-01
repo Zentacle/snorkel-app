@@ -59,10 +59,6 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
     });
   };
 
-  const navigateToProUpsell = () => {
-    navigation.navigate('ProUpsellDisplay');
-  };
-
   const handleButtonPress = async () => {
     if (user && !user.profile_pic) {
       navigateToAvatar();
@@ -109,19 +105,19 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
               PermissionsMedia === RESULTS.UNAVAILABLE
             ) {
               if (user && !user?.profile_pic) {
-                navigateToProUpsell();
+                navigateToAvatar();
               } else {
                 const locationPermission = await check(
                   PERMISSIONS.IOS.LOCATION_ALWAYS,
                 );
                 if (locationPermission === RESULTS.GRANTED) {
-                  navigateToProUpsell();
+                  navigateToApp();
                 } else {
-                  navigateToProUpsell();
+                  navigateToLocationPermissions();
                 }
               }
             } else {
-              navigateToProUpsell();
+              navigateToLocationPermissions();
             }
           }
         }

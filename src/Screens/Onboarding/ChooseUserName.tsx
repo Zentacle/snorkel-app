@@ -107,8 +107,8 @@ const ChooseUserName: FunctionComponent<ChooseUserNameProps> = props => {
   React.useEffect(() => {
     sendEvent('page_view', {
       screen: 'onboarding__username',
-    })
-  }, [])
+    });
+  }, []);
 
   const constraints = {
     username: {
