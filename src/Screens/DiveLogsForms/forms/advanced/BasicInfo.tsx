@@ -163,14 +163,12 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
             <View style={styles.mapTextContainer}>
               <View style={styles.mapTextItem}>
                 <View style={styles.mapTextImageContainer}>
-                  {/* <Image source={LogImage} /> */}
                   <Snorkel width={15} />
                 </View>
                 <Text style={styles.mapText}>{values.location?.desc}</Text>
               </View>
               <View style={styles.mapTextItem}>
                 <View style={styles.mapTextImageContainer}>
-                  {/* <Image source={LocationImage} /> */}
                   <Location width={15} />
                 </View>
                 <Text style={styles.mapText}>
@@ -190,7 +188,6 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
         </View>
       </View>
 
-      {/* {!!user?.admin && ( */}
       <View style={styles.diveShopContainer}>
         <View style={styles.diveShopLabelContainer}>
           <Text style={styles.headerLabel}>{t('DIVE_SHOP')}</Text>
@@ -249,7 +246,6 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
           </Pressable>
         )}
       </View>
-      {/* )} */}
 
       <View style={styles.mediaContainer}>
         <FieldArray name="images" component={ImagePickerArray} />
