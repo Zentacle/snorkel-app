@@ -57,9 +57,9 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
 
   React.useEffect(() => {
     sendEvent('page_view', {
-      screen: 'onboarding__location',
-    });
-  }, []);
+      type: 'onboarding__location',
+    })
+  }, [])
 
   const handleLocationPermissions = async () => {
     try {

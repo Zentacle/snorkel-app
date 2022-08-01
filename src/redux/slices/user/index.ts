@@ -101,7 +101,7 @@ export const registerUser = createAsyncThunk(
     }
 
     await setStorage(
-      null,
+      response.user,
       response.data.auth_token,
       response.data.refresh_token,
     );
@@ -169,7 +169,6 @@ export const getCurrentUser = createAsyncThunk(
       thunkApi.dispatch(logout());
       return thunkApi.rejectWithValue('unable to fetch the current user');
     }
-    setAmplitudeUserId(response.id!);
 
     await setStorage(response, response.access_token);
     return response;
@@ -418,6 +417,9 @@ const setStorage = async (
   refresh_token?: string,
 ) => {
   if (user) {
+    if (user.id) {
+      setAmplitudeUserId(user.id);
+    }
     await AsyncStorage.setItem(ACTIVE_USER, JSON.stringify(user));
   }
   if (token) {

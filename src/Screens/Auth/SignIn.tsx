@@ -236,7 +236,6 @@ const SignIn: FunctionComponent<SignInProps> = props => {
   const submitForm = async (values: User) => {
     const response = await dispatch(loginUser(values));
     if (loginUser.fulfilled.match(response)) {
-      setAmplitudeUserId(response.payload.user.id!);
       // assume user has filled onBoarding if username and profile_pic exist
       const userPreviouslyFilledOnBoardingData = !!(
         response.payload.user.username && response.payload.user.profile_pic

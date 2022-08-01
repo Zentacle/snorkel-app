@@ -128,7 +128,7 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
 
   React.useEffect(() => {
     sendEvent('page_view', {
-      screen: 'onboarding__avatar',
+      type: 'onboarding__avatar',
     })
   }, [])
 

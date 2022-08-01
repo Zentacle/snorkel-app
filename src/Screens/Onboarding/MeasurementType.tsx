@@ -77,7 +77,7 @@ const MeasurementType: FunctionComponent<MeasurementTypeProps> = ({
 
   React.useEffect(() => {
     sendEvent('page_view', {
-      screen: 'onboarding__unit',
+      type: 'onboarding__unit',
     })
   }, [])
 
