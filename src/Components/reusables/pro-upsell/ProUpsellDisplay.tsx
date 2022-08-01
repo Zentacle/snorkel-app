@@ -1,16 +1,9 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Dimensions,
-  SafeAreaView,
-} from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import DiveSiteImage from 'assets/DiveSite.jpg';
-import { WIDTH, isBelowHeightThreshold } from '_utils/constants';
+import DefaultHeroBackground from 'assets/default_hero_background.png';
+import { WIDTH } from '_utils/constants';
 import Button from '_components/ui/Buttons/Button';
 
 import type { FunctionComponent } from 'react';
@@ -65,7 +58,7 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = () => {
   return (
     <View style={styles.container}>
       <View style={styles.mainBody}>
-        <Image source={DiveSiteImage} style={styles.image} />
+        <Image source={DefaultHeroBackground} style={styles.image} />
         <View style={styles.introTextContainer}>
           <Text style={styles.mainText}>Your first week is on us</Text>
           <Text style={styles.subText}>
