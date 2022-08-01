@@ -83,7 +83,7 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
   };
 
   const navigateToDiveLogForm = (location: Location) => {
-    navigation.navigate('App', {
+    navigation.push('App', {
       screen: 'LogsForm',
       params: {
         diveLogs: {
