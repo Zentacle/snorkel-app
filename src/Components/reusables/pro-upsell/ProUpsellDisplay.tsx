@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Dimensions,
+  Pressable,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import DefaultHeroBackground from 'assets/default_hero_background.png';
@@ -53,9 +60,17 @@ const features: Features[] = [
   },
 ];
 
-interface ProUpsellDisplayProps {}
+interface ProUpsellDisplayProps {
+  isModal?: boolean;
+  closeAction?: () => void;
+  closeText?: string;
+}
 
-const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = () => {
+const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
+  isModal,
+  closeAction,
+  closeText,
+}) => {
   React.useEffect(() => {
     sendEvent('page_view', {
       screen: 'pro_upsell',
@@ -64,6 +79,21 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = () => {
 
   return (
     <View style={styles.container}>
+      {isModal ? (
+        <Icon
+          name="close"
+          size={30}
+          color="#fff"
+          style={styles.closeIcon}
+          onPress={closeAction}
+        />
+      ) : (
+        <Pressable style={styles.closeTextContainer} onPress={closeAction}>
+          <View>
+            <Text style={styles.closeText}>{closeText || 'Skip'}</Text>
+          </View>
+        </Pressable>
+      )}
       <View style={styles.mainBody}>
         <Image source={DefaultHeroBackground} style={styles.image} />
         <View style={styles.introTextContainer}>
@@ -272,6 +302,22 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 30,
     textAlign: 'center',
+  },
+  closeIcon: {
+    position: 'absolute',
+    top: 40,
+    right: 25,
+    zIndex: 1,
+  },
+  closeTextContainer: {
+    position: 'absolute',
+    top: 40,
+    right: 25,
+    zIndex: 1,
+  },
+  closeText: {
+    color: 'white',
+    fontSize: 16,
   },
 });
 

@@ -8,7 +8,6 @@ import {
   Image,
   TouchableWithoutFeedback,
   Pressable,
-  ActivityIndicator,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import IOIcon from 'react-native-vector-icons/Ionicons';

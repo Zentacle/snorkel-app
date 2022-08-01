@@ -43,7 +43,7 @@ import type { CompositeNavigationProp } from '@react-navigation/native';
 import type { FunctionComponent } from 'react';
 import type { RootStackParamList, AppTabsParamList } from '_utils/interfaces';
 // import type { ImageSourcePropType } from 'react-native';
-
+import ProUpsellModal from '_components/reusables/pro-upsell/ProUpsellModal';
 import BeachLoading from '_components/reusables/Placeholders/BeachLoading/index';
 // import Newest from '_assets/tags/newest.png';
 // import Popular from '_assets/tags/popular.png';
@@ -80,6 +80,16 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   const [autocompleteModalOpen, toggleAutocompleteModal] =
     React.useState(false);
   const authToken = useAppSelector(selectAuthToken);
+
+  const [proUpsellModalOpen, toggleProUpsellModal] = React.useState(false);
+
+  const openProUpsellModal = () => {
+    toggleProUpsellModal(true);
+  };
+
+  const closeProUpsellModal = () => {
+    toggleProUpsellModal(false);
+  };
 
   // const tags: TagInterface[] = [
   //   {
@@ -248,6 +258,10 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <ProUpsellModal
+        isVisible={proUpsellModalOpen}
+        closeModal={closeProUpsellModal}
+      />
       <ScrollView
         style={styles.contentContainer}
         nestedScrollEnabled
@@ -384,7 +398,9 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
           </ScrollView>
         </View> */}
 
-        <ProUpsell />
+        {user && !user.has_pro && (
+          <ProUpsell handlePress={openProUpsellModal} />
+        )}
 
         <View style={styles.diveSites}>
           <View style={styles.diveSitesTextContainer}>
