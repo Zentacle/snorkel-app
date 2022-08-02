@@ -67,31 +67,31 @@ const ChooseUserName: FunctionComponent<ChooseUserNameProps> = props => {
   const submitForm = async (values: User) => {
     const response = await dispatch(updateUser(values));
     if (updateUser.fulfilled.match(response)) {
-      if (Platform.OS === 'ios') {
-        const camera_permissions = await check(PERMISSIONS.IOS.CAMERA);
-        if (authType === 'register') {
-          navigateToCameraPermissions();
-        } else if (!user?.profile_pic) {
-          if (camera_permissions === RESULTS.GRANTED) {
-            navigateToChooseAvatar();
-          } else {
-            navigateToCameraPermissions();
-          }
-        } else {
-          navigateToApp();
-        }
+      if (authType === 'register') {
+        navigateToCameraPermissions();
       } else {
-        const camera_permissions = await check(PERMISSIONS.ANDROID.CAMERA);
-        if (authType === 'register') {
-          navigateToCameraPermissions();
-        } else if (!user?.profile_pic) {
-          if (camera_permissions === RESULTS.GRANTED) {
-            navigateToChooseAvatar();
+        if (Platform.OS === 'ios') {
+          const camera_permissions = await check(PERMISSIONS.IOS.CAMERA);
+          if (!user?.profile_pic) {
+            if (camera_permissions === RESULTS.GRANTED) {
+              navigateToChooseAvatar();
+            } else {
+              navigateToCameraPermissions();
+            }
           } else {
-            navigateToCameraPermissions();
+            navigateToApp();
           }
         } else {
-          navigateToApp();
+          const camera_permissions = await check(PERMISSIONS.ANDROID.CAMERA);
+          if (!user?.profile_pic) {
+            if (camera_permissions === RESULTS.GRANTED) {
+              navigateToChooseAvatar();
+            } else {
+              navigateToCameraPermissions();
+            }
+          } else {
+            navigateToApp();
+          }
         }
       }
     } else {
@@ -107,7 +107,7 @@ const ChooseUserName: FunctionComponent<ChooseUserNameProps> = props => {
   React.useEffect(() => {
     sendEvent('page_view', {
       type: 'onboarding__username',
-    })
+    });
   }, []);
 
   const constraints = {

@@ -58,29 +58,25 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
   React.useEffect(() => {
     sendEvent('page_view', {
       type: 'onboarding__location',
-    })
-  }, [])
+    });
+  }, []);
 
   const handleLocationPermissions = async () => {
     try {
-      if (Platform.OS === 'android') {
-        await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+      if (authType === 'register') {
+        navigateToMeasurementType();
+      } else {
+        if (Platform.OS === 'android') {
+          await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
 
-        if (authType === 'register') {
-          navigateToMeasurementType();
-        } else {
           if (!user || (user && settings.activityType)) {
             navigateToApp();
           } else {
             navigateToMeasurementType();
           }
-        }
-      } else {
-        await request(PERMISSIONS.IOS.LOCATION_ALWAYS);
-
-        if (authType === 'register') {
-          navigateToMeasurementType();
         } else {
+          await request(PERMISSIONS.IOS.LOCATION_ALWAYS);
+
           if (!user || (user && settings.activityType)) {
             navigateToApp();
           } else {

@@ -129,8 +129,8 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
   React.useEffect(() => {
     sendEvent('page_view', {
       type: 'onboarding__avatar',
-    })
-  }, [])
+    });
+  }, []);
 
   const initialValues: InitialValues = {
     profile_pic: user?.profile_pic || '',
