@@ -35,6 +35,7 @@ import type {
   GoogleAuthReturn,
   AppleAuthReturn,
 } from './utils/interfaces';
+import { sendEvent } from '_utils/functions/amplitude';
 
 type EmailSignUpScreenNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<AuthtackParamList, 'EmailSignUp'>,
@@ -97,6 +98,9 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
             );
 
             if (googleRegister.fulfilled.match(response)) {
+              sendEvent('register_success', {
+                method: 'google',
+              });
               navigateToOnboarding();
             }
           }
@@ -117,6 +121,9 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
             );
 
             if (appleRegister.fulfilled.match(response)) {
+              sendEvent('register_success', {
+                method: 'apple',
+              });
               navigateToOnboarding();
             }
           }
@@ -130,6 +137,9 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
   const submitForm = async (values: User) => {
     const response = await dispatch(registerUser(values));
     if (registerUser.fulfilled.match(response)) {
+      sendEvent('register_success', {
+        method: 'email',
+      });
       navigateToOnboarding();
     } else {
       return {
