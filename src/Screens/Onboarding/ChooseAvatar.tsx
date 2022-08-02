@@ -62,17 +62,17 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
   };
 
   const navigateToLovationPermissions = () => {
-    props.navigation.navigate('LocationPermissions');
+    props.navigation.push('LocationPermissions');
   };
 
   const navigateToApp = () => {
-    props.navigation.navigate('App', {
+    props.navigation.push('App', {
       screen: 'Explore',
     });
   };
 
   const navigateToMeasurementType = () => {
-    props.navigation.navigate('MeasurementType');
+    props.navigation.push('MeasurementType');
   };
 
   const handleContinuePress = async () => {

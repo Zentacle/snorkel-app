@@ -47,7 +47,7 @@ const MeasurementType: FunctionComponent<MeasurementTypeProps> = ({
 
   const { t } = useTranslation();
   const navigateToActivityType = () => {
-    navigation.navigate('ActivityType');
+    navigation.push('ActivityType');
   };
 
   interface MeasurementTypesForView {
@@ -78,8 +78,8 @@ const MeasurementType: FunctionComponent<MeasurementTypeProps> = ({
   React.useEffect(() => {
     sendEvent('page_view', {
       type: 'onboarding__unit',
-    })
-  }, [])
+    });
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>

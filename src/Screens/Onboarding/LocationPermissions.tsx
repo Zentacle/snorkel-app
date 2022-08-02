@@ -46,11 +46,11 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
   const settings = useAppSelector(selectSettings);
 
   const navigateToMeasurementType = () => {
-    navigation.navigate('MeasurementType');
+    navigation.push('MeasurementType');
   };
 
   const navigateToApp = () => {
-    navigation.navigate('App', {
+    navigation.push('App', {
       screen: 'Explore',
     });
   };

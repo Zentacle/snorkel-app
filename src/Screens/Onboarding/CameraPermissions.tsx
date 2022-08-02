@@ -44,17 +44,17 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
   const user = useAppSelector(selectUser);
   const authType = useAppSelector(selectAuthType);
   const navigateToAvatar = () => {
-    navigation.navigate('ChooseAvatar');
+    navigation.push('ChooseAvatar');
   };
 
   const navigateToLocationPermissions = () => {
-    navigation.navigate('OnBoarding', {
+    navigation.push('OnBoarding', {
       screen: 'LocationPermissions',
     });
   };
 
   const navigateToApp = () => {
-    navigation.navigate('App', {
+    navigation.push('App', {
       screen: 'Explore',
     });
   };

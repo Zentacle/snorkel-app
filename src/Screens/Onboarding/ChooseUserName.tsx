@@ -51,15 +51,15 @@ const ChooseUserName: FunctionComponent<ChooseUserNameProps> = props => {
   const authType = useAppSelector(selectAuthType);
 
   const navigateToCameraPermissions = () => {
-    props.navigation.navigate('CameraPermissions');
+    props.navigation.push('CameraPermissions');
   };
 
   const navigateToChooseAvatar = () => {
-    props.navigation.navigate('ChooseAvatar');
+    props.navigation.push('ChooseAvatar');
   };
 
   const navigateToApp = () => {
-    props.navigation.navigate('App', {
+    props.navigation.push('App', {
       screen: 'Explore',
     });
   };
