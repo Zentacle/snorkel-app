@@ -1,3 +1,4 @@
+import { AuthData } from 'src/utils/interfaces/data/user';
 import { AppleAuthReturn } from 'src/screens/Auth/utils/interfaces';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -253,7 +254,7 @@ export const userSlice = createSlice({
         state.auth_token = action.payload.data.auth_token;
         state.existing_user = true;
         state.refresh_token = action.payload.data.refresh_token;
-        state.type = 'login';
+        state.type = action.payload.data.type;
       })
       .addCase(registerUser.pending, state => {
         state.loading = true;
@@ -272,7 +273,7 @@ export const userSlice = createSlice({
         state.auth_token = action.payload.data.auth_token;
         state.existing_user = true;
         state.refresh_token = action.payload.data.refresh_token;
-        state.type = 'register';
+        state.type = action.payload.data.type;
       })
       .addCase(autoAuth.pending, state => {
         state.autoAuthLoading = true;
@@ -319,6 +320,7 @@ export const userSlice = createSlice({
         state.active_user = action.payload.user;
         state.existing_user = true;
         state.refresh_token = action.payload.data.refresh_token as string;
+        state.type = action.payload.data.type;
       })
       .addCase(getCurrentUser.fulfilled, (state, action) => {
         state.loading = false;
@@ -359,6 +361,7 @@ export const userSlice = createSlice({
         state.active_user = action.payload.user;
         state.existing_user = true;
         state.refresh_token = action.payload.data.refresh_token as string;
+        state.type = action.payload.data.type;
       })
       .addCase(fetchUserWalletAddress.fulfilled, (state, action) => {
         (state.active_user as User).wallet_address = action.payload.address;

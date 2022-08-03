@@ -15,7 +15,7 @@ export interface User {
   access_token?: string;
   unit?: MeasurementUnit;
   wallet_address?: string;
-  has_pro: boolean;
+  has_pro?: boolean;
 }
 
 export interface CookieHeaders {
@@ -31,10 +31,11 @@ export interface AuthData {
   refresh_token: string;
   message: string;
   status: string;
+  type: 'login' | 'register' | null;
 }
 
 export interface LoginResponse {
-  data?: AuthData;
+  data: AuthData;
   user: User;
   msg?: string; // failed login
   cookie_header: string;

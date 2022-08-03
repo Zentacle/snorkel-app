@@ -43,6 +43,7 @@ import { LoginResponse } from '_utils/interfaces/data/user';
 
 import { isBelowHeightThreshold, HEIGHT } from '_utils/constants';
 import GradientText from '_components/ui/GradientText';
+import { sendEvent } from '_utils/functions/amplitude';
 
 type LandingScreenNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<AuthtackParamList, 'SignIn'>,
@@ -185,6 +186,9 @@ const SignIn: FunctionComponent<SignInProps> = props => {
             );
 
             if (googleRegister.fulfilled.match(response)) {
+              sendEvent('login_success', {
+                method: 'google',
+              });
               if (userPreviouslyFilledOnBoardingData) {
                 navigateToCameraPermissions();
               } else if ((response.payload as LoginResponse).user.username) {
@@ -218,6 +222,9 @@ const SignIn: FunctionComponent<SignInProps> = props => {
 
             if (appleRegister.fulfilled.match(response)) {
               if (userPreviouslyFilledOnBoardingData) {
+                sendEvent('login_success', {
+                  method: 'apple',
+                });
                 navigateToApp();
               } else if ((response.payload as LoginResponse).user.username) {
                 navigateToCameraPermissions();
@@ -236,6 +243,9 @@ const SignIn: FunctionComponent<SignInProps> = props => {
   const submitForm = async (values: User) => {
     const response = await dispatch(loginUser(values));
     if (loginUser.fulfilled.match(response)) {
+      sendEvent('login_success', {
+        method: 'email',
+      });
       // assume user has filled onBoarding if username and profile_pic exist
       const userPreviouslyFilledOnBoardingData = !!(
         response.payload.user.username && response.payload.user.profile_pic

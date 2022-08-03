@@ -69,7 +69,7 @@ const Landing: FunctionComponent<LandingProps> = props => {
   };
 
   const navigateToEmailRegister = () => {
-    sendEvent('email_register_begin')
+    sendEvent('email_register_begin');
     props.navigation.navigate('EmailSignUp');
   };
 
@@ -129,8 +129,9 @@ const Landing: FunctionComponent<LandingProps> = props => {
 
   const handleSkip = async () => {
     sendEvent('skip_onboarding', {
-      screen: 'landing'
-    })
+      screen: 'landing',
+    });
+
     const locationPermissions = await checkLocationPermissions();
     if (!locationPermissions) {
       navigateToLocationPermissions();
@@ -144,7 +145,7 @@ const Landing: FunctionComponent<LandingProps> = props => {
     switch (actionButton.name) {
       case 'Google':
         {
-          sendEvent('google_register_begin')
+          sendEvent('google_register_begin');
           const credentialObj = await actionButton.action();
           if ((credentialObj as GoogleAuthReturn)?.credential) {
             const response = await dispatch(
@@ -182,7 +183,7 @@ const Landing: FunctionComponent<LandingProps> = props => {
         break;
       case 'Apple':
         {
-          sendEvent('apple_register_begin')
+          sendEvent('apple_register_begin');
           const credentialObj = await actionButton.action();
           if (credentialObj as AppleAuthReturn) {
             const response = await dispatch(
@@ -220,8 +221,8 @@ const Landing: FunctionComponent<LandingProps> = props => {
   React.useEffect(() => {
     sendEvent('page_view', {
       type: 'landing',
-    })
-  }, [])
+    });
+  }, []);
 
   return (
     <ImageBackground style={styles.backgroundImage} source={CoverImage}>

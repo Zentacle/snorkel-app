@@ -5,7 +5,6 @@ import {
   Text,
   View,
   TouchableWithoutFeedback,
-  Platform,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -19,8 +18,6 @@ import type { CompositeNavigationProp } from '@react-navigation/native';
 import type { FunctionComponent } from 'react';
 import type { RootStackParamList, AuthtackParamList } from '_utils/interfaces';
 import type { User } from '_utils/interfaces/data/user';
-import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
-
 import SMButton from '_components/ui/Buttons/SM-Logins';
 import Button from '_components/ui/Buttons/Button';
 import Input from '_components/ui/FormManagementInput';
@@ -33,12 +30,12 @@ import {
   appleRegister,
 } from '_redux/slices/user';
 import { isBelowHeightThreshold, HEIGHT } from '_utils/constants';
-import { LoginResponse } from '_utils/interfaces/data/user';
 import type {
   ActionButtons,
   GoogleAuthReturn,
   AppleAuthReturn,
 } from './utils/interfaces';
+import { sendEvent } from '_utils/functions/amplitude';
 
 type EmailSignUpScreenNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<AuthtackParamList, 'EmailSignUp'>,
@@ -83,58 +80,10 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
     props.navigation.navigate('SignIn');
   };
 
-  const navigateToApp = () => {
-    props.navigation.navigate('App', {
-      screen: 'Explore',
-    });
-  };
-
-  const navigateToCameraPermissions = () => {
-    props.navigation.navigate('OnBoarding', {
-      screen: 'CameraPermissions',
-    });
-  };
-
   const navigateToOnboarding = () => {
     props.navigation.navigate('OnBoarding', {
       screen: 'ChooseUserName',
     });
-  };
-
-  const navigateToLocationPermissions = () => {
-    props.navigation.navigate('OnBoarding', {
-      screen: 'LocationPermissions',
-    });
-  };
-
-  const checkLocationPermissions = async () => {
-    if (Platform.OS === 'ios') {
-      const locationAlways = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
-      const locationWhenInUse = await check(
-        PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
-      );
-
-      if (
-        locationAlways === RESULTS.GRANTED ||
-        locationWhenInUse === RESULTS.GRANTED
-      ) {
-        // navigate straight to app if not loggged in or if user has settings filled out
-        // else navigate to settings
-        return true;
-      }
-
-      return false;
-    } else {
-      const fineLocation = await check(
-        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-      );
-
-      if (fineLocation === RESULTS.GRANTED) {
-        return true;
-      }
-
-      return false;
-    }
   };
 
   const handleSocialAuth = async (actionButton: ActionButtons) => {
@@ -148,25 +97,11 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
               googleRegister(credentialObj as { credential: string }),
             );
 
-            // assume user has filled onBoarding if username and profile_pic exist
-            const userPreviouslyFilledOnBoardingData = !!(
-              (response.payload as LoginResponse).user.username &&
-              (response.payload as LoginResponse).user.profile_pic
-            );
-
             if (googleRegister.fulfilled.match(response)) {
-              if (userPreviouslyFilledOnBoardingData) {
-                const locationPermissions = await checkLocationPermissions();
-                if (!locationPermissions) {
-                  navigateToLocationPermissions();
-                } else {
-                  navigateToApp();
-                }
-              } else if ((response.payload as LoginResponse).user.username) {
-                navigateToCameraPermissions();
-              } else {
-                navigateToOnboarding();
-              }
+              sendEvent('register_success', {
+                method: 'google',
+              });
+              navigateToOnboarding();
             }
           }
         }
@@ -185,25 +120,11 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
               appleRegister(credentialObj as AppleAuthReturn),
             );
 
-            // assume user has filled onBoarding if username and profile_pic exist
-            const userPreviouslyFilledOnBoardingData = !!(
-              (response.payload as LoginResponse).user.username &&
-              (response.payload as LoginResponse).user.profile_pic
-            );
-
             if (appleRegister.fulfilled.match(response)) {
-              if (userPreviouslyFilledOnBoardingData) {
-                const locationPermissions = await checkLocationPermissions();
-                if (!locationPermissions) {
-                  navigateToLocationPermissions();
-                } else {
-                  navigateToApp();
-                }
-              } else if ((response.payload as LoginResponse).user.username) {
-                navigateToCameraPermissions();
-              } else {
-                navigateToOnboarding();
-              }
+              sendEvent('register_success', {
+                method: 'apple',
+              });
+              navigateToOnboarding();
             }
           }
         }
@@ -216,6 +137,9 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
   const submitForm = async (values: User) => {
     const response = await dispatch(registerUser(values));
     if (registerUser.fulfilled.match(response)) {
+      sendEvent('register_success', {
+        method: 'email',
+      });
       navigateToOnboarding();
     } else {
       return {

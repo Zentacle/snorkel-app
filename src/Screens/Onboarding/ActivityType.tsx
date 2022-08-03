@@ -57,7 +57,7 @@ const ActivityType: FunctionComponent<ActivityTypeProps> = ({ navigation }) => {
   ];
 
   const navigateToRecentDiveLogForm = () => {
-    navigation.navigate('AddRecentDiveLog');
+    navigation.push('AddRecentDiveLog');
   };
 
   const submitForm = (val: string) => {
@@ -72,8 +72,8 @@ const ActivityType: FunctionComponent<ActivityTypeProps> = ({ navigation }) => {
   React.useEffect(() => {
     sendEvent('page_view', {
       type: 'onboarding__activity',
-    })
-  }, [])
+    });
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>

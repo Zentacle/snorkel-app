@@ -44,23 +44,25 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
   const user = useAppSelector(selectUser);
   const authType = useAppSelector(selectAuthType);
   const navigateToAvatar = () => {
-    navigation.navigate('ChooseAvatar');
+    navigation.push('ChooseAvatar');
   };
 
   const navigateToLocationPermissions = () => {
-    navigation.navigate('OnBoarding', {
+    navigation.push('OnBoarding', {
       screen: 'LocationPermissions',
     });
   };
 
   const navigateToApp = () => {
-    navigation.navigate('App', {
+    navigation.push('App', {
       screen: 'Explore',
     });
   };
 
-  const handleButtonPress = async () => {
-    if (user && !user.profile_pic) {
+  const handleDisableButtonPress = async () => {
+    if (authType === 'register') {
+      navigateToAvatar();
+    } else if (user && !user.profile_pic) {
       navigateToAvatar();
     } else {
       navigateToLocationPermissions();
@@ -69,11 +71,12 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
 
   const handleCameraPermissions = async () => {
     try {
-      if (Platform.OS === 'android') {
-        const permissionsCamera = await request(PERMISSIONS.ANDROID.CAMERA);
-        if (authType === 'register') {
-          navigateToAvatar();
-        } else {
+      if (authType === 'register') {
+        navigateToAvatar();
+      } else {
+        if (Platform.OS === 'android') {
+          const permissionsCamera = await request(PERMISSIONS.ANDROID.CAMERA);
+
           if (permissionsCamera === RESULTS.GRANTED) {
             if (user && !user.profile_pic) {
               navigateToAvatar();
@@ -91,15 +94,14 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
           } else {
             navigateToLocationPermissions();
           }
-        }
-      } else {
-        const PermissionsCamera = await request(PERMISSIONS.IOS.CAMERA);
+        } else {
+          const PermissionsCamera = await request(PERMISSIONS.IOS.CAMERA);
 
-        if (PermissionsCamera === RESULTS.GRANTED) {
-          const PermissionsMedia = await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
-          if (authType === 'register') {
-            navigateToAvatar();
-          } else {
+          if (PermissionsCamera === RESULTS.GRANTED) {
+            const PermissionsMedia = await request(
+              PERMISSIONS.IOS.PHOTO_LIBRARY,
+            );
+
             if (
               PermissionsMedia === RESULTS.GRANTED ||
               PermissionsMedia === RESULTS.UNAVAILABLE
@@ -130,8 +132,8 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
   React.useEffect(() => {
     sendEvent('page_view', {
       type: 'onboarding__camera',
-    })
-  }, [])
+    });
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -179,7 +181,7 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
           {t('ENABLE')}
         </Button>
         <Button
-          onPress={handleButtonPress}
+          onPress={handleDisableButtonPress}
           textGradient
           start={{
             x: 0,
