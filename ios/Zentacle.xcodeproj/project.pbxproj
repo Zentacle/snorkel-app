@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* ZentacleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ZentacleTests.m */; };
 		0E35FE66278F3E8D0080B9BF /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E35FE65278F3E8D0080B9BF /* Launch Screen.storyboard */; };
+		0E7C53F4289B31890021C993 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E7C53F3289B31890021C993 /* StoreKit.framework */; };
 		0E992FA627E9C6DD0043CDB2 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0E992FA527E9C6DD0043CDB2 /* Config.xcconfig */; };
 		0E9C3D25279A4D410020D871 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9C3D24279A4D410020D871 /* File.swift */; };
 		0EAE369A283ABF4E00A2B760 /* Zentacle.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 0E4642132799D6E400EE1D9F /* Zentacle.entitlements */; };
@@ -38,6 +39,7 @@
 		00E356F21AD99517003FC87E /* ZentacleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZentacleTests.m; sourceTree = "<group>"; };
 		0E35FE65278F3E8D0080B9BF /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		0E4642132799D6E400EE1D9F /* Zentacle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Zentacle.entitlements; path = Zentacle/Zentacle.entitlements; sourceTree = "<group>"; };
+		0E7C53F3289B31890021C993 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		0E992FA527E9C6DD0043CDB2 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		0E9C3D24279A4D410020D871 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		0EAE369D283B0F0B00A2B760 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E7C53F4289B31890021C993 /* StoreKit.framework in Frameworks */,
 				0EB1366F28233FA000530DD2 /* AppTrackingTransparency.framework in Frameworks */,
 				6172F2D35A4C3AA820D92908 /* libPods-Zentacle.a in Frameworks */,
 			);
@@ -114,6 +117,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0E7C53F3289B31890021C993 /* StoreKit.framework */,
 				0EB1366D28233F7300530DD2 /* AppTrackingTransparency.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				6423831EA8574132BED9D8CC /* libPods-Zentacle.a */,

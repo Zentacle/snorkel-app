@@ -4,6 +4,7 @@ import { Settings as FBSdkSignin } from 'react-native-fbsdk-next';
 import { Provider } from 'react-redux';
 import config from 'react-native-config';
 import Toast from 'react-native-toast-message';
+import Purchases from 'react-native-purchases';
 
 import './src/validation';
 import './i18n.config';
@@ -11,6 +12,7 @@ import './i18n.config';
 import Navigator from './src/Navigation';
 import store from '_redux/store';
 import { Platform, StatusBar } from 'react-native';
+
 import { toastConfig } from '_utils/functions/toastr';
 
 export default function App() {
@@ -20,8 +22,25 @@ export default function App() {
     GoogleSignin.configure({
       webClientId: config.GOOGLE_CLIENT_ID,
     }); // TODO: add options
+
     // SplashScreen.hide();
+    setUpIAP();
   }, []);
+
+  const setUpIAP = () => {
+    Purchases.setDebugLogsEnabled(true);
+    if (Platform.OS === 'ios') {
+      Purchases.configure(config.REVENUE_CAT_IOS_API_KEY);
+    }
+
+    fetchOfferings();
+  };
+
+  const fetchOfferings = async () => {
+    const offerings = await Purchases.getOfferings();
+    console.log('offerings', offerings);
+  };
+
   return (
     <>
       <Suspense fallback="loading">
