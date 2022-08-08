@@ -39,7 +39,7 @@
           ],
           "productID" : "pro1gb",
           "recurringSubscriptionPeriod" : "P1M",
-          "referenceName" : "Pro (1 GB)",
+          "referenceName" : "Pro",
           "subscriptionGroupID" : "7A3D81C8",
           "type" : "RecurringSubscription"
         }
