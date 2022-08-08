@@ -106,7 +106,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
     if (
       customerInfo.entitlements.active[
         config.REVENUE_CAT_ENTITLEMENT_IDENTIFIER
-      ].isActive
+      ]?.isActive
     ) {
       verifyIsPro(true);
     }

@@ -35,7 +35,7 @@ const features: Features[] = [
     isPro: true,
   },
   {
-    label: 'Reaearch 11k+ dive sites',
+    label: 'Research 11k+ dive sites',
     isFree: true,
     isPro: true,
   },
@@ -79,6 +79,7 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
 }) => {
   const [proPackage, setPackage] = React.useState<PurchasesPackage | null>();
   const [purchaseError, setPurchaseError] = React.useState<string | null>();
+  const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
     sendEvent('page_view', {
@@ -100,13 +101,28 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
 
   const purchasePackage = async () => {
     try {
+      setLoading(true);
+
+      sendEvent('pro__click', {
+        screen: 'pro_upsell',
+      });
+
       await Purchases.purchasePackage(proPackage as PurchasesPackage);
+
+      sendEvent('pro__register', {
+        screen: 'pro_upsell',
+      });
+
       setPurchaseError(null);
       closeAction();
     } catch (err) {
-      setPurchaseError('There was an error completing your purchase');
+      setPurchaseError('There was an error completing your purchase.');
+    } finally {
+      setLoading(false);
     }
   };
+
+  console.log('is loading', loading);
 
   return (
     <View style={styles.container}>
@@ -174,7 +190,7 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
       <View style={styles.footer}>
         <Button
           onPress={purchasePackage}
-          disabled={!proPackage}
+          disabled={!proPackage || loading}
           gradient
           gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
           gradientLocations={[0.01, 1, 1]}
@@ -190,7 +206,7 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
             container: styles.buttonContainer,
             text: styles.buttonText,
           }}>
-          {proPackage ? (
+          {proPackage && !loading ? (
             'Start your free trial'
           ) : (
             <ActivityIndicator size="small" color="#fff" />
