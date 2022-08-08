@@ -32,13 +32,6 @@ export default function App() {
     if (Platform.OS === 'ios') {
       Purchases.configure(config.REVENUE_CAT_IOS_API_KEY);
     }
-
-    fetchOfferings();
-  };
-
-  const fetchOfferings = async () => {
-    const offerings = await Purchases.getOfferings();
-    console.log('offerings', offerings);
   };
 
   return (

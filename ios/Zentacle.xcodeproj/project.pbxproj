@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* ZentacleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ZentacleTests.m */; };
+		0E2E22F928A13E5900B50E5A /* Configuration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 0E2E22F828A13E5900B50E5A /* Configuration.storekit */; };
+		0E2E22FB28A1405700B50E5A /* StoreKitTestCertificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 0E2E22FA28A1405700B50E5A /* StoreKitTestCertificate.cer */; };
 		0E35FE66278F3E8D0080B9BF /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E35FE65278F3E8D0080B9BF /* Launch Screen.storyboard */; };
 		0E7C53F4289B31890021C993 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E7C53F3289B31890021C993 /* StoreKit.framework */; };
 		0E992FA627E9C6DD0043CDB2 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0E992FA527E9C6DD0043CDB2 /* Config.xcconfig */; };
@@ -37,6 +39,8 @@
 		00E356EE1AD99517003FC87E /* ZentacleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZentacleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* ZentacleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZentacleTests.m; sourceTree = "<group>"; };
+		0E2E22F828A13E5900B50E5A /* Configuration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Configuration.storekit; sourceTree = "<group>"; };
+		0E2E22FA28A1405700B50E5A /* StoreKitTestCertificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = StoreKitTestCertificate.cer; sourceTree = "<group>"; };
 		0E35FE65278F3E8D0080B9BF /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		0E4642132799D6E400EE1D9F /* Zentacle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Zentacle.entitlements; path = Zentacle/Zentacle.entitlements; sourceTree = "<group>"; };
 		0E7C53F3289B31890021C993 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -136,6 +140,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				0E2E22F828A13E5900B50E5A /* Configuration.storekit */,
+				0E2E22FA28A1405700B50E5A /* StoreKitTestCertificate.cer */,
 				0E992FA527E9C6DD0043CDB2 /* Config.xcconfig */,
 				0E9C3D24279A4D410020D871 /* File.swift */,
 				0EAE369D283B0F0B00A2B760 /* GoogleService-Info.plist */,
@@ -272,8 +278,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E2E22F928A13E5900B50E5A /* Configuration.storekit in Resources */,
 				0EAE369A283ABF4E00A2B760 /* Zentacle.entitlements in Resources */,
 				0E35FE66278F3E8D0080B9BF /* Launch Screen.storyboard in Resources */,
+				0E2E22FB28A1405700B50E5A /* StoreKitTestCertificate.cer in Resources */,
 				0E992FA627E9C6DD0043CDB2 /* Config.xcconfig in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,

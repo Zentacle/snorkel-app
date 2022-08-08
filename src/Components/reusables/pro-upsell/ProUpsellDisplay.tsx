@@ -6,8 +6,14 @@ import {
   Image,
   Dimensions,
   Pressable,
+  ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Purchases, {
+  PurchasesOfferings,
+  PurchasesPackage,
+} from 'react-native-purchases';
 
 import DefaultHeroBackground from 'assets/default_hero_background.png';
 import { WIDTH } from '_utils/constants';
@@ -62,7 +68,7 @@ const features: Features[] = [
 
 interface ProUpsellDisplayProps {
   isModal?: boolean;
-  closeAction?: () => void;
+  closeAction: () => void;
   closeText?: string;
 }
 
@@ -71,11 +77,36 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
   closeAction,
   closeText,
 }) => {
+  const [proPackage, setPackage] = React.useState<PurchasesPackage | null>();
+  const [purchaseError, setPurchaseError] = React.useState<string | null>();
+
   React.useEffect(() => {
     sendEvent('page_view', {
       screen: 'pro_upsell',
     });
+
+    fetchOfferings();
   }, []);
+
+  const fetchOfferings = async () => {
+    const offerings: PurchasesOfferings = await Purchases.getOfferings();
+    if (
+      offerings.current !== null &&
+      offerings.current.availablePackages.length !== 0
+    ) {
+      setPackage(offerings.current.availablePackages[0]);
+    }
+  };
+
+  const purchasePackage = async () => {
+    try {
+      await Purchases.purchasePackage(proPackage as PurchasesPackage);
+      setPurchaseError(null);
+      closeAction();
+    } catch (err) {
+      setPurchaseError('There was an error completing your purchase');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -94,7 +125,7 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
           </View>
         </Pressable>
       )}
-      <View style={styles.mainBody}>
+      <ScrollView style={styles.mainBody} showsVerticalScrollIndicator={false}>
         <Image source={DefaultHeroBackground} style={styles.image} />
         <View style={styles.introTextContainer}>
           <Text style={styles.mainText}>Your first week is on us</Text>
@@ -139,10 +170,11 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
             ))}
           </View>
         </View>
-      </View>
+      </ScrollView>
       <View style={styles.footer}>
         <Button
-          // onPress={disabled ? emptyFunc : next}
+          onPress={purchasePackage}
+          disabled={!proPackage}
           gradient
           gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
           gradientLocations={[0.01, 1, 1]}
@@ -158,8 +190,15 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
             container: styles.buttonContainer,
             text: styles.buttonText,
           }}>
-          Start your free trial
+          {proPackage ? (
+            'Start your free trial'
+          ) : (
+            <ActivityIndicator size="small" color="#fff" />
+          )}
         </Button>
+        {!!purchaseError && (
+          <Text style={styles.purhaseError}>{purchaseError}</Text>
+        )}
         <Text style={styles.cancelAnyTimeText}>
           Cancel anytime. We&apos;ll send you an email reminder the day before
           your trial ends
@@ -318,6 +357,11 @@ const styles = StyleSheet.create({
   closeText: {
     color: 'white',
     fontSize: 16,
+  },
+  purhaseError: {
+    color: 'red',
+    fontSize: 14,
+    marginVertical: 5,
   },
 });
 
