@@ -11,6 +11,7 @@ import { Form, Field } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
 import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
+import config from 'react-native-config';
 
 import SearchInput from '_components/ui/SearchInput';
 // import Tag from '_components/ui/Tag';
@@ -52,6 +53,7 @@ import AutocompleteModal from '_components/ui/AutocompleteModal';
 
 import { WIDTH, HEIGHT, isBelowWidthThreshold } from '_utils/constants';
 import type { LocationSearchInitialValues } from '_utils/interfaces/data/search';
+import Purchases from 'react-native-purchases';
 
 // interface TagInterface {
 //   name: string;
@@ -82,6 +84,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   const authToken = useAppSelector(selectAuthToken);
 
   const [proUpsellModalOpen, toggleProUpsellModal] = React.useState(false);
+  const [proVerified, verifyIsPro] = React.useState(false);
 
   const openProUpsellModal = () => {
     toggleProUpsellModal(true);
@@ -89,6 +92,30 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
 
   const closeProUpsellModal = () => {
     toggleProUpsellModal(false);
+  };
+
+  React.useEffect(() => {
+    if (user) {
+      checkSubscription();
+    }
+  }, [user]);
+
+  const navigateToWebView = (url: string) => {
+    navigation.navigate('AppWebview', {
+      source: url,
+    });
+  };
+
+  const checkSubscription = async () => {
+    const customerInfo = await Purchases.getCustomerInfo();
+    console.log('customer info', customerInfo);
+    if (
+      customerInfo.entitlements.active[
+        config.REVENUE_CAT_ENTITLEMENT_IDENTIFIER
+      ]?.isActive
+    ) {
+      verifyIsPro(true);
+    }
   };
 
   // const tags: TagInterface[] = [
@@ -261,6 +288,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
       <ProUpsellModal
         isVisible={proUpsellModalOpen}
         closeModal={closeProUpsellModal}
+        navigateToWebView={navigateToWebView}
       />
       <ScrollView
         style={styles.contentContainer}
@@ -398,7 +426,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
           </ScrollView>
         </View> */}
 
-        {user && !user.has_pro && (
+        {!proVerified && !user?.has_pro && (
           <ProUpsell handlePress={openProUpsellModal} />
         )}
 

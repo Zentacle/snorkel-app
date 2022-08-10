@@ -6,13 +6,22 @@ import {
   Image,
   Dimensions,
   Pressable,
+  ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Purchases, {
+  PurchasesOffering,
+  PurchasesOfferings,
+  PurchasesPackage,
+} from 'react-native-purchases';
 
 import DefaultHeroBackground from 'assets/default_hero_background.png';
 import { WIDTH } from '_utils/constants';
 import Button from '_components/ui/Buttons/Button';
 import { sendEvent } from '_utils/functions/amplitude';
+import { useAppDispatch } from '_redux/hooks';
+import { getCurrentUser } from '_redux/slices/user';
 
 import type { FunctionComponent } from 'react';
 
@@ -29,7 +38,7 @@ const features: Features[] = [
     isPro: true,
   },
   {
-    label: 'Reaearch 11k+ dive sites',
+    label: 'Research 11k+ dive sites',
     isFree: true,
     isPro: true,
   },
@@ -62,20 +71,87 @@ const features: Features[] = [
 
 interface ProUpsellDisplayProps {
   isModal?: boolean;
-  closeAction?: () => void;
+  closeAction: () => void;
   closeText?: string;
+  navigateToWebView: (url: string) => void;
 }
 
 const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
   isModal,
   closeAction,
   closeText,
+  navigateToWebView,
 }) => {
+  const [proPackage, setPackage] = React.useState<PurchasesOffering | null>();
+  const [purchaseError, setPurchaseError] = React.useState<string | null>();
+  const [loading, setLoading] = React.useState(false);
+  const dispatch = useAppDispatch();
+
   React.useEffect(() => {
     sendEvent('page_view', {
-      screen: 'pro_upsell',
+      type: 'pro_upsell',
     });
+
+    fetchOfferings();
   }, []);
+
+  const fetchOfferings = async () => {
+    const offerings: PurchasesOfferings = await Purchases.getOfferings();
+    if (
+      offerings.current !== null &&
+      offerings.current.availablePackages.length !== 0
+    ) {
+      setPackage(offerings.current);
+    }
+  };
+
+  const navigateToTerms = () => {
+    navigateToWebView('https://www.zentacle.com/legal.htm');
+    if (isModal) {
+      closeAction();
+    }
+  };
+
+  const navigateToPolicy = () => {
+    navigateToWebView('https://www.zentacle.com/terms');
+    if (isModal) {
+      closeAction();
+    }
+  };
+
+  const purchasePackage = async () => {
+    try {
+      setLoading(true);
+
+      sendEvent('pro__click', {
+        screen: 'pro_upsell',
+      });
+
+      await Purchases.purchasePackage(
+        proPackage?.availablePackages[0] as PurchasesPackage,
+      );
+
+      sendEvent('pro__register', {
+        screen: 'pro_upsell',
+      });
+
+      setPurchaseError(null);
+      await dispatch(getCurrentUser());
+      closeAction();
+    } catch (err: any) {
+      setPurchaseError(err.message);
+
+      setTimeout(() => {
+        setPurchaseError(null);
+      }, 3000);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!proPackage) {
+    return <ActivityIndicator size="large" color="black" />;
+  }
 
   return (
     <View style={styles.container}>
@@ -94,12 +170,21 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
           </View>
         </Pressable>
       )}
-      <View style={styles.mainBody}>
+      <ScrollView style={styles.mainBody} showsVerticalScrollIndicator={false}>
         <Image source={DefaultHeroBackground} style={styles.image} />
         <View style={styles.introTextContainer}>
-          <Text style={styles.mainText}>Your first week is on us</Text>
+          <Text style={styles.mainText}>{proPackage.serverDescription}</Text>
           <Text style={styles.subText}>
-            Get 1 week free, then only $5/month
+            {`Get ${
+              proPackage.availablePackages[0].product.intro_price
+                ?.periodNumberOfUnits
+            } ${proPackage.availablePackages[0].product.intro_price?.periodUnit.toLowerCase()} free, then only $${
+              proPackage.availablePackages[0].product.price
+            }/${
+              proPackage.availablePackages[0].packageType === 'MONTHLY'
+                ? 'month'
+                : 'year'
+            }.`}
           </Text>
         </View>
         <View style={styles.tableContainer}>
@@ -139,10 +224,11 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
             ))}
           </View>
         </View>
-      </View>
+      </ScrollView>
       <View style={styles.footer}>
         <Button
-          // onPress={disabled ? emptyFunc : next}
+          onPress={purchasePackage}
+          disabled={!proPackage || loading}
           gradient
           gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
           gradientLocations={[0.01, 1, 1]}
@@ -158,8 +244,32 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
             container: styles.buttonContainer,
             text: styles.buttonText,
           }}>
-          Start your free trial
+          {proPackage && !loading ? (
+            'Start your free trial'
+          ) : (
+            <ActivityIndicator size="small" color="#fff" />
+          )}
         </Button>
+        {!!purchaseError && (
+          <Text style={styles.purhaseError}>{purchaseError}</Text>
+        )}
+        <View style={styles.termsContainer}>
+          <Pressable
+            style={state => ({
+              opacity: state.pressed ? 0.7 : 1,
+            })}
+            onPress={navigateToPolicy}>
+            <Text style={styles.terms}>Privacy Policy</Text>
+          </Pressable>
+          <View style={styles.divider} />
+          <Pressable
+            style={state => ({
+              opacity: state.pressed ? 0.7 : 1,
+            })}
+            onPress={navigateToTerms}>
+            <Text style={styles.terms}>Terms of Service</Text>
+          </Pressable>
+        </View>
         <Text style={styles.cancelAnyTimeText}>
           Cancel anytime. We&apos;ll send you an email reminder the day before
           your trial ends
@@ -318,6 +428,27 @@ const styles = StyleSheet.create({
   closeText: {
     color: 'white',
     fontSize: 16,
+  },
+  purhaseError: {
+    color: 'red',
+    fontSize: 14,
+    marginVertical: 5,
+  },
+  termsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  terms: {
+    fontSize: 12,
+  },
+  divider: {
+    borderLeftColor: 'black',
+    borderLeftWidth: StyleSheet.hairlineWidth,
+    borderRightColor: 'black',
+    borderRightWidth: StyleSheet.hairlineWidth,
+    borderStyle: 'solid',
+    marginHorizontal: 3,
+    height: 10,
   },
 });
 

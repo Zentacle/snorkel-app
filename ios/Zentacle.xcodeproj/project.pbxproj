@@ -8,7 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* ZentacleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ZentacleTests.m */; };
+		0E2E22F928A13E5900B50E5A /* Configuration.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 0E2E22F828A13E5900B50E5A /* Configuration.storekit */; };
+		0E2E22FB28A1405700B50E5A /* StoreKitTestCertificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 0E2E22FA28A1405700B50E5A /* StoreKitTestCertificate.cer */; };
 		0E35FE66278F3E8D0080B9BF /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E35FE65278F3E8D0080B9BF /* Launch Screen.storyboard */; };
+		0E7C53F4289B31890021C993 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E7C53F3289B31890021C993 /* StoreKit.framework */; };
 		0E992FA627E9C6DD0043CDB2 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0E992FA527E9C6DD0043CDB2 /* Config.xcconfig */; };
 		0E9C3D25279A4D410020D871 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9C3D24279A4D410020D871 /* File.swift */; };
 		0EAE369A283ABF4E00A2B760 /* Zentacle.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 0E4642132799D6E400EE1D9F /* Zentacle.entitlements */; };
@@ -36,8 +39,11 @@
 		00E356EE1AD99517003FC87E /* ZentacleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZentacleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* ZentacleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZentacleTests.m; sourceTree = "<group>"; };
+		0E2E22F828A13E5900B50E5A /* Configuration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Configuration.storekit; sourceTree = "<group>"; };
+		0E2E22FA28A1405700B50E5A /* StoreKitTestCertificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = StoreKitTestCertificate.cer; sourceTree = "<group>"; };
 		0E35FE65278F3E8D0080B9BF /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		0E4642132799D6E400EE1D9F /* Zentacle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Zentacle.entitlements; path = Zentacle/Zentacle.entitlements; sourceTree = "<group>"; };
+		0E7C53F3289B31890021C993 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		0E992FA527E9C6DD0043CDB2 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		0E9C3D24279A4D410020D871 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		0EAE369D283B0F0B00A2B760 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -72,6 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E7C53F4289B31890021C993 /* StoreKit.framework in Frameworks */,
 				0EB1366F28233FA000530DD2 /* AppTrackingTransparency.framework in Frameworks */,
 				6172F2D35A4C3AA820D92908 /* libPods-Zentacle.a in Frameworks */,
 			);
@@ -114,6 +121,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0E7C53F3289B31890021C993 /* StoreKit.framework */,
 				0EB1366D28233F7300530DD2 /* AppTrackingTransparency.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				6423831EA8574132BED9D8CC /* libPods-Zentacle.a */,
@@ -132,6 +140,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				0E2E22F828A13E5900B50E5A /* Configuration.storekit */,
+				0E2E22FA28A1405700B50E5A /* StoreKitTestCertificate.cer */,
 				0E992FA527E9C6DD0043CDB2 /* Config.xcconfig */,
 				0E9C3D24279A4D410020D871 /* File.swift */,
 				0EAE369D283B0F0B00A2B760 /* GoogleService-Info.plist */,
@@ -268,8 +278,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E2E22F928A13E5900B50E5A /* Configuration.storekit in Resources */,
 				0EAE369A283ABF4E00A2B760 /* Zentacle.entitlements in Resources */,
 				0E35FE66278F3E8D0080B9BF /* Launch Screen.storyboard in Resources */,
+				0E2E22FB28A1405700B50E5A /* StoreKitTestCertificate.cer in Resources */,
 				0E992FA627E9C6DD0043CDB2 /* Config.xcconfig in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
@@ -534,7 +546,7 @@
 				CODE_SIGN_ENTITLEMENTS = Zentacle/Zentacle.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 69;
 				DEVELOPMENT_TEAM = 9C8EQ3DGNG;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Zentacle/Info.plist;
@@ -542,7 +554,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.19;
+				MARKETING_VERSION = 2.0.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -568,14 +580,14 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 69;
 				DEVELOPMENT_TEAM = 9C8EQ3DGNG;
 				INFOPLIST_FILE = Zentacle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.19;
+				MARKETING_VERSION = 2.0.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

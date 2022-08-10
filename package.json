@@ -51,6 +51,7 @@
     "react-native-maps": "^0.30.1",
     "react-native-modal": "^13.0.0",
     "react-native-permissions": "^3.2.0",
+    "react-native-purchases": "^5.0.0-beta.1",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.10.1",
     "react-native-skeleton-placeholder": "^5.0.0",

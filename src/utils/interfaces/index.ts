@@ -101,7 +101,7 @@ export type RootStackParamList = {
   LogsFormStack: NavigatorScreenParams<LogsFormStackParamList>;
   SettingsStack: NavigatorScreenParams<SettingStackParamList>;
   NotFound: undefined;
-  HelpWebview: {
+  AppWebview: {
     source: string;
   };
 };

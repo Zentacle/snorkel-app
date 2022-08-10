@@ -66,7 +66,7 @@ const Settings: FunctionComponent<SettingsTypeProps> = ({ navigation }) => {
       config.ENVIRONMENT === 'development'
         ? `https://testnets.opensea.io/${user?.wallet_address}`
         : `https://opensea.io/${user?.wallet_address}`;
-    navigation.navigate('HelpWebview', {
+    navigation.navigate('AppWebview', {
       source: uri,
     });
   };
