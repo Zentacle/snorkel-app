@@ -224,6 +224,24 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
             ))}
           </View>
         </View>
+
+        <View style={styles.termsContainer}>
+          <Pressable
+            style={state => ({
+              opacity: state.pressed ? 0.7 : 1,
+            })}
+            onPress={navigateToPolicy}>
+            <Text style={styles.terms}>Privacy Policy</Text>
+          </Pressable>
+          <View style={styles.divider} />
+          <Pressable
+            style={state => ({
+              opacity: state.pressed ? 0.7 : 1,
+            })}
+            onPress={navigateToTerms}>
+            <Text style={styles.terms}>Terms of Service</Text>
+          </Pressable>
+        </View>
       </ScrollView>
       <View style={styles.footer}>
         <Button
@@ -253,23 +271,6 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
         {!!purchaseError && (
           <Text style={styles.purhaseError}>{purchaseError}</Text>
         )}
-        <View style={styles.termsContainer}>
-          <Pressable
-            style={state => ({
-              opacity: state.pressed ? 0.7 : 1,
-            })}
-            onPress={navigateToPolicy}>
-            <Text style={styles.terms}>Privacy Policy</Text>
-          </Pressable>
-          <View style={styles.divider} />
-          <Pressable
-            style={state => ({
-              opacity: state.pressed ? 0.7 : 1,
-            })}
-            onPress={navigateToTerms}>
-            <Text style={styles.terms}>Terms of Service</Text>
-          </Pressable>
-        </View>
         <Text style={styles.cancelAnyTimeText}>
           Cancel anytime. We&apos;ll send you an email reminder the day before
           your trial ends
@@ -437,6 +438,9 @@ const styles = StyleSheet.create({
   termsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 25,
+    marginTop: 20,
   },
   terms: {
     fontSize: 12,
