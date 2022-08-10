@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Purchases, {
+  PurchasesOffering,
   PurchasesOfferings,
   PurchasesPackage,
 } from 'react-native-purchases';
@@ -79,7 +80,7 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
   closeAction,
   closeText,
 }) => {
-  const [proPackage, setPackage] = React.useState<PurchasesPackage | null>();
+  const [proPackage, setPackage] = React.useState<PurchasesOffering | null>();
   const [purchaseError, setPurchaseError] = React.useState<string | null>();
   const [loading, setLoading] = React.useState(false);
   const dispatch = useAppDispatch();
@@ -94,11 +95,12 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
 
   const fetchOfferings = async () => {
     const offerings: PurchasesOfferings = await Purchases.getOfferings();
+    console.log('offerings', offerings);
     if (
       offerings.current !== null &&
       offerings.current.availablePackages.length !== 0
     ) {
-      setPackage(offerings.current.availablePackages[0]);
+      setPackage(offerings.current);
     }
   };
 
@@ -110,7 +112,9 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
         screen: 'pro_upsell',
       });
 
-      await Purchases.purchasePackage(proPackage as PurchasesPackage);
+      await Purchases.purchasePackage(
+        proPackage?.availablePackages[0] as PurchasesPackage,
+      );
 
       sendEvent('pro__register', {
         screen: 'pro_upsell',
@@ -130,6 +134,10 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
       setLoading(false);
     }
   };
+
+  if (!proPackage) {
+    return <ActivityIndicator size="large" color="black" />;
+  }
 
   return (
     <View style={styles.container}>
@@ -151,9 +159,18 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
       <ScrollView style={styles.mainBody} showsVerticalScrollIndicator={false}>
         <Image source={DefaultHeroBackground} style={styles.image} />
         <View style={styles.introTextContainer}>
-          <Text style={styles.mainText}>Your first week is on us</Text>
+          <Text style={styles.mainText}>{proPackage.serverDescription}</Text>
           <Text style={styles.subText}>
-            Get 1 week free, then only $5/month
+            {`Get ${
+              proPackage.availablePackages[0].product.intro_price
+                ?.periodNumberOfUnits
+            } ${proPackage.availablePackages[0].product.intro_price?.periodUnit.toLowerCase()} free, then only $${
+              proPackage.availablePackages[0].product.price
+            }/${
+              proPackage.availablePackages[0].packageType === 'MONTHLY'
+                ? 'month'
+                : 'year'
+            }.`}
           </Text>
         </View>
         <View style={styles.tableContainer}>
