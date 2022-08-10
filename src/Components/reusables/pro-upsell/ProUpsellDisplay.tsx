@@ -73,12 +73,14 @@ interface ProUpsellDisplayProps {
   isModal?: boolean;
   closeAction: () => void;
   closeText?: string;
+  navigateToWebView: (url: string) => void;
 }
 
 const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
   isModal,
   closeAction,
   closeText,
+  navigateToWebView,
 }) => {
   const [proPackage, setPackage] = React.useState<PurchasesOffering | null>();
   const [purchaseError, setPurchaseError] = React.useState<string | null>();
@@ -100,6 +102,20 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
       offerings.current.availablePackages.length !== 0
     ) {
       setPackage(offerings.current);
+    }
+  };
+
+  const navigateToTerms = () => {
+    navigateToWebView('https://www.zentacle.com/legal.htm');
+    if (isModal) {
+      closeAction();
+    }
+  };
+
+  const navigateToPolicy = () => {
+    navigateToWebView('https://www.zentacle.com/terms');
+    if (isModal) {
+      closeAction();
     }
   };
 
@@ -237,6 +253,23 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
         {!!purchaseError && (
           <Text style={styles.purhaseError}>{purchaseError}</Text>
         )}
+        <View style={styles.termsContainer}>
+          <Pressable
+            style={state => ({
+              opacity: state.pressed ? 0.7 : 1,
+            })}
+            onPress={navigateToPolicy}>
+            <Text style={styles.terms}>Privacy Policy</Text>
+          </Pressable>
+          <View style={styles.divider} />
+          <Pressable
+            style={state => ({
+              opacity: state.pressed ? 0.7 : 1,
+            })}
+            onPress={navigateToTerms}>
+            <Text style={styles.terms}>Terms of Service</Text>
+          </Pressable>
+        </View>
         <Text style={styles.cancelAnyTimeText}>
           Cancel anytime. We&apos;ll send you an email reminder the day before
           your trial ends
@@ -400,6 +433,22 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 14,
     marginVertical: 5,
+  },
+  termsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  terms: {
+    fontSize: 12,
+  },
+  divider: {
+    borderLeftColor: 'black',
+    borderLeftWidth: StyleSheet.hairlineWidth,
+    borderRightColor: 'black',
+    borderRightWidth: StyleSheet.hairlineWidth,
+    borderStyle: 'solid',
+    marginHorizontal: 3,
+    height: 10,
   },
 });
 

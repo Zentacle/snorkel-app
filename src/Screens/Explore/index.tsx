@@ -100,6 +100,12 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
     }
   }, [user]);
 
+  const navigateToWebView = (url: string) => {
+    navigation.navigate('AppWebview', {
+      source: url,
+    });
+  };
+
   const checkSubscription = async () => {
     const customerInfo = await Purchases.getCustomerInfo();
     console.log('customer info', customerInfo);
@@ -282,6 +288,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
       <ProUpsellModal
         isVisible={proUpsellModalOpen}
         closeModal={closeProUpsellModal}
+        navigateToWebView={navigateToWebView}
       />
       <ScrollView
         style={styles.contentContainer}
@@ -419,9 +426,9 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
           </ScrollView>
         </View> */}
 
-        {!proVerified && !user?.has_pro && (
-          <ProUpsell handlePress={openProUpsellModal} />
-        )}
+        {/* {!proVerified && !user?.has_pro && ( */}
+        <ProUpsell handlePress={openProUpsellModal} />
+        {/* )} */}
 
         <View style={styles.diveSites}>
           <View style={styles.diveSitesTextContainer}>

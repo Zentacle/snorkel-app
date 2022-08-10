@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Modal } from 'react-native';
+import { StyleSheet, Modal } from 'react-native';
 
 import ProUpsellDisplay from './ProUpsellDisplay';
 import type { FunctionComponent } from 'react';
@@ -7,11 +7,13 @@ import type { FunctionComponent } from 'react';
 interface ProUpsellModalProps {
   isVisible: boolean;
   closeModal: () => void;
+  navigateToWebView: (url: string) => void;
 }
 
 const ProUpsellModal: FunctionComponent<ProUpsellModalProps> = ({
   isVisible,
   closeModal,
+  navigateToWebView,
 }) => {
   return (
     <Modal
@@ -19,7 +21,11 @@ const ProUpsellModal: FunctionComponent<ProUpsellModalProps> = ({
       onRequestClose={closeModal}
       animationType="slide"
       style={styles.modal}>
-      <ProUpsellDisplay isModal closeAction={closeModal} />
+      <ProUpsellDisplay
+        isModal
+        navigateToWebView={navigateToWebView}
+        closeAction={closeModal}
+      />
     </Modal>
   );
 };
