@@ -395,6 +395,7 @@ export const selectAuthType = (state: RootState) => state.user.type;
 
 export const logoutUser = (): AppThunk => async (dispatch, _getState) => {
   try {
+    await Purchases.logOut();
     await clearStorage();
     dispatch(logout());
   } catch (err) {

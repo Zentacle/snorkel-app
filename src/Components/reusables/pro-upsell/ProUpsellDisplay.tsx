@@ -19,6 +19,8 @@ import DefaultHeroBackground from 'assets/default_hero_background.png';
 import { WIDTH } from '_utils/constants';
 import Button from '_components/ui/Buttons/Button';
 import { sendEvent } from '_utils/functions/amplitude';
+import { useAppDispatch } from '_redux/hooks';
+import { getCurrentUser } from '_redux/slices/user';
 
 import type { FunctionComponent } from 'react';
 
@@ -80,6 +82,7 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
   const [proPackage, setPackage] = React.useState<PurchasesPackage | null>();
   const [purchaseError, setPurchaseError] = React.useState<string | null>();
   const [loading, setLoading] = React.useState(false);
+  const dispatch = useAppDispatch();
 
   React.useEffect(() => {
     sendEvent('page_view', {
@@ -114,6 +117,7 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
       });
 
       setPurchaseError(null);
+      await dispatch(getCurrentUser());
       closeAction();
     } catch (err: any) {
       console.log('ERROR HERE', err.message);
