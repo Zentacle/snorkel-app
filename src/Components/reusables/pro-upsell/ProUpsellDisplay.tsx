@@ -95,7 +95,6 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
 
   const fetchOfferings = async () => {
     const offerings: PurchasesOfferings = await Purchases.getOfferings();
-    console.log('offerings', offerings);
     if (
       offerings.current !== null &&
       offerings.current.availablePackages.length !== 0
@@ -124,7 +123,6 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
       await dispatch(getCurrentUser());
       closeAction();
     } catch (err: any) {
-      console.log('ERROR HERE', err.message);
       setPurchaseError(err.message);
 
       setTimeout(() => {
