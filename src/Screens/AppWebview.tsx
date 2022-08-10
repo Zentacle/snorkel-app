@@ -8,19 +8,19 @@ import type { RouteProp } from '@react-navigation/native';
 import { HEIGHT } from '_utils/constants';
 import type { RootStackParamList } from '_utils/interfaces';
 
-type HelpWebviewTypeNavigationProps = NativeStackNavigationProp<
+type AppWebviewTypeNavigationProps = NativeStackNavigationProp<
   RootStackParamList,
-  'HelpWebview'
+  'AppWebview'
 >;
 
-type HelpWebViewRouteProps = RouteProp<RootStackParamList, 'HelpWebview'>;
+type AppWebviewRouteProps = RouteProp<RootStackParamList, 'AppWebview'>;
 
-interface HelpWebViewProps {
-  navigation: HelpWebviewTypeNavigationProps;
-  route: HelpWebViewRouteProps;
+interface AppWebviewProps {
+  navigation: AppWebviewTypeNavigationProps;
+  route: AppWebviewRouteProps;
 }
 
-const HelpWebview: FunctionComponent<HelpWebViewProps> = ({ route }) => {
+const AppWebview: FunctionComponent<AppWebviewProps> = ({ route }) => {
   return (
     <WebView
       style={styles.content}
@@ -52,4 +52,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HelpWebview;
+export default AppWebview;
