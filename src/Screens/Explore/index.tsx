@@ -426,9 +426,9 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
           </ScrollView>
         </View> */}
 
-        {/* {!proVerified && !user?.has_pro && ( */}
-        <ProUpsell handlePress={openProUpsellModal} />
-        {/* )} */}
+        {!proVerified && !user?.has_pro && (
+          <ProUpsell handlePress={openProUpsellModal} />
+        )}
 
         <View style={styles.diveSites}>
           <View style={styles.diveSitesTextContainer}>
