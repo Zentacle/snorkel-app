@@ -108,7 +108,6 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
 
   const checkSubscription = async () => {
     const customerInfo = await Purchases.getCustomerInfo();
-    console.log('customer info', customerInfo);
     if (
       customerInfo.entitlements.active[
         config.REVENUE_CAT_ENTITLEMENT_IDENTIFIER
