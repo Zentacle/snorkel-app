@@ -89,7 +89,7 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
 
   React.useEffect(() => {
     sendEvent('page_view', {
-      screen: 'pro_upsell',
+      type: 'pro_upsell',
     });
 
     fetchOfferings();
