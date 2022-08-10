@@ -115,14 +115,17 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
 
       setPurchaseError(null);
       closeAction();
-    } catch (err) {
-      setPurchaseError('There was an error completing your purchase.');
+    } catch (err: any) {
+      console.log('ERROR HERE', err.message);
+      setPurchaseError(err.message);
+
+      setTimeout(() => {
+        setPurchaseError(null);
+      }, 3000);
     } finally {
       setLoading(false);
     }
   };
-
-  console.log('is loading', loading);
 
   return (
     <View style={styles.container}>

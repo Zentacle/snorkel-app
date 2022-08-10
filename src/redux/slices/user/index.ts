@@ -1,4 +1,3 @@
-import { AuthData } from 'src/utils/interfaces/data/user';
 import { AppleAuthReturn } from 'src/screens/Auth/utils/interfaces';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -87,7 +86,7 @@ export const loginUser = createAsyncThunk(
       response.data.refresh_token,
     );
 
-    await Purchases.logIn(`user_${response.user.id}`);
+    await Purchases.logIn(`${response.user.id}`);
     await flagExistingUser();
     return {
       user: response.user,
@@ -110,7 +109,7 @@ export const registerUser = createAsyncThunk(
       response.data.refresh_token,
     );
 
-    await Purchases.logIn(`user_${response.user.id}`);
+    await Purchases.logIn(`${response.user.id}`);
     await flagExistingUser();
     return {
       ...response,
@@ -128,7 +127,7 @@ export const autoAuth = createAsyncThunk(
       return thunkApi.rejectWithValue('User object not available');
     }
 
-    await Purchases.logIn(`user_${(JSON.parse(userObj as string) as User).id}`);
+    await Purchases.logIn(`${(JSON.parse(userObj as string) as User).id}`);
     return {
       active_user: userObj ? (JSON.parse(userObj) as User) : ({} as User),
       auth_token: tokenStr,
@@ -198,7 +197,7 @@ export const googleRegister = createAsyncThunk(
       response.data.refresh_token,
     );
 
-    await Purchases.logIn(`user_${response.user.id}`);
+    await Purchases.logIn(`${response.user.id}`);
 
     await flagExistingUser();
 
@@ -224,7 +223,7 @@ export const appleRegister = createAsyncThunk(
       response.data.refresh_token,
     );
 
-    await Purchases.logIn(`user_${response.user.id}`);
+    await Purchases.logIn(`${response.user.id}`);
 
     await flagExistingUser();
 
