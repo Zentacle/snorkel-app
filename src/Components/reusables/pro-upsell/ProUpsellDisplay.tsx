@@ -106,14 +106,14 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
   };
 
   const navigateToTerms = () => {
-    navigateToWebView('https://www.zentacle.com/legal.htm');
+    navigateToWebView('https://www.zentacle.com/terms');
     if (isModal) {
       closeAction();
     }
   };
 
   const navigateToPolicy = () => {
-    navigateToWebView('https://www.zentacle.com/terms');
+    navigateToWebView('https://www.zentacle.com/legal.htm');
     if (isModal) {
       closeAction();
     }
@@ -447,7 +447,7 @@ const styles = StyleSheet.create({
     borderRightColor: 'black',
     borderRightWidth: StyleSheet.hairlineWidth,
     borderStyle: 'solid',
-    marginHorizontal: 3,
+    marginHorizontal: 5,
     height: 10,
   },
 });
