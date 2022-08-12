@@ -8,6 +8,7 @@ import {
   Pressable,
   ScrollView,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Purchases, {
@@ -96,12 +97,17 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
   }, []);
 
   const fetchOfferings = async () => {
-    const offerings: PurchasesOfferings = await Purchases.getOfferings();
-    if (
-      offerings.current !== null &&
-      offerings.current.availablePackages.length !== 0
-    ) {
-      setPackage(offerings.current);
+    try {
+      const offerings: PurchasesOfferings = await Purchases.getOfferings();
+      console.log('offfering', offerings);
+      if (
+        offerings.current !== null &&
+        offerings.current.availablePackages.length !== 0
+      ) {
+        setPackage(offerings.current);
+      }
+    } catch (err: any) {
+      Alert.alert('Error fetching offerings', err.message);
     }
   };
 
@@ -150,7 +156,15 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
   };
 
   if (!proPackage) {
-    return <ActivityIndicator size="large" color="black" />;
+    return (
+      <ActivityIndicator
+        style={{
+          marginTop: Dimensions.get('window').height * 0.4,
+        }}
+        size="large"
+        color="black"
+      />
+    );
   }
 
   return (
@@ -175,10 +189,7 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
         <View style={styles.introTextContainer}>
           <Text style={styles.mainText}>{proPackage.serverDescription}</Text>
           <Text style={styles.subText}>
-            {`Get ${
-              proPackage.availablePackages[0].product.intro_price
-                ?.periodNumberOfUnits
-            } ${proPackage.availablePackages[0].product.intro_price?.periodUnit.toLowerCase()} free, then only $${
+            {`Get 1 week free, then only $${
               proPackage.availablePackages[0].product.price
             }/${
               proPackage.availablePackages[0].packageType === 'MONTHLY'
