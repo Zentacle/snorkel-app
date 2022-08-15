@@ -132,7 +132,7 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
             container: styles.buttonContainer,
             text: styles.buttonText,
           }}>
-          {t('ENABLE')}
+          {t('CONTINUE')}
         </Button>
         <Button
           onPress={navigateToMeasurementType}
@@ -150,7 +150,7 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
             container: styles.buttonContainer,
             text: styles.buttonText,
           }}>
-          {t('DISABLE')}
+          {t('NOT_NOW')}
         </Button>
         <View style={styles.buttonsDescriptionContainer}>
           <Text style={styles.buttonsDescriptionText}>

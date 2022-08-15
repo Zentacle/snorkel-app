@@ -178,7 +178,7 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
             container: styles.buttonContainer,
             text: styles.buttonText,
           }}>
-          {t('ENABLE')}
+          {t('CONTINUE')}
         </Button>
         <Button
           onPress={handleDisableButtonPress}
@@ -196,7 +196,7 @@ const CameraPermissions: FunctionComponent<CameraPermissionsProps> = ({
             container: styles.buttonContainer,
             text: styles.buttonText,
           }}>
-          {t('DISABLE')}
+          {t('NOT_NOW')}
         </Button>
         <View style={styles.buttonsDescriptionContainer}>
           <Text style={styles.buttonsDescriptionText}>
