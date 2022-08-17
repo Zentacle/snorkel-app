@@ -290,5 +290,7 @@
   "ADD_PHOTO": "Add Photo",
   "CONFIRM": "Confirm",
   "DIVE_SHOP": "Dive Shop",
-  "DIVE_SHOP_PLACEHOLDER": "Search for a Dive Shop"
+  "DIVE_SHOP_PLACEHOLDER": "Search for a Dive Shop",
+  "NOT_NOW": "Not Now",
+  "SUBMITTING": "Submitting"
 }
