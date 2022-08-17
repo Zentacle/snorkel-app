@@ -27,7 +27,6 @@ import Input from '_components/ui/FormManagementInput';
 import Button from '_components/ui/Buttons/Button';
 import { useAppDispatch, useAppSelector } from '_redux/hooks';
 import { updateUser, selectUser, selectAuthType } from '_redux/slices/user';
-import { check, PERMISSIONS, RESULTS } from 'react-native-permissions';
 
 const HEIGHT = Dimensions.get('window').width;
 
@@ -50,10 +49,6 @@ const ChooseUserName: FunctionComponent<ChooseUserNameProps> = props => {
   const user = useAppSelector(selectUser);
   const authType = useAppSelector(selectAuthType);
 
-  const navigateToCameraPermissions = () => {
-    props.navigation.push('CameraPermissions');
-  };
-
   const navigateToChooseAvatar = () => {
     props.navigation.push('ChooseAvatar');
   };
@@ -68,30 +63,12 @@ const ChooseUserName: FunctionComponent<ChooseUserNameProps> = props => {
     const response = await dispatch(updateUser(values));
     if (updateUser.fulfilled.match(response)) {
       if (authType === 'register') {
-        navigateToCameraPermissions();
+        navigateToChooseAvatar();
       } else {
-        if (Platform.OS === 'ios') {
-          const camera_permissions = await check(PERMISSIONS.IOS.CAMERA);
-          if (!user?.profile_pic) {
-            if (camera_permissions === RESULTS.GRANTED) {
-              navigateToChooseAvatar();
-            } else {
-              navigateToCameraPermissions();
-            }
-          } else {
-            navigateToApp();
-          }
+        if (!user?.profile_pic) {
+          navigateToChooseAvatar();
         } else {
-          const camera_permissions = await check(PERMISSIONS.ANDROID.CAMERA);
-          if (!user?.profile_pic) {
-            if (camera_permissions === RESULTS.GRANTED) {
-              navigateToChooseAvatar();
-            } else {
-              navigateToCameraPermissions();
-            }
-          } else {
-            navigateToApp();
-          }
+          navigateToApp();
         }
       }
     } else {

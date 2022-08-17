@@ -63,20 +63,24 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
 
   const handleLocationPermissions = async () => {
     try {
-      if (authType === 'register') {
-        navigateToMeasurementType();
-      } else {
-        if (Platform.OS === 'android') {
-          await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+      if (Platform.OS === 'android') {
+        await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
 
+        if (authType === 'register') {
+          navigateToMeasurementType();
+        } else {
           if (!user || (user && settings.activityType)) {
             navigateToApp();
           } else {
             navigateToMeasurementType();
           }
-        } else {
-          await request(PERMISSIONS.IOS.LOCATION_ALWAYS);
+        }
+      } else {
+        await request(PERMISSIONS.IOS.LOCATION_ALWAYS);
 
+        if (authType === 'register') {
+          navigateToMeasurementType();
+        } else {
           if (!user || (user && settings.activityType)) {
             navigateToApp();
           } else {
@@ -133,24 +137,6 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
             text: styles.buttonText,
           }}>
           {t('CONTINUE')}
-        </Button>
-        <Button
-          onPress={navigateToMeasurementType}
-          textGradient
-          start={{
-            x: 0,
-            y: 1,
-          }}
-          end={{
-            x: 0.65,
-            y: 0.4,
-          }}
-          gradientColors={['#AA00FF', '#AA00FF', '#00E0FF']}
-          style={{
-            container: styles.buttonContainer,
-            text: styles.buttonText,
-          }}>
-          {t('NOT_NOW')}
         </Button>
         <View style={styles.buttonsDescriptionContainer}>
           <Text style={styles.buttonsDescriptionText}>

@@ -13,7 +13,6 @@ export type AuthtackParamList = {
 export type OnboardingStackParamList = {
   ChooseUserName: undefined;
   ChooseAvatar: undefined;
-  CameraPermissions: undefined;
   LocationPermissions: undefined;
   MeasurementType: undefined;
   ActivityType: undefined;

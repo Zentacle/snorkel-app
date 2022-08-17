@@ -8,11 +8,13 @@ import {
   ImageStyle,
   Text,
   Pressable,
+  Platform,
 } from 'react-native';
 import type { FieldRenderProps } from 'react-final-form';
 import type { FunctionComponent } from 'react';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { useTranslation } from 'react-i18next';
+import { PERMISSIONS, RESULTS, check, request } from 'react-native-permissions';
 
 import ImagePickerModal from '_components/reusables/ImagePickerModal';
 import UploadAvatarIcon from '_assets/UploadAvatarIcon.png';
@@ -51,33 +53,118 @@ const ImageFormComponent: FunctionComponent<ImageFormComponentProps> = ({
   const closeCameraModal = () => {
     setCameraModalVisibility(false);
   };
-  const handleLaunchCamera = async () => {
-    const result = await launchCamera({
-      mediaType: 'photo',
-    });
 
-    closeCameraModal();
-    if (result.assets && result.assets[0].uri) {
-      onChange({
-        uri: result.assets[0].uri,
-        type: result.assets[0].type,
-        name: result.assets[0].fileName,
+  const checkPhotoLibraryPermissions = async (): Promise<boolean> => {
+    if (Platform.OS === 'ios') {
+      const photo_library_permissions = await check(
+        PERMISSIONS.IOS.PHOTO_LIBRARY,
+      );
+      if (photo_library_permissions === RESULTS.GRANTED) {
+        // proceed
+        return true;
+      } else {
+        const request_photo_library_permissions = await request(
+          PERMISSIONS.IOS.PHOTO_LIBRARY,
+        );
+
+        if (request_photo_library_permissions === RESULTS.GRANTED) {
+          return true;
+        }
+        return false;
+      }
+    } else {
+      const photo_library_permissions = await check(
+        PERMISSIONS.ANDROID.READ_MEDIA_IMAGES,
+      );
+      if (photo_library_permissions === RESULTS.GRANTED) {
+        // proceed
+        return true;
+      } else {
+        const request_photo_library_permissions = await request(
+          PERMISSIONS.ANDROID.READ_MEDIA_IMAGES,
+        );
+
+        if (request_photo_library_permissions === RESULTS.GRANTED) {
+          // take image
+          return true;
+        }
+        return false;
+      }
+    }
+  };
+
+  const checkCameraPermissions = async (): Promise<boolean> => {
+    if (Platform.OS === 'ios') {
+      const camera_permissions = await check(PERMISSIONS.IOS.CAMERA);
+      if (camera_permissions === RESULTS.GRANTED) {
+        // proceed
+        return true;
+      } else {
+        const request_camera_permissions = await request(
+          PERMISSIONS.IOS.CAMERA,
+        );
+
+        if (request_camera_permissions === RESULTS.GRANTED) {
+          return true;
+        }
+        return false;
+      }
+    } else {
+      const camera_permissions = await check(PERMISSIONS.ANDROID.CAMERA);
+      if (camera_permissions === RESULTS.GRANTED) {
+        // proceed
+        return true;
+      } else {
+        const request_camera_permissions = await request(
+          PERMISSIONS.ANDROID.CAMERA,
+        );
+
+        if (request_camera_permissions === RESULTS.GRANTED) {
+          // take image
+          return true;
+        }
+        return false;
+      }
+    }
+  };
+
+  const handleLaunchCamera = async () => {
+    const cameraPermissions = await checkCameraPermissions();
+    if (cameraPermissions) {
+      const result = await launchCamera({
+        mediaType: 'photo',
       });
+
+      closeCameraModal();
+      if (result.assets && result.assets[0].uri) {
+        onChange({
+          uri: result.assets[0].uri,
+          type: result.assets[0].type,
+          name: result.assets[0].fileName,
+        });
+      }
+    } else {
+      closeCameraModal();
     }
   };
 
   const handleLaunchPhotoLibrary = async () => {
-    const result = await launchImageLibrary({
-      mediaType: 'photo',
-    });
-
-    closeCameraModal();
-    if (result.assets && result.assets[0].uri) {
-      onChange({
-        uri: result.assets[0].uri,
-        type: result.assets[0].type,
-        name: result.assets[0].fileName,
+    const photoLibraryPermissions = await checkPhotoLibraryPermissions();
+    if (photoLibraryPermissions) {
+      const result = await launchImageLibrary({
+        mediaType: 'photo',
       });
+
+      closeCameraModal();
+      if (result.assets && result.assets[0].uri) {
+        onChange({
+          uri: result.assets[0].uri,
+          type: result.assets[0].type,
+          name: result.assets[0].fileName,
+        });
+      }
+    } else {
+      closeCameraModal();
     }
   };
 

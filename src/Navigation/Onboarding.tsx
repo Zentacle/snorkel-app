@@ -8,7 +8,6 @@ import { selectUser } from '_redux/slices/user';
 
 import ChooseUserName from '_screens/Onboarding/ChooseUserName';
 import ChooseAvatar from '_screens/Onboarding/ChooseAvatar';
-import CameraPermissions from '_screens/Onboarding/CameraPermissions';
 import LocationPermissions from '_screens/Onboarding/LocationPermissions';
 import MeasurementType from '_screens/Onboarding/MeasurementType';
 import ActivityType from '_screens/Onboarding/ActivityType';
@@ -23,9 +22,7 @@ const OnboardingNavigator: React.FC = () => {
     createNativeStackNavigator<OnboardingStackParamList>();
   return (
     <OnboardingStack.Navigator
-      initialRouteName={
-        userHasUsername ? 'CameraPermissions' : 'ChooseUserName'
-      }
+      initialRouteName={userHasUsername ? 'ChooseAvatar' : 'ChooseUserName'}
       screenOptions={{
         headerShown: false,
       }}>
@@ -34,10 +31,6 @@ const OnboardingNavigator: React.FC = () => {
         component={ChooseUserName}
       />
       <OnboardingStack.Screen name="ChooseAvatar" component={ChooseAvatar} />
-      <OnboardingStack.Screen
-        name="CameraPermissions"
-        component={CameraPermissions}
-      />
       <OnboardingStack.Screen
         name="LocationPermissions"
         component={LocationPermissions}
