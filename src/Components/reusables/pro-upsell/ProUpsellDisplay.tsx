@@ -428,7 +428,7 @@ const styles = StyleSheet.create({
   },
   closeIconContainer: {
     position: 'absolute',
-    top: 40,
+    top: 50,
     right: 25,
     zIndex: 1,
     width: 30,
