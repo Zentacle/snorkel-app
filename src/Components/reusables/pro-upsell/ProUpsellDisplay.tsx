@@ -170,13 +170,14 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
   return (
     <View style={styles.container}>
       {isModal ? (
-        <Icon
-          name="close"
-          size={30}
-          color="#fff"
-          style={styles.closeIcon}
-          onPress={closeAction}
-        />
+        <Pressable
+          style={props => ({
+            opacity: props.pressed ? 0.7 : 1,
+            ...styles.closeIconContainer,
+          })}
+          onPress={closeAction}>
+          <Icon name="close" size={25} color="gray" />
+        </Pressable>
       ) : (
         <Pressable style={styles.closeTextContainer} onPress={closeAction}>
           <View>
@@ -425,11 +426,17 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     textAlign: 'center',
   },
-  closeIcon: {
+  closeIconContainer: {
     position: 'absolute',
-    top: 40,
+    top: 50,
     right: 25,
     zIndex: 1,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: 'whitesmoke',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   closeTextContainer: {
     position: 'absolute',
