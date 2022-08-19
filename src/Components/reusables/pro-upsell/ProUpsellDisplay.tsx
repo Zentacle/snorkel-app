@@ -99,7 +99,6 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
   const fetchOfferings = async () => {
     try {
       const offerings: PurchasesOfferings = await Purchases.getOfferings();
-      console.log('offfering', offerings);
       if (
         offerings.current !== null &&
         offerings.current.availablePackages.length !== 0
