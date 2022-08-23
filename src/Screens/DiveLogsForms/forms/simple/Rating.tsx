@@ -3,10 +3,12 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Field } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
 
-import GradientCircle from '_components/ui/GradientCircle';
-import GradientBox from '_components/ui/GradientBox';
 import RatingsInputComp from '_components/ui/RatingsInputComp';
 import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
+import {
+  ActiveComponent,
+  InactiveComponent,
+} from '_utils/form/gradient-selection';
 import { capitalize } from '_utils/functions';
 import { WIDTH } from '_utils/constants';
 
@@ -22,46 +24,6 @@ const Rating = () => {
     t('FREEDIVING').toLowerCase(),
     t('SNORKEL').toLowerCase(),
   ];
-
-  const ActiveComponent = (level: string) => (
-    <View style={styles.selectedShadow}>
-      <GradientBox style={styles.selectedLevel}>
-        <View style={styles.selectBox}>
-          <View style={styles.selectedLevelCircle}>
-            <GradientCircle style={styles.selectedGradient} />
-          </View>
-          <Text style={styles.levelText}>{capitalize(level)}</Text>
-        </View>
-      </GradientBox>
-    </View>
-  );
-
-  const DiveActiveComp = (level: string) => (
-    <View style={styles.selectedShadow}>
-      <GradientBox style={styles.selectedActivity}>
-        <View style={styles.selectBox}>
-          <View style={styles.selectedActivityCircle}>
-            <GradientCircle style={styles.selectedGradient} />
-          </View>
-          <Text style={styles.activityText}>{capitalize(level)}</Text>
-        </View>
-      </GradientBox>
-    </View>
-  );
-
-  const DiveInactiveComp = (level: string) => (
-    <View style={styles.activity}>
-      <View style={styles.normalActivityCircle}></View>
-      <Text style={styles.activityText}>{capitalize(level)}</Text>
-    </View>
-  );
-
-  const InactiveComponent = (level: string) => (
-    <View style={styles.level}>
-      <View style={styles.normalLevelCircle}></View>
-      <Text style={styles.levelText}>{capitalize(level)}</Text>
-    </View>
-  );
 
   return (
     <ScrollView style={styles.container}>
@@ -82,13 +44,13 @@ const Rating = () => {
       </View>
 
       <View style={styles.activityContentContainer}>
-        <Text style={styles.labelText}>{t('DIVE_ACTIVITY')}</Text>
+        <Text style={styles.headerLabel}>{t('DIVE_ACTIVITY')}</Text>
         <Field
           name="activity_type"
           component={SelectWGradientBorder}
           options={activity}
-          activeComponent={DiveActiveComp}
-          inactiveComponent={DiveInactiveComp}
+          activeComponent={ActiveComponent}
+          inactiveComponent={InactiveComponent}
         />
       </View>
     </ScrollView>
@@ -108,65 +70,6 @@ const styles = StyleSheet.create({
   levelContentContainer: {
     marginVertical: 40,
   },
-  level: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    opacity: 0.5,
-    width: '30%',
-  },
-  selectBox: {
-    borderRadius: 12,
-    backgroundColor: '#fff',
-    width: '100%',
-  },
-  selectedShadow: {
-    borderRadius: 12,
-    shadowColor: 'black',
-    shadowRadius: 4,
-    shadowOffset: {
-      width: 2,
-      height: 2,
-    },
-    shadowOpacity: 0.2,
-    width: '30%',
-  },
-  selectedLevel: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    paddingVertical: 1.5,
-    paddingHorizontal: 1.5,
-    elevation: 2,
-  },
-  levelText: {
-    marginLeft: 10,
-    marginBottom: 10,
-    color: 'black',
-  },
-  normalLevelCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: '#EFF6F9',
-    marginTop: 15,
-    marginBottom: 15,
-    marginLeft: 10,
-  },
-  selectedLevelCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: '#EFF6F9',
-    marginTop: 15,
-    marginBottom: 15,
-    marginLeft: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  selectedGradient: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-  },
   activityContentContainer: {
     marginTop: 30,
     marginBottom: 20,
@@ -182,13 +85,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     opacity: 0.5,
     width: '30%',
-  },
-  labelText: {
-    textAlign: 'left',
-    alignSelf: 'flex-start',
-    color: 'black',
-    fontSize: 18,
-    fontWeight: '600',
   },
   selectedActivity: {
     backgroundColor: '#fff',
