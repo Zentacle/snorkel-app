@@ -28,15 +28,14 @@ import type {
 import { useAppDispatch, useAppSelector } from '_redux/hooks';
 import { search } from '_redux/slices/search';
 
-import { capitalize } from '_utils/functions';
-
 import type { InitialSearchValues } from '_utils/interfaces/data/search';
-import GradientCircle from '_components/ui/GradientCircle';
-import GradientBox from '_components/ui/GradientBox';
-import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
+import SelectWGradientBorder from '_components/ui/SelectWGradientBorderV2';
 import Button from '_components/ui/Buttons/Button';
+import {
+  ActiveComponent,
+  InactiveComponent,
+} from '_utils/form/gradient-selection';
 import { selectSearchResultsLength } from '_redux/slices/search';
-import { isBelowWidthThreshold } from '_utils/constants';
 import MemoizedFormWatcher from './components/FormWatcher';
 
 type SearchFiltersNavigationProps = CompositeNavigationProp<
@@ -50,39 +49,6 @@ interface SearchFiltersProps {
   navigation: SearchFiltersNavigationProps;
   route: SearchFiltersRouteProps;
 }
-
-const ActiveComponent = (level: string) => (
-  <View style={styles.selectedShadow}>
-    <GradientBox style={styles.selectedLevel}>
-      <View style={styles.selectBox}>
-        <View style={styles.selectedLevelCircle}>
-          <GradientCircle style={styles.selectedGradient} />
-        </View>
-        <Text style={styles.levelText}>{capitalize(level)}</Text>
-      </View>
-    </GradientBox>
-  </View>
-);
-
-const InactiveComponent = (level: string) => (
-  <View style={styles.level}>
-    <View style={styles.normalLevelCircle} />
-    <Text style={styles.levelText}>{capitalize(level)}</Text>
-  </View>
-);
-
-const EntryActiveComp = (entry: string) => (
-  <View style={styles.selectedShadow}>
-    <GradientBox style={styles.selectedLevel}>
-      <View style={styles.selectBox}>
-        <View style={styles.selectedLevelCircle}>
-          <GradientCircle style={styles.selectedGradient} />
-        </View>
-        <Text style={styles.levelText}>{capitalize(entry)}</Text>
-      </View>
-    </GradientBox>
-  </View>
-);
 
 const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
   navigation,
@@ -110,20 +76,6 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
     'params.search',
     {},
   );
-
-  const EntryInctiveComp = (entry: string) => {
-    const index = entries.findIndex(item => item === entry);
-    return (
-      <View
-        style={[
-          styles.level,
-          index === 0 ? { marginRight: 15 } : { marginLeft: 15 },
-        ]}>
-        <View style={styles.normalLevelCircle}></View>
-        <Text style={styles.levelText}>{capitalize(entry)}</Text>
-      </View>
-    );
-  };
 
   const initialValues: InitialSearchValues = {
     difficulty: passedInLocationValues.difficulty ?? '',
@@ -220,8 +172,8 @@ const SearchFilters: FunctionComponent<SearchFiltersProps> = ({
                     name="entry"
                     component={SelectWGradientBorder}
                     options={entries}
-                    activeComponent={EntryActiveComp}
-                    inactiveComponent={EntryInctiveComp}
+                    activeComponent={ActiveComponent}
+                    inactiveComponent={InactiveComponent}
                     style={styles.entryContainer}
                   />
                 </View>
@@ -303,69 +255,7 @@ const styles = StyleSheet.create({
   },
   divePreferenceContentContainer: {},
   levelContentContainer: {
-    marginTop: 40,
-  },
-  level: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    opacity: 0.5,
-    minWidth: '30%',
-    maxWidth: '35%',
-  },
-  selectBox: {
-    borderRadius: 12,
-    backgroundColor: '#fff',
-    width: '100%',
-  },
-  selectedShadow: {
-    minWidth: '30%',
-    maxWidth: '35%',
-    borderRadius: 12,
-    shadowColor: 'black',
-    shadowRadius: 4,
-    shadowOffset: {
-      width: 2,
-      height: 2,
-    },
-    shadowOpacity: 0.2,
-  },
-  selectedLevel: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    paddingVertical: 1.5,
-    paddingHorizontal: 1.5,
-    elevation: 2,
-  },
-  levelText: {
-    marginRight: isBelowWidthThreshold ? 10 : 25,
-    marginLeft: 15,
-    marginBottom: 10,
-    color: 'black',
-  },
-  normalLevelCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: '#EFF6F9',
-    marginTop: 15,
-    marginBottom: 15,
-    marginLeft: 10,
-  },
-  selectedLevelCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: '#EFF6F9',
-    marginTop: 15,
-    marginBottom: 15,
-    marginLeft: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  selectedGradient: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
+    marginTop: 30,
   },
   entryContainer: {
     marginTop: 20,
@@ -373,7 +263,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   activity_typeContentContainer: {
-    marginTop: 30,
+    marginTop: 20,
     marginBottom: 20,
   },
   max_depthContainer: {

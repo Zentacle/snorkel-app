@@ -30,6 +30,8 @@ export interface SimpleFormInitialValues {
   images: FormImages[];
   dive_shop?: DiveShopSearchResult;
   dive_shop_id?: number;
+  privacy?: string;
+  is_private?: boolean;
 }
 
 export interface AdvancedFormInitialValues extends SimpleFormInitialValues {

@@ -1,14 +1,18 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 import { Field } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import GradientCircle from '_components/ui/GradientCircle';
-import GradientBox from '_components/ui/GradientBox';
 import RatingsInputComp from '_components/ui/RatingsInputComp';
-import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
+import SelectWGradientBorder from '_components/ui/SelectWGradientBorderV2';
+import {
+  ActiveComponent,
+  InactiveComponent,
+} from '_utils/form/gradient-selection';
+import FMInput from '_components/ui/FormManagementInput';
+
 import { capitalize } from '_utils/functions';
-import { WIDTH } from '_utils/constants';
 
 const Rating = () => {
   const { t } = useTranslation();
@@ -23,51 +27,58 @@ const Rating = () => {
     t('SNORKEL').toLowerCase(),
   ];
 
-  const ActiveComponent = (level: string) => (
-    <View style={styles.selectedShadow}>
-      <GradientBox style={styles.selectedLevel}>
-        <View style={styles.selectBox}>
-          <View style={styles.selectedLevelCircle}>
-            <GradientCircle style={styles.selectedGradient} />
-          </View>
-          <Text style={styles.levelText}>{capitalize(level)}</Text>
-        </View>
-      </GradientBox>
-    </View>
-  );
-
-  const DiveActiveComp = (level: string) => (
-    <View style={styles.selectedShadow}>
-      <GradientBox style={styles.selectedActivity}>
-        <View style={styles.selectBox}>
-          <View style={styles.selectedActivityCircle}>
-            <GradientCircle style={styles.selectedGradient} />
-          </View>
-          <Text style={styles.activityText}>{capitalize(level)}</Text>
-        </View>
-      </GradientBox>
-    </View>
-  );
-
-  const DiveInactiveComp = (level: string) => (
-    <View style={styles.activity}>
-      <View style={styles.normalActivityCircle}></View>
-      <Text style={styles.activityText}>{capitalize(level)}</Text>
-    </View>
-  );
-
-  const InactiveComponent = (level: string) => (
-    <View style={styles.level}>
-      <View style={styles.normalLevelCircle}></View>
-      <Text style={styles.levelText}>{capitalize(level)}</Text>
-    </View>
-  );
+  const privacy = [
+    t('DIVE_LOG_PUBLIC').toLowerCase(),
+    t('DIVE_LOG_PRIVATE').toLowerCase(),
+  ];
 
   return (
-    <ScrollView style={styles.container}>
+    <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+      <View style={styles.noteContainer}>
+        <View style={styles.notesContentLabel}>
+          <Text style={styles.headerLabel}>{t('NOTE')}</Text>
+          <View style={styles.optionalContainer}>
+            <Text style={styles.optionaltext}>{t('UP_TO_100_CHARS')}</Text>
+          </View>
+        </View>
+        <View>
+          <Field
+            name="text"
+            component={FMInput}
+            placeholder={t('WRITE_NOTE')}
+            style={styles.input}
+            containerStyle={styles.inputContainer}
+            maxLength={1000}
+            multiline
+          />
+        </View>
+      </View>
+
       <View>
         <Text style={styles.headerLabel}>{capitalize(t('RATING'))}</Text>
         <Field name="rating" component={RatingsInputComp} />
+      </View>
+
+      <View style={styles.privacyContentContainer}>
+        <Text style={styles.headerLabel}>{t('DIVE_LOG_PRIVACY_TEXT')}</Text>
+        <Field
+          name="privacy"
+          component={SelectWGradientBorder}
+          options={privacy}
+          activeComponent={ActiveComponent}
+          inactiveComponent={InactiveComponent}
+        />
+      </View>
+
+      <View style={styles.activityContentContainer}>
+        <Text style={styles.headerLabel}>{t('DIVE_ACTIVITY')}</Text>
+        <Field
+          name="activity_type"
+          component={SelectWGradientBorder}
+          options={activity}
+          activeComponent={ActiveComponent}
+          inactiveComponent={InactiveComponent}
+        />
       </View>
 
       <View style={styles.levelContentContainer}>
@@ -80,18 +91,7 @@ const Rating = () => {
           options={levels}
         />
       </View>
-
-      <View style={styles.activityContentContainer}>
-        <Text style={styles.labelText}>{t('DIVE_ACTIVITY')}</Text>
-        <Field
-          name="activity_type"
-          component={SelectWGradientBorder}
-          options={activity}
-          activeComponent={DiveActiveComp}
-          inactiveComponent={DiveInactiveComp}
-        />
-      </View>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -106,122 +106,47 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   levelContentContainer: {
-    marginVertical: 40,
-  },
-  level: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    opacity: 0.5,
-    width: '30%',
-  },
-  selectBox: {
-    borderRadius: 12,
-    backgroundColor: '#fff',
-    width: '100%',
-  },
-  selectedShadow: {
-    borderRadius: 12,
-    shadowColor: 'black',
-    shadowRadius: 4,
-    shadowOffset: {
-      width: 2,
-      height: 2,
-    },
-    shadowOpacity: 0.2,
-    width: '30%',
-  },
-  selectedLevel: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    paddingVertical: 1.5,
-    paddingHorizontal: 1.5,
-    elevation: 2,
-  },
-  levelText: {
-    marginLeft: 10,
-    marginBottom: 10,
-    color: 'black',
-  },
-  normalLevelCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: '#EFF6F9',
-    marginTop: 15,
-    marginBottom: 15,
-    marginLeft: 10,
-  },
-  selectedLevelCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: '#EFF6F9',
-    marginTop: 15,
-    marginBottom: 15,
-    marginLeft: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  selectedGradient: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
+    marginTop: 10,
+    marginBottom: 20,
   },
   activityContentContainer: {
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  privacyContentContainer: {
     marginTop: 30,
     marginBottom: 20,
   },
-  activityContainer: {
-    marginTop: 20,
+  optionalContainer: {},
+  optionaltext: {
+    color: '#aa00ff',
+    fontSize: 12,
+  },
+  notesContentLabel: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
-  },
-  activity: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    opacity: 0.5,
-    width: '30%',
-  },
-  labelText: {
-    textAlign: 'left',
-    alignSelf: 'flex-start',
-    color: 'black',
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  selectedActivity: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    paddingVertical: 1.5,
-    paddingHorizontal: 1.5,
-    elevation: 2,
-  },
-  activityText: {
-    marginLeft: 10,
-    marginBottom: 10,
-    color: 'black',
-    fontSize: WIDTH < 380 ? 13 : 14,
-  },
-  normalActivityCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: '#EFF6F9',
-    marginTop: 15,
-    marginBottom: 15,
-    marginLeft: 10,
-  },
-  selectedActivityCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: '#EFF6F9',
-    marginTop: 15,
-    marginBottom: 15,
-    marginLeft: 10,
     alignItems: 'center',
-    justifyContent: 'center',
+  },
+  inputContainer: {
+    marginVertical: 10,
+    marginHorizontal: 0,
+    paddingHorizontal: 10,
+    borderColor: 'whitesmoke',
+    borderWidth: StyleSheet.hairlineWidth,
+    backgroundColor: '#FFF',
+    borderRadius: 8,
+    justifyContent: 'flex-start',
+  },
+  input: {
+    minHeight: Platform.OS === 'android' ? 40 : 120,
+    fontSize: 16,
+    paddingTop: Platform.OS === 'android' ? 5 : 12,
+    paddingBottom: 5,
+    color: 'black',
+    justifyContent: 'flex-start',
+  },
+  noteContainer: {
+    marginBottom: 10,
   },
 });
 

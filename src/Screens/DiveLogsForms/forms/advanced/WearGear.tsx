@@ -1,37 +1,16 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Field } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
 
 import SliderComp from '_components/ui/Slider';
-import GradientCircle from '_components/ui/GradientCircle';
-import GradientBox from '_components/ui/GradientBox';
-import { capitalize } from '_utils/functions';
-import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
+import SelectWGradientBorder from '_components/ui/SelectWGradientBorderV2';
+import {
+  ActiveSquareGradientComponent,
+  InActiveSquareGradientComponent,
+} from '_utils/form/gradient-selection';
 import { useAppSelector } from '_redux/hooks';
 import { selectUser } from '_redux/slices/user';
-
-const WIDTH = Dimensions.get('window').width;
-
-const air_typeActiveComponent = (air_type: string) => (
-  <View style={styles.selectedShadow}>
-    <GradientBox style={styles.selectedLevel}>
-      <View style={styles.selectBox}>
-        <View style={styles.selectedLevelCircle}>
-          <GradientCircle style={styles.selectedGradient} />
-        </View>
-        <Text style={styles.levelText}>{capitalize(air_type)}</Text>
-      </View>
-    </GradientBox>
-  </View>
-);
-
-const air_typeInactiveComponent = (air_type: string) => (
-  <View style={styles.level}>
-    <View style={styles.normalLevelCircle}></View>
-    <Text style={styles.levelText}>{capitalize(air_type)}</Text>
-  </View>
-);
 
 const WearGear = () => {
   const { t } = useTranslation();
@@ -97,8 +76,8 @@ const WearGear = () => {
           name="air_type"
           component={SelectWGradientBorder}
           options={air_typeTypes}
-          activeComponent={air_typeActiveComponent}
-          inactiveComponent={air_typeInactiveComponent}
+          activeComponent={ActiveSquareGradientComponent}
+          inactiveComponent={InActiveSquareGradientComponent}
         />
       </View>
     </View>
@@ -122,70 +101,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  level: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    opacity: 0.5,
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '31%',
-  },
-  selectBox: {
-    borderRadius: 12,
-    backgroundColor: '#fff',
-    width: '100%',
-    flexDirection: 'row',
-    // justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  selectedShadow: {
-    borderRadius: 12,
-    shadowColor: 'black',
-    shadowRadius: 4,
-    shadowOffset: {
-      width: 2,
-      height: 2,
-    },
-    shadowOpacity: 0.2,
-    width: '31%',
-  },
-  selectedLevel: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    paddingVertical: 1.5,
-    paddingHorizontal: 1.5,
-    elevation: 2,
-  },
-  levelText: {
-    marginLeft: WIDTH < 380 ? 5 : 10,
-    color: 'black',
-    fontSize: WIDTH < 380 ? 13 : 14,
-  },
-  normalLevelCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 2,
-    backgroundColor: '#EFF6F9',
-    marginTop: 15,
-    marginBottom: 15,
-    marginLeft: 10,
-  },
-  selectedLevelCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 2,
-    backgroundColor: '#EFF6F9',
-    marginTop: 15,
-    marginBottom: 15,
-    marginLeft: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  selectedGradient: {
-    width: 12,
-    height: 12,
-    borderRadius: 2,
   },
   gearTypesContainer: {
     marginVertical: 30,

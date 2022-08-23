@@ -32,8 +32,6 @@ import Footer from './components/FormFooter';
 
 import Location from './forms/simple/Location';
 import Rating from './forms/simple/Rating';
-// import Name from './forms/simple/Name';
-import Notes from './forms/simple/Notes';
 import Review from './forms/simple/Review';
 import ExitModal from './components/ExitModal';
 
@@ -83,14 +81,6 @@ const SimpleDiveLogsForms: FunctionComponent<
     {
       id: 1,
       name: t('simpleformStages._1'),
-    },
-    // {
-    //   id: 2,
-    //   name: t('simpleformStages._2'),
-    // },
-    {
-      id: 2,
-      name: t('simpleformStages._3'),
     },
   ];
 
@@ -142,13 +132,19 @@ const SimpleDiveLogsForms: FunctionComponent<
           authToken as string,
         );
 
+        const arrangedValues = {
+          ...values,
+          beach_id: values.location?.beach_id,
+          dive_shop_id: values.dive_shop?.shop_id,
+          images,
+          is_private: values.privacy === t('DIVE_LOG_PRIVATE').toLowerCase(),
+        };
+        delete arrangedValues.location;
+        delete arrangedValues.privacy;
+        delete arrangedValues.dive_shop;
+
         const response = await handleCreateDiveLog(
-          {
-            ...values,
-            beach_id: values.location?.beach_id,
-            dive_shop_id: values.dive_shop?.shop_id,
-            images,
-          },
+          arrangedValues,
           authToken as string,
         );
 
@@ -160,12 +156,17 @@ const SimpleDiveLogsForms: FunctionComponent<
         setFormSubmitting(false);
         callback();
       } else {
+        const arrangedValues = {
+          ...values,
+          beach_id: values.location?.beach_id,
+          dive_shop_id: values.dive_shop?.shop_id,
+          is_private: values.privacy === t('DIVE_LOG_PRIVATE').toLowerCase(),
+        };
+        delete arrangedValues.location;
+        delete arrangedValues.privacy;
+
         const response = await handleCreateDiveLog(
-          {
-            ...values,
-            beach_id: values.location?.beach_id,
-            dive_shop_id: values.dive_shop?.shop_id,
-          },
+          arrangedValues,
           authToken as string,
         );
 
@@ -202,6 +203,8 @@ const SimpleDiveLogsForms: FunctionComponent<
     // @ts-ignore
     // images: [],
     dive_shop: undefined,
+    // @ts-ignore
+    privacy: 'public',
     ...passedInLog,
   };
 
@@ -229,8 +232,6 @@ const SimpleDiveLogsForms: FunctionComponent<
         );
       case 1:
         return !!(values.rating && values.difficulty);
-      case 2:
-        return true;
       default:
         return true;
     }
@@ -331,9 +332,7 @@ const SimpleDiveLogsForms: FunctionComponent<
                   />
                 )}
                 {page === 1 && <Rating />}
-                {page === 2 && <Notes />}
-                {/* {page === 3 && <Notes />} */}
-                {page === 3 && (
+                {page === 2 && (
                   <Review
                     navigateToAdvancedDiveForm={() =>
                       handleNavigateToAdvancedDiveLog(values as InitialValues)
