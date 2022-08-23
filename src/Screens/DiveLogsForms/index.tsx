@@ -32,7 +32,6 @@ import Footer from './components/FormFooter';
 
 import Location from './forms/simple/Location';
 import Rating from './forms/simple/Rating';
-import Notes from './forms/simple/Notes';
 import Review from './forms/simple/Review';
 import ExitModal from './components/ExitModal';
 
@@ -82,14 +81,6 @@ const SimpleDiveLogsForms: FunctionComponent<
     {
       id: 1,
       name: t('simpleformStages._1'),
-    },
-    // {
-    //   id: 2,
-    //   name: t('simpleformStages._2'),
-    // },
-    {
-      id: 2,
-      name: t('simpleformStages._3'),
     },
   ];
 
@@ -228,8 +219,6 @@ const SimpleDiveLogsForms: FunctionComponent<
         );
       case 1:
         return !!(values.rating && values.difficulty);
-      case 2:
-        return true;
       default:
         return true;
     }
@@ -330,8 +319,7 @@ const SimpleDiveLogsForms: FunctionComponent<
                   />
                 )}
                 {page === 1 && <Rating />}
-                {page === 2 && <Notes />}
-                {page === 3 && (
+                {page === 2 && (
                   <Review
                     navigateToAdvancedDiveForm={() =>
                       handleNavigateToAdvancedDiveLog(values as InitialValues)
