@@ -5,45 +5,19 @@ import { useTranslation } from 'react-i18next';
 
 import SliderComp from '_components/ui/Slider';
 import VisibilityFormComp from '_components/ui/VisibilityFormComp';
-import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
-import GradientBox from '_components/ui/GradientBox';
-import GradientCircle from '_components/ui/GradientCircle';
-import { WIDTH } from '_utils/constants';
-import { capitalize } from '_utils/functions';
+import SelectWGradientBorder from '_components/ui/SelectWGradientBorderV2';
+import {
+  ActiveComponent,
+  InactiveComponent,
+} from '_utils/form/gradient-selection';
 import { useAppSelector } from '_redux/hooks';
 import { selectUser } from '_redux/slices/user';
-
-const EntryActiveComp = (entry: string) => (
-  <View style={styles.selectedShadow}>
-    <GradientBox style={styles.selectedActivity}>
-      <View style={styles.selectBox}>
-        <View style={styles.selectedActivityCircle}>
-          <GradientCircle style={styles.selectedGradient} />
-        </View>
-        <Text style={styles.activityText}>{capitalize(entry)}</Text>
-      </View>
-    </GradientBox>
-  </View>
-);
 
 const WaterOnshore = () => {
   const { t } = useTranslation();
   const user = useAppSelector(selectUser);
   const entries = [t('SHORE').toLowerCase(), t('BOAT').toLowerCase()];
 
-  const EntryInctiveComp = (entry: string) => {
-    const index = entries.findIndex(item => item === entry);
-    return (
-      <View
-        style={[
-          styles.activity,
-          index === 0 ? { marginRight: 15 } : { marginLeft: 15 },
-        ]}>
-        <View style={styles.normalActivityCircle}></View>
-        <Text style={styles.activityText}>{capitalize(entry)}</Text>
-      </View>
-    );
-  };
   return (
     <View style={styles.container}>
       <View style={{ marginTop: 30 }}>
@@ -92,8 +66,8 @@ const WaterOnshore = () => {
           name="entry"
           component={SelectWGradientBorder}
           options={entries}
-          activeComponent={EntryActiveComp}
-          inactiveComponent={EntryInctiveComp}
+          activeComponent={ActiveComponent}
+          inactiveComponent={InactiveComponent}
           style={styles.entryContainer}
         />
       </View>
@@ -117,77 +91,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  activityContentContainer: {
-    marginTop: 30,
-    marginBottom: 20,
-  },
-  activityContainer: {
-    marginTop: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  activity: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    opacity: 0.5,
-    width: '30%',
-  },
-  selectBox: {
-    borderRadius: 12,
-    backgroundColor: '#fff',
-    width: '100%',
-  },
-  selectedShadow: {
-    borderRadius: 12,
-    shadowColor: 'black',
-    shadowRadius: 4,
-    shadowOffset: {
-      width: 2,
-      height: 2,
-    },
-    shadowOpacity: 0.2,
-    width: '32%',
-  },
-  selectedActivity: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    paddingVertical: 1.5,
-    paddingHorizontal: 1.5,
-    elevation: 2,
-  },
-  activityText: {
-    marginRight: WIDTH < 380 ? 10 : 25,
-    marginLeft: 15,
-    marginBottom: 10,
-    color: 'black',
-    fontSize: WIDTH < 380 ? 13 : 14,
-  },
-  normalActivityCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: '#EFF6F9',
-    marginTop: 15,
-    marginBottom: 15,
-    marginLeft: 10,
-  },
-  selectedActivityCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: '#EFF6F9',
-    marginTop: 15,
-    marginBottom: 15,
-    marginLeft: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  selectedGradient: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
   },
   entryContainer: {
     marginTop: 20,
