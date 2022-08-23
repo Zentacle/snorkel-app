@@ -32,7 +32,6 @@ import Footer from './components/FormFooter';
 
 import Location from './forms/simple/Location';
 import Rating from './forms/simple/Rating';
-// import Name from './forms/simple/Name';
 import Notes from './forms/simple/Notes';
 import Review from './forms/simple/Review';
 import ExitModal from './components/ExitModal';
@@ -332,7 +331,6 @@ const SimpleDiveLogsForms: FunctionComponent<
                 )}
                 {page === 1 && <Rating />}
                 {page === 2 && <Notes />}
-                {/* {page === 3 && <Notes />} */}
                 {page === 3 && (
                   <Review
                     navigateToAdvancedDiveForm={() =>
