@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
       height: 2,
     },
     shadowOpacity: 0.2,
-    width: '32%',
+    minWidth: '25%',
   },
   selectedActivity: {
     backgroundColor: '#fff',
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 12,
     opacity: 0.5,
-    width: '30%',
+    minWidth: '25%',
   },
   selectBox: {
     borderRadius: 12,
