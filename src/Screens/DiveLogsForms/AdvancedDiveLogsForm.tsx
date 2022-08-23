@@ -276,12 +276,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   ): boolean => {
     switch (currentPage) {
       case 0:
-        return !!(
-          values.rating &&
-          values.difficulty &&
-          values.title &&
-          values.text
-        );
+        return !!(values.rating && values.difficulty);
       default:
         return true;
     }
