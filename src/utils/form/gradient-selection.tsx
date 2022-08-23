@@ -26,6 +26,26 @@ export const InactiveComponent = (item: string) => (
   </View>
 );
 
+export const ActiveSquareGradientComponent = (item: string) => (
+  <View style={styles.selectedShadow}>
+    <GradientBox style={styles.selectedItem}>
+      <View style={styles.selectBox}>
+        <View style={styles.selectedItemSquare}>
+          <GradientCircle style={styles.selectedSquareGradient} />
+        </View>
+        <Text style={styles.itemText}>{capitalize(item)}</Text>
+      </View>
+    </GradientBox>
+  </View>
+);
+
+export const InActiveSquareGradientComponent = (item: string) => (
+  <View style={styles.item}>
+    <View style={styles.normalItemSquare} />
+    <Text style={styles.itemText}>{capitalize(item)}</Text>
+  </View>
+);
+
 const styles = StyleSheet.create({
   selectedShadow: {
     borderRadius: 12,
@@ -36,7 +56,6 @@ const styles = StyleSheet.create({
       height: 2,
     },
     shadowOpacity: 0.2,
-    // width: '30%',
   },
   selectedItem: {
     backgroundColor: '#fff',
@@ -91,5 +110,29 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  selectedItemSquare: {
+    width: 20,
+    height: 20,
+    backgroundColor: '#EFF6F9',
+    marginTop: 8,
+    marginBottom: 8,
+    marginLeft: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  normalItemSquare: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#EFF6F9',
+    marginTop: 8,
+    marginBottom: 8,
+    marginLeft: 10,
+  },
+  selectedSquareGradient: {
+    width: 12,
+    height: 12,
+    borderRadius: 2,
   },
 });
