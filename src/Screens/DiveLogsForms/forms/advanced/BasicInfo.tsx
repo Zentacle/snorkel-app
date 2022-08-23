@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Platform } from 'react-native';
 import MAIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MapView, { Marker } from 'react-native-maps';
 import { Field } from 'react-final-form';
@@ -7,66 +7,28 @@ import { FieldArray } from 'react-final-form-arrays';
 import { useTranslation } from 'react-i18next';
 
 import GradientCircle from '_components/ui/GradientCircle';
-import GradientBox from '_components/ui/GradientBox';
 import GradientText from '_components/ui/GradientText';
 
 import FormManagementInput from '_components/ui/FormManagementInput';
-import SelectWGradientBorder from '_components/ui/SelectWGradientBoder';
+import SelectWGradientBorder from '_components/ui/SelectWGradientBorderV2';
 import RatingsInputComp from '_components/ui/RatingsInputComp';
 import ImagePickerArray from '_screens/DiveLogsForms/components/ImagePickerArray';
 
 import type { FunctionComponent } from 'react';
 import type { AdvancedFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
-import { capitalize } from '_utils/functions';
-import { WIDTH } from '_utils/constants';
 import UnavailableLocationBox from '_screens/DiveLogsForms/components/UnavailableLocationBox';
 import LocationAutocompleteModal from '_screens/DiveLogsForms/components/LocationAutocompleteModal';
 import DiveShopAutocompleteModal from '_screens/DiveLogsForms/components/DiveShopAutocompleteModal';
+import {
+  ActiveComponent,
+  InactiveComponent,
+} from '_utils/form/gradient-selection';
 import Snorkel from '_assets/scuba_icons/snorkel.svg';
 import Location from '_assets/scuba_icons/Location.svg';
 
 interface BasicInfoProps {
   values: InitialValues;
 }
-
-const ActiveLevelComponent = (level: string) => (
-  <View style={styles.selectedShadow}>
-    <GradientBox style={styles.selectedLevel}>
-      <View style={styles.selectBox}>
-        <View style={styles.selectedLevelCircle}>
-          <GradientCircle style={styles.selectedGradient} />
-        </View>
-        <Text style={styles.levelText}>{capitalize(level)}</Text>
-      </View>
-    </GradientBox>
-  </View>
-);
-const InactiveLevelComponent = (level: string) => (
-  <View style={styles.level}>
-    <View style={styles.normalLevelCircle}></View>
-    <Text style={styles.levelText}>{capitalize(level)}</Text>
-  </View>
-);
-
-const DiveInactiveComp = (level: string) => (
-  <View style={styles.activity}>
-    <View style={styles.normalActivityCircle}></View>
-    <Text style={styles.activityText}>{capitalize(level)}</Text>
-  </View>
-);
-
-const DiveActiveComp = (level: string) => (
-  <View style={styles.selectedShadow}>
-    <GradientBox style={styles.selectedActivity}>
-      <View style={styles.selectBox}>
-        <View style={styles.selectedActivityCircle}>
-          <GradientCircle style={styles.selectedGradient} />
-        </View>
-        <Text style={styles.activityText}>{capitalize(level)}</Text>
-      </View>
-    </GradientBox>
-  </View>
-);
 
 const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
   const { t } = useTranslation();
@@ -102,6 +64,11 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
     t('SCUBA').toLowerCase(),
     t('FREEDIVING').toLowerCase(),
     t('SNORKEL').toLowerCase(),
+  ];
+
+  const privacy = [
+    t('DIVE_LOG_PUBLIC').toLowerCase(),
+    t('DIVE_LOG_PRIVATE').toLowerCase(),
   ];
 
   const locationHasCoordinates =
@@ -251,25 +218,6 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
         <FieldArray name="images" component={ImagePickerArray} />
       </View>
 
-      <View style={styles.nameContainer}>
-        <View style={styles.inputContentLabel}>
-          <Text style={styles.headerLabel}>{t('ENTER_NAME')}</Text>
-          <View style={styles.optionalContainer}>
-            <Text style={styles.optionaltext}>{t('UP_TO_40_CHARS')}</Text>
-          </View>
-        </View>
-        <View>
-          <Field
-            name="title"
-            component={FormManagementInput}
-            placeholder={t('WRITE_TITLE')}
-            style={styles.nameInput}
-            containerStyle={styles.inputContainer}
-            maxLength={40}
-          />
-        </View>
-      </View>
-
       <View style={styles.notesContainer}>
         <View style={styles.inputContentLabel}>
           <Text style={styles.headerLabel}>{t('NOTE')}</Text>
@@ -297,25 +245,36 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
         </View>
       </View>
 
+      <View style={styles.privacyContentContainer}>
+        <Text style={styles.headerLabel}>{t('DIVE_LOG_PRIVACY_TEXT')}</Text>
+        <Field
+          name="privacy"
+          component={SelectWGradientBorder}
+          options={privacy}
+          activeComponent={ActiveComponent}
+          inactiveComponent={InactiveComponent}
+        />
+      </View>
+
       <View style={styles.levelContentContainer}>
         <Text style={styles.headerLabel}>{t('LEVEL_OF_DIFFICULTY')}</Text>
         <Field
           name="difficulty"
           component={SelectWGradientBorder}
           options={levels}
-          activeComponent={ActiveLevelComponent}
-          inactiveComponent={InactiveLevelComponent}
+          activeComponent={ActiveComponent}
+          inactiveComponent={InactiveComponent}
         />
       </View>
 
       <View style={styles.activityContentContainer}>
-        <Text style={styles.labelText}>{t('DIVE_ACTIVITY')}</Text>
+        <Text style={styles.headerLabel}>{t('DIVE_ACTIVITY')}</Text>
         <Field
           name="activity_type"
           component={SelectWGradientBorder}
           options={activity}
-          activeComponent={DiveActiveComp}
-          inactiveComponent={DiveInactiveComp}
+          activeComponent={ActiveComponent}
+          inactiveComponent={InactiveComponent}
         />
       </View>
     </View>
@@ -406,9 +365,6 @@ const styles = StyleSheet.create({
   mapIconContainer: {
     marginRight: 20,
   },
-  nameContainer: {
-    marginTop: 10,
-  },
   inputContentLabel: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -423,16 +379,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     borderRadius: 8,
   },
-  nameInput: {
-    height: 45,
-    fontSize: 16,
-    color: 'black',
-  },
   notesContainer: {
-    marginTop: 30,
+    marginTop: 10,
   },
   notesInput: {
-    minHeight: 90,
+    minHeight: Platform.OS === 'android' ? 60 : 120,
     fontSize: 16,
     paddingTop: 12,
     paddingBottom: 5,
@@ -454,128 +405,16 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   levelContentContainer: {
-    marginVertical: 40,
-  },
-  levelContainer: {
-    marginTop: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  level: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    opacity: 0.5,
-  },
-  selectBox: {
-    borderRadius: 12,
-    backgroundColor: '#fff',
-    width: '100%',
-  },
-  selectedShadow: {
-    borderRadius: 12,
-    shadowColor: 'black',
-    shadowRadius: 4,
-    shadowOffset: {
-      width: 2,
-      height: 2,
-    },
-    shadowOpacity: 0.2,
-  },
-  selectedLevel: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    paddingVertical: 1.5,
-    paddingHorizontal: 1.5,
-    elevation: 2,
-  },
-  levelText: {
-    marginRight: 25,
-    marginLeft: 15,
-    marginBottom: 10,
-    color: 'black',
-  },
-  normalLevelCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: '#EFF6F9',
-    marginTop: 15,
-    marginBottom: 15,
-    marginLeft: 10,
-  },
-  selectedLevelCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: '#EFF6F9',
-    marginTop: 15,
-    marginBottom: 15,
-    marginLeft: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  selectedGradient: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-  },
-  activityContentContainer: {
-    marginTop: 30,
+    marginTop: 10,
     marginBottom: 20,
   },
-  activityContainer: {
-    marginTop: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+  activityContentContainer: {
+    marginTop: 10,
+    marginBottom: 20,
   },
-  activity: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    opacity: 0.5,
-    width: '30%',
-  },
-  labelText: {
-    textAlign: 'left',
-    alignSelf: 'flex-start',
-    color: 'black',
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  selectedActivity: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    paddingVertical: 1.5,
-    paddingHorizontal: 1.5,
-    elevation: 2,
-  },
-  activityText: {
-    marginRight: WIDTH < 380 ? 10 : 25,
-    marginLeft: 15,
-    marginBottom: 10,
-    color: 'black',
-    fontSize: WIDTH < 380 ? 13 : 14,
-  },
-  normalActivityCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: '#EFF6F9',
-    marginTop: 15,
-    marginBottom: 15,
-    marginLeft: 10,
-  },
-  selectedActivityCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: '#EFF6F9',
-    marginTop: 15,
-    marginBottom: 15,
-    marginLeft: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
+  privacyContentContainer: {
+    marginTop: 30,
+    marginBottom: 20,
   },
   diveShopContainer: {
     marginTop: 20,
