@@ -166,17 +166,18 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
         date_dived: new Date(dateConcat).toISOString(),
         beach_id: values.location?.beach_id,
         dive_shop_id: values.dive_shop?.shop_id,
+        is_private: values.privacy === t('DIVE_LOG_PRIVATE').toLowerCase(),
       };
       delete arrangedValues.startDate;
       delete arrangedValues.startTime;
       delete arrangedValues.location;
       delete arrangedValues.date_posted;
       delete arrangedValues.dive_shop;
+      delete arrangedValues.privacy;
 
       await handleUpdateDiveLog(
         {
           ...arrangedValues,
-          beach_id: values.location?.beach_id,
         },
         authToken as string,
       );
@@ -265,6 +266,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     title: simpleDiveLogsForm.title,
     text: simpleDiveLogsForm.text,
     dive_shop: simpleDiveLogsForm.dive_shop,
+    privacy: simpleDiveLogsForm.privacy,
     // ...simpleDiveLogsForm,
   };
 

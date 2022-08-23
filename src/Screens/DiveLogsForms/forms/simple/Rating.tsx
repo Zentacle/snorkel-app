@@ -27,6 +27,11 @@ const Rating = () => {
     t('SNORKEL').toLowerCase(),
   ];
 
+  const privacy = [
+    t('DIVE_LOG_PUBLIC').toLowerCase(),
+    t('DIVE_LOG_PRIVATE').toLowerCase(),
+  ];
+
   return (
     <KeyboardAwareScrollView contentContainerStyle={styles.container}>
       <View style={styles.noteContainer}>
@@ -52,6 +57,17 @@ const Rating = () => {
       <View>
         <Text style={styles.headerLabel}>{capitalize(t('RATING'))}</Text>
         <Field name="rating" component={RatingsInputComp} />
+      </View>
+
+      <View style={styles.privacyContentContainer}>
+        <Text style={styles.headerLabel}>{t('DIVE_LOG_PRIVACY_TEXT')}</Text>
+        <Field
+          name="privacy"
+          component={SelectWGradientBorder}
+          options={privacy}
+          activeComponent={ActiveComponent}
+          inactiveComponent={InactiveComponent}
+        />
       </View>
 
       <View style={styles.activityContentContainer}>
@@ -94,6 +110,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   activityContentContainer: {
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  privacyContentContainer: {
     marginTop: 30,
     marginBottom: 20,
   },

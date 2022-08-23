@@ -292,5 +292,8 @@
   "DIVE_SHOP": "Dive Shop",
   "DIVE_SHOP_PLACEHOLDER": "Search for a Dive Shop",
   "NOT_NOW": "Not Now",
-  "SUBMITTING": "Submitting"
+  "SUBMITTING": "Submitting",
+  "DIVE_LOG_PRIVACY_TEXT": "Privacy",
+  "DIVE_LOG_PUBLIC": "Public",
+  "DIVE_LOG_PRIVATE": "Private"
 }
