@@ -130,21 +130,21 @@ PODS:
   - GTMSessionFetcher/Core (1.7.0)
   - libevent (2.1.12)
   - OpenSSL-Universal (1.1.180)
-  - Permission-Camera (3.2.0):
+  - Permission-Camera (3.6.1):
     - RNPermissions
-  - Permission-FaceID (3.2.0):
+  - Permission-FaceID (3.6.1):
     - RNPermissions
-  - Permission-LocationAccuracy (3.2.0):
+  - Permission-LocationAccuracy (3.6.1):
     - RNPermissions
-  - Permission-LocationAlways (3.2.0):
+  - Permission-LocationAlways (3.6.1):
     - RNPermissions
-  - Permission-LocationWhenInUse (3.2.0):
+  - Permission-LocationWhenInUse (3.6.1):
     - RNPermissions
-  - Permission-MediaLibrary (3.2.0):
+  - Permission-MediaLibrary (3.6.1):
     - RNPermissions
-  - Permission-Microphone (3.2.0):
+  - Permission-Microphone (3.6.1):
     - RNPermissions
-  - Permission-PhotoLibrary (3.2.0):
+  - Permission-PhotoLibrary (3.6.1):
     - RNPermissions
   - PurchasesHybridCommon (3.3.0):
     - RevenueCat (= 4.9.0)
@@ -381,6 +381,8 @@ PODS:
     - React-Core
   - react-native-maps (0.30.1):
     - React-Core
+  - react-native-netinfo (9.3.0):
+    - React-Core
   - react-native-safe-area-context (3.3.2):
     - React-Core
   - react-native-splash-screen (3.3.0):
@@ -466,7 +468,7 @@ PODS:
   - RNGoogleSignin (7.0.4):
     - GoogleSignIn (~> 6.0.0)
     - React-Core
-  - RNPermissions (3.2.0):
+  - RNPermissions (3.6.1):
     - React-Core
   - RNPurchases (5.0.0-beta.1):
     - PurchasesHybridCommon (= 3.3.0)
@@ -544,6 +546,7 @@ DEPENDENCIES:
   - react-native-google-maps (from `../node_modules/react-native-maps`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-maps (from `../node_modules/react-native-maps`)
+  - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-tracking-transparency (from `../node_modules/react-native-tracking-transparency`)
@@ -678,6 +681,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-picker"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
+  react-native-netinfo:
+    :path: "../node_modules/@react-native-community/netinfo"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-splash-screen:
@@ -768,14 +773,14 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 43748f93435c2aa068b1cbe39655aaf600652e91
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
-  Permission-Camera: 9eb618fd601ae4a674b072c3b0d37f109d7b91e5
-  Permission-FaceID: f83c3fcdd4712d98cec122c0eb086242ec269dc0
-  Permission-LocationAccuracy: 405e4dc3dbb6bea69f7d9301f3b521f7526408df
-  Permission-LocationAlways: 210a933729111c29067e51373500ce1147a447c0
-  Permission-LocationWhenInUse: cb42b9f4094c0361ea65c4fb4cae9d934bb37f80
-  Permission-MediaLibrary: abf835d5425d19aabb1726f7333cf489231b03ea
-  Permission-Microphone: c09c5ae99c1a9b0439a95085c6a679d3d04ee57a
-  Permission-PhotoLibrary: 900e7e33012bd5e02e5859cb65d5bb2134259c64
+  Permission-Camera: 4c0b610b46391c85d2d50f1446d98b4103b14b5a
+  Permission-FaceID: 000aaa841915e75ef917149bf3c9daddf0b1a274
+  Permission-LocationAccuracy: bae2d2bb416a38434d9d23128cc4c2e3c7ab7131
+  Permission-LocationAlways: cf23adac902686cd4f3f11826ea1ede821e2fcfd
+  Permission-LocationWhenInUse: 667dfff996a63375d7f2ba3522ae841aa1f7aaf3
+  Permission-MediaLibrary: 70811d1674033ac426683d3c962644b11eb22fdd
+  Permission-Microphone: 91dea6724a6100cf45bca989dafd4e4337333f6b
+  Permission-PhotoLibrary: b3b35c4574586c9835ecb3d432b181b6709ea517
   PurchasesHybridCommon: 5c3e18d6813dc1c256d2fb9f295d73d2230d46d1
   RCT-Folly: a21c126816d8025b547704b777a2ba552f3d9fa9
   RCTRequired: 4bf86c70714490bca4bf2696148638284622644b
@@ -798,6 +803,7 @@ SPEC CHECKSUMS:
   react-native-google-maps: 17432eb7412df3c65d7c7c52ede085d0f5624f77
   react-native-image-picker: ae1202414bd5c37c00b2a701daa5b6194a06b7d9
   react-native-maps: d752b0dd0e1951d815b1336332835aab6b4a836f
+  react-native-netinfo: f473620bc118d6f44ce65669dd4810a7cfb36a7d
   react-native-safe-area-context: 5cf05f49df9d17261e40e518481f2e334c6cd4b5
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   react-native-tracking-transparency: d39c548f86b15315eb9d0532cff2a7d989085bee
@@ -820,7 +826,7 @@ SPEC CHECKSUMS:
   RNCClipboard: 471860adba60079ac22058c663c91b3a875a7609
   RNCMaskedView: d367b2a8df3992114e31b32b091a0c00dc800827
   RNGoogleSignin: aeb29e549e6748da3e5847516fdd1327c85894c5
-  RNPermissions: bf844d392fe0ecbfbd2e4ae2b88cc32f2f09b369
+  RNPermissions: 79d0c889562fd792329821bea3155fe6eb54d359
   RNPurchases: 05af7c41c5a23efb1ac23d0859e37264044ffe0d
   RNScreens: 522705f2e5c9d27efb17f24aceb2bf8335bc7b8e
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
