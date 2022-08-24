@@ -15,7 +15,6 @@ import validate from 'validate.js';
 import { FORM_ERROR } from 'final-form';
 import { useTranslation } from 'react-i18next';
 import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
-import { setAmplitudeUserId } from '_utils/functions/amplitude';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -94,15 +93,15 @@ const SignIn: FunctionComponent<SignInProps> = props => {
     });
   };
 
-  const navigateToCameraPermissions = () => {
-    props.navigation.navigate('OnBoarding', {
-      screen: 'CameraPermissions',
-    });
-  };
-
   const navigateToOnBoarding = () => {
     props.navigation.navigate('OnBoarding', {
       screen: 'ChooseUserName',
+    });
+  };
+
+  const navigateToAvatar = () => {
+    props.navigation.navigate('OnBoarding', {
+      screen: 'ChooseAvatar',
     });
   };
 
@@ -190,9 +189,9 @@ const SignIn: FunctionComponent<SignInProps> = props => {
                 method: 'google',
               });
               if (userPreviouslyFilledOnBoardingData) {
-                navigateToCameraPermissions();
+                navigateToApp();
               } else if ((response.payload as LoginResponse).user.username) {
-                navigateToCameraPermissions();
+                navigateToAvatar();
               } else {
                 navigateToOnBoarding();
               }
@@ -227,7 +226,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
                 });
                 navigateToApp();
               } else if ((response.payload as LoginResponse).user.username) {
-                navigateToCameraPermissions();
+                navigateToAvatar();
               } else {
                 navigateToOnBoarding();
               }
@@ -256,7 +255,7 @@ const SignIn: FunctionComponent<SignInProps> = props => {
         response.payload.user.username &&
         !response.payload.user.profile_pic
       ) {
-        navigateToCameraPermissions();
+        navigateToAvatar();
       } else {
         navigateToOnboarding();
       }

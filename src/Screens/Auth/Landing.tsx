@@ -85,9 +85,9 @@ const Landing: FunctionComponent<LandingProps> = props => {
     });
   };
 
-  const navigateToCameraPermissions = () => {
+  const navigateToAvatar = () => {
     props.navigation.navigate('OnBoarding', {
-      screen: 'CameraPermissions',
+      screen: 'ChooseAvatar',
     });
   };
 
@@ -167,7 +167,7 @@ const Landing: FunctionComponent<LandingProps> = props => {
                   navigateToApp();
                 }
               } else if ((response.payload as LoginResponse).user.username) {
-                navigateToCameraPermissions();
+                navigateToAvatar();
               } else {
                 navigateToOnBoarding();
               }
@@ -205,7 +205,7 @@ const Landing: FunctionComponent<LandingProps> = props => {
                   navigateToApp();
                 }
               } else if ((response.payload as LoginResponse).user.username) {
-                navigateToCameraPermissions();
+                navigateToAvatar();
               } else {
                 navigateToOnBoarding();
               }
