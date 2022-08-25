@@ -9,6 +9,8 @@ import {
 } from 'react-native-tracking-transparency';
 import { Amplitude } from '@amplitude/react-native';
 import config from 'react-native-config';
+import NetInfo from '@react-native-community/netinfo';
+import Toast from 'react-native-toast-message';
 
 import type { RootStackParamList } from '_utils/interfaces';
 
@@ -32,18 +34,32 @@ import {
   selectAutoAuthLoadingState,
   getCurrentUser,
   handleCheckExistingUser,
+  selectAuthToken,
 } from '_redux/slices/user';
 import { autoHydrateSettings } from '_redux/slices/settings';
 import { linking } from '_utils/functions/linking';
+import offlineManager from '_utils/functions/offline-manager';
+import {
+  handleCreateDiveLog,
+  handleUploadDiveLogImages,
+  handleUpdateDiveLog,
+} from '_redux/slices/dive-logs/api';
+import {
+  AdvancedFormInitialValues,
+  SimpleFormInitialValues,
+} from '_utils/interfaces/data/logs';
 
 const Navigator: React.FC = () => {
   const dispatch = useAppDispatch();
   const appState = React.useRef(AppState.currentState);
+  const authToken = useAppSelector(selectAuthToken);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_appStateVisible, setAppStateVisible] = React.useState(
     appState.current,
   );
+
+  const [networkIsConnected, setNetworkIsConnected] = React.useState(true);
 
   React.useEffect(() => {
     const ampInstance = Amplitude.getInstance();
@@ -73,6 +89,84 @@ const Navigator: React.FC = () => {
   // const userPreviouslyFilledOnBoardingData = !!(
   //   userHasUsername && userHasProfilePic
   // );
+
+  const syncCreateDiveLog = async () => {
+    offlineManager.syncItems<SimpleFormInitialValues>('create-dive-log', item =>
+      createDiveLog(item),
+    );
+  };
+
+  const createDiveLog = async (values: SimpleFormInitialValues) => {
+    try {
+      if (values.images) {
+        const images = await handleUploadDiveLogImages(
+          values.images,
+          authToken as string,
+        );
+        const response = await handleCreateDiveLog(
+          {
+            ...values,
+            images,
+          },
+          authToken as string,
+        );
+        if (response.msg) {
+          throw new Error(response.msg);
+        }
+      } else {
+        const response = await handleCreateDiveLog(values, authToken as string);
+        if (response.msg) {
+          throw new Error(response.msg);
+        }
+      }
+
+      Toast.show({
+        type: 'info',
+        text1: 'Offline logs synced',
+      });
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  const updateDiveLog = async (values: AdvancedFormInitialValues) => {
+    try {
+      const response = await handleUpdateDiveLog(values, authToken as string);
+      if (response.msg) {
+        throw new Error(response.msg);
+      }
+      Toast.show({
+        type: 'info',
+        text1: 'Offline logs synced',
+      });
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  const syncUpdateDiveLog = async () => {
+    offlineManager.syncItems<SimpleFormInitialValues>('update-dive-log', item =>
+      updateDiveLog(item),
+    );
+  };
+
+  React.useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      // mimic a change event from connected to disconnected
+      if (!state.isConnected && networkIsConnected) {
+        setNetworkIsConnected(false);
+      }
+      // mimic a change event from disconnected to connected and trigger remote sync
+      if (state.isConnected && !networkIsConnected) {
+        syncCreateDiveLog();
+        syncUpdateDiveLog();
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  });
 
   React.useEffect(() => {
     const subscription = AppState.addEventListener('change', nextAppState => {
