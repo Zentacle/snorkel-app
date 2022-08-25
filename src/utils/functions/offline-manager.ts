@@ -13,7 +13,7 @@ async function saveItem<ObjType>(key: string, item: ObjType): Promise<void> {
 async function syncItems<ObjType>(
   key: string,
   fn: (item: ObjType) => Promise<any>,
-): Promise<void> {
+): Promise<any> {
   type CombinedTypes = ObjType & UploadedBoolean;
 
   const items = await fetchItems<CombinedTypes>(key);
