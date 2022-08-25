@@ -1,13 +1,13 @@
 import AsyncStorage from '@react-native-community/async-storage';
 
+interface UploadedBoolean {
+  isUploaded: boolean;
+}
+
 async function saveItem<ObjType>(key: string, item: ObjType): Promise<void> {
   const items = await fetchItems<ObjType>(key);
   items.push(item);
   await AsyncStorage.setItem(key, JSON.stringify(items));
-}
-
-interface UploadedBoolean {
-  isUploaded: boolean;
 }
 
 async function syncItems<ObjType>(
