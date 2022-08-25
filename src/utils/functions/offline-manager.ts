@@ -17,6 +17,9 @@ async function syncItems<ObjType>(
   type CombinedTypes = ObjType & UploadedBoolean;
 
   const items = await fetchItems<CombinedTypes>(key);
+  if (!items.length) {
+    return;
+  }
   await Promise.all(
     items.map(item => {
       fn(item).then(() => (item.isUploaded = true));
