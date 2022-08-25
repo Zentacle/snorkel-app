@@ -205,18 +205,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
               "We'll upload your dive log as soon as You are connected to the internet",
           });
         }
-        await offlineManager.saveItem<InitialValues>(
-          'create-dive-log',
-          arrangedValues,
-        );
-        Toast.show({
-          type: 'info',
-          text1: 'No network available',
-          text2:
-            "We'll upload your dive log as soon as You are connected to the internet",
-        });
         setFormSubmitting(false);
-
         callback();
       } else {
         await handleUpdateDiveLog(
