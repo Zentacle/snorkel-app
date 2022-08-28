@@ -49,7 +49,6 @@ const Review: FunctionComponent<ReviewProps> = ({
   const { t } = useTranslation();
   const [copyMessageSet, setCopymessage] = React.useState(false);
   const activeUser = useAppSelector(selectUser);
-  console.log('form values', formValues);
   const onShare = async () => {
     const url = `https://zentacle.com/dive-log/${formValues.id}`;
     try {
