@@ -94,13 +94,19 @@ const SimpleDiveLogsForms: FunctionComponent<
     toggleModal(true);
   };
 
-  const goToLog = () => {
-    props.navigation.navigate('LogsStack', {
-      screen: 'LogDetail',
-      params: {
-        diveLogId: savedDiveLogId,
-      },
-    });
+  const goToLog = async () => {
+    const connectionState = await NetInfo.fetch();
+    if (!connectionState.isConnected) {
+      // offline, cannot fetch details of created log
+      props.navigation.navigate('Explore');
+    } else {
+      props.navigation.navigate('LogsStack', {
+        screen: 'LogDetail',
+        params: {
+          diveLogId: savedDiveLogId,
+        },
+      });
+    }
   };
 
   const modalAction = () => {
