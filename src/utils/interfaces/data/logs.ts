@@ -32,6 +32,7 @@ export interface SimpleFormInitialValues {
   dive_shop_id?: number;
   privacy?: string;
   is_private?: boolean;
+  date_dived?: string;
 }
 
 export interface AdvancedFormInitialValues extends SimpleFormInitialValues {

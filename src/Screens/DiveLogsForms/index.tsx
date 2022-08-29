@@ -135,11 +135,12 @@ const SimpleDiveLogsForms: FunctionComponent<
     try {
       setFormSubmitting(true);
 
-      let arrangedValues = {
+      let arrangedValues: InitialValues = {
         ...values,
         beach_id: values.location?.beach_id,
         dive_shop_id: values.dive_shop?.shop_id,
         is_private: values.privacy === t('DIVE_LOG_PRIVATE').toLowerCase(),
+        date_dived: new Date().toJSON(),
       };
 
       delete arrangedValues.location;
