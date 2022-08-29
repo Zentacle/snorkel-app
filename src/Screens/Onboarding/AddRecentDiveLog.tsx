@@ -13,6 +13,8 @@ import { useTranslation } from 'react-i18next';
 import IOIcon from 'react-native-vector-icons/Ionicons';
 import { Form, Field } from 'react-final-form';
 import validate from 'validate.js';
+import config from 'react-native-config';
+import Purchases from 'react-native-purchases';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -66,6 +68,7 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
 }) => {
   const { t } = useTranslation();
   let formRef = React.useRef<FormApi>();
+  const [proVerified, verifyIsPro] = React.useState(false);
 
   const user = useAppSelector(selectUser);
 
@@ -78,6 +81,17 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
 
   const closeLocationModal = () => {
     toggleAutocompleteModal(false);
+  };
+
+  const checkSubscription = async () => {
+    const customerInfo = await Purchases.getCustomerInfo();
+    if (
+      customerInfo.entitlements.active[
+        config.REVENUE_CAT_ENTITLEMENT_IDENTIFIER
+      ]?.isActive
+    ) {
+      verifyIsPro(true);
+    }
   };
 
   const constraints = {};
@@ -98,7 +112,7 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
   };
 
   const skip = () => {
-    if (user?.has_pro) {
+    if (proVerified || user?.has_pro) {
       navigation.navigate('App', {
         screen: 'Explore',
       });
@@ -106,6 +120,10 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
       navigation.push('ProUpsellLast');
     }
   };
+
+  React.useEffect(() => {
+    checkSubscription();
+  }, []);
 
   React.useEffect(() => {
     sendEvent('page_view', {
