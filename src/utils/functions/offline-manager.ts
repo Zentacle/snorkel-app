@@ -12,24 +12,29 @@ async function saveItem<ObjType>(key: string, item: ObjType): Promise<void> {
 
 async function syncItems<ObjType>(
   key: string,
-  fn: (item: ObjType) => Promise<any>,
+  fn: (item: ObjType) => Promise<any> | any,
 ): Promise<any> {
   type CombinedTypes = ObjType & UploadedBoolean;
 
-  const items = await fetchItems<CombinedTypes>(key);
+  let items = await fetchItems<CombinedTypes>(key);
   if (!items.length) {
     return;
   }
-  await Promise.all(
-    items.map(item => {
-      fn(item).then(() => (item.isUploaded = true));
+  items = await Promise.all(
+    items.map(async item => {
+      return fn(item)
+        .then(() => ({ ...item, isUploaded: true }))
+        .catch(() => ({ ...item, isUploaded: false }));
     }),
   );
 
-  await AsyncStorage.setItem(
-    key,
-    JSON.stringify(items.filter(item => !item.isUploaded)),
-  );
+  await AsyncStorage.removeItem(key);
+
+  const itemsNotUploaded = items.filter(item => {
+    return !item.isUploaded;
+  });
+
+  await AsyncStorage.setItem(key, JSON.stringify(itemsNotUploaded));
 }
 
 async function fetchItems<ObjType>(key: string): Promise<ObjType[]> {
