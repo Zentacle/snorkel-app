@@ -1,0 +1,302 @@
+[
+  {
+    "data": {
+      "latitude": 5.7844414,
+      "location_city": "Malaysia, Pacific",
+      "longitude": 103.0068926
+    },
+    "id": 1271,
+    "subtext": "Malaysia, Pacific",
+    "text": "Redang",
+    "type": "site",
+    "url": "/Beach/1271/redang"
+  },
+  {
+    "data": {
+      "latitude": 6.045066666666667,
+      "location_city": "Malaysia, Peninsular Malaysia, Langkawi, Pulau Payar",
+      "longitude": 99.92758333333333
+    },
+    "id": 2279,
+    "subtext": "Malaysia, Peninsular Malaysia, Langkawi, Pulau Payar",
+    "text": "Pulau Segantang",
+    "type": "site",
+    "url": "/Beach/2279/pulau-segantang"
+  },
+  {
+    "data": {
+      "latitude": null,
+      "location_city": "Malaysia, Pacific",
+      "longitude": null
+    },
+    "id": 203,
+    "subtext": "Malaysia, Pacific",
+    "text": "Borneo",
+    "type": "site",
+    "url": "/Beach/203/borneo"
+  },
+  {
+    "data": {
+      "latitude": 33.80401666666667,
+      "location_city": "USA, California, LA County",
+      "longitude": -118.3943
+    },
+    "id": 3128,
+    "subtext": "USA, California, LA County",
+    "text": "Malaga cove",
+    "type": "site",
+    "url": "/Beach/3128/malaga-cove"
+  },
+  {
+    "data": {
+      "latitude": 5.9065,
+      "location_city": "Malaysia, Peninsular Malaysia, Perhentian Islands",
+      "longitude": 102.71393333333333
+    },
+    "id": 1972,
+    "subtext": "Malaysia, Peninsular Malaysia, Perhentian Islands",
+    "text": "Pasir Kerangi",
+    "type": "site",
+    "url": "/Beach/1972/pasir-kerangi"
+  },
+  {
+    "data": {
+      "latitude": null,
+      "location_city": "Malaysia, Pacific",
+      "longitude": null
+    },
+    "id": 443,
+    "subtext": "Malaysia, Pacific",
+    "text": "Kapalai",
+    "type": "site",
+    "url": "/Beach/443/kapalai"
+  },
+  {
+    "data": {
+      "latitude": null,
+      "location_city": "Malaysia, Pacific",
+      "longitude": null
+    },
+    "id": 454,
+    "subtext": "Malaysia, Pacific",
+    "text": "Koh Lipe",
+    "type": "site",
+    "url": "/Beach/454/koh-lipe"
+  },
+  {
+    "data": {
+      "latitude": null,
+      "location_city": "Malaysia, Pacific",
+      "longitude": null
+    },
+    "id": 508,
+    "subtext": "Malaysia, Pacific",
+    "text": "Lang Tengah",
+    "type": "site",
+    "url": "/Beach/508/lang-tengah"
+  },
+  {
+    "data": {
+      "latitude": null,
+      "location_city": "Malaysia, Pacific",
+      "longitude": null
+    },
+    "id": 513,
+    "subtext": "Malaysia, Pacific",
+    "text": "Layang Layan",
+    "type": "site",
+    "url": "/Beach/513/layang-layan"
+  },
+  {
+    "data": {
+      "latitude": null,
+      "location_city": "Malaysia, Pacific",
+      "longitude": null
+    },
+    "id": 530,
+    "subtext": "Malaysia, Pacific",
+    "text": "Mabul",
+    "type": "site",
+    "url": "/Beach/530/mabul"
+  },
+  {
+    "data": {
+      "latitude": null,
+      "location_city": "Malaysia, Pacific",
+      "longitude": null
+    },
+    "id": 545,
+    "subtext": "Malaysia, Pacific",
+    "text": "Manado",
+    "type": "site",
+    "url": "/Beach/545/manado"
+  },
+  {
+    "data": {
+      "latitude": null,
+      "location_city": "California Mid, USA West",
+      "longitude": null
+    },
+    "id": 538,
+    "subtext": "California Mid, USA West",
+    "text": "Malaga Cove",
+    "type": "site",
+    "url": "/Beach/538/malaga-cove"
+  },
+  {
+    "data": {
+      "latitude": null,
+      "location_city": "Malaysia, Pacific",
+      "longitude": null
+    },
+    "id": 1361,
+    "subtext": "Malaysia, Pacific",
+    "text": "Sipadan",
+    "type": "site",
+    "url": "/Beach/1361/sipadan"
+  },
+  {
+    "data": {
+      "latitude": null,
+      "location_city": "Malaysia, Pacific",
+      "longitude": null
+    },
+    "id": 1416,
+    "subtext": "Malaysia, Pacific",
+    "text": "Tenggol",
+    "type": "site",
+    "url": "/Beach/1416/tenggol"
+  },
+  {
+    "data": {
+      "latitude": null,
+      "location_city": "Malaysia, Pacific",
+      "longitude": null
+    },
+    "id": 1498,
+    "subtext": "Malaysia, Pacific",
+    "text": "Weh",
+    "type": "site",
+    "url": "/Beach/1498/weh"
+  },
+  {
+    "data": {
+      "latitude": 6.055983333333334,
+      "location_city": "Malaysia, Peninsular Malaysia, Langkawi, Pulau Payar",
+      "longitude": 100.03626666666666
+    },
+    "id": 1887,
+    "subtext": "Malaysia, Peninsular Malaysia, Langkawi, Pulau Payar",
+    "text": "Coral Garden",
+    "type": "site",
+    "url": "/Beach/1887/coral-garden"
+  },
+  {
+    "data": {
+      "latitude": 7.37115,
+      "location_city": "Malaysia, Spratlys, Layang Layang",
+      "longitude": 113.7903
+    },
+    "id": 2252,
+    "subtext": "Malaysia, Spratlys, Layang Layang",
+    "text": "Sharks cave",
+    "type": "site",
+    "url": "/Beach/2252/sharks-cave"
+  },
+  {
+    "data": {
+      "latitude": null,
+      "location_city": "Malaysia, Pacific",
+      "longitude": null
+    },
+    "id": 1212,
+    "subtext": "Malaysia, Pacific",
+    "text": "Perhentian",
+    "type": "site",
+    "url": "/Beach/1212/perhentian"
+  },
+  {
+    "data": {
+      "latitude": null,
+      "location_city": "Malaysia, Pacific",
+      "longitude": null
+    },
+    "id": 1216,
+    "subtext": "Malaysia, Pacific",
+    "text": "Phuket",
+    "type": "site",
+    "url": "/Beach/1216/phuket"
+  },
+  {
+    "data": {
+      "latitude": 5.701666666666666,
+      "location_city": "Malaysia, Sabah, Pulau Tiga",
+      "longitude": 115.6565
+    },
+    "id": 2254,
+    "subtext": "Malaysia, Sabah, Pulau Tiga",
+    "text": "Asmarqa Point",
+    "type": "site",
+    "url": "/Beach/2254/asmarqa-point"
+  },
+  {
+    "data": {
+      "latitude": 5.759,
+      "location_city": "Malaysia, Sabah, Pulau Tiga",
+      "longitude": 115.59133333333334
+    },
+    "id": 2255,
+    "subtext": "Malaysia, Sabah, Pulau Tiga",
+    "text": "Coleman Shoal",
+    "type": "site",
+    "url": "/Beach/2255/coleman-shoal"
+  },
+  {
+    "data": {
+      "latitude": 5.696666666666666,
+      "location_city": "Malaysia, Sabah, Pulau Tiga",
+      "longitude": 115.62616666666666
+    },
+    "id": 2256,
+    "subtext": "Malaysia, Sabah, Pulau Tiga",
+    "text": "Dunlop Corner",
+    "type": "site",
+    "url": "/Beach/2256/dunlop-corner"
+  },
+  {
+    "data": {
+      "latitude": null,
+      "location_city": "Vancouver, BC, Canada",
+      "longitude": null
+    },
+    "id": 1538,
+    "subtext": "Vancouver, BC, Canada",
+    "text": "Wreck of the Malahat",
+    "type": "site",
+    "url": "/Beach/1538/wreck-of-the-malahat"
+  },
+  {
+    "data": {
+      "latitude": null,
+      "location_city": "Canarian Islands, Europe",
+      "longitude": null
+    },
+    "id": 537,
+    "subtext": "Canarian Islands, Europe",
+    "text": "Mala",
+    "type": "site",
+    "url": "/Beach/537/mala"
+  },
+  {
+    "data": {
+      "latitude": 2.81025,
+      "location_city": "Malaysia, Peninsular Malaysia, Pahang",
+      "longitude": 104.1359
+    },
+    "id": 2285,
+    "subtext": "Malaysia, Peninsular Malaysia, Pahang",
+    "text": "Pulau Renggis",
+    "type": "site",
+    "url": "/Beach/2285/pulau-renggis"
+  }
+]

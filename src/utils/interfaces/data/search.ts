@@ -23,7 +23,7 @@ export interface TypeaheadResponse {
   subtext: string;
   data: {
     location_city: string;
-    latitude: number;
-    longitude: number;
+    latitude: number | null;
+    longitude: number | null;
   };
 }
