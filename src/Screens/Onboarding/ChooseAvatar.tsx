@@ -22,7 +22,6 @@ import type {
 } from '_utils/interfaces';
 
 import { useAppSelector } from '_redux/hooks';
-import { selectSettings } from '_redux/slices/settings';
 
 import Button from '_components/ui/Buttons/Button';
 import {
@@ -52,7 +51,6 @@ interface InitialValues {
 }
 
 const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
-  const settings = useAppSelector(selectSettings);
   const user = useAppSelector(selectUser);
   const authToken = useAppSelector(selectAuthToken);
   const authType = useAppSelector(selectAuthType);
@@ -65,14 +63,8 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
     props.navigation.push('LocationPermissions');
   };
 
-  const navigateToApp = () => {
-    props.navigation.push('App', {
-      screen: 'Explore',
-    });
-  };
-
-  const navigateToMeasurementType = () => {
-    props.navigation.push('MeasurementType');
+  const navigateToAddRecentDiveLog = () => {
+    props.navigation.push('AddRecentDiveLog');
   };
 
   const handleContinuePress = async () => {
@@ -89,13 +81,7 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
           locationAlways === RESULTS.GRANTED ||
           locationWhenInUse === RESULTS.GRANTED
         ) {
-          // navigate straight to app if not loggged in or if user has settings filled out
-          // else navigate to settings
-          if (!user || (user && settings.activityType)) {
-            navigateToApp();
-          } else {
-            navigateToMeasurementType();
-          }
+          navigateToAddRecentDiveLog();
         } else {
           navigateToLovationPermissions();
         }
@@ -105,11 +91,7 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
         );
 
         if (fineLocation === RESULTS.GRANTED) {
-          if (settings.activityType) {
-            navigateToApp();
-          } else {
-            navigateToMeasurementType();
-          }
+          navigateToAddRecentDiveLog();
         } else {
           navigateToLovationPermissions();
         }

@@ -18,9 +18,6 @@ import type {
   RootStackParamList,
   OnboardingStackParamList,
 } from '_utils/interfaces';
-import { useAppSelector } from '_redux/hooks';
-import { selectAuthType, selectUser } from '_redux/slices/user';
-import { selectSettings } from '_redux/slices/settings';
 import { sendEvent } from '_utils/functions/amplitude';
 
 import GradientCircle from '_components/ui/GradientCircle';
@@ -41,18 +38,9 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
   navigation,
 }) => {
   const { t } = useTranslation();
-  const user = useAppSelector(selectUser);
-  const authType = useAppSelector(selectAuthType);
-  const settings = useAppSelector(selectSettings);
 
-  const navigateToMeasurementType = () => {
-    navigation.push('MeasurementType');
-  };
-
-  const navigateToApp = () => {
-    navigation.push('App', {
-      screen: 'Explore',
-    });
+  const navigateToAddRecentDiveLog = () => {
+    navigation.push('AddRecentDiveLog');
   };
 
   React.useEffect(() => {
@@ -66,27 +54,11 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
       if (Platform.OS === 'android') {
         await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
 
-        if (authType === 'register') {
-          navigateToMeasurementType();
-        } else {
-          if (!user || (user && settings.activityType)) {
-            navigateToApp();
-          } else {
-            navigateToMeasurementType();
-          }
-        }
+        navigateToAddRecentDiveLog();
       } else {
         await request(PERMISSIONS.IOS.LOCATION_ALWAYS);
 
-        if (authType === 'register') {
-          navigateToMeasurementType();
-        } else {
-          if (!user || (user && settings.activityType)) {
-            navigateToApp();
-          } else {
-            navigateToMeasurementType();
-          }
-        }
+        navigateToAddRecentDiveLog();
       }
     } catch (err) {
       console.warn('there was an error', err);

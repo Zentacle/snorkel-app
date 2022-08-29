@@ -9,8 +9,6 @@ import { selectUser } from '_redux/slices/user';
 import ChooseUserName from '_screens/Onboarding/ChooseUserName';
 import ChooseAvatar from '_screens/Onboarding/ChooseAvatar';
 import LocationPermissions from '_screens/Onboarding/LocationPermissions';
-import MeasurementType from '_screens/Onboarding/MeasurementType';
-import ActivityType from '_screens/Onboarding/ActivityType';
 import AddRecentDiveLog from '_screens/Onboarding/AddRecentDiveLog';
 import ProUpsellFirst from '_screens/Onboarding/ProUpsellFirst';
 import ProUpsellLast from '_screens/Onboarding/ProUpsellLast';
@@ -46,11 +44,6 @@ const OnboardingNavigator: React.FC = () => {
         name="LocationPermissions"
         component={LocationPermissions}
       />
-      <OnboardingStack.Screen
-        name="MeasurementType"
-        component={MeasurementType}
-      />
-      <OnboardingStack.Screen name="ActivityType" component={ActivityType} />
       <OnboardingStack.Screen
         name="AddRecentDiveLog"
         component={AddRecentDiveLog}

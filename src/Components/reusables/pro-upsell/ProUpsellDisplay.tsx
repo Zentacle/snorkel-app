@@ -64,7 +64,7 @@ const features: Features[] = [
     isPro: true,
   },
   {
-    label: 'Download offline details',
+    label: 'Upload dive log offline',
     isFree: false,
     isPro: true,
   },
