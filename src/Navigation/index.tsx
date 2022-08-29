@@ -9,7 +9,7 @@ import {
 } from 'react-native-tracking-transparency';
 import { Amplitude } from '@amplitude/react-native';
 import config from 'react-native-config';
-import NetInfo from '@react-native-community/netinfo';
+import NetInfo, { useNetInfo } from '@react-native-community/netinfo';
 import Toast from 'react-native-toast-message';
 
 import type { RootStackParamList } from '_utils/interfaces';
@@ -30,7 +30,6 @@ import { handleFetchDiveSites } from '_redux/slices/dive-sites';
 import {
   autoAuth,
   selectLoggedInState,
-  // selectUser,
   selectAutoAuthLoadingState,
   getCurrentUser,
   handleCheckExistingUser,
@@ -53,13 +52,12 @@ const Navigator: React.FC = () => {
   const dispatch = useAppDispatch();
   const appState = React.useRef(AppState.currentState);
   const authToken = useAppSelector(selectAuthToken);
+  const netInfoIm = useNetInfo();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_appStateVisible, setAppStateVisible] = React.useState(
     appState.current,
   );
-
-  const [networkIsConnected, setNetworkIsConnected] = React.useState(true);
 
   React.useEffect(() => {
     const ampInstance = Amplitude.getInstance();
@@ -81,19 +79,17 @@ const Navigator: React.FC = () => {
 
   const loadingState = useAppSelector(selectAutoAuthLoadingState);
   const loggedInState = useAppSelector(selectLoggedInState);
-  // const user = useAppSelector(selectUser);
-  // const userHasUsername = user && user.username;
-  // const userHasProfilePic = user && user.profile_pic;
-
-  // assume user has filled onBoarding if username and profile_pic exist
-  // const userPreviouslyFilledOnBoardingData = !!(
-  //   userHasUsername && userHasProfilePic
-  // );
 
   const syncCreateDiveLog = async () => {
-    offlineManager.syncItems<SimpleFormInitialValues>('create-dive-log', item =>
-      createDiveLog(item),
+    await offlineManager.syncItems<SimpleFormInitialValues>(
+      'create-dive-log',
+      item => createDiveLog(item),
     );
+
+    Toast.show({
+      type: 'info',
+      text1: 'Offline logs synced',
+    });
   };
 
   const createDiveLog = async (values: SimpleFormInitialValues) => {
@@ -119,11 +115,6 @@ const Navigator: React.FC = () => {
           throw new Error(response.msg);
         }
       }
-
-      Toast.show({
-        type: 'info',
-        text1: 'Offline logs synced',
-      });
     } catch (err) {
       throw err;
     }
@@ -135,31 +126,38 @@ const Navigator: React.FC = () => {
       if (response.msg) {
         throw new Error(response.msg);
       }
-      Toast.show({
-        type: 'info',
-        text1: 'Offline logs synced',
-      });
     } catch (err) {
       throw err;
     }
   };
 
   const syncUpdateDiveLog = async () => {
-    offlineManager.syncItems<SimpleFormInitialValues>('update-dive-log', item =>
-      updateDiveLog(item),
+    await offlineManager.syncItems<SimpleFormInitialValues>(
+      'update-dive-log',
+      item => updateDiveLog(item),
     );
+    Toast.show({
+      type: 'info',
+      text1: 'Offline logs synced',
+    });
   };
 
   React.useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
-      // mimic a change event from connected to disconnected
-      if (!state.isConnected && networkIsConnected) {
-        setNetworkIsConnected(false);
-      }
-      // mimic a change event from disconnected to connected and trigger remote sync
-      if (state.isConnected && !networkIsConnected) {
-        syncCreateDiveLog();
-        syncUpdateDiveLog();
+      if (!netInfoIm.isConnected && state.isConnected) {
+        console.log('magic happens here', state);
+        offlineManager.fetchItems('create-dive-log').then(items => {
+          if (!items.length) {
+            return;
+          }
+          syncCreateDiveLog();
+        });
+        offlineManager.fetchItems('update-dive-log').then(items => {
+          if (!items.length) {
+            return;
+          }
+          syncUpdateDiveLog();
+        });
       }
     });
 
@@ -201,20 +199,6 @@ const Navigator: React.FC = () => {
   }
 
   const Stack = createNativeStackNavigator<RootStackParamList>();
-
-  // if (!loggedInState) {
-  //   return (
-  //     <NavigationContainer linking={linking}>
-  //       <Stack.Navigator
-  //         initialRouteName="Auth"
-  //         screenOptions={{
-  //           headerShown: false,
-  //         }}>
-  //         <Stack.Screen name="NotFound" component={NotFound} />
-  //       </Stack.Navigator>
-  //     </NavigationContainer>
-  //   );
-  // }
 
   return (
     <NavigationContainer linking={linking}>
