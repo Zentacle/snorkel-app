@@ -99,6 +99,12 @@ const SignIn: FunctionComponent<SignInProps> = props => {
     });
   };
 
+  const navigateToFirstPro = () => {
+    props.navigation.navigate('OnBoarding', {
+      screen: 'ProUpsellFirst',
+    });
+  };
+
   const navigateToAvatar = () => {
     props.navigation.navigate('OnBoarding', {
       screen: 'ChooseAvatar',
@@ -188,7 +194,9 @@ const SignIn: FunctionComponent<SignInProps> = props => {
               sendEvent('login_success', {
                 method: 'google',
               });
-              if (userPreviouslyFilledOnBoardingData) {
+              if (!(response.payload as LoginResponse).user.has_pro) {
+                navigateToFirstPro();
+              } else if (userPreviouslyFilledOnBoardingData) {
                 navigateToApp();
               } else if ((response.payload as LoginResponse).user.username) {
                 navigateToAvatar();
@@ -220,10 +228,12 @@ const SignIn: FunctionComponent<SignInProps> = props => {
             );
 
             if (appleRegister.fulfilled.match(response)) {
-              if (userPreviouslyFilledOnBoardingData) {
-                sendEvent('login_success', {
-                  method: 'apple',
-                });
+              sendEvent('login_success', {
+                method: 'apple',
+              });
+              if (!(response.payload as LoginResponse).user.has_pro) {
+                navigateToFirstPro();
+              } else if (userPreviouslyFilledOnBoardingData) {
                 navigateToApp();
               } else if ((response.payload as LoginResponse).user.username) {
                 navigateToAvatar();

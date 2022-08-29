@@ -178,10 +178,13 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
           <Icon name="close" size={25} color="gray" />
         </Pressable>
       ) : (
-        <Pressable style={styles.closeTextContainer} onPress={closeAction}>
-          <View>
-            <Text style={styles.closeText}>{closeText || 'Skip'}</Text>
-          </View>
+        <Pressable
+          style={props => ({
+            opacity: props.pressed ? 0.7 : 1,
+            ...styles.closeTextContainer,
+          })}
+          onPress={closeAction}>
+          <Text style={styles.closeText}>{closeText || 'Skip'}</Text>
         </Pressable>
       )}
       <ScrollView style={styles.mainBody} showsVerticalScrollIndicator={false}>
@@ -439,12 +442,16 @@ const styles = StyleSheet.create({
   },
   closeTextContainer: {
     position: 'absolute',
-    top: 40,
+    top: 55,
     right: 25,
     zIndex: 1,
+    backgroundColor: 'whitesmoke',
+    paddingVertical: 3,
+    paddingHorizontal: 5,
+    borderRadius: 5,
   },
   closeText: {
-    color: 'white',
+    color: 'black',
     fontSize: 16,
   },
   purhaseError: {

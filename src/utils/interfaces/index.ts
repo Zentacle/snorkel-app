@@ -17,7 +17,8 @@ export type OnboardingStackParamList = {
   MeasurementType: undefined;
   ActivityType: undefined;
   AddRecentDiveLog: undefined;
-  ProUpsellDisplay: undefined;
+  ProUpsellFirst: undefined;
+  ProUpsellLast: undefined;
 };
 
 export type ExploreStackParamList = {

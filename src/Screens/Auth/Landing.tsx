@@ -85,6 +85,12 @@ const Landing: FunctionComponent<LandingProps> = props => {
     });
   };
 
+  const navigateToFirstPro = () => {
+    props.navigation.navigate('OnBoarding', {
+      screen: 'ProUpsellFirst',
+    });
+  };
+
   const navigateToAvatar = () => {
     props.navigation.navigate('OnBoarding', {
       screen: 'ChooseAvatar',
@@ -159,13 +165,13 @@ const Landing: FunctionComponent<LandingProps> = props => {
             );
 
             if (googleRegister.fulfilled.match(response)) {
-              if (userPreviouslyFilledOnBoardingData) {
-                const locationPermissions = await checkLocationPermissions();
-                if (!locationPermissions) {
-                  navigateToLocationPermissions();
-                } else {
-                  navigateToApp();
-                }
+              sendEvent('login_success', {
+                method: 'google',
+              });
+              if (!(response.payload as LoginResponse).user.has_pro) {
+                navigateToFirstPro();
+              } else if (userPreviouslyFilledOnBoardingData) {
+                navigateToApp();
               } else if ((response.payload as LoginResponse).user.username) {
                 navigateToAvatar();
               } else {
@@ -197,13 +203,13 @@ const Landing: FunctionComponent<LandingProps> = props => {
             );
 
             if (appleRegister.fulfilled.match(response)) {
-              if (userPreviouslyFilledOnBoardingData) {
-                const locationPermissions = await checkLocationPermissions();
-                if (!locationPermissions) {
-                  navigateToLocationPermissions();
-                } else {
-                  navigateToApp();
-                }
+              sendEvent('login_success', {
+                method: 'apple',
+              });
+              if (!(response.payload as LoginResponse).user.has_pro) {
+                navigateToFirstPro();
+              } else if (userPreviouslyFilledOnBoardingData) {
+                navigateToApp();
               } else if ((response.payload as LoginResponse).user.username) {
                 navigateToAvatar();
               } else {

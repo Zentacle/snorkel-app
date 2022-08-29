@@ -12,7 +12,8 @@ import LocationPermissions from '_screens/Onboarding/LocationPermissions';
 import MeasurementType from '_screens/Onboarding/MeasurementType';
 import ActivityType from '_screens/Onboarding/ActivityType';
 import AddRecentDiveLog from '_screens/Onboarding/AddRecentDiveLog';
-import ProUpsellDisplay from '_components/reusables/pro-upsell/ProUpsellDisplay';
+import ProUpsellFirst from '_screens/Onboarding/ProUpsellFirst';
+import ProUpsellLast from '_screens/Onboarding/ProUpsellLast';
 
 const OnboardingNavigator: React.FC = () => {
   const user = useAppSelector(selectUser);
@@ -22,10 +23,20 @@ const OnboardingNavigator: React.FC = () => {
     createNativeStackNavigator<OnboardingStackParamList>();
   return (
     <OnboardingStack.Navigator
-      initialRouteName={userHasUsername ? 'ChooseAvatar' : 'ChooseUserName'}
+      initialRouteName={
+        user?.has_pro
+          ? userHasUsername
+            ? 'ChooseAvatar'
+            : 'ChooseUserName'
+          : 'ProUpsellFirst'
+      }
       screenOptions={{
         headerShown: false,
       }}>
+      <OnboardingStack.Screen
+        name="ProUpsellFirst"
+        component={ProUpsellFirst}
+      />
       <OnboardingStack.Screen
         name="ChooseUserName"
         component={ChooseUserName}
@@ -44,10 +55,7 @@ const OnboardingNavigator: React.FC = () => {
         name="AddRecentDiveLog"
         component={AddRecentDiveLog}
       />
-      <OnboardingStack.Screen
-        name="ProUpsellDisplay"
-        component={ProUpsellDisplay}
-      />
+      <OnboardingStack.Screen name="ProUpsellLast" component={ProUpsellLast} />
     </OnboardingStack.Navigator>
   );
 };

@@ -31,6 +31,9 @@ import UnavailableLocationBox from '_screens/DiveLogsForms/components/Unavailabl
 import Button from '_components/ui/Buttons/Button';
 import { sendEvent } from '_utils/functions/amplitude';
 
+import { useAppSelector } from '_redux/hooks';
+import { selectUser } from '_redux/slices/user';
+
 import type { FormApi } from 'final-form';
 
 const WIDTH = Dimensions.get('window').width;
@@ -64,6 +67,8 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
   const { t } = useTranslation();
   let formRef = React.useRef<FormApi>();
 
+  const user = useAppSelector(selectUser);
+
   const [autocompleteModalOpen, toggleAutocompleteModal] =
     React.useState(false);
 
@@ -92,10 +97,14 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
     });
   };
 
-  const navigateToApp = () => {
-    navigation.push('App', {
-      screen: 'Explore',
-    });
+  const skip = () => {
+    if (user?.has_pro) {
+      navigation.navigate('App', {
+        screen: 'Explore',
+      });
+    } else {
+      navigation.push('ProUpsellLast');
+    }
   };
 
   React.useEffect(() => {
@@ -121,7 +130,7 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
     sendEvent('skip_onboarding', {
       screen: 'dive_log',
     });
-    navigateToApp();
+    skip();
   };
 
   return (

@@ -12,10 +12,13 @@ import type {
   OnboardingStackParamList,
 } from '_utils/interfaces';
 
+import { useAppSelector } from '_redux/hooks';
+import { selectUser } from '_redux/slices/user';
+
 interface ProUpsellProps {}
 
 type ProUpsellNavigationProps = CompositeNavigationProp<
-  NativeStackNavigationProp<OnboardingStackParamList, 'ProUpsellDisplay'>,
+  NativeStackNavigationProp<OnboardingStackParamList, 'ProUpsellFirst'>,
   NativeStackNavigationProp<RootStackParamList>
 >;
 
@@ -24,6 +27,8 @@ interface ProUpsellProps {
 }
 
 const ProUpsell: FunctionComponent<ProUpsellProps> = ({ navigation }) => {
+  const user = useAppSelector(selectUser);
+
   React.useEffect(() => {
     sendEvent('page_view', {
       type: 'pro_upsell',
@@ -31,21 +36,23 @@ const ProUpsell: FunctionComponent<ProUpsellProps> = ({ navigation }) => {
   }, []);
 
   const navigateToWebView = (url: string) => {
-    navigation.navigate('AppWebview', {
+    navigation.push('AppWebview', {
       source: url,
     });
   };
 
-  const navigateToApp = () => {
-    navigation.navigate('App', {
-      screen: 'Explore',
-    });
+  const handleCloseAction = () => {
+    if (user?.username) {
+      navigation.push('ChooseAvatar');
+    } else {
+      navigation.push('ChooseUserName');
+    }
   };
 
   return (
     <View style={styles.container}>
       <ProUpsellDisplay
-        closeAction={navigateToApp}
+        closeAction={handleCloseAction}
         navigateToWebView={navigateToWebView}
         closeText="Skip"
       />
