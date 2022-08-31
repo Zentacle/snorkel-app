@@ -305,6 +305,7 @@ const styles = StyleSheet.create({
   image: {
     height: 250,
     width: Dimensions.get('window').width,
+    // backgroundColor: 'black',
   },
   mainText: {
     color: 'black',
@@ -446,13 +447,13 @@ const styles = StyleSheet.create({
     right: 25,
     zIndex: 1,
     backgroundColor: 'whitesmoke',
-    paddingVertical: 3,
-    paddingHorizontal: 5,
+    paddingVertical: 5,
+    paddingHorizontal: 8,
     borderRadius: 5,
   },
   closeText: {
     color: 'black',
-    fontSize: 16,
+    fontSize: 17,
   },
   purhaseError: {
     color: 'red',
