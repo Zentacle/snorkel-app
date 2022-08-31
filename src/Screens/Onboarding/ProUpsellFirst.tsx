@@ -32,6 +32,7 @@ const ProUpsell: FunctionComponent<ProUpsellProps> = ({ navigation }) => {
   React.useEffect(() => {
     sendEvent('page_view', {
       type: 'pro_upsell',
+      upsell: 'onboarding_start',
     });
   }, []);
 
@@ -42,6 +43,10 @@ const ProUpsell: FunctionComponent<ProUpsellProps> = ({ navigation }) => {
   };
 
   const handleCloseAction = () => {
+    sendEvent('pro_skip', {
+      upsell: 'onboarding_start',
+    });
+
     if (user?.username) {
       navigation.push('ChooseAvatar');
     } else {

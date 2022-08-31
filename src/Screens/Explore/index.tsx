@@ -38,6 +38,7 @@ import {
   selectAuthToken,
   fetchUserWalletAddress,
 } from '_redux/slices/user';
+import { sendEvent } from '_utils/functions/amplitude';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
@@ -91,6 +92,10 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   };
 
   const closeProUpsellModal = () => {
+    sendEvent('pro_skip', {
+      upsell: 'home_button',
+    });
+
     toggleProUpsellModal(false);
   };
 

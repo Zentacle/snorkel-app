@@ -27,6 +27,7 @@ const ProUpsell: FunctionComponent<ProUpsellProps> = ({ navigation }) => {
   React.useEffect(() => {
     sendEvent('page_view', {
       type: 'pro_upsell',
+      upsell: 'onboarding_end',
     });
   }, []);
 
@@ -37,6 +38,10 @@ const ProUpsell: FunctionComponent<ProUpsellProps> = ({ navigation }) => {
   };
 
   const navigateToApp = () => {
+    sendEvent('pro_skip', {
+      upsell: 'onboarding_end',
+    });
+
     navigation.push('App', {
       screen: 'Explore',
     });
