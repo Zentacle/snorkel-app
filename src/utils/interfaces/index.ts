@@ -12,7 +12,6 @@ export type AuthtackParamList = {
 
 export type OnboardingStackParamList = {
   ProUpsellFirst: undefined;
-  ChooseUserName: undefined;
   ChooseAvatar: undefined;
   LocationPermissions: undefined;
   AddRecentDiveLog: undefined;

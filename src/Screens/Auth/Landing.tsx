@@ -75,7 +75,7 @@ const Landing: FunctionComponent<LandingProps> = props => {
 
   const navigateToOnBoarding = () => {
     props.navigation.navigate('OnBoarding', {
-      screen: 'ChooseUserName',
+      screen: 'ChooseAvatar',
     });
   };
 
@@ -88,12 +88,6 @@ const Landing: FunctionComponent<LandingProps> = props => {
   const navigateToFirstPro = () => {
     props.navigation.navigate('OnBoarding', {
       screen: 'ProUpsellFirst',
-    });
-  };
-
-  const navigateToAvatar = () => {
-    props.navigation.navigate('OnBoarding', {
-      screen: 'ChooseAvatar',
     });
   };
 
@@ -160,9 +154,8 @@ const Landing: FunctionComponent<LandingProps> = props => {
 
             // assume user has filled onBoarding if username and profile_pic exist
             const userPreviouslyFilledOnBoardingData = !!(
-              (response.payload as LoginResponse).user.username &&
-              (response.payload as LoginResponse).user.profile_pic
-            );
+              response.payload as LoginResponse
+            ).user.profile_pic;
 
             if (googleRegister.fulfilled.match(response)) {
               sendEvent('login_success', {
@@ -172,8 +165,6 @@ const Landing: FunctionComponent<LandingProps> = props => {
                 navigateToFirstPro();
               } else if (userPreviouslyFilledOnBoardingData) {
                 navigateToApp();
-              } else if ((response.payload as LoginResponse).user.username) {
-                navigateToAvatar();
               } else {
                 navigateToOnBoarding();
               }
@@ -198,9 +189,8 @@ const Landing: FunctionComponent<LandingProps> = props => {
 
             // assume user has filled onBoarding if username and profile_pic exist
             const userPreviouslyFilledOnBoardingData = !!(
-              (response.payload as LoginResponse).user.username &&
-              (response.payload as LoginResponse).user.profile_pic
-            );
+              response.payload as LoginResponse
+            ).user.profile_pic;
 
             if (appleRegister.fulfilled.match(response)) {
               sendEvent('login_success', {
@@ -210,8 +200,6 @@ const Landing: FunctionComponent<LandingProps> = props => {
                 navigateToFirstPro();
               } else if (userPreviouslyFilledOnBoardingData) {
                 navigateToApp();
-              } else if ((response.payload as LoginResponse).user.username) {
-                navigateToAvatar();
               } else {
                 navigateToOnBoarding();
               }

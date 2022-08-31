@@ -6,7 +6,6 @@ import type { OnboardingStackParamList } from '_utils/interfaces';
 import { useAppSelector } from '_redux/hooks';
 import { selectUser } from '_redux/slices/user';
 
-import ChooseUserName from '_screens/Onboarding/ChooseUserName';
 import ChooseAvatar from '_screens/Onboarding/ChooseAvatar';
 import LocationPermissions from '_screens/Onboarding/LocationPermissions';
 import AddRecentDiveLog from '_screens/Onboarding/AddRecentDiveLog';
@@ -15,29 +14,18 @@ import ProUpsellLast from '_screens/Onboarding/ProUpsellLast';
 
 const OnboardingNavigator: React.FC = () => {
   const user = useAppSelector(selectUser);
-  const userHasUsername = user && user.username;
 
   const OnboardingStack =
     createNativeStackNavigator<OnboardingStackParamList>();
   return (
     <OnboardingStack.Navigator
-      initialRouteName={
-        user?.has_pro
-          ? userHasUsername
-            ? 'ChooseAvatar'
-            : 'ChooseUserName'
-          : 'ProUpsellFirst'
-      }
+      initialRouteName={user?.has_pro ? 'ChooseAvatar' : 'ProUpsellFirst'}
       screenOptions={{
         headerShown: false,
       }}>
       <OnboardingStack.Screen
         name="ProUpsellFirst"
         component={ProUpsellFirst}
-      />
-      <OnboardingStack.Screen
-        name="ChooseUserName"
-        component={ChooseUserName}
       />
       <OnboardingStack.Screen name="ChooseAvatar" component={ChooseAvatar} />
       <OnboardingStack.Screen

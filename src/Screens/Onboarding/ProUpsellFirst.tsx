@@ -12,9 +12,6 @@ import type {
   OnboardingStackParamList,
 } from '_utils/interfaces';
 
-import { useAppSelector } from '_redux/hooks';
-import { selectUser } from '_redux/slices/user';
-
 interface ProUpsellProps {}
 
 type ProUpsellNavigationProps = CompositeNavigationProp<
@@ -27,8 +24,6 @@ interface ProUpsellProps {
 }
 
 const ProUpsell: FunctionComponent<ProUpsellProps> = ({ navigation }) => {
-  const user = useAppSelector(selectUser);
-
   React.useEffect(() => {
     sendEvent('page_view', {
       type: 'pro_upsell',
@@ -47,11 +42,7 @@ const ProUpsell: FunctionComponent<ProUpsellProps> = ({ navigation }) => {
       upsell: 'onboarding_start',
     });
 
-    if (user?.username) {
-      navigation.push('ChooseAvatar');
-    } else {
-      navigation.push('ChooseUserName');
-    }
+    navigation.push('ChooseAvatar');
   };
 
   return (

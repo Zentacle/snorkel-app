@@ -87,27 +87,15 @@ const SignIn: FunctionComponent<SignInProps> = props => {
     props.navigation.navigate('EmailSignUp');
   };
 
-  const navigateToOnboarding = () => {
-    props.navigation.navigate('OnBoarding', {
-      screen: 'ChooseUserName',
-    });
-  };
-
   const navigateToOnBoarding = () => {
     props.navigation.navigate('OnBoarding', {
-      screen: 'ChooseUserName',
+      screen: 'ChooseAvatar',
     });
   };
 
   const navigateToFirstPro = () => {
     props.navigation.navigate('OnBoarding', {
       screen: 'ProUpsellFirst',
-    });
-  };
-
-  const navigateToAvatar = () => {
-    props.navigation.navigate('OnBoarding', {
-      screen: 'ChooseAvatar',
     });
   };
 
@@ -186,9 +174,8 @@ const SignIn: FunctionComponent<SignInProps> = props => {
 
             // assume user has filled onBoarding if username and profile_pic exist
             const userPreviouslyFilledOnBoardingData = !!(
-              (response.payload as LoginResponse).user.username &&
-              (response.payload as LoginResponse).user.profile_pic
-            );
+              response.payload as LoginResponse
+            ).user.profile_pic;
 
             if (googleRegister.fulfilled.match(response)) {
               sendEvent('login_success', {
@@ -198,8 +185,6 @@ const SignIn: FunctionComponent<SignInProps> = props => {
                 navigateToFirstPro();
               } else if (userPreviouslyFilledOnBoardingData) {
                 navigateToApp();
-              } else if ((response.payload as LoginResponse).user.username) {
-                navigateToAvatar();
               } else {
                 navigateToOnBoarding();
               }
@@ -223,9 +208,8 @@ const SignIn: FunctionComponent<SignInProps> = props => {
 
             // assume user has filled onBoarding if username and profile_pic exist
             const userPreviouslyFilledOnBoardingData = !!(
-              (response.payload as LoginResponse).user.username &&
-              (response.payload as LoginResponse).user.profile_pic
-            );
+              response.payload as LoginResponse
+            ).user.profile_pic;
 
             if (appleRegister.fulfilled.match(response)) {
               sendEvent('login_success', {
@@ -235,8 +219,6 @@ const SignIn: FunctionComponent<SignInProps> = props => {
                 navigateToFirstPro();
               } else if (userPreviouslyFilledOnBoardingData) {
                 navigateToApp();
-              } else if ((response.payload as LoginResponse).user.username) {
-                navigateToAvatar();
               } else {
                 navigateToOnBoarding();
               }
@@ -256,18 +238,12 @@ const SignIn: FunctionComponent<SignInProps> = props => {
         method: 'email',
       });
       // assume user has filled onBoarding if username and profile_pic exist
-      const userPreviouslyFilledOnBoardingData = !!(
-        response.payload.user.username && response.payload.user.profile_pic
-      );
+      const userPreviouslyFilledOnBoardingData =
+        !!response.payload.user.profile_pic;
       if (userPreviouslyFilledOnBoardingData) {
         navigateToApp();
-      } else if (
-        response.payload.user.username &&
-        !response.payload.user.profile_pic
-      ) {
-        navigateToAvatar();
       } else {
-        navigateToOnboarding();
+        navigateToOnBoarding();
       }
     } else {
       return {
