@@ -14,6 +14,7 @@ import get from 'lodash/get';
 import arrayMutators from 'final-form-arrays';
 import { useTranslation } from 'react-i18next';
 import Toast from 'react-native-toast-message';
+import NetInfo from '@react-native-community/netinfo';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type {
@@ -48,6 +49,7 @@ import {
 } from '_utils/constants';
 import { handleUpdateDiveLog } from '_redux/slices/dive-logs/api';
 import { selectUser } from '_redux/slices/user';
+import offlineManager from '_utils/functions/offline-manager';
 
 type AdvancedDiveLogsFormsNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<LogsFormStackParamList, 'AdvancedDiveLogsForm'>,
@@ -175,15 +177,47 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
       delete arrangedValues.dive_shop;
       delete arrangedValues.privacy;
 
-      await handleUpdateDiveLog(
-        {
-          ...arrangedValues,
-        },
-        authToken as string,
-      );
-      setFormSubmitting(false);
+      const connectionState = await NetInfo.fetch();
+      if (!connectionState.isConnected) {
+        if (values.id) {
+          // dive log already exists in db
+          await offlineManager.saveItem<InitialValues>(
+            'update-dive-log',
+            arrangedValues,
+          );
+          Toast.show({
+            type: 'info',
+            text1: 'No network available',
+            text2:
+              "We'll upload your dive log as soon as You are connected to the internet",
+          });
+        } else {
+          // dive log was entirely created in offline mode.
+          // treat as new log
+          await offlineManager.saveItem<InitialValues>(
+            'create-dive-log',
+            arrangedValues,
+          );
+          Toast.show({
+            type: 'info',
+            text1: 'No network available',
+            text2:
+              "We'll upload your dive log as soon as You are connected to the internet",
+          });
+        }
+        setFormSubmitting(false);
+        callback();
+      } else {
+        await handleUpdateDiveLog(
+          {
+            ...arrangedValues,
+          },
+          authToken as string,
+        );
+        setFormSubmitting(false);
 
-      callback();
+        callback();
+      }
     } catch (err) {
       Toast.show({
         type: 'error',

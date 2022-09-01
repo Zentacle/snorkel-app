@@ -13,6 +13,7 @@ import FormManagementInput from '_components/ui/FormManagementInput';
 import SelectWGradientBorder from '_components/ui/SelectWGradientBorderV2';
 import RatingsInputComp from '_components/ui/RatingsInputComp';
 import ImagePickerArray from '_screens/DiveLogsForms/components/ImagePickerArray';
+import SelectWGradientBorderForPrivacy from '_components/SelectWGradientborderForPrivacy';
 
 import type { FunctionComponent } from 'react';
 import type { AdvancedFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
@@ -249,7 +250,7 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
         <Text style={styles.headerLabel}>{t('DIVE_LOG_PRIVACY_TEXT')}</Text>
         <Field
           name="privacy"
-          component={SelectWGradientBorder}
+          component={SelectWGradientBorderForPrivacy}
           options={privacy}
           activeComponent={ActiveComponent}
           inactiveComponent={InactiveComponent}

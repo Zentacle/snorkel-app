@@ -6,6 +6,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import RatingsInputComp from '_components/ui/RatingsInputComp';
 import SelectWGradientBorder from '_components/ui/SelectWGradientBorderV2';
+import SelectWGradientBorderForPrivacy from '_components/SelectWGradientborderForPrivacy';
 import {
   ActiveComponent,
   InactiveComponent,
@@ -63,7 +64,7 @@ const Rating = () => {
         <Text style={styles.headerLabel}>{t('DIVE_LOG_PRIVACY_TEXT')}</Text>
         <Field
           name="privacy"
-          component={SelectWGradientBorder}
+          component={SelectWGradientBorderForPrivacy}
           options={privacy}
           activeComponent={ActiveComponent}
           inactiveComponent={InactiveComponent}

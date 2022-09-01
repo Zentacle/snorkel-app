@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
 import config from 'react-native-config';
+import Purchases from 'react-native-purchases';
 
 import SearchInput from '_components/ui/SearchInput';
 // import Tag from '_components/ui/Tag';
@@ -37,6 +38,7 @@ import {
   selectAuthToken,
   fetchUserWalletAddress,
 } from '_redux/slices/user';
+import { sendEvent } from '_utils/functions/amplitude';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
@@ -53,7 +55,6 @@ import AutocompleteModal from '_components/ui/AutocompleteModal';
 
 import { WIDTH, HEIGHT, isBelowWidthThreshold } from '_utils/constants';
 import type { LocationSearchInitialValues } from '_utils/interfaces/data/search';
-import Purchases from 'react-native-purchases';
 
 // interface TagInterface {
 //   name: string;
@@ -91,6 +92,10 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   };
 
   const closeProUpsellModal = () => {
+    sendEvent('pro_skip', {
+      upsell: 'home_button',
+    });
+
     toggleProUpsellModal(false);
   };
 

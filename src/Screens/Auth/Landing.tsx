@@ -75,7 +75,7 @@ const Landing: FunctionComponent<LandingProps> = props => {
 
   const navigateToOnBoarding = () => {
     props.navigation.navigate('OnBoarding', {
-      screen: 'ChooseUserName',
+      screen: 'ChooseAvatar',
     });
   };
 
@@ -85,9 +85,9 @@ const Landing: FunctionComponent<LandingProps> = props => {
     });
   };
 
-  const navigateToCameraPermissions = () => {
+  const navigateToFirstPro = () => {
     props.navigation.navigate('OnBoarding', {
-      screen: 'CameraPermissions',
+      screen: 'ProUpsellFirst',
     });
   };
 
@@ -154,20 +154,17 @@ const Landing: FunctionComponent<LandingProps> = props => {
 
             // assume user has filled onBoarding if username and profile_pic exist
             const userPreviouslyFilledOnBoardingData = !!(
-              (response.payload as LoginResponse).user.username &&
-              (response.payload as LoginResponse).user.profile_pic
-            );
+              response.payload as LoginResponse
+            ).user.profile_pic;
 
             if (googleRegister.fulfilled.match(response)) {
-              if (userPreviouslyFilledOnBoardingData) {
-                const locationPermissions = await checkLocationPermissions();
-                if (!locationPermissions) {
-                  navigateToLocationPermissions();
-                } else {
-                  navigateToApp();
-                }
-              } else if ((response.payload as LoginResponse).user.username) {
-                navigateToCameraPermissions();
+              sendEvent('login_success', {
+                method: 'google',
+              });
+              if (!(response.payload as LoginResponse).user.has_pro) {
+                navigateToFirstPro();
+              } else if (userPreviouslyFilledOnBoardingData) {
+                navigateToApp();
               } else {
                 navigateToOnBoarding();
               }
@@ -192,20 +189,17 @@ const Landing: FunctionComponent<LandingProps> = props => {
 
             // assume user has filled onBoarding if username and profile_pic exist
             const userPreviouslyFilledOnBoardingData = !!(
-              (response.payload as LoginResponse).user.username &&
-              (response.payload as LoginResponse).user.profile_pic
-            );
+              response.payload as LoginResponse
+            ).user.profile_pic;
 
             if (appleRegister.fulfilled.match(response)) {
-              if (userPreviouslyFilledOnBoardingData) {
-                const locationPermissions = await checkLocationPermissions();
-                if (!locationPermissions) {
-                  navigateToLocationPermissions();
-                } else {
-                  navigateToApp();
-                }
-              } else if ((response.payload as LoginResponse).user.username) {
-                navigateToCameraPermissions();
+              sendEvent('login_success', {
+                method: 'apple',
+              });
+              if (!(response.payload as LoginResponse).user.has_pro) {
+                navigateToFirstPro();
+              } else if (userPreviouslyFilledOnBoardingData) {
+                navigateToApp();
               } else {
                 navigateToOnBoarding();
               }

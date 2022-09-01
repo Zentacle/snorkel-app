@@ -15,7 +15,7 @@ import type {
 interface ProUpsellProps {}
 
 type ProUpsellNavigationProps = CompositeNavigationProp<
-  NativeStackNavigationProp<OnboardingStackParamList, 'ProUpsellDisplay'>,
+  NativeStackNavigationProp<OnboardingStackParamList, 'ProUpsellLast'>,
   NativeStackNavigationProp<RootStackParamList>
 >;
 
@@ -27,17 +27,22 @@ const ProUpsell: FunctionComponent<ProUpsellProps> = ({ navigation }) => {
   React.useEffect(() => {
     sendEvent('page_view', {
       type: 'pro_upsell',
+      upsell: 'onboarding_end',
     });
   }, []);
 
   const navigateToWebView = (url: string) => {
-    navigation.navigate('AppWebview', {
+    navigation.push('AppWebview', {
       source: url,
     });
   };
 
   const navigateToApp = () => {
-    navigation.navigate('App', {
+    sendEvent('pro_skip', {
+      upsell: 'onboarding_end',
+    });
+
+    navigation.push('App', {
       screen: 'Explore',
     });
   };

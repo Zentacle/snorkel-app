@@ -6,29 +6,26 @@ import type { OnboardingStackParamList } from '_utils/interfaces';
 import { useAppSelector } from '_redux/hooks';
 import { selectUser } from '_redux/slices/user';
 
-import ChooseUserName from '_screens/Onboarding/ChooseUserName';
 import ChooseAvatar from '_screens/Onboarding/ChooseAvatar';
 import LocationPermissions from '_screens/Onboarding/LocationPermissions';
-import MeasurementType from '_screens/Onboarding/MeasurementType';
-import ActivityType from '_screens/Onboarding/ActivityType';
 import AddRecentDiveLog from '_screens/Onboarding/AddRecentDiveLog';
-import ProUpsellDisplay from '_components/reusables/pro-upsell/ProUpsellDisplay';
+import ProUpsellFirst from '_screens/Onboarding/ProUpsellFirst';
+import ProUpsellLast from '_screens/Onboarding/ProUpsellLast';
 
 const OnboardingNavigator: React.FC = () => {
   const user = useAppSelector(selectUser);
-  const userHasUsername = user && user.username;
 
   const OnboardingStack =
     createNativeStackNavigator<OnboardingStackParamList>();
   return (
     <OnboardingStack.Navigator
-      initialRouteName={userHasUsername ? 'ChooseAvatar' : 'ChooseUserName'}
+      initialRouteName={user?.has_pro ? 'ChooseAvatar' : 'ProUpsellFirst'}
       screenOptions={{
         headerShown: false,
       }}>
       <OnboardingStack.Screen
-        name="ChooseUserName"
-        component={ChooseUserName}
+        name="ProUpsellFirst"
+        component={ProUpsellFirst}
       />
       <OnboardingStack.Screen name="ChooseAvatar" component={ChooseAvatar} />
       <OnboardingStack.Screen
@@ -36,18 +33,10 @@ const OnboardingNavigator: React.FC = () => {
         component={LocationPermissions}
       />
       <OnboardingStack.Screen
-        name="MeasurementType"
-        component={MeasurementType}
-      />
-      <OnboardingStack.Screen name="ActivityType" component={ActivityType} />
-      <OnboardingStack.Screen
         name="AddRecentDiveLog"
         component={AddRecentDiveLog}
       />
-      <OnboardingStack.Screen
-        name="ProUpsellDisplay"
-        component={ProUpsellDisplay}
-      />
+      <OnboardingStack.Screen name="ProUpsellLast" component={ProUpsellLast} />
     </OnboardingStack.Navigator>
   );
 };

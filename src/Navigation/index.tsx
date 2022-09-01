@@ -9,6 +9,8 @@ import {
 } from 'react-native-tracking-transparency';
 import { Amplitude } from '@amplitude/react-native';
 import config from 'react-native-config';
+import NetInfo, { useNetInfo } from '@react-native-community/netinfo';
+import Toast from 'react-native-toast-message';
 
 import type { RootStackParamList } from '_utils/interfaces';
 
@@ -28,17 +30,29 @@ import { handleFetchDiveSites } from '_redux/slices/dive-sites';
 import {
   autoAuth,
   selectLoggedInState,
-  // selectUser,
   selectAutoAuthLoadingState,
   getCurrentUser,
   handleCheckExistingUser,
+  selectAuthToken,
 } from '_redux/slices/user';
 import { autoHydrateSettings } from '_redux/slices/settings';
 import { linking } from '_utils/functions/linking';
+import offlineManager from '_utils/functions/offline-manager';
+import {
+  handleCreateDiveLog,
+  handleUploadDiveLogImages,
+  handleUpdateDiveLog,
+} from '_redux/slices/dive-logs/api';
+import {
+  AdvancedFormInitialValues,
+  SimpleFormInitialValues,
+} from '_utils/interfaces/data/logs';
 
 const Navigator: React.FC = () => {
   const dispatch = useAppDispatch();
   const appState = React.useRef(AppState.currentState);
+  const authToken = useAppSelector(selectAuthToken);
+  const netInfoIm = useNetInfo();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_appStateVisible, setAppStateVisible] = React.useState(
@@ -65,14 +79,92 @@ const Navigator: React.FC = () => {
 
   const loadingState = useAppSelector(selectAutoAuthLoadingState);
   const loggedInState = useAppSelector(selectLoggedInState);
-  // const user = useAppSelector(selectUser);
-  // const userHasUsername = user && user.username;
-  // const userHasProfilePic = user && user.profile_pic;
 
-  // assume user has filled onBoarding if username and profile_pic exist
-  // const userPreviouslyFilledOnBoardingData = !!(
-  //   userHasUsername && userHasProfilePic
-  // );
+  const syncCreateDiveLog = async () => {
+    await offlineManager.syncItems<SimpleFormInitialValues>(
+      'create-dive-log',
+      item => createDiveLog(item),
+    );
+
+    Toast.show({
+      type: 'info',
+      text1: 'Offline logs synced',
+    });
+  };
+
+  const createDiveLog = async (values: SimpleFormInitialValues) => {
+    try {
+      if (values.images) {
+        const images = await handleUploadDiveLogImages(
+          values.images,
+          authToken as string,
+        );
+        const response = await handleCreateDiveLog(
+          {
+            ...values,
+            images,
+          },
+          authToken as string,
+        );
+        if (response.msg) {
+          throw new Error(response.msg);
+        }
+      } else {
+        const response = await handleCreateDiveLog(values, authToken as string);
+        if (response.msg) {
+          throw new Error(response.msg);
+        }
+      }
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  const updateDiveLog = async (values: AdvancedFormInitialValues) => {
+    try {
+      const response = await handleUpdateDiveLog(values, authToken as string);
+      if (response.msg) {
+        throw new Error(response.msg);
+      }
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  const syncUpdateDiveLog = async () => {
+    await offlineManager.syncItems<SimpleFormInitialValues>(
+      'update-dive-log',
+      item => updateDiveLog(item),
+    );
+    Toast.show({
+      type: 'info',
+      text1: 'Offline logs synced',
+    });
+  };
+
+  React.useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      if (!netInfoIm.isConnected && state.isConnected) {
+        console.log('magic happens here', state);
+        offlineManager.fetchItems('create-dive-log').then(items => {
+          if (!items.length) {
+            return;
+          }
+          syncCreateDiveLog();
+        });
+        offlineManager.fetchItems('update-dive-log').then(items => {
+          if (!items.length) {
+            return;
+          }
+          syncUpdateDiveLog();
+        });
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  });
 
   React.useEffect(() => {
     const subscription = AppState.addEventListener('change', nextAppState => {
@@ -107,20 +199,6 @@ const Navigator: React.FC = () => {
   }
 
   const Stack = createNativeStackNavigator<RootStackParamList>();
-
-  // if (!loggedInState) {
-  //   return (
-  //     <NavigationContainer linking={linking}>
-  //       <Stack.Navigator
-  //         initialRouteName="Auth"
-  //         screenOptions={{
-  //           headerShown: false,
-  //         }}>
-  //         <Stack.Screen name="NotFound" component={NotFound} />
-  //       </Stack.Navigator>
-  //     </NavigationContainer>
-  //   );
-  // }
 
   return (
     <NavigationContainer linking={linking}>

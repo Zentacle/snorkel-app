@@ -15,6 +15,7 @@ import debounce from 'lodash/debounce';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
 import { stringify } from 'qs';
+import NetInfo from '@react-native-community/netinfo';
 
 import type { FunctionComponent } from 'react';
 import type { FieldRenderProps } from 'react-final-form';
@@ -24,6 +25,7 @@ import { TypeaheadResponse } from '_utils/interfaces/data/search';
 
 import LocationImage from '_assets/LocationLargish.png';
 import { isBelowHeightThreshold } from '_utils/constants';
+import { offlineTypeAhead } from '_utils/functions/offline-location-search';
 
 interface BaseProps {
   isVisible: boolean;
@@ -63,15 +65,21 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
   const makeRequest = React.useMemo(
     () =>
       debounce(async (val: string) => {
-        const queryObj = {
-          query: val,
-          beach_only: 'True',
-        };
-        const queryString = stringify(queryObj);
-        const response = await handleTypeAhead(queryString);
+        const connectionState = await NetInfo.fetch();
+        if (connectionState.isConnected) {
+          const queryObj = {
+            query: val,
+            beach_only: 'True',
+          };
+          const queryString = stringify(queryObj);
+          const response = await handleTypeAhead(queryString);
 
-        if (response.data) {
-          setSuggestions(response.data);
+          if (response.data) {
+            setSuggestions(response.data);
+          }
+        } else {
+          const response = offlineTypeAhead(val);
+          setSuggestions(response);
         }
       }, 500),
     [],

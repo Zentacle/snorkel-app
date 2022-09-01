@@ -15,6 +15,7 @@ import get from 'lodash/get';
 import arrayMutators from 'final-form-arrays';
 import { useTranslation } from 'react-i18next';
 import Toast from 'react-native-toast-message';
+import NetInfo from '@react-native-community/netinfo';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
@@ -48,6 +49,7 @@ import {
   handleCreateDiveLog,
   handleUploadDiveLogImages,
 } from '_redux/slices/dive-logs/api';
+import offlineManager from '_utils/functions/offline-manager';
 
 type SimpleDiveLogsFormsNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<AppTabsParamList, 'LogsForm'>,
@@ -92,13 +94,19 @@ const SimpleDiveLogsForms: FunctionComponent<
     toggleModal(true);
   };
 
-  const goToLog = () => {
-    props.navigation.navigate('LogsStack', {
-      screen: 'LogDetail',
-      params: {
-        diveLogId: savedDiveLogId,
-      },
-    });
+  const goToLog = async () => {
+    const connectionState = await NetInfo.fetch();
+    if (!connectionState.isConnected) {
+      // offline, cannot fetch details of created log
+      props.navigation.navigate('Explore');
+    } else {
+      props.navigation.navigate('LogsStack', {
+        screen: 'LogDetail',
+        params: {
+          diveLogId: savedDiveLogId,
+        },
+      });
+    }
   };
 
   const modalAction = () => {
@@ -126,57 +134,71 @@ const SimpleDiveLogsForms: FunctionComponent<
   const submitLog = async (values: InitialValues, callback: () => void) => {
     try {
       setFormSubmitting(true);
-      if (values.images) {
-        const images = await handleUploadDiveLogImages(
-          values.images,
-          authToken as string,
-        );
 
-        const arrangedValues = {
-          ...values,
-          beach_id: values.location?.beach_id,
-          dive_shop_id: values.dive_shop?.shop_id,
-          images,
-          is_private: values.privacy === t('DIVE_LOG_PRIVATE').toLowerCase(),
-        };
-        delete arrangedValues.location;
-        delete arrangedValues.privacy;
-        delete arrangedValues.dive_shop;
+      let arrangedValues: InitialValues = {
+        ...values,
+        beach_id: values.location?.beach_id,
+        dive_shop_id: values.dive_shop?.shop_id,
+        is_private: values.privacy === t('DIVE_LOG_PRIVATE').toLowerCase(),
+        date_dived: new Date().toJSON(),
+      };
 
-        const response = await handleCreateDiveLog(
+      delete arrangedValues.location;
+      delete arrangedValues.privacy;
+      delete arrangedValues.dive_shop;
+
+      const connectionState = await NetInfo.fetch();
+      if (!connectionState.isConnected) {
+        // offline save
+        await offlineManager.saveItem<InitialValues>(
+          'create-dive-log',
           arrangedValues,
-          authToken as string,
         );
-
-        if (response.msg) {
-          setFormSubmitting(false);
-          throw new Error(response.msg);
-        }
-        saveDiveLogId(response.review.id as number);
+        Toast.show({
+          type: 'info',
+          text1: 'No network available',
+          text2:
+            "We'll upload your dive log as soon as You are connected to the internet",
+        });
         setFormSubmitting(false);
         callback();
       } else {
-        const arrangedValues = {
-          ...values,
-          beach_id: values.location?.beach_id,
-          dive_shop_id: values.dive_shop?.shop_id,
-          is_private: values.privacy === t('DIVE_LOG_PRIVATE').toLowerCase(),
-        };
-        delete arrangedValues.location;
-        delete arrangedValues.privacy;
+        if (values.images) {
+          const images = await handleUploadDiveLogImages(
+            values.images,
+            authToken as string,
+          );
 
-        const response = await handleCreateDiveLog(
-          arrangedValues,
-          authToken as string,
-        );
+          arrangedValues = {
+            ...arrangedValues,
+            images,
+          };
+          const response = await handleCreateDiveLog(
+            arrangedValues,
+            authToken as string,
+          );
 
-        if (response.msg) {
+          if (response.msg) {
+            setFormSubmitting(false);
+            throw new Error(response.msg);
+          }
+          saveDiveLogId(response.review.id as number);
           setFormSubmitting(false);
-          throw new Error(response.msg);
+          callback();
+        } else {
+          const response = await handleCreateDiveLog(
+            arrangedValues,
+            authToken as string,
+          );
+
+          if (response.msg) {
+            setFormSubmitting(false);
+            throw new Error(response.msg);
+          }
+          saveDiveLogId(response.review.id as number);
+          setFormSubmitting(false);
+          callback();
         }
-        saveDiveLogId(response.review.id as number);
-        setFormSubmitting(false);
-        callback();
       }
     } catch (err) {
       console.log(err);

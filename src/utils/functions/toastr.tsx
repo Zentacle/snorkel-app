@@ -4,11 +4,14 @@ import { ToastConfig } from 'react-native-toast-message';
 import GradientBox from '_components/ui/GradientBox';
 
 export const toastConfig: ToastConfig = {
-  info: ({ text1 }) => {
+  info: ({ text1, text2 }) => {
     return (
       <View style={styles.container}>
         <GradientBox style={styles.indicator} />
-        <Text style={styles.text}>{text1}</Text>
+        <View>
+          <Text style={styles.text}>{text1}</Text>
+          {text2 && <Text style={styles.text2}>{text2}</Text>}
+        </View>
       </View>
     );
   },
@@ -46,9 +49,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginLeft: 20,
   },
+  text2: {
+    color: 'grey',
+    fontSize: 13,
+    textAlign: 'center',
+    marginLeft: 20,
+    marginTop: 5,
+  },
   indicator: {
     width: 5,
-    height: 60,
+    minHeight: 60,
     // borderRadius: 5,
     borderTopLeftRadius: 5,
     borderBottomLeftRadius: 5,

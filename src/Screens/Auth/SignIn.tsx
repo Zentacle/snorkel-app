@@ -15,7 +15,6 @@ import validate from 'validate.js';
 import { FORM_ERROR } from 'final-form';
 import { useTranslation } from 'react-i18next';
 import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
-import { setAmplitudeUserId } from '_utils/functions/amplitude';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -88,21 +87,15 @@ const SignIn: FunctionComponent<SignInProps> = props => {
     props.navigation.navigate('EmailSignUp');
   };
 
-  const navigateToOnboarding = () => {
-    props.navigation.navigate('OnBoarding', {
-      screen: 'ChooseUserName',
-    });
-  };
-
-  const navigateToCameraPermissions = () => {
-    props.navigation.navigate('OnBoarding', {
-      screen: 'CameraPermissions',
-    });
-  };
-
   const navigateToOnBoarding = () => {
     props.navigation.navigate('OnBoarding', {
-      screen: 'ChooseUserName',
+      screen: 'ChooseAvatar',
+    });
+  };
+
+  const navigateToFirstPro = () => {
+    props.navigation.navigate('OnBoarding', {
+      screen: 'ProUpsellFirst',
     });
   };
 
@@ -181,18 +174,17 @@ const SignIn: FunctionComponent<SignInProps> = props => {
 
             // assume user has filled onBoarding if username and profile_pic exist
             const userPreviouslyFilledOnBoardingData = !!(
-              (response.payload as LoginResponse).user.username &&
-              (response.payload as LoginResponse).user.profile_pic
-            );
+              response.payload as LoginResponse
+            ).user.profile_pic;
 
             if (googleRegister.fulfilled.match(response)) {
               sendEvent('login_success', {
                 method: 'google',
               });
-              if (userPreviouslyFilledOnBoardingData) {
-                navigateToCameraPermissions();
-              } else if ((response.payload as LoginResponse).user.username) {
-                navigateToCameraPermissions();
+              if (!(response.payload as LoginResponse).user.has_pro) {
+                navigateToFirstPro();
+              } else if (userPreviouslyFilledOnBoardingData) {
+                navigateToApp();
               } else {
                 navigateToOnBoarding();
               }
@@ -216,18 +208,17 @@ const SignIn: FunctionComponent<SignInProps> = props => {
 
             // assume user has filled onBoarding if username and profile_pic exist
             const userPreviouslyFilledOnBoardingData = !!(
-              (response.payload as LoginResponse).user.username &&
-              (response.payload as LoginResponse).user.profile_pic
-            );
+              response.payload as LoginResponse
+            ).user.profile_pic;
 
             if (appleRegister.fulfilled.match(response)) {
-              if (userPreviouslyFilledOnBoardingData) {
-                sendEvent('login_success', {
-                  method: 'apple',
-                });
+              sendEvent('login_success', {
+                method: 'apple',
+              });
+              if (!(response.payload as LoginResponse).user.has_pro) {
+                navigateToFirstPro();
+              } else if (userPreviouslyFilledOnBoardingData) {
                 navigateToApp();
-              } else if ((response.payload as LoginResponse).user.username) {
-                navigateToCameraPermissions();
               } else {
                 navigateToOnBoarding();
               }
@@ -247,18 +238,12 @@ const SignIn: FunctionComponent<SignInProps> = props => {
         method: 'email',
       });
       // assume user has filled onBoarding if username and profile_pic exist
-      const userPreviouslyFilledOnBoardingData = !!(
-        response.payload.user.username && response.payload.user.profile_pic
-      );
+      const userPreviouslyFilledOnBoardingData =
+        !!response.payload.user.profile_pic;
       if (userPreviouslyFilledOnBoardingData) {
         navigateToApp();
-      } else if (
-        response.payload.user.username &&
-        !response.payload.user.profile_pic
-      ) {
-        navigateToCameraPermissions();
       } else {
-        navigateToOnboarding();
+        navigateToOnBoarding();
       }
     } else {
       return {

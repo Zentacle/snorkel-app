@@ -80,9 +80,9 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
     props.navigation.navigate('SignIn');
   };
 
-  const navigateToOnboarding = () => {
-    props.navigation.navigate('OnBoarding', {
-      screen: 'ChooseUserName',
+  const navigateToFirstPro = () => {
+    props.navigation.push('OnBoarding', {
+      screen: 'ProUpsellFirst',
     });
   };
 
@@ -101,7 +101,7 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
               sendEvent('register_success', {
                 method: 'google',
               });
-              navigateToOnboarding();
+              navigateToFirstPro();
             }
           }
         }
@@ -124,7 +124,7 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
               sendEvent('register_success', {
                 method: 'apple',
               });
-              navigateToOnboarding();
+              navigateToFirstPro();
             }
           }
         }
@@ -140,7 +140,7 @@ const EmailSignUp: FunctionComponent<EmailSignUpProps> = props => {
       sendEvent('register_success', {
         method: 'email',
       });
-      navigateToOnboarding();
+      navigateToFirstPro();
     } else {
       return {
         [FORM_ERROR]:

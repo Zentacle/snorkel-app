@@ -64,7 +64,7 @@ const features: Features[] = [
     isPro: true,
   },
   {
-    label: 'Download offline details',
+    label: 'Upload logs while offline',
     isFree: false,
     isPro: true,
   },
@@ -91,6 +91,7 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
   React.useEffect(() => {
     sendEvent('page_view', {
       type: 'pro_upsell',
+      upsell: 'upsell_modal',
     });
 
     fetchOfferings();
@@ -178,10 +179,13 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
           <Icon name="close" size={25} color="gray" />
         </Pressable>
       ) : (
-        <Pressable style={styles.closeTextContainer} onPress={closeAction}>
-          <View>
-            <Text style={styles.closeText}>{closeText || 'Skip'}</Text>
-          </View>
+        <Pressable
+          style={props => ({
+            opacity: props.pressed ? 0.7 : 1,
+            ...styles.closeTextContainer,
+          })}
+          onPress={closeAction}>
+          <Text style={styles.closeText}>{closeText || 'Skip'}</Text>
         </Pressable>
       )}
       <ScrollView style={styles.mainBody} showsVerticalScrollIndicator={false}>
@@ -302,6 +306,7 @@ const styles = StyleSheet.create({
   image: {
     height: 250,
     width: Dimensions.get('window').width,
+    // backgroundColor: 'black',
   },
   mainText: {
     color: 'black',
@@ -439,13 +444,17 @@ const styles = StyleSheet.create({
   },
   closeTextContainer: {
     position: 'absolute',
-    top: 40,
+    top: 55,
     right: 25,
     zIndex: 1,
+    backgroundColor: 'whitesmoke',
+    paddingVertical: 5,
+    paddingHorizontal: 8,
+    borderRadius: 5,
   },
   closeText: {
-    color: 'white',
-    fontSize: 16,
+    color: 'black',
+    fontSize: 17,
   },
   purhaseError: {
     color: 'red',

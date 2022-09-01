@@ -11,13 +11,11 @@ export type AuthtackParamList = {
 };
 
 export type OnboardingStackParamList = {
-  ChooseUserName: undefined;
+  ProUpsellFirst: undefined;
   ChooseAvatar: undefined;
   LocationPermissions: undefined;
-  MeasurementType: undefined;
-  ActivityType: undefined;
   AddRecentDiveLog: undefined;
-  ProUpsellDisplay: undefined;
+  ProUpsellLast: undefined;
 };
 
 export type ExploreStackParamList = {

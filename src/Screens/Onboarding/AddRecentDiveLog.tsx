@@ -13,6 +13,8 @@ import { useTranslation } from 'react-i18next';
 import IOIcon from 'react-native-vector-icons/Ionicons';
 import { Form, Field } from 'react-final-form';
 import validate from 'validate.js';
+import config from 'react-native-config';
+import Purchases from 'react-native-purchases';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -30,6 +32,9 @@ import SimpleFormDiveLocation from '_screens/DiveLogsForms/components/SimpleForm
 import UnavailableLocationBox from '_screens/DiveLogsForms/components/UnavailableLocationBox';
 import Button from '_components/ui/Buttons/Button';
 import { sendEvent } from '_utils/functions/amplitude';
+
+import { useAppSelector } from '_redux/hooks';
+import { selectUser } from '_redux/slices/user';
 
 import type { FormApi } from 'final-form';
 
@@ -63,6 +68,9 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
 }) => {
   const { t } = useTranslation();
   let formRef = React.useRef<FormApi>();
+  const [proVerified, verifyIsPro] = React.useState(false);
+
+  const user = useAppSelector(selectUser);
 
   const [autocompleteModalOpen, toggleAutocompleteModal] =
     React.useState(false);
@@ -73,6 +81,17 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
 
   const closeLocationModal = () => {
     toggleAutocompleteModal(false);
+  };
+
+  const checkSubscription = async () => {
+    const customerInfo = await Purchases.getCustomerInfo();
+    if (
+      customerInfo.entitlements.active[
+        config.REVENUE_CAT_ENTITLEMENT_IDENTIFIER
+      ]?.isActive
+    ) {
+      verifyIsPro(true);
+    }
   };
 
   const constraints = {};
@@ -92,11 +111,19 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
     });
   };
 
-  const navigateToApp = () => {
-    navigation.push('App', {
-      screen: 'Explore',
-    });
+  const skip = () => {
+    if (proVerified || user?.has_pro) {
+      navigation.navigate('App', {
+        screen: 'Explore',
+      });
+    } else {
+      navigation.push('ProUpsellLast');
+    }
   };
+
+  React.useEffect(() => {
+    checkSubscription();
+  }, []);
 
   React.useEffect(() => {
     sendEvent('page_view', {
@@ -121,7 +148,7 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
     sendEvent('skip_onboarding', {
       screen: 'dive_log',
     });
-    navigateToApp();
+    skip();
   };
 
   return (
