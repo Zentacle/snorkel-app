@@ -75,6 +75,7 @@ interface ProUpsellDisplayProps {
   closeAction: () => void;
   closeText?: string;
   navigateToWebView: (url: string) => void;
+  source: string;
 }
 
 const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
@@ -82,6 +83,7 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
   closeAction,
   closeText,
   navigateToWebView,
+  source,
 }) => {
   const [proPackage, setPackage] = React.useState<PurchasesOffering | null>();
   const [purchaseError, setPurchaseError] = React.useState<string | null>();
@@ -91,11 +93,11 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
   React.useEffect(() => {
     sendEvent('page_view', {
       type: 'pro_upsell',
-      upsell: 'upsell_modal',
+      upsell: source,
     });
 
     fetchOfferings();
-  }, []);
+  }, [source]);
 
   const fetchOfferings = async () => {
     try {

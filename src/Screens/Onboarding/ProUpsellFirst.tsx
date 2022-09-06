@@ -24,13 +24,6 @@ interface ProUpsellProps {
 }
 
 const ProUpsell: FunctionComponent<ProUpsellProps> = ({ navigation }) => {
-  React.useEffect(() => {
-    sendEvent('page_view', {
-      type: 'pro_upsell',
-      upsell: 'onboarding_start',
-    });
-  }, []);
-
   const navigateToWebView = (url: string) => {
     navigation.push('AppWebview', {
       source: url,
@@ -51,6 +44,7 @@ const ProUpsell: FunctionComponent<ProUpsellProps> = ({ navigation }) => {
         closeAction={handleCloseAction}
         navigateToWebView={navigateToWebView}
         closeText="Skip"
+        source="onboarding_start"
       />
     </View>
   );

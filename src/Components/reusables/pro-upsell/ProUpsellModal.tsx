@@ -8,13 +8,16 @@ interface ProUpsellModalProps {
   isVisible: boolean;
   closeModal: () => void;
   navigateToWebView: (url: string) => void;
+  source: string;
 }
 
 const ProUpsellModal: FunctionComponent<ProUpsellModalProps> = ({
   isVisible,
   closeModal,
   navigateToWebView,
+  source,
 }) => {
+  React.useEffect(() => {}, []);
   return (
     <Modal
       visible={isVisible}
@@ -25,6 +28,7 @@ const ProUpsellModal: FunctionComponent<ProUpsellModalProps> = ({
         isModal
         navigateToWebView={navigateToWebView}
         closeAction={closeModal}
+        source={source}
       />
     </Modal>
   );
