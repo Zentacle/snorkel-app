@@ -293,6 +293,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
         isVisible={proUpsellModalOpen}
         closeModal={closeProUpsellModal}
         navigateToWebView={navigateToWebView}
+        source="home_button"
       />
       <ScrollView
         style={styles.contentContainer}
