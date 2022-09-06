@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Dimensions,
   TouchableWithoutFeedback,
+  Pressable,
 } from 'react-native';
 import FEIcons from 'react-native-vector-icons/Feather';
 
@@ -34,8 +35,7 @@ const FormStates: FunctionComponent<FormStatesProps> = ({
               <View style={styles.stageItem}>
                 {stage.id === activeId ? (
                   <>
-                    <TouchableWithoutFeedback
-                      onPress={() => goToPage(stage.id)}>
+                    <TouchableWithoutFeedback>
                       <View style={styles.activeDotContainer}>
                         <GradientCircle style={styles.activeDot}>
                           <FEIcons name="edit-2" size={10} color="white" />
@@ -54,9 +54,15 @@ const FormStates: FunctionComponent<FormStatesProps> = ({
                         <GradientCircle style={styles.normalDot} />
                       </View>
                     </TouchableWithoutFeedback>
-                    <Text style={[styles.stageText, { opacity: 0.6 }]}>
-                      {stage.name}
-                    </Text>
+                    <Pressable
+                      style={state => ({
+                        opacity: state.pressed ? 0.7 : 1,
+                      })}
+                      onPress={() => goToPage(stage.id)}>
+                      <Text style={[styles.stageText, { opacity: 0.6 }]}>
+                        {stage.name}
+                      </Text>
+                    </Pressable>
                   </>
                 )}
               </View>
@@ -106,6 +112,8 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: '#fff',
     padding: 5,
+    marginBottom: -5,
+    marginTop: -5,
   },
   activeDot: {
     width: '100%',
@@ -125,12 +133,11 @@ const styles = StyleSheet.create({
   },
   demarcator: {
     position: 'absolute',
-    right: -20,
+    right: -25,
     top: 16,
     width: WIDTH * 0.11,
     backgroundColor: '#fff',
     height: 2,
-    marginHorizontal: 2,
   },
 });
 
