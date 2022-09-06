@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   },
   demarcator: {
     position: 'absolute',
-    right: -25,
+    right: -23,
     top: 16,
     width: WIDTH * 0.11,
     backgroundColor: '#fff',
