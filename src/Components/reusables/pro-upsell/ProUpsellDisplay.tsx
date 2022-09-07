@@ -196,7 +196,7 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
           <Text style={styles.mainText}>{proPackage.serverDescription}</Text>
           <Text style={styles.subText}>
             {`Get 1 week free, then only ${
-              proPackage.availablePackages[0].product.priceString
+              proPackage.availablePackages[0].product.price_string
             }/${
               proPackage.availablePackages[0].packageType === 'MONTHLY'
                 ? 'month'
