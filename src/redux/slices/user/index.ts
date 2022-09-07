@@ -87,6 +87,8 @@ export const loginUser = createAsyncThunk(
     );
 
     await Purchases.logIn(`${response.user.id}`);
+    Purchases.setEmail(response.user.email)
+    Purchases.setDisplayName(response.user.display_name)
     await flagExistingUser();
     return {
       user: response.user,
@@ -110,6 +112,8 @@ export const registerUser = createAsyncThunk(
     );
 
     await Purchases.logIn(`${response.user.id}`);
+    Purchases.setEmail(response.user.email)
+    Purchases.setDisplayName(response.user.display_name)
     await flagExistingUser();
     return {
       ...response,
@@ -198,6 +202,8 @@ export const googleRegister = createAsyncThunk(
     );
 
     await Purchases.logIn(`${response.user.id}`);
+    Purchases.setEmail(response.user.email)
+    Purchases.setDisplayName(response.user.display_name)
 
     await flagExistingUser();
 
@@ -224,6 +230,8 @@ export const appleRegister = createAsyncThunk(
     );
 
     await Purchases.logIn(`${response.user.id}`);
+    Purchases.setEmail(response.user.email)
+    Purchases.setDisplayName(response.user.display_name)
 
     await flagExistingUser();
 
