@@ -112,6 +112,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   };
 
   const checkSubscription = async () => {
+    Purchases.getOfferings();
     const customerInfo = await Purchases.getCustomerInfo();
     if (
       customerInfo.entitlements.active[

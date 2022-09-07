@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
+import Purchases from 'react-native-purchases';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -213,6 +214,7 @@ const Landing: FunctionComponent<LandingProps> = props => {
   };
 
   React.useEffect(() => {
+    Purchases.getOfferings();
     sendEvent('page_view', {
       type: 'landing',
     });
