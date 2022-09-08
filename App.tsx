@@ -1,6 +1,5 @@
 import React, { useEffect, Suspense } from 'react';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { Settings as FBSdkSignin } from 'react-native-fbsdk-next';
 import { Provider } from 'react-redux';
 import config from 'react-native-config';
 import Toast from 'react-native-toast-message';
@@ -18,7 +17,6 @@ import { toastConfig } from '_utils/functions/toastr';
 export default function App() {
   useEffect(() => {
     // APPLE signin init
-    FBSdkSignin.initializeSDK();
     GoogleSignin.configure({
       webClientId: config.GOOGLE_CLIENT_ID,
     }); // TODO: add options
