@@ -4,7 +4,6 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import "RNSplashScreen.h"
-#import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <React/RCTLinkingManager.h>
 #import <RNGoogleSignin/RNGoogleSignin.h>
 #import <GoogleMaps/GoogleMaps.h>
@@ -72,7 +71,7 @@ static void InitializeFlipper(UIApplication *application) {
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(nonnull NSURL *)url options:(nonnull NSDictionary<NSString *,id> *)options {
-  return [RCTLinkingManager application:application openURL:url options:options] || [[FBSDKApplicationDelegate sharedInstance] application:application openURL:url options:options] || [RNGoogleSignin application:application openURL:url options:options];
+  return [RCTLinkingManager application:application openURL:url options:options] || [RNGoogleSignin application:application openURL:url options:options];
 }
 
 - (BOOL)application:(UIApplication *)application continueUserActivity:(nonnull NSUserActivity *)userActivity
