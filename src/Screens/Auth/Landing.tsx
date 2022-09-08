@@ -48,7 +48,7 @@ interface LandingProps {
 
 const Landing: FunctionComponent<LandingProps> = props => {
   const { t } = useTranslation();
-  type SelectedLogin = 'Facebook' | 'Google' | 'Apple' | '';
+  type SelectedLogin = 'Google' | 'Apple' | '';
   const [selectedLogin, setSelectedLogin] = React.useState<SelectedLogin>('');
   const dispatch = useAppDispatch();
   const loadingState = useAppSelector(selectLoadingState);
@@ -171,12 +171,6 @@ const Landing: FunctionComponent<LandingProps> = props => {
               }
             }
           }
-        }
-        break;
-      case 'Facebook':
-        {
-          const credentialObj = await actionButton.action();
-          console.log('credentials facebook', credentialObj);
         }
         break;
       case 'Apple':

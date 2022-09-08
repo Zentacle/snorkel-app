@@ -61,7 +61,7 @@ interface InitialValues {
 const SignIn: FunctionComponent<SignInProps> = props => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-  type SelectedLogin = 'Facebook' | 'Google' | 'Apple' | '';
+  type SelectedLogin = 'Google' | 'Apple' | '';
   const [selectedLogin, setSelectedLogin] = React.useState<SelectedLogin>('');
   const loadingState = useAppSelector(selectLoadingState);
 
@@ -190,12 +190,6 @@ const SignIn: FunctionComponent<SignInProps> = props => {
               }
             }
           }
-        }
-        break;
-      case 'Facebook':
-        {
-          const credentialObj = await actionButton.action();
-          console.log('credentials facebook', credentialObj);
         }
         break;
       case 'Apple':
