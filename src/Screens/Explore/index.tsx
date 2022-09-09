@@ -37,6 +37,7 @@ import {
   selectUser,
   selectAuthToken,
   fetchUserWalletAddress,
+  updateUser,
 } from '_redux/slices/user';
 import { sendEvent } from '_utils/functions/amplitude';
 
@@ -173,6 +174,15 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
                       longitude: position.coords.longitude,
                     }),
                   );
+                user &&
+                  !user.latitude &&
+                  !user.longitude &&
+                  dispatch(
+                    updateUser({
+                      latitude: position.coords.latitude,
+                      longitude: position.coords.longitude,
+                    }),
+                  );
               },
               error => {
                 console.log(error.code, error.message);
@@ -219,6 +229,15 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
                   dispatch(
                     handleFetchRecommended({
                       token: authToken as string,
+                      latitude: position.coords.latitude,
+                      longitude: position.coords.longitude,
+                    }),
+                  );
+                user &&
+                  !user.latitude &&
+                  !user.longitude &&
+                  dispatch(
+                    updateUser({
                       latitude: position.coords.latitude,
                       longitude: position.coords.longitude,
                     }),

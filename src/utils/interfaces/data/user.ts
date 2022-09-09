@@ -16,6 +16,8 @@ export interface User {
   unit?: MeasurementUnit;
   wallet_address?: string;
   has_pro?: boolean;
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface CookieHeaders {
