@@ -8,8 +8,9 @@ import {
   Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { PERMISSIONS, request } from 'react-native-permissions';
+import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 import { useTranslation } from 'react-i18next';
+import Geolocation from 'react-native-geolocation-service';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -22,6 +23,8 @@ import { sendEvent } from '_utils/functions/amplitude';
 
 import GradientCircle from '_components/ui/GradientCircle';
 import Button from '_components/ui/Buttons/Button';
+import { useAppDispatch } from '_redux/hooks';
+import { updateUser } from '_redux/slices/user';
 
 const HEIGHT = Dimensions.get('window').width;
 
@@ -38,6 +41,7 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
   navigation,
 }) => {
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
 
   const navigateToAddRecentDiveLog = () => {
     navigation.push('AddRecentDiveLog');
@@ -52,11 +56,43 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
   const handleLocationPermissions = async () => {
     try {
       if (Platform.OS === 'android') {
-        await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+        const permissions = await request(
+          PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+        );
+        if (permissions === RESULTS.GRANTED) {
+          Geolocation.getCurrentPosition(
+            position => {
+              dispatch(
+                updateUser({
+                  latitude: position.coords.latitude,
+                  longitude: position.coords.longitude,
+                }),
+              );
+            },
+            error => {
+              console.log(error);
+            },
+          );
+        }
 
         navigateToAddRecentDiveLog();
       } else {
-        await request(PERMISSIONS.IOS.LOCATION_ALWAYS);
+        const permissions = await request(PERMISSIONS.IOS.LOCATION_ALWAYS);
+        if (permissions === RESULTS.GRANTED) {
+          Geolocation.getCurrentPosition(
+            position => {
+              dispatch(
+                updateUser({
+                  latitude: position.coords.latitude,
+                  longitude: position.coords.longitude,
+                }),
+              );
+            },
+            error => {
+              console.log(error);
+            },
+          );
+        }
 
         navigateToAddRecentDiveLog();
       }
