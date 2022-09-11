@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
   },
   skipContainer: {
     marginHorizontal: 35,
-    marginVertical: WIDTH * 0.15,
+    marginVertical: 16,
   },
   skipText: {
     textAlign: 'right',
