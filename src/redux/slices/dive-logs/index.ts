@@ -15,6 +15,7 @@ interface DiveLogsStoreState {
   diveLogs: {
     [id: number]: DiveLogsState;
   };
+  orderedDiveLogs: DiveLogsState[];
   loading: boolean;
   error: {
     status: boolean;
@@ -29,6 +30,7 @@ interface NormalizedObj {
 
 const initialState: DiveLogsStoreState = {
   diveLogs: {},
+  orderedDiveLogs: [],
   loading: false,
   error: {
     status: false,
@@ -101,6 +103,7 @@ export const diveLogsSlice = createSlice({
         state.error.status = false;
         state.error.message = null;
         state.diveLogs = normalizeData(action.payload.reviews);
+        state.orderedDiveLogs = action.payload.reviews;
       })
       .addCase(fetchSingleDiveLog.pending, state => {
         state.loading = true;
@@ -127,6 +130,7 @@ export const diveLogsSlice = createSlice({
 });
 
 export const selectAllDiveLogs = (state: RootState) => state.dive_logs.diveLogs;
+export const selectOrderedDiveLogs = (state: RootState) => state.dive_logs.orderedDiveLogs;
 export const selectDiveLogsLoadingState = (state: RootState) =>
   state.dive_logs.loading;
 

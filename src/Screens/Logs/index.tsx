@@ -12,7 +12,7 @@ import type { RootStackParamList, AppTabsParamList } from '_utils/interfaces';
 import { useAppSelector, useAppDispatch } from '_redux/hooks';
 import {
   fetchOwnDiveLogs,
-  selectAllDiveLogs,
+  selectOrderedDiveLogs,
   selectDiveLogsLoadingState,
 } from '_redux/slices/dive-logs';
 import { selectAuthToken, selectUser } from '_redux/slices/user';
@@ -34,22 +34,20 @@ interface LogsProps {
 const Logs: FunctionComponent<LogsProps> = ({ navigation }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const diveLogs = Object.values(useAppSelector(selectAllDiveLogs));
+  const diveLogs = useAppSelector(selectOrderedDiveLogs);
   const diveLogsIsLoading = useAppSelector(selectDiveLogsLoadingState);
   const authToken = useAppSelector(selectAuthToken);
   const user = useAppSelector(selectUser);
 
   useEffect(() => {
-    navigation.addListener('focus', () => {
-      if (user) {
-        dispatch(
-          fetchOwnDiveLogs({
-            auth_token: authToken as string,
-            username: user?.username as string,
-          }),
-        );
-      }
-    });
+    if (user) {
+      dispatch(
+        fetchOwnDiveLogs({
+          auth_token: authToken as string,
+          username: user?.username as string,
+        }),
+      );
+    }
   }, [navigation, authToken, dispatch, user]);
 
   const navigateToLogDetail = (diveLogId: number) => {

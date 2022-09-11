@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppSelector, useAppDispatch } from '_redux/hooks';
 import { selectUser, selectAuthToken } from '_redux/slices/user';
 import {
-  selectAllDiveLogs,
+  selectOrderedDiveLogs,
   fetchOwnDiveLogs,
   selectDiveLogsLoadingState,
 } from '_redux/slices/dive-logs';
@@ -45,7 +45,7 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
-  const diveLogs = Object.values(useAppSelector(selectAllDiveLogs));
+  const diveLogs = useAppSelector(selectOrderedDiveLogs);
   const diveLogsIsLoading = useAppSelector(selectDiveLogsLoadingState);
   const authToken = useAppSelector(selectAuthToken);
 
@@ -113,11 +113,11 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
               {!!diveLogs.length ? t('DIVE_LOG_PHOTOS') : t('NO_DIVE_LOGS')}
             </Text>
             <View style={styles.photosContainer}>
-              {diveLogs.map((diveLog, index) => {
+              {diveLogs.map(diveLog => {
                 return (
                   <DiveLogDisplay
                     diveLog={diveLog}
-                    key={index}
+                    key={diveLog.id}
                     navigateToDiveLog={navigateToDiveLog}
                   />
                 );
