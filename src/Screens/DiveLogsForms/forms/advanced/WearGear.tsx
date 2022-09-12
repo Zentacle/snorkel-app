@@ -54,6 +54,8 @@ const WearGear = () => {
         minimumValue={0}
         incrementValue={user?.unit === 'imperial' ? 100 : 10}
         maximumValue={user?.unit === 'imperial' ? 3400 : 400}
+        parse={value => Math.round(value / 100) * 100}
+        format={value => Math.round(value / 100) * 100}
       />
 
       <Field
@@ -69,6 +71,8 @@ const WearGear = () => {
         minimumValue={0}
         incrementValue={user?.unit === 'imperial' ? 100 : 10}
         maximumValue={user?.unit === 'imperial' ? 3400 : 400}
+        parse={value => Math.round(value / 100) * 100}
+        format={value => Math.round(value / 100) * 100}
       />
 
       <View style={styles.gearTypesContainer}>

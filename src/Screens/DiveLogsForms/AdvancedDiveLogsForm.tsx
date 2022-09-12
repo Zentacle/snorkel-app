@@ -158,7 +158,6 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   };
 
   const submitLog = async (values: InitialValues, callback: () => void) => {
-    console.log(values)
     try {
       setFormSubmitting(true);
       const date = (values.startDate as Date).toDateString();
