@@ -96,7 +96,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
   }
 
   const isAdvancedLog = !!(
-    diveLog?.review.dive_length && diveLog?.review.water_temp
+    diveLog?.review.dive_length || diveLog?.review.water_temp
   );
   const coords = {
     latitude: diveLog?.spot.latitude || -8.409518,
@@ -428,7 +428,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                     container: styles.buttonContainer,
                     text: styles.buttonText,
                   }}>
-                  Add full dive log details
+                  Add weight, air, etc
                 </Button>
               </View>
             )}

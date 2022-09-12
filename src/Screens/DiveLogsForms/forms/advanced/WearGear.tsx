@@ -22,7 +22,7 @@ const WearGear = () => {
       <View style={{ marginTop: 30 }}>
         <Field
           name="weight"
-          label={`${t('WEIGHT')} . ${user?.unit === 'imperial' ? 'lb' : 'kg'}`}
+          label={`${t('WEIGHT')} (${user?.unit === 'imperial' ? 'lb' : 'kg'})`}
           component={SliderComp}
           trackMarks={
             user?.unit === 'imperial'
@@ -43,7 +43,7 @@ const WearGear = () => {
 
       <Field
         name="start_air"
-        label={`${t('START')} . ${user?.unit === 'imperial' ? 'psi' : 'bar'}`}
+        label={`${t('START')} (${user?.unit === 'imperial' ? 'psi' : 'bar'})`}
         component={SliderComp}
         trackMarks={
           user?.unit === 'imperial'
@@ -58,7 +58,7 @@ const WearGear = () => {
 
       <Field
         name="end_air"
-        label={`${t('END')} . ${user?.unit === 'imperial' ? 'psi' : 'bar'}`}
+        label={`${t('END')} (${user?.unit === 'imperial' ? 'psi' : 'bar'})`}
         component={SliderComp}
         trackMarks={
           user?.unit === 'imperial'

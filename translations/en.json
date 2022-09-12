@@ -133,7 +133,7 @@
   "POPULARITY": "popularity",
   "SELECT_SORTING_OPTION": "Select sorting option",
   "diveLogForm": {
-    "EXIT_MODAL_SUBTEXT_FOR_SIMPLE_FORM": "On exit, all dive log information you entered will be deleted",
+    "EXIT_MODAL_SUBTEXT_FOR_SIMPLE_FORM": "Any dive log information you entered won't be saved",
     "EXIT_MODAL_SUBTEXT_FOR_ADVANCED_FORM": "When you exit, all advanced dive log information you entered will be deleted. The simple dive log information is saved and will remain unchanged.",
     "EXIT_MODAL_MAIN_TEXT": "Are you sure you want to exit?",
     "DIVE_LOG_SHARE_MESSAGE": "wants to share their dive log with you",
