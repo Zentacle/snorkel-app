@@ -133,6 +133,7 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
 
       sendEvent('pro__click', {
         screen: 'pro_upsell',
+        upsell: source,
       });
 
       await Purchases.purchasePackage(
@@ -141,6 +142,7 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
 
       sendEvent('pro__register', {
         screen: 'pro_upsell',
+        upsell: source,
       });
 
       setPurchaseError(null);

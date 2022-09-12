@@ -161,7 +161,7 @@
   "SHARE": "Share",
   "COPIED": "Copied!",
   "COPY_LINK": "Copy Link",
-  "ADD_MORE_DETAILS": "Add More Details",
+  "ADD_MORE_DETAILS": "Add weight, gear, air, etc.",
   "DATE": "Date",
   "TIME": "Time",
   "TIME_IN_WATER": "Time in Water",
@@ -184,8 +184,8 @@
   "advancedFormStages": {
     "_0": "Basic Info",
     "_1": "Date, Time, & Depth",
-    "_2": "Water & Onshore",
-    "_3": "Wear & Gear"
+    "_2": "Temp & Entry",
+    "_3": "Air & Gear"
   },
   "DIVING_DATA": "Diving Data",
   "DURATION": "Duration",
