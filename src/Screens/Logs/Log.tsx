@@ -8,12 +8,14 @@ import {
   Platform,
   TouchableWithoutFeedback,
 } from 'react-native';
+import config from 'react-native-config';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from 'react-i18next';
 
 import ImageCarousel from '_components/reusables/DiveLogImageCarousel';
 import DiveLocation from './components/DiveLocation';
 import Button from '_components/ui/Buttons/Button';
+
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type {
@@ -33,7 +35,10 @@ import UnavailableLocationBox from './components/UnavailabbleLocationDetailBox';
 import Snorkel from '_assets/scuba_icons/snorkel.svg';
 import Location from '_assets/scuba_icons/Location.svg';
 import Shop from '_assets/scuba_icons/Shop.svg';
-import { selectUser } from '_redux/slices/user';
+import {
+  selectAuthToken,
+  selectUser,
+} from '_redux/slices/user';
 import { useAppSelector, useAppDispatch } from '_redux/hooks';
 import {
   selectDiveLogsLoadingState,
@@ -66,6 +71,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(selectDiveLogsLoadingState);
   const diveLog = useAppSelector(selectActiveDiveLog);
+  const authToken = useAppSelector(selectAuthToken);
 
   const airLimit = user?.unit === 'imperial' ? 3400 : 400;
 
@@ -160,6 +166,17 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
         },
       });
     };
+
+    const deleteDiveLog = () => {
+      const url = `${config.API_ENDPOINT}/review/delete?review_id=${diveLog.review.id}`;
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${authToken}`
+        }
+      })
+      navigateBack()
+    }
 
     const logHasCoordinates = !!(
       diveLog.spot.latitude && diveLog.spot.longitude
@@ -355,11 +372,10 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                         <GradientBox
                           style={{
                             ...styles.gradientLine,
-                            width: `${
-                              ((diveLog.review.end_air as number) /
+                            width: `${((diveLog.review.end_air as number) /
                                 (diveLog.review.start_air as number)) *
                               100
-                            }%`,
+                              }%`,
                           }}
                         />
                       </View>
@@ -432,6 +448,18 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                 </Button>
               </View>
             )}
+
+            <View style={styles.editLogContainer}>
+              <Icon
+                onPress={deleteDiveLog}
+                name="trash-can"
+                color="black"
+                size={30}
+              />
+              <TouchableWithoutFeedback onPress={deleteDiveLog}>
+                <Text style={styles.editLogText}>Delete dive log</Text>
+              </TouchableWithoutFeedback>
+            </View>
 
             {Object.keys(diveLog.dive_shop as DiveShopFull).length ? (
               diveLog.dive_shop?.stamp_uri ? (
