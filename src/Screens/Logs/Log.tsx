@@ -8,6 +8,7 @@ import {
   Platform,
   TouchableWithoutFeedback,
 } from 'react-native';
+import config from 'react-native-config';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from 'react-i18next';
 
@@ -33,13 +34,17 @@ import UnavailableLocationBox from './components/UnavailabbleLocationDetailBox';
 import Snorkel from '_assets/scuba_icons/snorkel.svg';
 import Location from '_assets/scuba_icons/Location.svg';
 import Shop from '_assets/scuba_icons/Shop.svg';
-import { selectUser } from '_redux/slices/user';
+import {
+  selectAuthToken,
+  selectUser,
+} from '_redux/slices/user';
 import { useAppSelector, useAppDispatch } from '_redux/hooks';
 import {
   selectDiveLogsLoadingState,
   selectActiveDiveLog,
   fetchSingleDiveLog,
 } from '_redux/slices/dive-logs';
+import { handleDeleteDiveLog } from '_redux/slices/dive-logs/api';
 import NoDiveShop from './components/NoDiveShop';
 import DiveShopView from './components/DIveShop';
 import DiveShopStampView from './components/DiveShopStamp';
@@ -66,6 +71,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(selectDiveLogsLoadingState);
   const diveLog = useAppSelector(selectActiveDiveLog);
+  const authToken = useAppSelector(selectAuthToken);
 
   const airLimit = user?.unit === 'imperial' ? 3400 : 400;
 
@@ -96,7 +102,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
   }
 
   const isAdvancedLog = !!(
-    diveLog?.review.dive_length && diveLog?.review.water_temp
+    diveLog?.review.dive_length || diveLog?.review.water_temp
   );
   const coords = {
     latitude: diveLog?.spot.latitude || -8.409518,
@@ -160,6 +166,11 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
         },
       });
     };
+
+    const deleteDiveLog = () => {
+      handleDeleteDiveLog(diveLog.review.id, authToken)
+      navigateBack()
+    }
 
     const logHasCoordinates = !!(
       diveLog.spot.latitude && diveLog.spot.longitude
@@ -355,11 +366,10 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                         <GradientBox
                           style={{
                             ...styles.gradientLine,
-                            width: `${
-                              ((diveLog.review.end_air as number) /
+                            width: `${((diveLog.review.end_air as number) /
                                 (diveLog.review.start_air as number)) *
                               100
-                            }%`,
+                              }%`,
                           }}
                         />
                       </View>
@@ -428,10 +438,22 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                     container: styles.buttonContainer,
                     text: styles.buttonText,
                   }}>
-                  Add full dive log details
+                  Add weight, air, etc
                 </Button>
               </View>
             )}
+
+            <View style={styles.editLogContainer}>
+              <Icon
+                onPress={deleteDiveLog}
+                name="trash-can"
+                color="black"
+                size={30}
+              />
+              <TouchableWithoutFeedback onPress={deleteDiveLog}>
+                <Text style={styles.editLogText}>Delete dive log</Text>
+              </TouchableWithoutFeedback>
+            </View>
 
             {Object.keys(diveLog.dive_shop as DiveShopFull).length ? (
               diveLog.dive_shop?.stamp_uri ? (

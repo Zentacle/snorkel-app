@@ -8,6 +8,7 @@
       "_4": "Privacy and Cookie Statement"
     }
   },
+  "BIO": "Bio",
   "OR": "OR",
   "EMAIL": "Email",
   "HAVE_ACCOUNT": "Have an account?",
@@ -133,7 +134,7 @@
   "POPULARITY": "popularity",
   "SELECT_SORTING_OPTION": "Select sorting option",
   "diveLogForm": {
-    "EXIT_MODAL_SUBTEXT_FOR_SIMPLE_FORM": "On exit, all dive log information you entered will be deleted",
+    "EXIT_MODAL_SUBTEXT_FOR_SIMPLE_FORM": "Any dive log information you entered won't be saved",
     "EXIT_MODAL_SUBTEXT_FOR_ADVANCED_FORM": "When you exit, all advanced dive log information you entered will be deleted. The simple dive log information is saved and will remain unchanged.",
     "EXIT_MODAL_MAIN_TEXT": "Are you sure you want to exit?",
     "DIVE_LOG_SHARE_MESSAGE": "wants to share their dive log with you",
@@ -161,7 +162,7 @@
   "SHARE": "Share",
   "COPIED": "Copied!",
   "COPY_LINK": "Copy Link",
-  "ADD_MORE_DETAILS": "Add More Details",
+  "ADD_MORE_DETAILS": "Add weight, gear, air, etc.",
   "DATE": "Date",
   "TIME": "Time",
   "TIME_IN_WATER": "Time in Water",
@@ -184,8 +185,8 @@
   "advancedFormStages": {
     "_0": "Basic Info",
     "_1": "Date, Time, & Depth",
-    "_2": "Water & Onshore",
-    "_3": "Wear & Gear"
+    "_2": "Temp & Entry",
+    "_3": "Air & Gear"
   },
   "DIVING_DATA": "Diving Data",
   "DURATION": "Duration",
@@ -193,7 +194,7 @@
   "LEFT": "Left",
   "diveLogs": {
     "EMPTY_LIST_HEADER": "You have no dive logs",
-    "EMPTY_LIST_DESCRIPTION": "You can create dive logs manually or by syncing your dive computer",
+    "EMPTY_LIST_DESCRIPTION": "Once you've created your first dive log, it will show up here",
     "EMPTY_LIST_DIRECTIONS": "To create a new dive log, click on the round {{icon}} button below",
     "DIVE_LOG_NOT_EXIST": "Sorry, the Dive Log you are looking for does not exist!"
   },

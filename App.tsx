@@ -29,6 +29,8 @@ export default function App() {
     Purchases.setDebugLogsEnabled(true);
     if (Platform.OS === 'ios') {
       Purchases.configure(config.REVENUE_CAT_IOS_API_KEY);
+    } else if (Platform.OS === 'android') {
+      Purchases.configure(config.REVENUE_CAT_ANDROID_API_KEY);
     }
   };
 

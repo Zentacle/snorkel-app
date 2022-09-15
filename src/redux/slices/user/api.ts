@@ -22,7 +22,7 @@ interface WalletResponse {
 export async function handleRegister(body: User): Promise<LoginResponse> {
   try {
     const url = `${config.API_ENDPOINT}/user/register`;
-    const response = fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
       body: JSON.stringify(body),
       headers: {
@@ -38,7 +38,7 @@ export async function handleRegister(body: User): Promise<LoginResponse> {
 export async function handleLogin(body: User): Promise<LoginResponse> {
   try {
     const url = `${config.API_ENDPOINT}/user/login`;
-    const response = fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
       body: JSON.stringify(body),
       headers: {
@@ -60,7 +60,7 @@ export async function handleUpdateUser(
 ): Promise<UpdateUserReturn> {
   try {
     const url = `${config.API_ENDPOINT}/user/patch`;
-    const response = fetch(url, {
+    const response = await fetch(url, {
       method: 'PATCH',
       body: JSON.stringify(body),
       headers: {
@@ -118,7 +118,7 @@ export async function handleGetCurrentUser(
 ): Promise<GetCurrentUserResponse> {
   try {
     const url = `${config.API_ENDPOINT}/user/me`;
-    const response = fetch(url, {
+    const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -136,7 +136,7 @@ export async function handleGoogleregister(body: {
 }): Promise<LoginResponse> {
   try {
     const url = `${config.API_ENDPOINT}/user/google_register`;
-    const response = fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
       body: JSON.stringify(body),
       headers: {
@@ -154,7 +154,7 @@ export async function handleAppleregister(
 ): Promise<LoginResponse> {
   try {
     const url = `${config.API_ENDPOINT}/user/apple_register`;
-    const response = fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
       body: JSON.stringify(body),
       headers: {

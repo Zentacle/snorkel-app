@@ -74,7 +74,7 @@ const SelectWGradientBorder: FunctionComponent<ComponentProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
+    marginTop: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

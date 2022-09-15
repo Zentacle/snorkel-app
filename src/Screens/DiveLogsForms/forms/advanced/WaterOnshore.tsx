@@ -23,9 +23,9 @@ const WaterOnshore = () => {
       <View style={{ marginTop: 30 }}>
         <Field
           name="water_temp"
-          label={`${t('WATER_TEMP')} . ${
-            user?.unit === 'imperial' ? 'f' : 'C'
-          }`}
+          label={`${t('WATER_TEMP')} (${
+            user?.unit === 'imperial' ? 'F°' : 'C°'
+          })`}
           component={SliderComp}
           trackMarks={
             user?.unit === 'imperial'
@@ -41,7 +41,7 @@ const WaterOnshore = () => {
       <View style={{ marginTop: 30, marginBottom: 20 }}>
         <Field
           name="air_temp"
-          label={`${t('AIR_TEMP')} . ${user?.unit === 'imperial' ? 'f' : 'C'}`}
+          label={`${t('AIR_TEMP')} (${user?.unit === 'imperial' ? 'F°' : 'C°'})`}
           component={SliderComp}
           trackMarks={
             user?.unit === 'imperial'

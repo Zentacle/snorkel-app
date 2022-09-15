@@ -244,28 +244,22 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     id: simpleDiveLogsForm.id,
     dive_length: simpleDiveLogsForm.dive_length
       ? simpleDiveLogsForm.dive_length
-      : 45,
+      : undefined,
     max_depth: simpleDiveLogsForm.max_depth
       ? simpleDiveLogsForm.max_depth
-      : user?.unit === 'imperial'
-      ? 40
-      : 12.2,
+      : undefined,
     water_temp: simpleDiveLogsForm.water_temp
       ? simpleDiveLogsForm.water_temp
-      : user?.unit === 'imperial'
-      ? 57.2
-      : 14,
+      : undefined,
     air_temp: simpleDiveLogsForm.air_temp
       ? simpleDiveLogsForm.air_temp
-      : user?.unit === 'imperial'
-      ? 60
-      : 20,
+      : undefined,
     visibility: simpleDiveLogsForm.visibility
       ? simpleDiveLogsForm.visibility
-      : 1,
+      : undefined,
     entry: simpleDiveLogsForm.entry
       ? simpleDiveLogsForm.entry
-      : t('SHORE').toLowerCase(),
+      : undefined,
     // @ts-ignore
     startDate: simpleDiveLogsForm.date_dived
       ? new Date(simpleDiveLogsForm.date_dived)
@@ -442,6 +436,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 20,
     marginTop: 25,
+    marginBottom: 10,
   },
   header: {
     color: 'black',

@@ -6,6 +6,7 @@ export interface Stage {
 export enum DateTimeMode {
   date = 'date',
   time = 'time',
+  datetime = 'datetime',
 }
 
 export interface PhotoOptions {

@@ -22,7 +22,7 @@ const WearGear = () => {
       <View style={{ marginTop: 30 }}>
         <Field
           name="weight"
-          label={`${t('WEIGHT')} . ${user?.unit === 'imperial' ? 'lb' : 'kg'}`}
+          label={`${t('WEIGHT')} (${user?.unit === 'imperial' ? 'lb' : 'kg'})`}
           component={SliderComp}
           trackMarks={
             user?.unit === 'imperial'
@@ -43,7 +43,7 @@ const WearGear = () => {
 
       <Field
         name="start_air"
-        label={`${t('START')} . ${user?.unit === 'imperial' ? 'psi' : 'bar'}`}
+        label={`${t('START')} (${user?.unit === 'imperial' ? 'psi' : 'bar'})`}
         component={SliderComp}
         trackMarks={
           user?.unit === 'imperial'
@@ -54,11 +54,13 @@ const WearGear = () => {
         minimumValue={0}
         incrementValue={user?.unit === 'imperial' ? 100 : 10}
         maximumValue={user?.unit === 'imperial' ? 3400 : 400}
+        parse={value => Math.round(value / 100) * 100}
+        format={value => Math.round(value / 100) * 100}
       />
 
       <Field
         name="end_air"
-        label={`${t('END')} . ${user?.unit === 'imperial' ? 'psi' : 'bar'}`}
+        label={`${t('END')} (${user?.unit === 'imperial' ? 'psi' : 'bar'})`}
         component={SliderComp}
         trackMarks={
           user?.unit === 'imperial'
@@ -69,6 +71,8 @@ const WearGear = () => {
         minimumValue={0}
         incrementValue={user?.unit === 'imperial' ? 100 : 10}
         maximumValue={user?.unit === 'imperial' ? 3400 : 400}
+        parse={value => Math.round(value / 100) * 100}
+        format={value => Math.round(value / 100) * 100}
       />
 
       <View style={styles.gearTypesContainer}>

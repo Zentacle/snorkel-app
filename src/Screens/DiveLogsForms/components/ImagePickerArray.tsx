@@ -14,7 +14,6 @@ import { FieldArrayRenderProps } from 'react-final-form-arrays';
 import { useTranslation } from 'react-i18next';
 
 import ImagePickerModal from '_components/reusables/ImagePickerModal';
-import GradientText from '_components/ui/GradientText';
 import GradientCircle from '_components/ui/GradientCircle';
 
 import type { FunctionComponent } from 'react';
@@ -29,7 +28,7 @@ interface ImageType {
 
 type FinalFormProps = FieldArrayRenderProps<ImageType, any>;
 
-interface BaseProps {}
+interface BaseProps { }
 
 type ImagePickerArrayProps = BaseProps & FinalFormProps;
 
@@ -66,6 +65,7 @@ const ImagePickerArray: FunctionComponent<ImagePickerArrayProps> = ({
   const selectImageFromGallery = async () => {
     const result = await launchImageLibrary({
       mediaType: 'photo',
+      selectionLimit: 10,
     });
 
     // performance improvement: close early
@@ -107,86 +107,40 @@ const ImagePickerArray: FunctionComponent<ImagePickerArrayProps> = ({
           </View>
         </View>
       </View>
-      {fields.length ? (
-        <View>
-          {fields.length < 10 && (
-            <Pressable
-              onPress={openCameraModal}
-              style={({ pressed }) => [
-                {
-                  transform: pressed ? [{ scale: 0.95 }] : [{ scale: 1.0 }],
-                },
-              ]}>
-              <View style={styles.subContainer}>
-                <GradientCircle style={styles.iconContainer}>
-                  <IOIcon name="add-outline" size={30} color="white" />
-                </GradientCircle>
-                <GradientText
-                  gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-                  start={{
-                    x: 0,
-                    y: 0,
-                  }}
-                  end={{
-                    x: 0.06,
-                    y: 1.8,
-                  }}
-                  gradientLocations={[0.01, 1, 1]}
-                  style={styles.actionText}>
-                  {t('ADD_PHOTOS_OR_VIDEOS')}
-                </GradientText>
-              </View>
-            </Pressable>
-          )}
-          <ScrollView
-            horizontal
-            style={styles.imagesContainer}
-            showsHorizontalScrollIndicator={false}>
-            {fields.value.map((item, index) => (
-              <View key={index} style={styles.imageContainer}>
-                <Pressable
-                  style={{ zIndex: 4 }}
-                  onPress={() => {
-                    fields.remove(index);
-                  }}>
-                  <View style={styles.deleteIcon}>
-                    <IOIcon name="close-outline" size={25} color="black" />
-                  </View>
-                </Pressable>
-                <Image style={styles.image} source={{ uri: item.uri }} />
-              </View>
-            ))}
-          </ScrollView>
-        </View>
-      ) : (
-        <Pressable
-          onPress={openCameraModal}
-          style={({ pressed }) => [
-            {
-              transform: pressed ? [{ scale: 0.95 }] : [{ scale: 1.0 }],
-            },
-          ]}>
-          <View style={styles.subContainer}>
-            <GradientCircle style={styles.iconContainer}>
-              <IOIcon name="add-outline" size={30} color="white" />
-            </GradientCircle>
-            <GradientText
-              gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-              start={{
-                x: 0,
-                y: 0,
-              }}
-              end={{
-                x: 0.06,
-                y: 1.8,
-              }}
-              gradientLocations={[0.01, 1, 1]}
-              style={styles.actionText}>
-              {t('ADD_PHOTOS_OR_VIDEOS')}
-            </GradientText>
-          </View>
-        </Pressable>
-      )}
+      <View>
+        <ScrollView
+          horizontal
+          style={styles.imagesContainer}
+          showsHorizontalScrollIndicator={false}>
+          {fields.value && fields.value.map((item, index) => (
+            <View key={index} style={styles.imageContainer}>
+              <Pressable
+                style={{ zIndex: 4 }}
+                onPress={() => {
+                  fields.remove(index);
+                }}>
+                <View style={styles.deleteIcon}>
+                  <IOIcon name="close-outline" size={25} color="black" />
+                </View>
+              </Pressable>
+              <Image style={styles.image} source={{ uri: item.uri }} />
+            </View>
+          ))}
+          <Pressable
+            onPress={openCameraModal}
+            style={({ pressed }) => [
+              {
+                transform: pressed ? [{ scale: 0.95 }] : [{ scale: 1.0 }],
+              },
+            ]}>
+            <View style={styles.subContainer}>
+              <GradientCircle style={styles.iconContainer}>
+                <IOIcon name="add-outline" size={30} color="white" />
+              </GradientCircle>
+            </View>
+          </Pressable>
+        </ScrollView>
+      </View>
 
       <ImagePickerModal
         modalIsVisible={cameralModalIsVisible}
@@ -202,12 +156,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   subContainer: {
+    marginTop: 8,
     height: 130,
     backgroundColor: '#fff',
-    marginTop: 12,
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
+    width: 130,
   },
   iconContainer: {
     width: 50,
@@ -226,11 +181,11 @@ const styles = StyleSheet.create({
   },
   mediaContainer: {
     marginTop: isBelowHeightThreshold ? 20 : 30,
-    marginBottom: 8,
   },
   optionalContainer: {},
   optionaltext: {
     color: '#aa00ff',
+    fontSize: 12,
   },
   mediaContentLabel: {
     flexDirection: 'row',
@@ -247,8 +202,8 @@ const styles = StyleSheet.create({
     marginBottom: Platform.OS === 'android' ? 15 : 5,
   },
   image: {
-    width: 150,
-    height: 140,
+    width: 130,
+    height: 130,
     borderRadius: 16,
   },
   deleteIcon: {

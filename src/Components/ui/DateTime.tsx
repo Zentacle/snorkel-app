@@ -22,11 +22,13 @@ const DateTime: FunctionComponent<ComponentProps> = ({
   return (
     <View style={styles.container}>
       <Text style={styles.labelText}>{label}</Text>
-      <DatePicker
-        date={value || new Date()}
-        mode={mode}
-        onDateChange={(dateValue: Date) => onChange(dateValue)}
-      />
+      <View style={styles.dateContainer}>
+        <DatePicker
+          date={value || new Date()}
+          mode={mode}
+          onDateChange={(dateValue: Date) => onChange(dateValue)}
+        />
+      </View>
     </View>
   );
 };
@@ -35,6 +37,12 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     marginTop: 30,
+  },
+  dateContainer: {
+    backgroundColor: 'white',
+    borderRadius: 16,
+    width: '100%',
+    marginTop: 10,
   },
   labelText: {
     textAlign: 'left',
