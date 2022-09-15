@@ -237,10 +237,9 @@ const SimpleDiveLogsForms: FunctionComponent<
           values.location &&
           // values.location.lat &&
           // values.location.lng &&
-          values.location.desc
+          values.location.desc &&
+          values.rating
         );
-      case 1:
-        return !!(values.rating && values.difficulty);
       default:
         return true;
     }

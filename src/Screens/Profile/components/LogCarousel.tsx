@@ -37,7 +37,7 @@ const defaultImages: Images[] = [
 
 interface ImageCarouselProps {
   images?: {
-    uri: string;
+    url: string;
     type?: string;
     name: string;
   }[];
@@ -92,7 +92,7 @@ const LogCarousel: FunctionComponent<ImageCarouselProps> = ({ images }) => {
                   styles.headerImage,
                   { borderRadius: isSwiping ? 0 : 12 },
                 ]}
-                source={{ uri: image.uri }}
+                source={{ uri: image.url }}
               />
             );
           })}

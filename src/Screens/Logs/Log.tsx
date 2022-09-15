@@ -16,7 +16,6 @@ import ImageCarousel from '_components/reusables/DiveLogImageCarousel';
 import DiveLocation from './components/DiveLocation';
 import Button from '_components/ui/Buttons/Button';
 
-
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type {
   CompositeNavigationProp,
@@ -45,6 +44,7 @@ import {
   selectActiveDiveLog,
   fetchSingleDiveLog,
 } from '_redux/slices/dive-logs';
+import { handleDeleteDiveLog } from '_redux/slices/dive-logs/api';
 import NoDiveShop from './components/NoDiveShop';
 import DiveShopView from './components/DIveShop';
 import DiveShopStampView from './components/DiveShopStamp';
@@ -168,13 +168,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
     };
 
     const deleteDiveLog = () => {
-      const url = `${config.API_ENDPOINT}/review/delete?review_id=${diveLog.review.id}`;
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${authToken}`
-        }
-      })
+      handleDeleteDiveLog(diveLog.review.id, authToken)
       navigateBack()
     }
 

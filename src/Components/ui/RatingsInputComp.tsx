@@ -46,9 +46,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
   },
-  star: {},
+  star: {
+    height: 40,
+    width: 40,
+    marginRight: 8,
+  },
   starLabel: {
     fontSize: 18,
     fontWeight: '500',
