@@ -145,7 +145,6 @@ const Navigator: React.FC = () => {
   React.useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
       if (!netInfoIm.isConnected && state.isConnected) {
-        console.log('magic happens here', state);
         offlineManager.fetchItems('create-dive-log').then(items => {
           if (!items.length) {
             return;
