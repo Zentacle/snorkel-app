@@ -402,12 +402,13 @@ const styles = StyleSheet.create({
   },
   tableBodyLabelText: {
     marginLeft: 7,
+    color: 'black',
   },
   footer: {
     backgroundColor: 'white',
     alignItems: 'center',
     paddingHorizontal: 25,
-    position: 'absolute',
+    // position: 'absolute',
     bottom: 0,
     width: '100%',
     borderTopLeftRadius: 24,
@@ -431,6 +432,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 30,
     textAlign: 'center',
+    color: 'black',
   },
   closeIconContainer: {
     position: 'absolute',
@@ -469,9 +471,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginHorizontal: 25,
     marginTop: 20,
+    marginBottom: 20,
   },
   terms: {
     fontSize: 12,
+    color: 'black',
   },
   divider: {
     borderLeftColor: 'black',
