@@ -113,14 +113,18 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   };
 
   const checkSubscription = async () => {
-    Purchases.getOfferings();
-    const customerInfo = await Purchases.getCustomerInfo();
-    if (
-      customerInfo.entitlements.active[
-        config.REVENUE_CAT_ENTITLEMENT_IDENTIFIER
-      ]?.isActive
-    ) {
-      verifyIsPro(true);
+    try {
+      await Purchases.getOfferings();
+      const customerInfo = await Purchases.getCustomerInfo();
+      if (
+        customerInfo.entitlements.active[
+          config.REVENUE_CAT_ENTITLEMENT_IDENTIFIER
+        ]?.isActive
+      ) {
+        verifyIsPro(true);
+      }
+    } catch (err) {
+      throw err;
     }
   };
 
