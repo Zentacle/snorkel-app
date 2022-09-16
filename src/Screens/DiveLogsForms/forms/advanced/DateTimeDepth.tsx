@@ -30,7 +30,7 @@ const DateTimeDepth = () => {
       <View style={{ marginTop: 30 }}>
         <Field
           name="dive_length"
-          label={`${t('TIME_IN_WATER')}.Min`}
+          label={`${t('TIME_IN_WATER')} (min)`}
           component={SliderComp}
           trackMarks={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]}
           benchMarks={[0, 60, 120]}
@@ -42,9 +42,9 @@ const DateTimeDepth = () => {
       <View style={{ marginTop: 30, marginBottom: 20 }}>
         <Field
           name="max_depth"
-          label={`${t('MAX_DEPTH')}. ${
-            user?.unit === 'imperial' ? 'Ft' : 'M'
-          } `}
+          label={`${t('MAX_DEPTH')} (${
+            user?.unit === 'imperial' ? 'ft' : 'm'
+          })`}
           component={SliderComp}
           trackMarks={
             user?.unit === 'imperial'

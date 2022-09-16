@@ -25,6 +25,7 @@ import { TypeaheadResponse } from '_utils/interfaces/data/search';
 
 import LocationImage from '_assets/LocationLargish.png';
 import { isBelowHeightThreshold } from '_utils/constants';
+import { sendEvent } from '_utils/functions/amplitude';
 import { offlineTypeAhead } from '_utils/functions/offline-location-search';
 
 interface BaseProps {
@@ -53,6 +54,12 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
   const { t } = useTranslation();
   const [text, changeText] = React.useState('');
   const [suggestions, setSuggestions] = React.useState<TypeaheadResponse[]>([]);
+
+  React.useEffect(() => {
+    sendEvent('page_view', {
+      type: 'dive_log__select_location',
+    });
+  }, [])
 
   React.useEffect(() => {
     if (value) {

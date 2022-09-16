@@ -98,7 +98,6 @@ const Input: FunctionComponent<FormManagementInputProps> = (
 const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
-    marginHorizontal: 10,
     paddingHorizontal: 10,
     borderColor: 'black',
     borderWidth: StyleSheet.hairlineWidth,

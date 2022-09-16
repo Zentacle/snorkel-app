@@ -92,6 +92,25 @@ export async function handleUpdateDiveLog(
   }
 }
 
+export async function handleDeleteDiveLog(
+  reviewId: number,
+  auth_token: string,
+): Promise<AdvancedDiveLogReturnValues> {
+  try {
+    const url = `${config.API_ENDPOINT}/review/delete?review_id=${reviewId}`;
+    const response = fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${auth_token}`,
+      },
+    }).then(res => res.json());
+    return response;
+  } catch (err) {
+    throw err;
+  }
+}
+
 export async function handleFetchOwnDiveLogs(
   auth_token: string,
   username: string,

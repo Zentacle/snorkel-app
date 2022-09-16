@@ -173,32 +173,19 @@ const SimpleDiveLogsForms: FunctionComponent<
             ...arrangedValues,
             images,
           };
-          const response = await handleCreateDiveLog(
-            arrangedValues,
-            authToken as string,
-          );
-
-          if (response.msg) {
-            setFormSubmitting(false);
-            throw new Error(response.msg);
-          }
-          saveDiveLogId(response.review.id as number);
-          setFormSubmitting(false);
-          callback();
-        } else {
-          const response = await handleCreateDiveLog(
-            arrangedValues,
-            authToken as string,
-          );
-
-          if (response.msg) {
-            setFormSubmitting(false);
-            throw new Error(response.msg);
-          }
-          saveDiveLogId(response.review.id as number);
-          setFormSubmitting(false);
-          callback();
         }
+        const response = await handleCreateDiveLog(
+          arrangedValues,
+          authToken as string,
+        );
+
+        if (response.msg) {
+          setFormSubmitting(false);
+          throw new Error(response.msg);
+        }
+        saveDiveLogId(response.review.id as number);
+        setFormSubmitting(false);
+        callback();
       }
     } catch (err) {
       console.log(err);
@@ -219,7 +206,7 @@ const SimpleDiveLogsForms: FunctionComponent<
     // @ts-ignore
     rating: 0,
     // @ts-ignore
-    difficulty: t('BEGINNER').toLowerCase(),
+    difficulty: undefined,
     activity_type: t('SCUBA').toLowerCase(),
     location: undefined,
     // @ts-ignore
@@ -250,10 +237,9 @@ const SimpleDiveLogsForms: FunctionComponent<
           values.location &&
           // values.location.lat &&
           // values.location.lng &&
-          values.location.desc
+          values.location.desc &&
+          values.rating
         );
-      case 1:
-        return !!(values.rating && values.difficulty);
       default:
         return true;
     }
@@ -274,7 +260,7 @@ const SimpleDiveLogsForms: FunctionComponent<
   return (
     <Form
       validate={values => validate(values, constraints)}
-      onSubmit={() => {}}
+      onSubmit={() => { }}
       initialValues={initialValues}
       mutators={{
         ...arrayMutators,
@@ -340,7 +326,7 @@ const SimpleDiveLogsForms: FunctionComponent<
                     goToPage={(target: number) => {
                       canMoveToNextPage(target - 1, values as InitialValues)
                         ? goToPage(target)
-                        : () => {};
+                        : () => { };
                     }}
                     activeId={page}
                     stages={stages}
@@ -350,10 +336,9 @@ const SimpleDiveLogsForms: FunctionComponent<
                 {page === 0 && (
                   <Location
                     location={values.location}
-                    dive_shop={values.dive_shop}
                   />
                 )}
-                {page === 1 && <Rating />}
+                {page === 1 && <Rating dive_shop={values.dive_shop} />}
                 {page === 2 && (
                   <Review
                     navigateToAdvancedDiveForm={() =>
@@ -371,13 +356,13 @@ const SimpleDiveLogsForms: FunctionComponent<
                   next={
                     page === stages.length - 1
                       ? () => {
-                          // submit then navigate to review
-                          submitLog(values as InitialValues, next);
-                          // next();
-                        }
+                        // submit then navigate to review
+                        submitLog(values as InitialValues, next);
+                        // next();
+                      }
                       : next
                   }
-                  disabled={!canMoveToNextPage(page, values as InitialValues)}
+                  disabled={!canMoveToNextPage(page, values as InitialValues) || formSubmitting}
                   text={
                     page === stages.length - 1
                       ? formSubmitting

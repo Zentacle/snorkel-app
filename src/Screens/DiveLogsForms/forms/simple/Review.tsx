@@ -20,6 +20,7 @@ import Button from '_components/ui/Buttons/Button';
 
 import type { FunctionComponent } from 'react';
 
+import { sendEvent } from '_utils/functions/amplitude';
 import type { SimpleFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
 
 import Snorkel from '_assets/scuba_icons/snorkel.svg';
@@ -85,6 +86,12 @@ const Review: FunctionComponent<ReviewProps> = ({
       setCopymessage(false);
     }, 1000);
   };
+
+  React.useEffect(() => {
+    sendEvent('page_view', {
+      type: 'dive_log__simple_completion',
+    });
+  }, []);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>

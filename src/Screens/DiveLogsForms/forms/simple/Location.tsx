@@ -2,21 +2,24 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import IOIcon from 'react-native-vector-icons/Ionicons';
 import { Field } from 'react-final-form';
-import { FieldArray } from 'react-final-form-arrays';
 import { useTranslation } from 'react-i18next';
-import MUIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import GradientText from '_components/ui/GradientText';
 import GradientCircle from '_components/ui/GradientCircle';
+import RatingsInputComp from '_components/ui/RatingsInputComp';
+import SelectWGradientBorder from '_components/ui/SelectWGradientBorderV2';
 import LocationAutocompleteModal from '_screens/DiveLogsForms/components/LocationAutocompleteModal';
 import SimpleFormDiveLocation from '_screens/DiveLogsForms/components/SimpleFormDiveLocation';
-import DiveShopAutocompleteModal from '_screens/DiveLogsForms/components/DiveShopAutocompleteModal';
 
 import UnavailableLocationBox from '_screens/DiveLogsForms/components/UnavailableLocationBox';
 import type { FunctionComponent } from 'react';
-import ImagePickerArray from '_screens/DiveLogsForms/components/ImagePickerArray';
 import { isBelowHeightThreshold } from '_utils/constants';
-import { DiveShopSearchResult } from '_utils/interfaces/data/logs';
+import {
+  ActiveComponent,
+  InactiveComponent,
+} from '_utils/form/gradient-selection';
+import { capitalize } from '_utils/functions';
+import { sendEvent } from '_utils/functions/amplitude';
 
 interface LocationAndImageProps {
   location?: {
@@ -25,14 +28,18 @@ interface LocationAndImageProps {
     desc: string;
     location_city: string;
   };
-  dive_shop?: DiveShopSearchResult;
 }
 
 const Location: FunctionComponent<LocationAndImageProps> = ({
   location,
-  dive_shop,
 }) => {
   const { t } = useTranslation();
+  const activity = [
+    t('SCUBA').toLowerCase(),
+    t('FREEDIVING').toLowerCase(),
+    t('SNORKEL').toLowerCase(),
+  ];
+
   const [autocompleteModalOpen, toggleAutocompleteModal] =
     React.useState(false);
 
@@ -44,17 +51,6 @@ const Location: FunctionComponent<LocationAndImageProps> = ({
     toggleAutocompleteModal(false);
   };
 
-  const [diveShopAutocompleteModalOpen, toggleDiveShopAutocompleteModal] =
-    React.useState(false);
-
-  const openDiveShopModal = () => {
-    toggleDiveShopAutocompleteModal(true);
-  };
-
-  const closeDiveShopModal = () => {
-    toggleDiveShopAutocompleteModal(false);
-  };
-
   const isValidLocation = !!(
     location &&
     location.lat &&
@@ -62,29 +58,23 @@ const Location: FunctionComponent<LocationAndImageProps> = ({
     location.desc
   );
 
-  const isValidDiveShop = !!(
-    dive_shop &&
-    dive_shop.shop_id &&
-    dive_shop.name &&
-    dive_shop.location_city
-  );
+  React.useEffect(() => {
+    sendEvent('page_view', {
+      type: 'dive_log__location',
+    });
+  }, []);
 
   return (
     <ScrollView
       nestedScrollEnabled
       contentContainerStyle={styles.container}
-      keyboardShouldPersistTaps="handled">
+      keyboardShouldPersistTaps="handled"
+    >
       <Field
         name="location"
         isVisible={autocompleteModalOpen}
         component={LocationAutocompleteModal}
         closeModal={closeLocationModal}
-      />
-      <Field
-        name="dive_shop"
-        isVisible={diveShopAutocompleteModalOpen}
-        component={DiveShopAutocompleteModal}
-        closeModal={closeDiveShopModal}
       />
 
       {isValidLocation ? (
@@ -133,63 +123,21 @@ const Location: FunctionComponent<LocationAndImageProps> = ({
         </View>
       )}
 
-      <View style={styles.diveShopContainer}>
-        <View style={styles.diveShopLabelContainer}>
-          <Text style={styles.headerLabel}>{t('DIVE_SHOP')}</Text>
-          <Text style={styles.optionaltext}>{t('OPTIONAL')}</Text>
-        </View>
-        {isValidDiveShop ? (
-          <Pressable
-            style={state => ({
-              opacity: state.pressed ? 0.7 : 1,
-            })}
-            onPress={openDiveShopModal}>
-            <View style={styles.diveShopValuesContainer}>
-              <MUIcon
-                style={styles.diveShopIcon}
-                name="store-outline"
-                size={40}
-                color="black"
-              />
-              <View style={styles.diveShopValuesTextContainer}>
-                <Text style={styles.diveShopName}>{dive_shop.name}</Text>
-                <Text style={styles.diveShopLocation}>
-                  {dive_shop.location_city}
-                </Text>
-              </View>
-            </View>
-          </Pressable>
-        ) : (
-          <Pressable
-            style={state => ({
-              opacity: state.pressed ? 0.7 : 1,
-            })}
-            onPress={openDiveShopModal}>
-            <View style={styles.subContainer}>
-              <Pressable onPress={openDiveShopModal}>
-                <GradientCircle style={styles.iconContainer}>
-                  <MUIcon name="store-outline" size={25} color="white" />
-                </GradientCircle>
-              </Pressable>
-              <GradientText
-                gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-                start={{
-                  x: 0,
-                  y: 0,
-                }}
-                end={{
-                  x: 0.06,
-                  y: 1.8,
-                }}
-                gradientLocations={[0.01, 1, 1]}
-                style={styles.actionText}>
-                {t('ADD_DIVE_SHOP')}
-              </GradientText>
-            </View>
-          </Pressable>
-        )}
+      <View style={styles.activityContentContainer}>
+        <Text style={styles.headerLabel}>{t('DIVE_ACTIVITY')}</Text>
+        <Field
+          name="activity_type"
+          component={SelectWGradientBorder}
+          options={activity}
+          activeComponent={ActiveComponent}
+          inactiveComponent={InactiveComponent}
+        />
       </View>
-      <FieldArray name="images" component={ImagePickerArray} />
+
+      <View style={styles.activityContentContainer}>
+        <Text style={styles.headerLabel}>{capitalize(t('RATING'))}</Text>
+        <Field name="rating" component={RatingsInputComp} />
+      </View>
     </ScrollView>
   );
 };
@@ -223,40 +171,11 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: '600',
   },
-  diveShopContainer: {
-    marginTop: 20,
+  activityContentContainer: {
+    marginTop: 30,
   },
   optionaltext: {
     color: '#aa00ff',
-  },
-  diveShopLabelContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  diveShopValuesContainer: {
-    height: 130,
-    backgroundColor: '#fff',
-    marginTop: 12,
-    borderRadius: 12,
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  diveShopValuesTextContainer: {
-    marginLeft: 10,
-    maxWidth: '50%',
-  },
-  diveShopName: {
-    fontWeight: '600',
-    fontSize: 15,
-  },
-  diveShopLocation: {
-    fontSize: 13,
-    color: 'grey',
-  },
-  diveShopIcon: {
-    marginRight: 10,
   },
 });
 
