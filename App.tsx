@@ -32,6 +32,7 @@ export default function App() {
     } else if (Platform.OS === 'android') {
       Purchases.configure(config.REVENUE_CAT_ANDROID_API_KEY);
     }
+    Purchases.enableAdServicesAttributionTokenCollection();
   };
 
   return (
