@@ -12,7 +12,6 @@
 		0E2E22FB28A1405700B50E5A /* StoreKitTestCertificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 0E2E22FA28A1405700B50E5A /* StoreKitTestCertificate.cer */; };
 		0E35FE66278F3E8D0080B9BF /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E35FE65278F3E8D0080B9BF /* Launch Screen.storyboard */; };
 		0E7C53F4289B31890021C993 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E7C53F3289B31890021C993 /* StoreKit.framework */; };
-		0E992FA627E9C6DD0043CDB2 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0E992FA527E9C6DD0043CDB2 /* Config.xcconfig */; };
 		0E9C3D25279A4D410020D871 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9C3D24279A4D410020D871 /* File.swift */; };
 		0EAE369A283ABF4E00A2B760 /* Zentacle.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 0E4642132799D6E400EE1D9F /* Zentacle.entitlements */; };
 		0EAE369E283B0F0B00A2B760 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0EAE369D283B0F0B00A2B760 /* GoogleService-Info.plist */; };
@@ -20,6 +19,9 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		43A5AE1328FE144E00EE0E06 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A5AE1028FE144E00EE0E06 /* AdSupport.framework */; };
+		43A5AE1428FE144E00EE0E06 /* AdServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A5AE1128FE144E00EE0E06 /* AdServices.framework */; };
+		43A5AE1528FE144E00EE0E06 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43A5AE1228FE144E00EE0E06 /* iAd.framework */; };
 		6172F2D35A4C3AA820D92908 /* libPods-Zentacle.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6423831EA8574132BED9D8CC /* libPods-Zentacle.a */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7EF68E3733C33B6898317E18 /* libPods-Zentacle-ZentacleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ABFE59519B596E51CEFDCCC0 /* libPods-Zentacle-ZentacleTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -56,6 +58,9 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Zentacle/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Zentacle/main.m; sourceTree = "<group>"; };
 		1D0AE47A65C8663E3B452821 /* Pods-Zentacle-ZentacleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Zentacle-ZentacleTests.release.xcconfig"; path = "Target Support Files/Pods-Zentacle-ZentacleTests/Pods-Zentacle-ZentacleTests.release.xcconfig"; sourceTree = "<group>"; };
+		43A5AE1028FE144E00EE0E06 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		43A5AE1128FE144E00EE0E06 /* AdServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdServices.framework; path = System/Library/Frameworks/AdServices.framework; sourceTree = SDKROOT; };
+		43A5AE1228FE144E00EE0E06 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		6423831EA8574132BED9D8CC /* libPods-Zentacle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Zentacle.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C97AB639B58BBB4B15BBE30 /* Pods-Zentacle-ZentacleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Zentacle-ZentacleTests.debug.xcconfig"; path = "Target Support Files/Pods-Zentacle-ZentacleTests/Pods-Zentacle-ZentacleTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Zentacle/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -78,7 +83,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43A5AE1428FE144E00EE0E06 /* AdServices.framework in Frameworks */,
 				0E7C53F4289B31890021C993 /* StoreKit.framework in Frameworks */,
+				43A5AE1328FE144E00EE0E06 /* AdSupport.framework in Frameworks */,
+				43A5AE1528FE144E00EE0E06 /* iAd.framework in Frameworks */,
 				0EB1366F28233FA000530DD2 /* AppTrackingTransparency.framework in Frameworks */,
 				6172F2D35A4C3AA820D92908 /* libPods-Zentacle.a in Frameworks */,
 			);
@@ -121,6 +129,9 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				43A5AE1128FE144E00EE0E06 /* AdServices.framework */,
+				43A5AE1028FE144E00EE0E06 /* AdSupport.framework */,
+				43A5AE1228FE144E00EE0E06 /* iAd.framework */,
 				0E7C53F3289B31890021C993 /* StoreKit.framework */,
 				0EB1366D28233F7300530DD2 /* AppTrackingTransparency.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
@@ -236,7 +247,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1210;
+				LastUpgradeCheck = 1340;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
@@ -282,7 +293,6 @@
 				0EAE369A283ABF4E00A2B760 /* Zentacle.entitlements in Resources */,
 				0E35FE66278F3E8D0080B9BF /* Launch Screen.storyboard in Resources */,
 				0E2E22FB28A1405700B50E5A /* StoreKitTestCertificate.cer in Resources */,
-				0E992FA627E9C6DD0043CDB2 /* Config.xcconfig in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				0EAE369E283B0F0B00A2B760 /* GoogleService-Info.plist in Resources */,
@@ -490,12 +500,13 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 9C8EQ3DGNG;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = ZentacleTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -519,8 +530,9 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 9C8EQ3DGNG;
 				INFOPLIST_FILE = ZentacleTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -546,7 +558,7 @@
 				CODE_SIGN_ENTITLEMENTS = Zentacle/Zentacle.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 94;
+				CURRENT_PROJECT_VERSION = 96;
 				DEVELOPMENT_TEAM = 9C8EQ3DGNG;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Zentacle/Info.plist;
@@ -580,7 +592,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 94;
+				CURRENT_PROJECT_VERSION = 96;
 				DEVELOPMENT_TEAM = 9C8EQ3DGNG;
 				INFOPLIST_FILE = Zentacle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -652,7 +664,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -712,7 +724,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -725,6 +737,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
