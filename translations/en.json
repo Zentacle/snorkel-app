@@ -1,11 +1,11 @@
 {
   "landing": {
-    "INTRO": "View dive locations and reviews all over the world",
+    "INTRO": "Dive logs, pics, and reviews from ocean lovers just like you",
     "privacy": {
       "_1": "By proceeding, you agree to our",
       "_2": "Terms of Use",
-      "_3": "and confirm that you have read our",
-      "_4": "Privacy and Cookie Statement"
+      "_3": "and",
+      "_4": "Privacy Policy"
     }
   },
   "BIO": "Bio",

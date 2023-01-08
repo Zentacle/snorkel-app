@@ -392,26 +392,6 @@ const SignIn: FunctionComponent<SignInProps> = props => {
             </TouchableWithoutFeedback>
           </Text>
         </View>
-
-        <View style={styles.skipContainer}>
-          <Text style={styles.skipAltText}>{t('OR')}</Text>
-          <Pressable onPress={handleSkip}>
-            <GradientText
-              gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-              start={{
-                x: 0,
-                y: 0,
-              }}
-              end={{
-                x: 0.06,
-                y: 1.8,
-              }}
-              gradientLocations={[0.01, 1, 1]}
-              style={styles.skipButtonText}>
-              {t('SKIP')}
-            </GradientText>
-          </Pressable>
-        </View>
       </KeyboardAwareScrollView>
     </SafeAreaView>
   );
@@ -440,7 +420,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   buttonsContainer: {
-    marginTop: HEIGHT * 0.05,
+    marginTop: 10,
     marginHorizontal: 15,
   },
   altDirContainer: {

@@ -320,22 +320,23 @@ const styles = StyleSheet.create({
     zIndex: 0,
   },
   introTextContainer: {
-    marginHorizontal: 15,
-    alignItems: 'center',
-    marginTop: isBelowHeightThreshold ? HEIGHT * 0.18 : HEIGHT * 0.2,
+    marginHorizontal: 25,
+    marginTop: isBelowHeightThreshold ? HEIGHT * 0.18 : HEIGHT * 0.22,
   },
   introText: {
+    fontFamily: 'SFRounded-Ultralight',
     fontSize: 32,
     fontWeight: '600',
     color: '#FFF',
   },
   buttonsContainer: {
-    marginTop: isBelowHeightThreshold ? HEIGHT * 0.05 : HEIGHT * 0.08,
+    marginTop: 20,
     marginHorizontal: 15,
   },
   altDirContainer: {
     alignItems: 'center',
     marginVertical: 4,
+    marginTop: 10,
   },
   altDirText: {
     color: '#FFF',

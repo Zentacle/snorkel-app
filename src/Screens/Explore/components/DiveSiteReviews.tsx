@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from 'react-i18next';
 
@@ -44,40 +50,42 @@ const DiveSiteReviews: FunctionComponent<DiveSiteReviewsProps> = ({
             : `${diveSite.num_reviews} ${t('REVIEW')}`}
         </Text>
       </View>
-      <View style={styles.reviewCardsContainer}>
-        <View style={styles.review}>
-          <View style={styles.reviewHeaderContainer}>
-            <View style={styles.profile}>
-              {selectedReview.user.profile_pic ? (
-                <Image
-                  source={{ uri: selectedReview.user.profile_pic }}
-                  style={styles.profileImage}
-                />
-              ) : (
-                <Image source={ProfileImage} style={styles.profileImage} />
-              )}
-              <View style={styles.nameSourceContainer}>
-                <Text style={styles.profileName}>
-                  {selectedReview.user.first_name}
-                </Text>
-                <View style={styles.activityTypeContainer}>
-                  <Text style={styles.activityType}>
-                    {capitalize(selectedReview.activity_type)}
+      <TouchableWithoutFeedback onPress={navigateToReviews}>
+        <View style={styles.reviewCardsContainer}>
+          <View style={styles.review}>
+            <View style={styles.reviewHeaderContainer}>
+              <View style={styles.profile}>
+                {selectedReview.user.profile_pic ? (
+                  <Image
+                    source={{ uri: selectedReview.user.profile_pic }}
+                    style={styles.profileImage}
+                  />
+                ) : (
+                  <Image source={ProfileImage} style={styles.profileImage} />
+                )}
+                <View style={styles.nameSourceContainer}>
+                  <Text style={styles.profileName}>
+                    {selectedReview.user.first_name}
                   </Text>
+                  <View style={styles.activityTypeContainer}>
+                    <Text style={styles.activityType}>
+                      {capitalize(selectedReview.activity_type)}
+                    </Text>
+                  </View>
                 </View>
               </View>
+              <View style={styles.ratingsIconsContainer}>
+                {attachIcons(selectedReview.rating, 20)}
+              </View>
             </View>
-            <View style={styles.ratingsIconsContainer}>
-              {attachIcons(selectedReview.rating, 20)}
+            <View style={styles.reviewBodyContainer}>
+              <Text style={styles.reviewBodyText}>{selectedReview.text}</Text>
             </View>
           </View>
-          <View style={styles.reviewBodyContainer}>
-            <Text style={styles.reviewBodyText}>{selectedReview.text}</Text>
-          </View>
+          <View style={styles.reviewCardShadow1} />
+          <View style={styles.reviewCardShadow2} />
         </View>
-        <View style={styles.reviewCardShadow1} />
-        <View style={styles.reviewCardShadow2} />
-      </View>
+      </TouchableWithoutFeedback>
 
       <Button
         onPress={navigateToReviews}
@@ -145,8 +153,8 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOpacity: 0.15,
     shadowOffset: {
-      'height': 6,
-      'width': 0,
+      height: 6,
+      width: 0,
     },
   },
   reviewCardShadow1: {
@@ -163,8 +171,8 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOpacity: 0.12,
     shadowOffset: {
-      'height': 6,
-      'width': 0,
+      height: 6,
+      width: 0,
     },
   },
   reviewCardShadow2: {
@@ -180,8 +188,8 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowOffset: {
-      'height': 6,
-      'width': 0,
+      height: 6,
+      width: 0,
     },
   },
   reviewHeaderContainer: {

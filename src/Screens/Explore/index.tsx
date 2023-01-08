@@ -158,6 +158,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
           ) {
             Geolocation.getCurrentPosition(
               position => {
+                console.log(position)
                 dispatch(
                   handleFetchDiveSites({
                     latitude: position.coords.latitude,
@@ -199,7 +200,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
                     }),
                   );
               },
-              { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+              { enableHighAccuracy: true, timeout: 150, maximumAge: 100 },
             );
           } else {
             dispatch(handleFetchDiveSites({}));
