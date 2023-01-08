@@ -1,3 +1,4 @@
+import Geolocation from 'react-native-geolocation-service';
 import {
   createSlice,
   createSelector,
@@ -9,7 +10,11 @@ import {
   DiveLogsState,
   AdvancedDiveLogReturnValues,
 } from '_utils/interfaces/data/logs';
-import { handleFetchOwnDiveLogs, handleFetchSingleDiveLog } from './api';
+import {
+  handleFetchNearbyRecentDiveLogs,
+  handleFetchOwnDiveLogs,
+  handleFetchSingleDiveLog
+} from './api';
 
 interface DiveLogsStoreState {
   diveLogs: {
@@ -22,6 +27,7 @@ interface DiveLogsStoreState {
     message: string | null;
   };
   activeDiveLog: AdvancedDiveLogReturnValues | null;
+  recentLogs: DiveLogsState[];
 }
 
 interface NormalizedObj {
@@ -37,6 +43,7 @@ const initialState: DiveLogsStoreState = {
     message: null,
   },
   activeDiveLog: null,
+  recentLogs: [],
 };
 
 const normalizeData = (data: DiveLogsState[]) => {
@@ -50,6 +57,11 @@ const normalizeData = (data: DiveLogsState[]) => {
 interface UserAuthCookie {
   auth_token: string;
   username: string;
+}
+
+interface RecentNearbyParams {
+  auth_token: string;
+  position?: Geolocation.GeoPosition;
 }
 
 export const fetchSingleDiveLog = createAsyncThunk(
@@ -70,6 +82,21 @@ export const fetchOwnDiveLogs = createAsyncThunk(
     const response = await handleFetchOwnDiveLogs(
       userAuth.auth_token,
       userAuth.username,
+    );
+    if (response.msg) {
+      return thunkApi.rejectWithValue(response.msg);
+    }
+    return response.data;
+  },
+);
+
+export const fetchNearbyRecentDiveLogs = createAsyncThunk(
+  'dive-logs/fetch-nearby-recent-dive-logs',
+  async (params: RecentNearbyParams, thunkApi) => {
+    const response = await handleFetchNearbyRecentDiveLogs(
+      params.auth_token,
+      params.position?.coords.latitude,
+      params.position?.coords.longitude,
     );
     if (response.msg) {
       return thunkApi.rejectWithValue(response.msg);
@@ -125,12 +152,19 @@ export const diveLogsSlice = createSlice({
             ? action.payload
             : 'There was an fetching dive logs. Please try again later';
         state.activeDiveLog = null;
+      })
+      .addCase(fetchNearbyRecentDiveLogs.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error.status = false;
+        state.error.message = null;
+        state.recentLogs = action.payload;
       });
   },
 });
 
 export const selectAllDiveLogs = (state: RootState) => state.dive_logs.diveLogs;
 export const selectOrderedDiveLogs = (state: RootState) => state.dive_logs.orderedDiveLogs;
+export const selectRecentDiveLogs = (state: RootState) => state.dive_logs.recentLogs;
 export const selectDiveLogsLoadingState = (state: RootState) =>
   state.dive_logs.loading;
 

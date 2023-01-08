@@ -213,7 +213,10 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
       const fineLocation = await check(
         PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
       );
-      if (fineLocation === RESULTS.GRANTED) {
+      const coarseLocation = await check(
+        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+      );
+      if (fineLocation === RESULTS.GRANTED || coarseLocation === RESULTS.GRANTED) {
         Geolocation.getCurrentPosition(
           position => {
             dispatch(

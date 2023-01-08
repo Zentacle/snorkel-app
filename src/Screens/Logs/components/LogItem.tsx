@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import MapView from 'react-native-maps';
 import { useTranslation } from 'react-i18next';
 
 import { attachIcons } from '_utils/functions';
@@ -9,8 +8,6 @@ import type { DiveLogsState } from '_utils/interfaces/data/logs';
 
 import DepthArrow from '_assets/ArrowsDownUp.png';
 import DiveTimeClock from '_assets/ClockClockwise.png';
-import UnavailableLocationBox from './UnavailableLocationListBox';
-import Snorkel from '_assets/scuba_icons/snorkel.svg';
 import Location from '_assets/scuba_icons/Location.svg';
 import Shop from '_assets/scuba_icons/Shop.svg';
 import { selectUser } from '_redux/slices/user';
@@ -25,94 +22,73 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
   const { t } = useTranslation();
   const isAdvancedLog = !!(diveLog.dive_length && diveLog.max_depth);
   // !!(diveLog.dive_length && diveLog.max_depth);
-  const logLat = diveLog.spot.latitude;
-  const logLng = diveLog.spot.longitude;
   const user = useAppSelector(selectUser);
 
-  const logHasCoordinates = !!(diveLog.spot.latitude && diveLog.spot.longitude);
   return (
     <View style={styles.container}>
-      <View style={styles.mapRatingsContainer}>
-        {logHasCoordinates ? (
-          <View style={styles.mapContainer}>
-            <MapView
-              provider="google"
-              style={styles.map}
-              scrollEnabled={false}
-              liteMode={true}
-              initialRegion={{
-                latitude: logLat,
-                longitude: logLng,
-                latitudeDelta: 0.0421,
-                longitudeDelta: 0.6922,
-              }}
-            />
-          </View>
-        ) : (
-          <View style={styles.unavailableLocationContainer}>
-            <UnavailableLocationBox desc={diveLog.spot.name} />
-          </View>
+      <View style={styles.userLockup}>
+        {diveLog.user?.profile_pic && (
+          <Image
+            source={{ uri: diveLog.user?.profile_pic }}
+            style={styles.profilePic}
+          />
         )}
-
-        <View style={styles.ratingsActivityContainer}>
-          <Text style={styles.date}>
-            {new Date(
-              diveLog.date_dived || diveLog.date_posted!,
-            ).toLocaleDateString()}
-          </Text>
-          <Text style={styles.detailsTitle}>{diveLog.title}</Text>
-          <View style={styles.ratingsContainer}>
-            {attachIcons(diveLog.rating, 25)}
-          </View>
-          <View style={styles.activity_typeContainer}>
-            <Text style={styles.activity_type}>{diveLog.activity_type}</Text>
-          </View>
-        </View>
+        <Text style={styles.userDisplayName}>{diveLog.user?.display_name}</Text>
       </View>
-
+      <View style={styles.dateActivityContainer}>
+        <View style={styles.activity_typeContainer}>
+          <Text style={styles.activity_type}>{diveLog.activity_type}</Text>
+        </View>
+        <Text style={styles.date}>
+          {new Date(
+            diveLog.date_dived || diveLog.date_posted!,
+          ).toLocaleString()}
+        </Text>
+      </View>
+      <Text style={styles.detailsTitle}>{diveLog.title}</Text>
+      <View style={styles.ratingsContainer}>
+        {attachIcons(diveLog.rating, 25)}
+      </View>
       <View>
-        <View>
-          <View style={styles.descContainer}>
-            <Snorkel width={15} />
-            <Text style={styles.descText}>{diveLog.spot.name}</Text>
-          </View>
-          <View style={styles.locationContainer}>
-            <Location width={15} />
-            <Text style={styles.locationText}>
-              {diveLog.spot.location_city}
-            </Text>
-          </View>
-          {diveLog.dive_shop_id && (
-            <View style={styles.diveShopContainer}>
-              <Shop width={15} />
-              <Text style={styles.diveShopText}>{diveLog.dive_shop?.name}</Text>
-            </View>
-          )}
+        <View style={styles.locationContainer}>
+          <Location width={15} />
+          <Text style={styles.locationText}>{diveLog.spot.location_city}</Text>
         </View>
-        {isAdvancedLog && (
-          <View style={styles.timeDepthContainer}>
-            <View style={styles.timeDepthItem}>
-              <Image source={DiveTimeClock} />
-              <View style={styles.timeDepthTextContainer}>
-                <Text style={styles.timeDepthLabel}>{t('DIVE_TIME')}</Text>
-                <Text style={styles.timeDepthText}>
-                  {diveLog.dive_length}&nbsp;min
-                </Text>
-              </View>
-            </View>
-            <View style={styles.timeDepthItem}>
-              <Image source={DepthArrow} />
-              <View style={styles.timeDepthTextContainer}>
-                <Text style={styles.timeDepthLabel}>{t('MAX_DEPTH')}</Text>
-                <Text style={styles.timeDepthText}>
-                  {diveLog.max_depth}&nbsp;
-                  {user?.unit === 'imperial' ? 'ft' : 'm'}
-                </Text>
-              </View>
-            </View>
+        {diveLog.dive_shop_id && (
+          <View style={styles.diveShopContainer}>
+            <Shop width={15} />
+            <Text style={styles.diveShopText}>{diveLog.dive_shop?.name}</Text>
+          </View>
+        )}
+        {diveLog.text && (
+          <View style={styles.diveShopContainer}>
+            <Text>{diveLog.text}</Text>
           </View>
         )}
       </View>
+      {isAdvancedLog && (
+        <View style={styles.timeDepthContainer}>
+          <View style={styles.timeDepthItem}>
+            <Image source={DiveTimeClock} />
+            <View style={styles.timeDepthTextContainer}>
+              <Text style={styles.timeDepthLabel}>{t('DIVE_TIME')}</Text>
+              <Text style={styles.timeDepthText}>
+                {diveLog.dive_length}&nbsp;min
+              </Text>
+            </View>
+          </View>
+          <View style={styles.timeDepthItem}>
+            <Image source={DepthArrow} />
+            <View style={styles.timeDepthTextContainer}>
+              <Text style={styles.timeDepthLabel}>{t('MAX_DEPTH')}</Text>
+              <Text style={styles.timeDepthText}>
+                {diveLog.max_depth}&nbsp;
+                {user?.unit === 'imperial' ? 'ft' : 'm'}
+              </Text>
+            </View>
+          </View>
+        </View>
+      )}
     </View>
   );
 };
@@ -124,10 +100,10 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     padding: 16,
   },
-  mapRatingsContainer: {
-    marginBottom: 4,
+  dateActivityContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: 8,
   },
   map: {
     height: 100,
@@ -138,9 +114,6 @@ const styles = StyleSheet.create({
     width: 100,
     overflow: 'hidden',
   },
-  ratingsActivityContainer: {
-    marginLeft: 12,
-  },
   ratingsContainer: {
     flexDirection: 'row',
   },
@@ -149,7 +122,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     paddingVertical: 2,
     paddingHorizontal: 8,
-    marginTop: 4,
+    marginRight: 4,
     borderRadius: 5,
   },
   activity_type: {
@@ -187,7 +160,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginTop: 2,
     fontSize: 15,
-    color: 'black',
+    color: '#828993',
   },
   diveShopContainer: {
     flexDirection: 'row',
@@ -197,7 +170,12 @@ const styles = StyleSheet.create({
   diveShopText: {
     marginLeft: 5,
     fontSize: 15,
-    color: 'black',
+    color: '#828993',
+  },
+  profilePic: {
+    height: 30,
+    width: 30,
+    borderRadius: 30,
   },
   timeDepthContainer: {
     flexDirection: 'row',
@@ -228,6 +206,15 @@ const styles = StyleSheet.create({
   unavailableLocationContainer: {
     width: 100,
     borderRadius: 12,
+  },
+  userLockup: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  userDisplayName: {
+    marginLeft: 5,
+    fontSize: 15,
+    fontWeight: '500',
   },
 });
 

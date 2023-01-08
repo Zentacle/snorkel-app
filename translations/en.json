@@ -28,8 +28,8 @@
   "DONT_HAVE_ACCOUNT": "Don't Have an Account?",
   "LOG_IN_ERROR": "There was an error logging in, please try again.",
   "activity_type": {
-    "DESCRIPTION_MAIN_TEXT": "Which Activity do you normally do?",
-    "DESCRIPTION_SUB_TEXT": "We will default your log to this activity, but you can change it later."
+    "DESCRIPTION_MAIN_TEXT": "Which activity do you normally do?",
+    "DESCRIPTION_SUB_TEXT": "We will default logs to this activity, but you can always change it"
   },
   "SKIP": "Skip",
   "FREEDIVING": "Freediving",
@@ -62,7 +62,7 @@
   "USERNAME": "Username",
   "location_permission": {
     "DESCRIPTION_MAIN_TEXT": "Enable Location",
-    "DESCRIPTION_SUB_TEXT": "Your location will be used to show dive locations near you"
+    "DESCRIPTION_SUB_TEXT": "Your location will be used to show dive site near you"
   },
   "MAGICALLY_SECURED": "Magically secured to make all security concerns go away",
   "ENTER_NAME": "Enter Name",
@@ -86,7 +86,7 @@
   "VIEW_WEBSITE": "View Website",
   "REVIEWS": "reviews",
   "SHOW_ALL_REVIEWS": "Show All Reviews",
-  "DIVE_LOGS": "Dive Logs",
+  "DIVE_LOGS": "Recent Activity",
   "DIVE_LOG": "Dive Log",
   "LOG_A_DIVE": "Log a Dive",
   "ITEMS": "Items",
@@ -200,7 +200,7 @@
   },
   "SCREEN_NOT_FOUND": "Sorry, the Screen you are looking for does not exist!",
   "EXPLORE": "Explore",
-  "DIVE_LOG_PHOTOS": "Dive Log Photos",
+  "DIVE_LOG_PHOTOS": "My Log",
   "NO_DIVE_LOGS": "No Dive Logs",
   "VIEW_DIVE_LOG": "View Dive Log",
   "TOTAL_DIVE_TIME": "Total Dive Time",
@@ -222,7 +222,6 @@
   "LOG_OUT": "Log Out",
   "CONFIRM_PASSWORD": "Confirm Password",
   "PASSWORD_MATCHES": "Password matches",
-  "ACTIVITY_TYPE_SETTINGS_SUBTEXT": "Add an activity for displaying dive activities near you.",
   "HELP_CENTER": "Help Center",
   "HELP_CENTER_TEXT_1": "Do you have any questions or suggestions on how we could improve our app? Feel free to reach out to us",
   "HELP_CENTER_TEXT_2": "- we would love to get in touch with you.",

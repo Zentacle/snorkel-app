@@ -89,8 +89,11 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
         const fineLocation = await check(
           PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
         );
+        const coarseLocation = await check(
+          PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+        );
 
-        if (fineLocation === RESULTS.GRANTED) {
+        if (fineLocation === RESULTS.GRANTED || coarseLocation === RESULTS.GRANTED) {
           navigateToAddRecentDiveLog();
         } else {
           navigateToLovationPermissions();

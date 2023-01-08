@@ -26,9 +26,9 @@ import type { RootStackParamList, AppTabsParamList } from '_utils/interfaces';
 
 import ProfileDefault from '_assets/profile-placeholder.png';
 
+import LogsList from './components/List';
+import EmptyList from '../Logs/components/EmptyList';
 import DiveLogSummary from './components/DiveLogSummary';
-import SubscriptionBox from './components/SubscriptionBox';
-import DiveLogDisplay from './components/DiveLogDisplay';
 import { isBelowHeightThreshold } from '_utils/constants';
 import ProfileDiveLogs from '_components/reusables/Placeholders/DiveLogs/ProfileDiveLogs';
 
@@ -113,15 +113,14 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
               {!!diveLogs.length ? t('DIVE_LOG_PHOTOS') : t('NO_DIVE_LOGS')}
             </Text>
             <View style={styles.photosContainer}>
-              {diveLogs.map(diveLog => {
-                return (
-                  <DiveLogDisplay
-                    diveLog={diveLog}
-                    key={diveLog.id}
-                    navigateToDiveLog={navigateToDiveLog}
-                  />
-                );
-              })}
+              {diveLogs.length ? (
+                <LogsList
+                  navigateToDetail={navigateToDiveLog}
+                  diveLogs={diveLogs}
+                />
+              ) : (
+                <EmptyList />
+              )}
             </View>
           </View>
         )}

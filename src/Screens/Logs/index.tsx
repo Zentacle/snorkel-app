@@ -1,7 +1,16 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
+import {
+  Platform,
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  SafeAreaView,
+} from 'react-native';
 import { useTranslation } from 'react-i18next';
 
+import Geolocation from 'react-native-geolocation-service';
+import { PERMISSIONS, RESULTS, check, request } from 'react-native-permissions';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -11,8 +20,8 @@ import type { RootStackParamList, AppTabsParamList } from '_utils/interfaces';
 
 import { useAppSelector, useAppDispatch } from '_redux/hooks';
 import {
-  fetchOwnDiveLogs,
-  selectOrderedDiveLogs,
+  fetchNearbyRecentDiveLogs,
+  selectRecentDiveLogs,
   selectDiveLogsLoadingState,
 } from '_redux/slices/dive-logs';
 import { selectAuthToken, selectUser } from '_redux/slices/user';
@@ -34,20 +43,55 @@ interface LogsProps {
 const Logs: FunctionComponent<LogsProps> = ({ navigation }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const diveLogs = useAppSelector(selectOrderedDiveLogs);
+  const diveLogs = useAppSelector(selectRecentDiveLogs);
   const diveLogsIsLoading = useAppSelector(selectDiveLogsLoadingState);
   const authToken = useAppSelector(selectAuthToken);
   const user = useAppSelector(selectUser);
 
   useEffect(() => {
-    if (user) {
-      dispatch(
-        fetchOwnDiveLogs({
-          auth_token: authToken as string,
-          username: user?.username as string,
-        }),
-      );
+    const fetchData = async () => {
+      const hasLocationPermission = await check(PERMISSIONS.IOS.LOCATION_ALWAYS) === RESULTS.GRANTED
+      || await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE) === RESULTS.GRANTED
+      || await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION) === RESULTS.GRANTED
+      || await check(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION) === RESULTS.GRANTED;
+
+      if (Platform.OS === 'android') {
+        await request(
+          PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+        );
+      } else {
+        await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+      }
+
+      if (hasLocationPermission) {
+        Geolocation.getCurrentPosition(
+          position => {
+            dispatch(
+              fetchNearbyRecentDiveLogs({
+                auth_token: authToken as string,
+                position,
+              }),
+            );
+          },
+          error => {
+            console.log(error);
+            dispatch(
+              fetchNearbyRecentDiveLogs({
+                auth_token: authToken as string,
+              }),
+            );
+          },
+        );
+      } else {
+        dispatch(
+          fetchNearbyRecentDiveLogs({
+            auth_token: authToken as string,
+          }),
+        );
+      }
     }
+
+    fetchData().catch(console.error);
   }, [navigation, authToken, dispatch, user]);
 
   const navigateToLogDetail = (diveLogId: number) => {
@@ -90,7 +134,11 @@ const Logs: FunctionComponent<LogsProps> = ({ navigation }) => {
           },
         ]}>
         <Text style={styles.headerText}>{t('DIVE_LOGS')}</Text>
+        <Text style={styles.subheaderText}>
+          See the conditions in your local area ({'<'}50mi)
+        </Text>
       </View>
+      <View></View>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {diveLogs.length ? (
           <LogsList
@@ -125,6 +173,13 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     marginHorizontal: 25,
     color: 'black',
+  },
+  subheaderText: {
+    marginTop: 4,
+    fontWeight: '500',
+    marginHorizontal: 25,
+    color: 'black',
+    fontSize: 20,
   },
 });
 

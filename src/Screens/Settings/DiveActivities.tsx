@@ -105,7 +105,7 @@ const DiveActivities: FunctionComponent<DiveActivitiesTypeProps> = ({
               {t('activity_type.DESCRIPTION_MAIN_TEXT')}
             </Text>
             <Text style={styles.descriptionSubText}>
-              {t('ACTIVITY_TYPE_SETTINGS_SUBTEXT')}
+              {t('activity_type.DESCRIPTION_SUB_TEXT')}
             </Text>
           </View>
         </View>

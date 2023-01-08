@@ -77,4 +77,5 @@ type DiveLogsStateStarter = Omit<
 
 export interface DiveLogsState extends DiveLogsStateStarter {
   spot: Spot;
+  user?: User;
 }

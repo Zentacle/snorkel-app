@@ -15,6 +15,11 @@ interface OwnDiveLogsResponse {
   msg: string;
 }
 
+interface NearbyRecentDiveLogsResponse {
+  data: DiveLogsState[];
+  msg: string;
+}
+
 export async function handleUploadDiveLogImages(
   body: FormImages[] = [],
   auth_token: string,
@@ -117,6 +122,26 @@ export async function handleFetchOwnDiveLogs(
 ): Promise<OwnDiveLogsResponse> {
   try {
     const url = `${config.API_ENDPOINT}/user/get?username=${username}`;
+    const response = fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${auth_token}`,
+      },
+    }).then(res => res.json());
+    return response;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function handleFetchNearbyRecentDiveLogs(
+  auth_token: string,
+  latitude?: number,
+  longitude?: number,
+): Promise<NearbyRecentDiveLogsResponse> {
+  try {
+    const url = `${config.API_ENDPOINT}/reviews/recent?type=nearby&latitude=${latitude || ''}&longitude=${longitude || ''}`;
     const response = fetch(url, {
       method: 'GET',
       headers: {

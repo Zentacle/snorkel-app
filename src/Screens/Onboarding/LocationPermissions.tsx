@@ -57,7 +57,7 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
     try {
       if (Platform.OS === 'android') {
         const permissions = await request(
-          PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+          PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
         );
         if (permissions === RESULTS.GRANTED) {
           Geolocation.getCurrentPosition(
@@ -77,7 +77,7 @@ const LocationPermissions: FunctionComponent<LocationPermissionsProps> = ({
 
         navigateToAddRecentDiveLog();
       } else {
-        const permissions = await request(PERMISSIONS.IOS.LOCATION_ALWAYS);
+        const permissions = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
         if (permissions === RESULTS.GRANTED) {
           Geolocation.getCurrentPosition(
             position => {
