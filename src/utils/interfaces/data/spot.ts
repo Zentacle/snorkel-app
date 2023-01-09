@@ -1,4 +1,5 @@
 export interface Spot {
+  access: Tag[];
   area_one_id: number;
   area_two_id: number;
   country_id: number;
@@ -23,7 +24,7 @@ export interface Spot {
   rating: string;
   shorediving_data?: any;
   submitter_id?: number;
-  tags: string[];
+  tags?: Tag[];
   url: string;
   sd_url: string;
   ratings?: {
@@ -49,4 +50,11 @@ interface Image {
 export interface ResponseWithImages {
   data: Image[];
   msg: string;
+}
+
+interface Tag {
+  id: number;
+  short_name: string;
+  text: string;
+  type: string;
 }

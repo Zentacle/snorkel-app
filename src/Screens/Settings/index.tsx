@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
   pageLabelContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: isBelowHeightThreshold ? 10 : 15,
+    marginVertical: 10,
   },
   pageLabel: {
     fontSize: 17,

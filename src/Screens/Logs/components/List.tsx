@@ -30,7 +30,7 @@ const LogsList: FunctionComponent<LogListProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: isBelowHeightThreshold ? 10 : 10,
+    paddingTop: 10,
   },
 });
 

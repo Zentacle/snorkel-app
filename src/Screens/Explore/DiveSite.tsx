@@ -64,21 +64,6 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   const [nearby, setNearby] = React.useState<Spot[]>([]);
   const [seeFullDesc, setFullDesc] = React.useState(false);
 
-  const activities: Activity[] = [
-    {
-      label: t('ACTIVITY'),
-      values: [t('SCUBA'), t('SNORKEL'), t('FREE')],
-    },
-    {
-      label: t('ENTRY'),
-      values: [t('SHORE'), t('WATER')],
-    },
-    {
-      label: t('TAGS'),
-      values: [t('BEACH'), t('CORAL'), t('DIVE_PARTY')],
-    },
-  ];
-
   const diveSiteInState = useAppSelector(
     isDiveSiteDetailinState(
       typeof currentSpotId === 'number'
@@ -117,6 +102,21 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   //     uri: diveSite.hero_img,
   //   },
   // ];
+
+  const activities: Activity[] = [
+    {
+      label: t('ACTIVITY'),
+      values: [t('SCUBA'), t('SNORKEL'), t('FREEDIVING')],
+    },
+    {
+      label: t('ENTRY'),
+      values: diveSite.access.map((access) => capitalize(access.text)!),
+    },
+    {
+      label: t('TAGS'),
+      values: (diveSite.tags || []).map((tag) => capitalize(tag.text)!),
+    },
+  ];
 
   React.useEffect(() => {
     if (typeof route.params.diveSpotId === 'string' || route.params.wildcard) {

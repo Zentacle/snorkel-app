@@ -34,38 +34,42 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
           />
         )}
         <Text style={styles.userDisplayName}>{diveLog.user?.display_name}</Text>
-      </View>
-      <View style={styles.dateActivityContainer}>
-        <View style={styles.activity_typeContainer}>
-          <Text style={styles.activity_type}>{diveLog.activity_type}</Text>
-        </View>
+        <Text style={styles.separator}>·</Text>
         <Text style={styles.date}>
-          {new Date(
-            diveLog.date_dived || diveLog.date_posted!,
-          ).toLocaleString()}
+          {new Date(diveLog.date_dived || diveLog.date_posted!).toLocaleString(
+            [],
+            {
+              year: 'numeric',
+              month: 'numeric',
+              day: 'numeric',
+              hour: 'numeric',
+              minute: '2-digit',
+            },
+          )}
         </Text>
       </View>
       <Text style={styles.detailsTitle}>{diveLog.title}</Text>
+      <View style={styles.locationContainer}>
+        <Location width={15} />
+        <Text style={styles.locationText}>{diveLog.spot.location_city}</Text>
+      </View>
       <View style={styles.ratingsContainer}>
         {attachIcons(diveLog.rating, 25)}
-      </View>
-      <View>
-        <View style={styles.locationContainer}>
-          <Location width={15} />
-          <Text style={styles.locationText}>{diveLog.spot.location_city}</Text>
+        <View style={styles.activity_typeContainer}>
+          <Text style={styles.activity_type}>{diveLog.activity_type}</Text>
         </View>
-        {diveLog.dive_shop_id && (
-          <View style={styles.diveShopContainer}>
-            <Shop width={15} />
-            <Text style={styles.diveShopText}>{diveLog.dive_shop?.name}</Text>
-          </View>
-        )}
-        {diveLog.text && (
-          <View style={styles.diveShopContainer}>
-            <Text>{diveLog.text}</Text>
-          </View>
-        )}
       </View>
+      {diveLog.dive_shop_id && (
+        <View style={styles.diveShopContainer}>
+          <Shop width={15} />
+          <Text style={styles.diveShopText}>{diveLog.dive_shop?.name}</Text>
+        </View>
+      )}
+      {diveLog.text && (
+        <View style={styles.diveShopContainer}>
+          <Text>{diveLog.text}</Text>
+        </View>
+      )}
       {isAdvancedLog && (
         <View style={styles.timeDepthContainer}>
           <View style={styles.timeDepthItem}>
@@ -100,30 +104,16 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     padding: 16,
   },
-  dateActivityContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  map: {
-    height: 100,
-    borderRadius: 12,
-  },
-  mapContainer: {
-    borderRadius: 12,
-    width: 100,
-    overflow: 'hidden',
-  },
   ratingsContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   activity_typeContainer: {
     backgroundColor: '#0B94EF',
-    alignSelf: 'flex-start',
     paddingVertical: 2,
     paddingHorizontal: 8,
-    marginRight: 4,
-    borderRadius: 5,
+    borderRadius: 8,
+    marginLeft: 4,
   },
   activity_type: {
     color: '#fff',
@@ -140,7 +130,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: 'black',
     marginTop: 4,
-    width: WIDTH * 0.5,
     marginRight: 40,
   },
   descContainer: {
@@ -155,10 +144,10 @@ const styles = StyleSheet.create({
   locationContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginVertical: 2,
   },
   locationText: {
     marginLeft: 5,
-    marginTop: 2,
     fontSize: 15,
     color: '#828993',
   },
@@ -173,9 +162,13 @@ const styles = StyleSheet.create({
     color: '#828993',
   },
   profilePic: {
-    height: 30,
-    width: 30,
+    height: 24,
+    width: 24,
     borderRadius: 30,
+  },
+  separator: {
+    marginHorizontal: 4,
+    color: '#828993',
   },
   timeDepthContainer: {
     flexDirection: 'row',
@@ -202,10 +195,6 @@ const styles = StyleSheet.create({
   timeDepthLabel: {
     color: 'gray',
     marginBottom: 15,
-  },
-  unavailableLocationContainer: {
-    width: 100,
-    borderRadius: 12,
   },
   userLockup: {
     flexDirection: 'row',

@@ -102,9 +102,8 @@ const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
                   name="search_term"
                   component={SearchInput}
                   containerStyle={styles.searchInputContainer}
-                  withFilterIcon
                   handleInputFocus={handleInputFocus}
-                  onClickFilterIcon={() => navigateToFilters(values)}
+                  placeholder={t('explore.SEARCH_PLACEHOLDER')}
                 />
               </View>
             );

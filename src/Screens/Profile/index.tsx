@@ -56,7 +56,7 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
   };
 
   React.useEffect(() => {
-    navigation.addListener('focus', () => {
+    const unsubscribe = navigation.addListener('focus', () => {
       dispatch(
         fetchOwnDiveLogs({
           auth_token: authToken as string,
@@ -64,6 +64,7 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
         }),
       );
     });
+    return unsubscribe;
   }, [navigation, authToken, dispatch, user]);
 
   const navigateToDiveLog = (diveLogId: number) => {
@@ -136,7 +137,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     marginHorizontal: 25,
-    marginTop: 20,
+    marginTop: 10,
     marginBottom: isBelowHeightThreshold ? 80 : 65,
     paddingBottom: 50,
   },
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
   },
   profileImageContainer: {
     alignItems: 'center',
-    marginTop: isBelowHeightThreshold ? 20 : 40,
+    marginTop: 20,
   },
   profileImage: {
     width: isBelowHeightThreshold ? 100 : 120,

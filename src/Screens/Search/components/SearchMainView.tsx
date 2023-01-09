@@ -32,11 +32,10 @@ const SearchMainView: React.FunctionComponent<SearchMainViewProps> = ({
   const diveSites = Object.values(useAppSelector(selectAllDiveSites));
   const { t } = useTranslation();
   const recentSearches = [
-    t('BEACH'),
-    t('CORAL'),
-    t('DIVE'),
-    t('DIVE_PARTY'),
-    t('PARTY'),
+    t('Hawaii'),
+    t('Maui'),
+    t('Belize'),
+    t('Curacao'),
   ];
 
   return (
@@ -221,12 +220,12 @@ const styles = StyleSheet.create({
   },
   mainBody: {},
   recentSearchesContainer: {
-    marginTop: 30,
+    marginTop: 16,
   },
   recentSearches: {
     flexDirection: 'row',
     paddingLeft: 25,
-    marginTop: 25,
+    marginTop: 8,
   },
   recentSearchesText: {
     color: 'black',
@@ -239,12 +238,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   destinationsContainer: {
-    marginTop: 40,
+    marginTop: 24,
   },
   destinations: {
     paddingLeft: 25,
     paddingRight: 10,
-    marginTop: 10,
   },
   destinationLabelContainer: {
     flexDirection: 'row',
@@ -326,13 +324,12 @@ const styles = StyleSheet.create({
     height: 18,
   },
   diveSitesContainer: {
-    marginTop: 40,
-    marginBottom: 30,
+    marginTop: 24,
+    marginBottom: 16,
   },
   diveSites: {
     paddingLeft: 25,
     paddingRight: 10,
-    marginTop: 10,
   },
   diveSiteLabelContainer: {
     flexDirection: 'row',

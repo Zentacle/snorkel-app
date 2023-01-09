@@ -275,13 +275,14 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   };
 
   React.useEffect(() => {
-    navigation.addListener('focus', () => {
+    const unsubscribe = navigation.addListener('focus', () => {
       handleRecommendedSitesRequest();
       Geolocation.watchPosition(handleRecommendedSitesRequest);
     });
     if (user && !user.wallet_address) {
       dispatch(fetchUserWalletAddress(user.access_token as string));
     }
+    return unsubscribe;
   }, [navigation, dispatch, authToken, user]);
 
   const navigateToDiveSite = (diveSpotId: number) => {
