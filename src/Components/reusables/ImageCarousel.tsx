@@ -139,78 +139,8 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = props => {
     focusedImageIndex,
   );
 
-  if (props.images && props.images.length) {
-    return (
-      <View style={styles.header}>
-        <ScrollView
-          horizontal
-          pagingEnabled
-          onScroll={handleScroll}
-          showsHorizontalScrollIndicator={false}>
-          {props.images.length
-            ? props.images.map((image, index) => (
-                <Image
-                  key={index}
-                  style={styles.headerImage}
-                  source={{ uri: image.signedurl }}
-                />
-              ))
-            : defaultImages.map((image, index) => (
-                <Image
-                  key={index}
-                  style={styles.headerImage}
-                  source={image.source}
-                />
-              ))}
-        </ScrollView>
-        <View style={styles.headerIconsContainer}>
-          <TouchableWithoutFeedback onPress={props.goBack}>
-            <View style={styles.headerIcon}>
-              <FEIcon name="chevron-left" color="black" size={25} />
-            </View>
-          </TouchableWithoutFeedback>
-          {props.shareUrl ? (
-            <TouchableWithoutFeedback onPress={onShare}>
-              <View style={styles.headerIcon}>
-                <FEIcon name="share" color="black" size={25} />
-              </View>
-            </TouchableWithoutFeedback>
-          ) : (
-            <TouchableWithoutFeedback>
-              <View style={styles.headerIcon}>
-                <FEIcon name="share" color="black" size={25} />
-              </View>
-            </TouchableWithoutFeedback>
-          )}
-        </View>
-        <View style={styles.headerBottomContainer}>
-          <ScrollView contentContainerStyle={styles.photoDots}>
-            {props.images
-              .map((_dot, index) => {
-                // const range =
-                return (
-                  <View
-                    key={index}
-                    style={
-                      index === focusedImageIndex
-                        ? styles.whitePhotoDot
-                        : styles.blackPhotoDot
-                    }
-                  />
-                );
-              })
-              .slice(...activeRange)}
-          </ScrollView>
-          <View style={styles.imageCountContainer}>
-            <Icon name="image-outline" size={18} color="#FFF" />
-            <Text style={styles.imageCountText}>{`${focusedImageIndex + 1}/${
-              props.images.length
-            }`}</Text>
-          </View>
-        </View>
-      </View>
-    );
-  }
+  console.log(props.images);
+
   return (
     <View style={styles.header}>
       <ScrollView
@@ -218,9 +148,21 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = props => {
         pagingEnabled
         onScroll={handleScroll}
         showsHorizontalScrollIndicator={false}>
-        {defaultImages.map((image, index) => (
-          <Image key={index} style={styles.headerImage} source={image.source} />
-        ))}
+        {props.images && props.images.length
+          ? props.images.map(image => (
+              <Image
+                key={image.signedurl}
+                style={styles.headerImage}
+                source={{ uri: image.signedurl }}
+              />
+            ))
+          : defaultImages.map((image, index) => (
+              <Image
+                key={index}
+                style={styles.headerImage}
+                source={image.source}
+              />
+            ))}
       </ScrollView>
       <View style={styles.headerIconsContainer}>
         <TouchableWithoutFeedback onPress={props.goBack}>
@@ -243,9 +185,10 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = props => {
         )}
       </View>
       <View style={styles.headerBottomContainer}>
-        <View style={styles.photoDots}>
-          {defaultImages
+        <ScrollView contentContainerStyle={styles.photoDots}>
+          {(props.images || defaultImages)
             .map((_dot, index) => {
+              // const range =
               return (
                 <View
                   key={index}
@@ -258,11 +201,11 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = props => {
               );
             })
             .slice(...activeRange)}
-        </View>
+        </ScrollView>
         <View style={styles.imageCountContainer}>
           <Icon name="image-outline" size={18} color="#FFF" />
           <Text style={styles.imageCountText}>{`${focusedImageIndex + 1}/${
-            defaultImages.length
+            props.images ? props.images.length : defaultImages.length
           }`}</Text>
         </View>
       </View>
