@@ -122,6 +122,8 @@ PODS:
   - OpenSSL-Universal (1.1.180)
   - Permission-Camera (3.6.1):
     - RNPermissions
+  - Permission-Contacts (3.6.1):
+    - RNPermissions
   - Permission-FaceID (3.6.1):
     - RNPermissions
   - Permission-LocationAccuracy (3.6.1):
@@ -133,6 +135,8 @@ PODS:
   - Permission-MediaLibrary (3.6.1):
     - RNPermissions
   - Permission-Microphone (3.6.1):
+    - RNPermissions
+  - Permission-Notifications (3.6.1):
     - RNPermissions
   - Permission-PhotoLibrary (3.6.1):
     - RNPermissions
@@ -359,7 +363,7 @@ PODS:
     - React-Core
   - react-native-netinfo (9.3.0):
     - React-Core
-  - react-native-safe-area-context (3.3.2):
+  - react-native-safe-area-context (3.4.1):
     - React-Core
   - react-native-splash-screen (3.3.0):
     - React-Core
@@ -449,7 +453,7 @@ PODS:
   - RNPurchases (5.0.0-beta.1):
     - PurchasesHybridCommon (= 3.3.0)
     - React-Core
-  - RNScreens (3.10.1):
+  - RNScreens (3.18.2):
     - React-Core
     - React-RCTImage
   - RNSVG (12.3.0):
@@ -492,12 +496,14 @@ DEPENDENCIES:
   - Google-Maps-iOS-Utils
   - GoogleMaps
   - Permission-Camera (from `../node_modules/react-native-permissions/ios/Camera`)
+  - Permission-Contacts (from `../node_modules/react-native-permissions/ios/Contacts`)
   - Permission-FaceID (from `../node_modules/react-native-permissions/ios/FaceID`)
   - Permission-LocationAccuracy (from `../node_modules/react-native-permissions/ios/LocationAccuracy`)
   - Permission-LocationAlways (from `../node_modules/react-native-permissions/ios/LocationAlways`)
   - Permission-LocationWhenInUse (from `../node_modules/react-native-permissions/ios/LocationWhenInUse`)
   - Permission-MediaLibrary (from `../node_modules/react-native-permissions/ios/MediaLibrary`)
   - Permission-Microphone (from `../node_modules/react-native-permissions/ios/Microphone`)
+  - Permission-Notifications (from `../node_modules/react-native-permissions/ios/Notifications`)
   - Permission-PhotoLibrary (from `../node_modules/react-native-permissions/ios/PhotoLibrary`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -595,6 +601,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   Permission-Camera:
     :path: "../node_modules/react-native-permissions/ios/Camera"
+  Permission-Contacts:
+    :path: "../node_modules/react-native-permissions/ios/Contacts"
   Permission-FaceID:
     :path: "../node_modules/react-native-permissions/ios/FaceID"
   Permission-LocationAccuracy:
@@ -607,6 +615,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-permissions/ios/MediaLibrary"
   Permission-Microphone:
     :path: "../node_modules/react-native-permissions/ios/Microphone"
+  Permission-Notifications:
+    :path: "../node_modules/react-native-permissions/ios/Notifications"
   Permission-PhotoLibrary:
     :path: "../node_modules/react-native-permissions/ios/PhotoLibrary"
   RCT-Folly:
@@ -737,12 +747,14 @@ SPEC CHECKSUMS:
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
   Permission-Camera: bf6791b17c7f614b6826019fcfdcc286d3a107f6
+  Permission-Contacts: 2484d274171688b1ca80978b949ac771259b51f0
   Permission-FaceID: e70223280292a1a5e4b8ad943b70cd9229a7d2c3
   Permission-LocationAccuracy: 76df17de5c6b8bc2eee34e61ee92cdd7a864c73d
   Permission-LocationAlways: 8d99b025c9f73c696e0cdb367e42525f2e9a26f2
   Permission-LocationWhenInUse: 3ba99e45c852763f730eabecec2870c2382b7bd4
   Permission-MediaLibrary: a994236bae41b3597a376ff08298fb1c6d84729b
   Permission-Microphone: 48212dd4d28025d9930d583e3c7a56da7268665c
+  Permission-Notifications: 150484ae586eb9be4e32217582a78350a9bb31c3
   Permission-PhotoLibrary: 5b34ca67279f7201ae109cef36f9806a6596002d
   PurchasesHybridCommon: 5c3e18d6813dc1c256d2fb9f295d73d2230d46d1
   RCT-Folly: a21c126816d8025b547704b777a2ba552f3d9fa9
@@ -766,7 +778,7 @@ SPEC CHECKSUMS:
   react-native-image-picker: 4e6008ad8c2321622affa2c85432a5ebd02d480c
   react-native-maps: d752b0dd0e1951d815b1336332835aab6b4a836f
   react-native-netinfo: 129bd99f607a2dc5bb096168f3e5c150fd1f1c95
-  react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
+  react-native-safe-area-context: 9e40fb181dac02619414ba1294d6c2a807056ab9
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   react-native-tracking-transparency: b2029ff756f1128b1f2c7c7c7f3003bc3c950f9f
   react-native-webview: 380c1a03ec94b7ed764dac8db1e7c9952d08c93a
@@ -790,12 +802,12 @@ SPEC CHECKSUMS:
   RNGoogleSignin: c4381751eefd73c552b923ba347a9bfc6f18771c
   RNPermissions: dcdb7b99796bbeda6975a6e79ad519c41b251b1c
   RNPurchases: 595eccd7692f02dd09d83093a734345b3c9952bb
-  RNScreens: 522705f2e5c9d27efb17f24aceb2bf8335bc7b8e
+  RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 690daa5262e94aa35253fd8e840d0ebedc51389c
+PODFILE CHECKSUM: 41549953cfbd4b9ab5b5c2c108256408a8003a5a
 
 COCOAPODS: 1.11.3

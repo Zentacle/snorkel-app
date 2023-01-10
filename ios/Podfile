@@ -9,6 +9,7 @@ target 'Zentacle' do
   permissions_path = '../node_modules/react-native-permissions/ios'
 
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+  pod 'Permission-Contacts', :path => "#{permissions_path}/Contacts"
   pod 'Permission-FaceID', :path => "#{permissions_path}/FaceID"
   pod 'Permission-LocationAccuracy', :path => "#{permissions_path}/LocationAccuracy"
   pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
@@ -16,6 +17,7 @@ target 'Zentacle' do
   pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary"
   pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone"
   pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
+  pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
 
   # React Native Maps dependencies
   rn_maps_path = '../node_modules/react-native-maps'

@@ -9,7 +9,7 @@ import {
   Platform,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
+import { PERMISSIONS, RESULTS, check, requestNotifications } from 'react-native-permissions';
 import Purchases from 'react-native-purchases';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -211,6 +211,8 @@ const Landing: FunctionComponent<LandingProps> = props => {
   };
 
   React.useEffect(() => {
+    console.log('TEST')
+    requestNotifications(['alert', 'sound', 'badge']).then(({ status, _settings }) => { console.log(status)}).catch((err) => console.log(err));
     Purchases.getOfferings();
     sendEvent('page_view', {
       type: 'landing',
