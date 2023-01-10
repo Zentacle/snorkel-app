@@ -80,6 +80,8 @@
 	</dict>
 	<key>NSContactsUsageDescription</key>
 	<string>Zentacle wants to help you find friends and tag dive buddies</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Zentacle wants to use your media to update your profile and add dive images</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Zentacle wants to use your camera to take update your profile and add dive images.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
