@@ -166,3 +166,22 @@ export async function handleAppleregister(
     throw err;
   }
 }
+
+export async function handleRegisterPushToken(
+  push_token: string,
+  auth_token: string,
+) {
+  try {
+    const url = `${config.API_ENDPOINT}/user/push_token`;
+    const response = await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({token: push_token}),
+      headers: {
+        Authorization: `Bearer ${auth_token}`,
+      },
+    }).then(res => res.json());
+    return response.data;
+  } catch (err) {
+    throw err;
+  }
+}

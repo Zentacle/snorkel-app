@@ -78,12 +78,12 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSContactsUsageDescription</key>
-	<string>Zentacle wants to help you find friends and tag dive buddies</string>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Zentacle wants to use your media to update your profile and add dive images</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Zentacle wants to use your camera to take update your profile and add dive images.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Zentacle wants to help you find friends and tag dive buddies</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Zentacle wants to use your location to show dive locations near you</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -116,6 +116,10 @@
 		<string>Fontisto.ttf</string>
 		<string>SF-Pro-Rounded-Heavy.ttf</string>
 		<string>SFRounded-Ultralight.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>Launch Screen</string>
