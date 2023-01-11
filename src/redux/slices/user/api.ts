@@ -177,6 +177,7 @@ export async function handleRegisterPushToken(
       method: 'POST',
       body: JSON.stringify({token: push_token}),
       headers: {
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${auth_token}`,
       },
     }).then(res => res.json());

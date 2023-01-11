@@ -110,11 +110,11 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
     },
     {
       label: t('ENTRY'),
-      values: diveSite.access.map((access) => capitalize(access.text)!),
+      values: (diveSite && diveSite.access || []).map((access) => capitalize(access.text)!),
     },
     {
       label: t('TAGS'),
-      values: (diveSite.tags || []).map((tag) => capitalize(tag.text)!),
+      values: (diveSite && diveSite.tags || []).map((tag) => capitalize(tag.text)!),
     },
   ];
 

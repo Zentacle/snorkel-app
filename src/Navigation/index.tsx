@@ -75,12 +75,14 @@ const Navigator: React.FC = () => {
     const ampInstance = Amplitude.getInstance();
     ampInstance.init(config.AMPLITUDE_KEY);
     ampInstance.logEvent('view_app');
+  }, []);
 
+  React.useEffect(() => {
     const registerPushToken = () => {
       Notifications.registerRemoteNotifications();
       Notifications.events().registerRemoteNotificationsRegistered(
-        (event: Registered) => {
-          handleRegisterPushToken(event.deviceToken, authToken!);
+        async (event: Registered) => {
+          await handleRegisterPushToken(event.deviceToken, authToken!);
         },
       );
       Notifications.events().registerRemoteNotificationsRegistrationFailed(
@@ -132,8 +134,7 @@ const Navigator: React.FC = () => {
         }
       })
       .catch(err => console.log(err));
-  }, []);
-
+  }, [authToken]);
 
   React.useEffect(() => {
     // handle fetching of dive sites and logs here
