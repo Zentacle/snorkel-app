@@ -363,7 +363,9 @@ PODS:
     - React-Core
   - react-native-netinfo (9.3.0):
     - React-Core
-  - react-native-safe-area-context (3.4.1):
+  - react-native-notifications (4.3.3):
+    - React-Core
+  - react-native-safe-area-context (3.3.2):
     - React-Core
   - react-native-splash-screen (3.3.0):
     - React-Core
@@ -453,7 +455,7 @@ PODS:
   - RNPurchases (5.0.0-beta.1):
     - PurchasesHybridCommon (= 3.3.0)
     - React-Core
-  - RNScreens (3.18.2):
+  - RNScreens (3.10.1):
     - React-Core
     - React-RCTImage
   - RNSVG (12.3.0):
@@ -528,6 +530,7 @@ DEPENDENCIES:
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
+  - react-native-notifications (from `../node_modules/react-native-notifications`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-tracking-transparency (from `../node_modules/react-native-tracking-transparency`)
@@ -661,6 +664,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-maps"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
+  react-native-notifications:
+    :path: "../node_modules/react-native-notifications"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-splash-screen:
@@ -778,7 +783,8 @@ SPEC CHECKSUMS:
   react-native-image-picker: 4e6008ad8c2321622affa2c85432a5ebd02d480c
   react-native-maps: d752b0dd0e1951d815b1336332835aab6b4a836f
   react-native-netinfo: 129bd99f607a2dc5bb096168f3e5c150fd1f1c95
-  react-native-safe-area-context: 9e40fb181dac02619414ba1294d6c2a807056ab9
+  react-native-notifications: 83b4fd4a127a6c918fc846cae90da60f84819e44
+  react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   react-native-tracking-transparency: b2029ff756f1128b1f2c7c7c7f3003bc3c950f9f
   react-native-webview: 380c1a03ec94b7ed764dac8db1e7c9952d08c93a
@@ -802,7 +808,7 @@ SPEC CHECKSUMS:
   RNGoogleSignin: c4381751eefd73c552b923ba347a9bfc6f18771c
   RNPermissions: dcdb7b99796bbeda6975a6e79ad519c41b251b1c
   RNPurchases: 595eccd7692f02dd09d83093a734345b3c9952bb
-  RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
+  RNScreens: 522705f2e5c9d27efb17f24aceb2bf8335bc7b8e
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280

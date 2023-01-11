@@ -11,6 +11,14 @@ import { Amplitude } from '@amplitude/react-native';
 import config from 'react-native-config';
 import NetInfo, { useNetInfo } from '@react-native-community/netinfo';
 import Toast from 'react-native-toast-message';
+import {
+  Notifications,
+  Registered,
+  RegistrationError,
+  Notification,
+  NotificationBackgroundFetchResult,
+} from 'react-native-notifications';
+import { RESULTS, requestNotifications } from 'react-native-permissions';
 
 import type { RootStackParamList } from '_utils/interfaces';
 
@@ -35,6 +43,9 @@ import {
   handleCheckExistingUser,
   selectAuthToken,
 } from '_redux/slices/user';
+import {
+  handleRegisterPushToken
+} from '_redux/slices/user/api';
 import { autoHydrateSettings } from '_redux/slices/settings';
 import { linking } from '_utils/functions/linking';
 import offlineManager from '_utils/functions/offline-manager';
@@ -47,6 +58,7 @@ import {
   AdvancedFormInitialValues,
   SimpleFormInitialValues,
 } from '_utils/interfaces/data/logs';
+import { sendEvent } from '_utils/functions/amplitude';
 
 const Navigator: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -63,7 +75,65 @@ const Navigator: React.FC = () => {
     const ampInstance = Amplitude.getInstance();
     ampInstance.init(config.AMPLITUDE_KEY);
     ampInstance.logEvent('view_app');
+
+    const registerPushToken = () => {
+      Notifications.registerRemoteNotifications();
+      Notifications.events().registerRemoteNotificationsRegistered(
+        (event: Registered) => {
+          handleRegisterPushToken(event.deviceToken, authToken!);
+        },
+      );
+      Notifications.events().registerRemoteNotificationsRegistrationFailed(
+        (event: RegistrationError) => {
+          console.log(event);
+        },
+      );
+      Notifications.events().registerRemoteNotificationsRegistrationDenied(() => {
+        console.log('testing');
+      });
+    }
+
+    if (authToken) {
+      registerPushToken();
+    }
+
+    Notifications.events().registerNotificationReceivedForeground(
+      (notification: Notification, completion) => {
+        console.log(
+          `Notification received in foreground: ${notification.payload.payload.title} : ${notification.payload.payload.body}`,
+        );
+        completion({ alert: true, sound: false, badge: false });
+      },
+    );
+
+    Notifications.events().registerNotificationReceivedBackground(
+      (notification: Notification, completion) => {
+        console.log(
+          `Notification received in background: ${notification.payload.payload.title} : ${notification.payload.payload.body}`,
+        );
+        completion(NotificationBackgroundFetchResult.NEW_DATA);
+      },
+    );
+
+    Notifications.events().registerNotificationOpened(
+      (notification: Notification, completion) => {
+        console.log(`Notification opened: ${notification.payload}`);
+        completion();
+      },
+    );
+    sendEvent('notification_permission__requested')
+    requestNotifications(['alert', 'sound', 'badge'])
+      .then(({ status }) => {
+        if (status === RESULTS.GRANTED) {
+          registerPushToken();
+          sendEvent('notification_permission__granted')
+        } else {
+          sendEvent('notification_permission__denied')
+        }
+      })
+      .catch(err => console.log(err));
   }, []);
+
 
   React.useEffect(() => {
     // handle fetching of dive sites and logs here
