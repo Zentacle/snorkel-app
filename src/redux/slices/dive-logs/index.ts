@@ -68,7 +68,6 @@ export const fetchSingleDiveLog = createAsyncThunk(
   'dive-logs/fetch-single-dive-log',
   async (id: number, thunkApi) => {
     const response = await handleFetchSingleDiveLog(id);
-    console.log('single resp', response);
     if (response.msg) {
       return thunkApi.rejectWithValue(response.msg);
     }

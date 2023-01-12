@@ -9,7 +9,12 @@ import {
 } from 'react-native';
 import { Form, Field } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
-import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
+import {
+  PERMISSIONS,
+  RESULTS,
+  checkMultiple,
+  request,
+} from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
 import config from 'react-native-config';
 import Purchases from 'react-native-purchases';
@@ -144,133 +149,84 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   // ];
 
   const handleRecommendedSitesRequest = async () => {
-    if (Platform.OS === 'ios') {
-      const locationAlways = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
-      const locationWhenInUse = await check(
-        PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
-      );
+    const perms = await checkMultiple([
+      PERMISSIONS.IOS.LOCATION_ALWAYS,
+      PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+      PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+      PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+    ]);
+    const locationAlways = perms[PERMISSIONS.IOS.LOCATION_ALWAYS];
+    const locationWhenInUse = perms[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE];
+    const fineLocation = perms[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION];
+    const coarseLocation = perms[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION];
 
-      if (
-        locationAlways === RESULTS.GRANTED ||
-        locationWhenInUse === RESULTS.GRANTED
-      ) {
-        Geolocation.getCurrentPosition(
-          position => {
-            console.log(position);
-            dispatch(
-              handleFetchDiveSites({
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-              }),
-            );
-            dispatch(
-              handleFetchNearbyBuddies({
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-              }),
-            );
-            user &&
-              dispatch(
-                handleFetchRecommended({
-                  token: authToken as string,
-                  latitude: position.coords.latitude,
-                  longitude: position.coords.longitude,
-                }),
-              );
-            user &&
-              !user.latitude &&
-              !user.longitude &&
-              dispatch(
-                updateUser({
-                  latitude: position.coords.latitude,
-                  longitude: position.coords.longitude,
-                }),
-              );
-          },
-          error => {
-            console.log(error.code, error.message);
-            // fallback: fetch without lat/lng values
-            dispatch(handleFetchDiveSites({}));
-            user &&
-              dispatch(
-                handleFetchRecommended({
-                  token: authToken as string,
-                }),
-              );
-          },
-          { enableHighAccuracy: true, timeout: 150, maximumAge: 100 },
-        );
-      } else {
-        dispatch(handleFetchDiveSites({}));
-        user &&
-          dispatch(
-            handleFetchRecommended({
-              token: authToken as string,
-            }),
-          );
-      }
+    if (Platform.OS === 'android') {
+      await request(
+        PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+      );
     } else {
-      const fineLocation = await check(
-        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-      );
-      const coarseLocation = await check(
-        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-      );
-      if (fineLocation === RESULTS.GRANTED || coarseLocation === RESULTS.GRANTED) {
-        Geolocation.getCurrentPosition(
-          position => {
-            dispatch(
-              handleFetchDiveSites({
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-              }),
-            );
-            dispatch(
-              handleFetchNearbyBuddies({
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-              }),
-            );
-            user &&
-              dispatch(
-                handleFetchRecommended({
-                  token: authToken as string,
-                  latitude: position.coords.latitude,
-                  longitude: position.coords.longitude,
-                }),
-              );
-            user &&
-              !user.latitude &&
-              !user.longitude &&
-              dispatch(
-                updateUser({
-                  latitude: position.coords.latitude,
-                  longitude: position.coords.longitude,
-                }),
-              );
-          },
-          error => {
-            console.log(error.code, error.message);
-            // fallback: fetch without lat/lng values
-            dispatch(handleFetchDiveSites({}));
-            user &&
-              dispatch(
-                handleFetchRecommended({
-                  token: authToken as string,
-                }),
-              );
-          },
-          { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
-        );
-      } else {
-        dispatch(handleFetchDiveSites({}));
-        user &&
+      await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+    }
+
+    if (
+      locationAlways === RESULTS.GRANTED ||
+      locationWhenInUse === RESULTS.GRANTED ||
+      fineLocation === RESULTS.GRANTED ||
+      coarseLocation === RESULTS.GRANTED
+    ) {
+      Geolocation.getCurrentPosition(
+        position => {
           dispatch(
-            handleFetchRecommended({
-              token: authToken as string,
+            handleFetchDiveSites({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
             }),
           );
-      }
+          dispatch(
+            handleFetchNearbyBuddies({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            }),
+          );
+          user &&
+            dispatch(
+              handleFetchRecommended({
+                token: authToken as string,
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+              }),
+            );
+          user &&
+            !user.latitude &&
+            !user.longitude &&
+            dispatch(
+              updateUser({
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+              }),
+            );
+        },
+        error => {
+          console.log(error.code, error.message);
+          // fallback: fetch without lat/lng values
+          dispatch(handleFetchDiveSites({}));
+          user &&
+            dispatch(
+              handleFetchRecommended({
+                token: authToken as string,
+              }),
+            );
+        },
+        { enableHighAccuracy: true, timeout: 150, maximumAge: 100 },
+      );
+    } else {
+      dispatch(handleFetchDiveSites({}));
+      user &&
+        dispatch(
+          handleFetchRecommended({
+            token: authToken as string,
+          }),
+        );
     }
   };
 

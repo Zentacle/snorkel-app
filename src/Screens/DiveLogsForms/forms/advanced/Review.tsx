@@ -59,7 +59,6 @@ const Review: FunctionComponent<ReviewProps> = ({
         )}`,
         url,
       });
-      console.log(result);
 
       if (result.action === Share.sharedAction) {
         if (result.activityType) {

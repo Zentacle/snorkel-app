@@ -114,9 +114,9 @@ const Autocomplete: FunctionComponent<AutocompleteWfinalProps> = ({
             </View>
           )}
 
-          {suggestions.map((suggestion: PlaceSuggestion, index) => (
+          {suggestions.map((suggestion: PlaceSuggestion) => (
             <Pressable
-              key={index}
+              key={suggestion.place_id}
               onPress={() => setPlace(suggestion.description)}>
               <View style={styles.resultContainer}>
                 <Image source={LocationImage} />

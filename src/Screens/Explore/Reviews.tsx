@@ -35,7 +35,6 @@ import {
   selectLoadingState,
 } from '_redux/slices/reviews';
 import { selectDiveSiteById } from '_redux/slices/dive-sites';
-import { autoAuth } from '_redux/slices/user';
 
 function calculatePercentage(count: number, total: number): string {
   const percentage = (count / total) * 80; // factor width offset into calc
@@ -119,33 +118,44 @@ const Reviews: FunctionComponent<ReviewProps> = ({ navigation, route }) => {
               .reverse()}
         </View>
         <View style={styles.reviews}>
-          {reviews.map((item, index) => (
-            <View style={styles.review} key={index}>
-              <View style={styles.reviewHeaderContainer}>
-                <View style={styles.profile}>
-                  {item.user.profile_pic ? (
-                    <Image
-                      source={{ uri: item.user.profile_pic }}
-                      style={styles.profileImage}
-                    />
-                  ) : (
-                    <Image source={ProfileImage} style={styles.profileImage} />
-                  )}
+          {reviews.map(item => (
+            <View style={styles.review} key={item.id}>
+              <View style={styles.profile}>
+                {item.user.profile_pic ? (
+                  <Image
+                    source={{ uri: item.user.profile_pic }}
+                    style={styles.profileImage}
+                  />
+                ) : (
+                  <Image source={ProfileImage} style={styles.profileImage} />
+                )}
 
-                  <View style={styles.nameSourceContainer}>
+                <View style={styles.nameSourceContainer}>
+                  <View style={styles.nameContainer}>
                     <Text style={styles.profileName}>
                       {item.user.display_name}
                     </Text>
-                    <View
-                      style={styles.activityTypeContainer}>
+                    <Text style={styles.separator}>·</Text>
+                    <Text style={styles.date}>
+                      {new Date(
+                        item.date_dived || item.date_posted!,
+                      ).toLocaleDateString([], {
+                        year: 'numeric',
+                        month: 'numeric',
+                        day: 'numeric',
+                      })}
+                    </Text>
+                  </View>
+                  <View style={styles.activityRatingContainer}>
+                    <View style={styles.activityTypeContainer}>
                       <Text style={styles.activityType}>
                         {item.activity_type}
                       </Text>
                     </View>
+                    <View style={styles.ratingsIconsContainer}>
+                      {attachIcons(item.rating, 20)}
+                    </View>
                   </View>
-                </View>
-                <View style={styles.ratingsIconsContainer}>
-                  {attachIcons(item.rating, 20)}
                 </View>
               </View>
               <View style={styles.reviewBodyContainer}>
@@ -160,6 +170,10 @@ const Reviews: FunctionComponent<ReviewProps> = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
+  activityRatingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     backgroundColor: '#EFF6F9',
@@ -174,9 +188,15 @@ const styles = StyleSheet.create({
     borderBottomColor: '#CECECE',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
+  date: {
+    color: '#828993',
+  },
   mainContent: {
     marginHorizontal: 25,
     paddingTop: 30,
+  },
+  nameContainer: {
+    flexDirection: 'row',
   },
   reviewLabelContainer: {
     flexDirection: 'row',
@@ -262,6 +282,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '700',
   },
+  separator: {
+    marginHorizontal: 4,
+  },
   nameSourceContainer: {
     marginLeft: 15,
   },
@@ -276,6 +299,7 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     paddingHorizontal: 8,
     alignSelf: 'flex-start',
+    marginRight: 4,
   },
   ratingsIconsContainer: {
     flexDirection: 'row',

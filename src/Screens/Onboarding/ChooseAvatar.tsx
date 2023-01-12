@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
-import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
+import { PERMISSIONS, RESULTS, checkMultiple } from 'react-native-permissions';
 import { Form, Field } from 'react-final-form';
 import validate from 'validate.js';
 
@@ -59,7 +59,7 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
     props.navigation.goBack();
   };
 
-  const navigateToLovationPermissions = () => {
+  const navigateToLocationPermissions = () => {
     props.navigation.push('LocationPermissions');
   };
 
@@ -69,35 +69,27 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
 
   const handleContinuePress = async () => {
     if (authType === 'register') {
-      navigateToLovationPermissions();
+      navigateToLocationPermissions();
     } else {
-      if (Platform.OS === 'ios') {
-        const locationAlways = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
-        const locationWhenInUse = await check(
-          PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
-        );
-
-        if (
-          locationAlways === RESULTS.GRANTED ||
-          locationWhenInUse === RESULTS.GRANTED
-        ) {
-          navigateToAddRecentDiveLog();
-        } else {
-          navigateToLovationPermissions();
-        }
+      const perms = await checkMultiple([
+        PERMISSIONS.IOS.LOCATION_ALWAYS,
+        PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+        PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+      ]);
+      const locationAlways = perms[PERMISSIONS.IOS.LOCATION_ALWAYS];
+      const locationWhenInUse = perms[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE];
+      const fineLocation = perms[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION];
+      const coarseLocation = perms[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION];
+      if (
+        locationAlways === RESULTS.GRANTED ||
+        locationWhenInUse === RESULTS.GRANTED ||
+        fineLocation === RESULTS.GRANTED ||
+        coarseLocation === RESULTS.GRANTED
+      ) {
+        navigateToAddRecentDiveLog();
       } else {
-        const fineLocation = await check(
-          PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-        );
-        const coarseLocation = await check(
-          PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-        );
-
-        if (fineLocation === RESULTS.GRANTED || coarseLocation === RESULTS.GRANTED) {
-          navigateToAddRecentDiveLog();
-        } else {
-          navigateToLovationPermissions();
-        }
+        navigateToLocationPermissions();
       }
     }
   };
@@ -149,7 +141,7 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
                 </View>
 
                 <Field
-                  name="profileObj"
+                  name="profile_pic"
                   iconContaineStyle={styles.iconContainer}
                   component={ImageFormComponent}
                 />

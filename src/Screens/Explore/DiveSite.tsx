@@ -333,8 +333,8 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
               <View style={styles.activity}>
                 <Text style={styles.activityLabel}>{activity.label}</Text>
                 <View style={styles.activityValueContainer}>
-                  {activity.values.map((value, idx) => (
-                    <Text key={idx} style={styles.activityValue}>
+                  {activity.values.map((value) => (
+                    <Text key={value} style={styles.activityValue}>
                       {value}
                     </Text>
                   ))}
@@ -362,9 +362,9 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
               horizontal
               contentContainerStyle={styles.nearbySitesCardsContainer}
               showsHorizontalScrollIndicator={false}>
-              {nearby.map((item, index) => (
+              {nearby.map((item) => (
                 <DiveSiteComp
-                  key={index}
+                  key={item.id}
                   site={item}
                   containerStyle={styles.nearbySiteItemContainer}
                   imageContainerStyle={styles.nearbySiteItemContainer}

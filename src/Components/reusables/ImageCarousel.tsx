@@ -139,8 +139,6 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = props => {
     focusedImageIndex,
   );
 
-  console.log(props.images);
-
   return (
     <View style={styles.header}>
       <ScrollView

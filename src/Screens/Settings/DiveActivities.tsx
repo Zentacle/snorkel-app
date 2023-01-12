@@ -112,10 +112,10 @@ const DiveActivities: FunctionComponent<DiveActivitiesTypeProps> = ({
       </View>
 
       <View style={styles.selectionContainer}>
-        {activityTypes.map((activityType, index) => {
+        {activityTypes.map((activityType) => {
           if (settings.activityType === activityType.name) {
             return (
-              <View style={styles.selectedShadow} key={index}>
+              <View style={styles.selectedShadow} key={activityType.name}>
                 <GradientBox style={styles.selectedActivity}>
                   <View style={styles.selectBox}>
                     <View style={styles.selectedActivityCircle}>
@@ -129,7 +129,7 @@ const DiveActivities: FunctionComponent<DiveActivitiesTypeProps> = ({
           }
           return (
             <TouchableWithoutFeedback
-              key={index}
+              key={activityType.name}
               onPress={() => submitForm(activityType.name)}>
               <View style={styles.activity}>
                 <View style={styles.normalActivityCircle}></View>

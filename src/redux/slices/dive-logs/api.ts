@@ -55,7 +55,6 @@ export async function handleCreateDiveLog(
   auth_token: string,
 ): Promise<SimpleDiveLogReturnValues> {
   try {
-    console.log('body', body);
     const url = `${config.API_ENDPOINT}/review/add`;
     const response = fetch(url, {
       method: 'POST',

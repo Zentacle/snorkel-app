@@ -26,7 +26,7 @@ export default function App() {
   }, []);
 
   const setUpIAP = () => {
-    Purchases.setDebugLogsEnabled(true);
+    // Purchases.setDebugLogsEnabled(true);
     Purchases.setAutomaticAppleSearchAdsAttributionCollection(true);
     if (Platform.OS === 'ios') {
       Purchases.configure(config.REVENUE_CAT_IOS_API_KEY);

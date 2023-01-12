@@ -36,8 +36,8 @@ const SortModal: FunctionComponent<SortModalProps> = ({
             <Text style={styles.sortByMainText}>{t('SORT_BY')}</Text>
             <Text style={styles.sortBySubtext}>Select sorting option</Text>
           </View>
-          {sortingOptions.map((option, index) => (
-            <TouchableOpacity key={index} onPress={() => handleClick(option)}>
+          {sortingOptions.map((option) => (
+            <TouchableOpacity key={option} onPress={() => handleClick(option)}>
               <View style={styles.optionContainer}>
                 <Text style={styles.optionText}>{capitalize(option)}</Text>
               </View>

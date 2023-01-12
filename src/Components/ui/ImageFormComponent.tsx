@@ -46,7 +46,6 @@ const ImageFormComponent: FunctionComponent<ImageFormComponentProps> = ({
     React.useState(false);
 
   const openCameraModal = () => {
-    console.log('triggered');
     setCameraModalVisibility(true);
   };
 

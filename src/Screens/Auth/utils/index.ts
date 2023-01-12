@@ -24,8 +24,6 @@ async function appleSignIn() {
       appleAuthRequestResponse.user,
     );
 
-    console.log('apple auth response', appleAuthRequestResponse);
-
     // use credentialState response to ensure the user is authenticated
     if (credentialState === appleAuth.State.AUTHORIZED) {
       // user is authenticated

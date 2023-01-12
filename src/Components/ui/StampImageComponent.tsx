@@ -44,7 +44,6 @@ const StampImageComponent: FunctionComponent<StampImageComponentProps> = ({
     React.useState(false);
 
   const openCameraModal = () => {
-    console.log('triggered');
     setCameraModalVisibility(true);
   };
 

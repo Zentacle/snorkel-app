@@ -9,11 +9,7 @@ import {
   Platform,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import {
-  PERMISSIONS,
-  RESULTS,
-  check,
-} from 'react-native-permissions';
+import { PERMISSIONS, RESULTS, checkMultiple } from 'react-native-permissions';
 import Purchases from 'react-native-purchases';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -103,39 +99,23 @@ const Landing: FunctionComponent<LandingProps> = props => {
   };
 
   const checkLocationPermissions = async () => {
-    if (Platform.OS === 'ios') {
-      const locationAlways = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
-      const locationWhenInUse = await check(
-        PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
-      );
+    const perms = await checkMultiple([
+      PERMISSIONS.IOS.LOCATION_ALWAYS,
+      PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+      PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+      PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+    ]);
+    const locationAlways = perms[PERMISSIONS.IOS.LOCATION_ALWAYS];
+    const locationWhenInUse = perms[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE];
+    const fineLocation = perms[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION];
+    const coarseLocation = perms[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION];
 
-      if (
-        locationAlways === RESULTS.GRANTED ||
-        locationWhenInUse === RESULTS.GRANTED
-      ) {
-        // navigate straight to app if not loggged in or if user has settings filled out
-        // else navigate to settings
-        return true;
-      }
-
-      return false;
-    } else {
-      const fineLocation = await check(
-        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-      );
-      const coarseLocation = await check(
-        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-      );
-
-      if (
-        fineLocation === RESULTS.GRANTED ||
-        coarseLocation === RESULTS.GRANTED
-      ) {
-        return true;
-      }
-
-      return false;
-    }
+    return (
+      locationAlways === RESULTS.GRANTED ||
+      locationWhenInUse === RESULTS.GRANTED ||
+      fineLocation === RESULTS.GRANTED ||
+      coarseLocation === RESULTS.GRANTED
+    );
   };
 
   const handleSkip = async () => {

@@ -14,7 +14,7 @@ import { Form, Field } from 'react-final-form';
 import validate from 'validate.js';
 import { FORM_ERROR } from 'final-form';
 import { useTranslation } from 'react-i18next';
-import { PERMISSIONS, RESULTS, check } from 'react-native-permissions';
+import { PERMISSIONS, RESULTS, checkMultiple } from 'react-native-permissions';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -112,11 +112,15 @@ const SignIn: FunctionComponent<SignInProps> = props => {
   };
 
   const checkLocationPermissions = async () => {
+    const perms = await checkMultiple([
+      PERMISSIONS.IOS.LOCATION_ALWAYS,
+      PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+      PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+      PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION
+    ])
     if (Platform.OS === 'ios') {
-      const locationAlways = await check(PERMISSIONS.IOS.LOCATION_ALWAYS);
-      const locationWhenInUse = await check(
-        PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
-      );
+      const locationAlways = perms[PERMISSIONS.IOS.LOCATION_ALWAYS];
+      const locationWhenInUse = perms[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE];
 
       if (
         locationAlways === RESULTS.GRANTED ||
@@ -129,12 +133,8 @@ const SignIn: FunctionComponent<SignInProps> = props => {
 
       return false;
     } else {
-      const fineLocation = await check(
-        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-      );
-      const coarseLocation = await check(
-        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-      );
+      const fineLocation = perms[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION];
+      const coarseLocation = perms[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION];
 
       if (fineLocation === RESULTS.GRANTED || coarseLocation === RESULTS.GRANTED) {
         return true;
