@@ -36,11 +36,11 @@ export async function handleTypeAhead(
   }
 }
 
-export async function handleAutocomplete(
-  q: string,
-): Promise<ResponseWithAutocomplete> {
+export async function handleTypeAheadNearby(
+  query: string,
+): Promise<ResponseWithTypeahead> {
   try {
-    const url = `${config.API_ENDPOINT}/search/autocomplete?q=${q}`;
+    const url = `${config.API_ENDPOINT}/search/typeahead/nearby?${query}`;
     const response = fetch(url, {
       method: 'GET',
       headers: {

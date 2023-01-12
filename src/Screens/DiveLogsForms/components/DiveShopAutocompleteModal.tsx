@@ -12,6 +12,7 @@ import {
   Pressable,
 } from 'react-native';
 import debounce from 'lodash/debounce';
+import Geolocation from 'react-native-geolocation-service';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
 import { stringify } from 'qs';
@@ -19,12 +20,16 @@ import { stringify } from 'qs';
 import type { FunctionComponent } from 'react';
 import type { FieldRenderProps } from 'react-final-form';
 import PlainSearchInput from '_components/ui/PlainSearchInput';
-import { handleTypeAhead } from '_redux/slices/dive-shops/api';
+import {
+  handleTypeAhead,
+  handleTypeAheadNearby,
+} from '_redux/slices/dive-shops/api';
 import {
   DiveShopTypeaheadResponse,
   // LocationSearchInitialValues,
 } from '_utils/interfaces/data/shops';
 
+import { sendEvent } from '_utils/functions/amplitude';
 import LocationImage from '_assets/LocationLargish.png';
 import { isBelowHeightThreshold } from '_utils/constants';
 
@@ -56,6 +61,27 @@ const DiveShopAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
   const [suggestions, setSuggestions] = React.useState<
     DiveShopTypeaheadResponse[]
   >([]);
+
+  React.useEffect(() => {
+    sendEvent('page_view', {
+      type: 'dive_log__select_shop',
+    });
+    Geolocation.getCurrentPosition(
+      async position => {
+        const queryObj = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+        const queryString = stringify(queryObj);
+        const response = await handleTypeAheadNearby(queryString);
+
+        if (response.data) {
+          setSuggestions(response.data);
+        }
+      },
+      err => console.error(err),
+    );
+  }, [isVisible]);
 
   React.useEffect(() => {
     if (value) {

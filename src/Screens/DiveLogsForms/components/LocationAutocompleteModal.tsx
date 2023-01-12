@@ -12,6 +12,7 @@ import {
   Pressable,
 } from 'react-native';
 import debounce from 'lodash/debounce';
+import Geolocation from 'react-native-geolocation-service';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
 import { stringify } from 'qs';
@@ -20,7 +21,10 @@ import NetInfo from '@react-native-community/netinfo';
 import type { FunctionComponent } from 'react';
 import type { FieldRenderProps } from 'react-final-form';
 import PlainSearchInput from '_components/ui/PlainSearchInput';
-import { handleTypeAhead } from '_redux/slices/search/api';
+import {
+  handleTypeAhead,
+  handleTypeAheadNearby,
+} from '_redux/slices/search/api';
 import { TypeaheadResponse } from '_utils/interfaces/data/search';
 
 import LocationImage from '_assets/LocationLargish.png';
@@ -59,7 +63,19 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     sendEvent('page_view', {
       type: 'dive_log__select_location',
     });
-  }, [])
+    Geolocation.getCurrentPosition(async position => {
+      const queryObj = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      };
+      const queryString = stringify(queryObj);
+      const response = await handleTypeAheadNearby(queryString);
+
+      if (response.data) {
+        setSuggestions(response.data);
+      }
+    }, (err) => console.error(err));
+  }, [isVisible]);
 
   React.useEffect(() => {
     if (value) {

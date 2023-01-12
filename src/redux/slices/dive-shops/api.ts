@@ -102,3 +102,20 @@ export async function handleTypeAhead(
     throw err;
   }
 }
+
+export async function handleTypeAheadNearby(
+  query: string,
+): Promise<ResponseWithTypeahead> {
+  try {
+    const url = `${config.API_ENDPOINT}/shop/typeahead/nearby?${query}`;
+    const response = fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then(res => res.json());
+    return response;
+  } catch (err) {
+    throw err;
+  }
+}
