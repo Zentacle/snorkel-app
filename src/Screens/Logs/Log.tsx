@@ -34,10 +34,7 @@ import UnavailableLocationBox from './components/UnavailabbleLocationDetailBox';
 import Snorkel from '_assets/scuba_icons/snorkel.svg';
 import Location from '_assets/scuba_icons/Location.svg';
 import Shop from '_assets/scuba_icons/Shop.svg';
-import {
-  selectAuthToken,
-  selectUser,
-} from '_redux/slices/user';
+import { selectAuthToken, selectUser } from '_redux/slices/user';
 import { useAppSelector, useAppDispatch } from '_redux/hooks';
 import {
   selectDiveLogsLoadingState,
@@ -46,7 +43,6 @@ import {
 } from '_redux/slices/dive-logs';
 import { handleDeleteDiveLog } from '_redux/slices/dive-logs/api';
 import NoDiveShop from './components/NoDiveShop';
-import DiveShopView from './components/DIveShop';
 import DiveShopStampView from './components/DiveShopStamp';
 import { DiveShopFull } from '_utils/interfaces/data/shops';
 import { isBelowHeightThreshold } from '_utils/constants';
@@ -84,9 +80,11 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const navigateBack = () => {
-    navigation.navigate('App', {
-      screen: 'Logs',
-    });
+    navigation.canGoBack()
+    ? navigation.goBack()
+    : navigation.navigate('App', {
+        screen: 'Logs',
+      });
   };
 
   if (isLoading) {
@@ -168,9 +166,9 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
     };
 
     const deleteDiveLog = () => {
-      handleDeleteDiveLog(diveLog.review.id, authToken)
-      navigateBack()
-    }
+      handleDeleteDiveLog(diveLog.review.id, authToken);
+      navigateBack();
+    };
 
     const logHasCoordinates = !!(
       diveLog.spot.latitude && diveLog.spot.longitude
@@ -366,10 +364,11 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                         <GradientBox
                           style={{
                             ...styles.gradientLine,
-                            width: `${((diveLog.review.end_air as number) /
+                            width: `${
+                              ((diveLog.review.end_air as number) /
                                 (diveLog.review.start_air as number)) *
                               100
-                              }%`,
+                            }%`,
                           }}
                         />
                       </View>
@@ -455,15 +454,11 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
               </TouchableWithoutFeedback>
             </View>
 
-            {Object.keys(diveLog.dive_shop as DiveShopFull).length ? (
-              diveLog.dive_shop?.stamp_uri ? (
-                <DiveShopStampView
-                  diveShop={diveLog.dive_shop as DiveShopFull}
-                  dateDived={diveLog.review.date_dived as string}
-                />
-              ) : (
-                <DiveShopView diveShop={diveLog.dive_shop as DiveShopFull} />
-              )
+            {diveLog.dive_shop?.id ? (
+              <DiveShopStampView
+                diveShop={diveLog.dive_shop as DiveShopFull}
+                dateDived={diveLog.review.date_dived as string}
+              />
             ) : (
               <NoDiveShop loadDiveLog={loadDiveLog} diveLog={diveLog} />
             )}
