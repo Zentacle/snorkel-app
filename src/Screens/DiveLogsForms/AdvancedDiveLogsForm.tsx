@@ -82,6 +82,12 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   let scrollContainerRef = React.useRef<ScrollView | null>();
 
   const simpleDiveLogsForm: InitialValues = get(route, 'params.diveLog', {});
+  const startTime = React.useMemo(
+    () => simpleDiveLogsForm.startTime && new Date(simpleDiveLogsForm.startTime), [simpleDiveLogsForm.startTime]
+  )
+  const startDate = React.useMemo(
+    () => simpleDiveLogsForm.startDate && new Date(simpleDiveLogsForm.startDate), [simpleDiveLogsForm.startDate]
+  )
 
   const stages: Stage[] = [
     {
@@ -158,8 +164,8 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   };
 
   const submitLog = async (values: InitialValues, callback: () => void) => {
+    setFormSubmitting(true);
     try {
-      setFormSubmitting(true);
       const date = (values.startDate as Date).toDateString();
       const time = (values.startTime as Date).toTimeString();
       const dateConcat = `${date} ${time}`;
@@ -180,33 +186,22 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
       const connectionState = await NetInfo.fetch();
       if (!connectionState.isConnected) {
         if (values.id) {
-          // dive log already exists in db
           await offlineManager.saveItem<InitialValues>(
-            'update-dive-log',
+            'update-dive-log', // dive log already exists in db
             arrangedValues,
           );
-          Toast.show({
-            type: 'info',
-            text1: 'No network available',
-            text2:
-              "We'll upload your dive log as soon as You are connected to the internet",
-          });
         } else {
-          // dive log was entirely created in offline mode.
-          // treat as new log
           await offlineManager.saveItem<InitialValues>(
-            'create-dive-log',
+            'create-dive-log', // dive log was entirely created in offline mode so treat as new log
             arrangedValues,
           );
-          Toast.show({
-            type: 'info',
-            text1: 'No network available',
-            text2:
-              "We'll upload your dive log as soon as You are connected to the internet",
-          });
         }
-        setFormSubmitting(false);
-        callback();
+        Toast.show({
+          type: 'info',
+          text1: 'No network available',
+          text2:
+            "Saved offline. We'll upload your dive log as soon as you are connected to the internet",
+        });
       } else {
         await handleUpdateDiveLog(
           {
@@ -214,10 +209,9 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
           },
           authToken as string,
         );
-        setFormSubmitting(false);
-
-        callback();
       }
+      setFormSubmitting(false);
+      callback();
     } catch (err) {
       Toast.show({
         type: 'error',
@@ -260,13 +254,11 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     entry: simpleDiveLogsForm.entry
       ? simpleDiveLogsForm.entry
       : undefined,
-    // @ts-ignore
-    startDate: simpleDiveLogsForm.date_dived
-      ? new Date(simpleDiveLogsForm.date_dived)
+    startDate: startDate
+      ? startDate
       : logDate,
-    // @ts-ignore
-    startTime: simpleDiveLogsForm.date_dived
-      ? new Date(simpleDiveLogsForm.date_dived)
+    startTime: startTime
+      ? startTime
       : logDate,
     weight: simpleDiveLogsForm.weight
       ? simpleDiveLogsForm.weight

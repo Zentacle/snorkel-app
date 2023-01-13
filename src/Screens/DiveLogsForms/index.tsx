@@ -207,7 +207,7 @@ const SimpleDiveLogsForms: FunctionComponent<
     rating: 0,
     // @ts-ignore
     difficulty: undefined,
-    activity_type: t('SCUBA').toLowerCase(),
+    activity_type: 'scuba',
     location: undefined,
     // @ts-ignore
     // images: [],
@@ -262,12 +262,13 @@ const SimpleDiveLogsForms: FunctionComponent<
       validate={values => validate(values, constraints)}
       onSubmit={() => { }}
       initialValues={initialValues}
+      // keepDirtyOnReinitialize
       mutators={{
         ...arrayMutators,
       }}
-      // keepDirtyOnReinitialize
       render={({ values, form }) => {
         formRef.current = form;
+
         return (
           <KeyboardAvoidingView behavior="padding" style={styles.container}>
             <SafeAreaView style={styles.container}>

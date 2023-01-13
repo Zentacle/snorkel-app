@@ -100,7 +100,11 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
   }
 
   const isAdvancedLog = !!(
-    diveLog?.review.dive_length || diveLog?.review.water_temp
+    diveLog?.review.dive_length
+    || diveLog?.review.water_temp
+    || diveLog?.review.max_depth
+    || diveLog?.review.air_type
+    || diveLog?.review.visibility
   );
   const coords = {
     latitude: diveLog?.spot.latitude || -8.409518,
@@ -152,9 +156,9 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
               location_city: diveLog.spot.location_city,
             },
             startDate:
-              diveLog.review.date_dived && new Date(diveLog.review.date_dived),
+              diveLog.review.date_dived,
             startTime:
-              diveLog.review.date_dived && new Date(diveLog.review.date_dived),
+              diveLog.review.date_dived,
             dive_shop: diveLog.dive_shop && {
               shop_id: diveLog.dive_shop.id,
               location_city: `${diveLog.dive_shop.city}, ${diveLog.dive_shop?.state}`,

@@ -53,7 +53,14 @@ const FullScreenDiveStamp: React.FunctionComponent<
 
         <View style={styles.diveShopContainer}>
           <View style={styles.diveShopLabelContainer}>
-            <Image source={StockDiveShopLogo} style={styles.diveShopLogo} />
+            <Image
+              source={
+                diveShop.logo_img
+                  ? { uri: diveShop.logo_img }
+                  : StockDiveShopLogo
+              }
+              style={styles.diveShopLogo}
+            />
             <Text style={styles.diveShopLabel}>{diveShop.name}</Text>
           </View>
           <View style={styles.diveShopSubTextContainer}>
