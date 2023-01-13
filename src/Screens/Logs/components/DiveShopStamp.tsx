@@ -91,7 +91,7 @@ const DiveShopStampView: React.FunctionComponent<DiveStampProps> = ({
 const styles = StyleSheet.create({
   container: {
     marginTop: 20,
-    marginBottom: 50,
+    marginBottom: 20,
   },
   labelContainer: {
     flexDirection: 'row',

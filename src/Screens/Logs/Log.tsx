@@ -81,10 +81,10 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
 
   const navigateBack = () => {
     navigation.canGoBack()
-    ? navigation.goBack()
-    : navigation.navigate('App', {
-        screen: 'Logs',
-      });
+      ? navigation.goBack()
+      : navigation.navigate('App', {
+          screen: 'Logs',
+        });
   };
 
   if (isLoading) {
@@ -100,11 +100,11 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
   }
 
   const isAdvancedLog = !!(
-    diveLog?.review.dive_length
-    || diveLog?.review.water_temp
-    || diveLog?.review.max_depth
-    || diveLog?.review.air_type
-    || diveLog?.review.visibility
+    diveLog?.review.dive_length ||
+    diveLog?.review.water_temp ||
+    diveLog?.review.max_depth ||
+    diveLog?.review.air_type ||
+    diveLog?.review.visibility
   );
   const coords = {
     latitude: diveLog?.spot.latitude || -8.409518,
@@ -155,10 +155,8 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
               desc: diveLog.spot.name,
               location_city: diveLog.spot.location_city,
             },
-            startDate:
-              diveLog.review.date_dived,
-            startTime:
-              diveLog.review.date_dived,
+            startDate: diveLog.review.date_dived,
+            startTime: diveLog.review.date_dived,
             dive_shop: diveLog.dive_shop && {
               shop_id: diveLog.dive_shop.id,
               location_city: `${diveLog.dive_shop.city}, ${diveLog.dive_shop?.state}`,
@@ -209,18 +207,12 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
             )}
             <View style={styles.ratingsContainer}>
               <Text style={styles.ratingsLevelText}>
-                {diveLog.review.difficulty}
+                {diveLog.review.difficulty || 'Unrated'}
               </Text>
-              {isAdvancedLog && (
-                <>
-                  <View style={styles.dot} />
-                  <Text style={styles.ratingsText}>
-                    {new Date(
-                      diveLog.review.date_dived as string,
-                    ).toDateString()}
-                  </Text>
-                </>
-              )}
+              <View style={styles.dot} />
+              <Text style={styles.ratingsText}>
+                {new Date(diveLog.review.date_dived as string).toDateString()}
+              </Text>
             </View>
 
             {logHasCoordinates ? (
@@ -269,136 +261,126 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                   <Text style={styles.entryLabel}>{t('ENTRY')}</Text>
                   <Text style={styles.entryText}>{diveLog.review.entry}</Text>
                 </View>
-                <View style={styles.divingDataContainer}>
-                  <Text style={styles.headerText}>{t('DIVING_DATA')}</Text>
-                  <View style={styles.divingDataBody}>
-                    <View style={styles.itemContainer}>
-                      <View style={styles.itemLabelContainer}>
-                        <Text style={styles.itemText}>
-                          {diveLog.review.max_depth}
-                        </Text>
-                        <Text style={styles.measurement}>
-                          {user?.unit === 'imperial' ? 'ft' : 'm'}
-                        </Text>
-                      </View>
-                      <Text style={styles.itemLabel}>{t('MAX_DEPTH')}</Text>
+
+                <View style={styles.divingDataBody}>
+                  <View>
+                    <View style={styles.itemLabelContainer}>
+                      <Text style={styles.itemText}>
+                        {diveLog.review.max_depth}
+                      </Text>
+                      <Text style={styles.measurement}>
+                        {user?.unit === 'imperial' ? 'ft' : 'm'}
+                      </Text>
                     </View>
-                    <View style={styles.itemContainer}>
-                      <View style={styles.itemLabelContainer}>
-                        <Text style={styles.itemText}>
-                          {diveLog.review.dive_length}
-                        </Text>
-                        <Text style={styles.measurement}>min</Text>
-                      </View>
-                      <Text style={styles.itemLabel}>{t('DURATION')}</Text>
+                    <Text style={styles.itemLabel}>{t('MAX_DEPTH')}</Text>
+                  </View>
+                  <View>
+                    <View style={styles.itemLabelContainer}>
+                      <Text style={styles.itemText}>
+                        {diveLog.review.dive_length}
+                      </Text>
+                      <Text style={styles.measurement}>min</Text>
                     </View>
-                    <View style={styles.itemContainer}>
-                      <View style={styles.itemLabelContainer}>
-                        <Text style={styles.itemText}>
-                          {diveLog.review.weight}
-                        </Text>
-                        <Text style={styles.measurement}>
-                          {user?.unit === 'imperial' ? 'lb' : 'kg'}
-                        </Text>
-                      </View>
-                      <Text style={styles.itemLabel}>{t('WEIGHT')}</Text>
+                    <Text style={styles.itemLabel}>{t('DURATION')}</Text>
+                  </View>
+                  <View>
+                    <View style={styles.itemLabelContainer}>
+                      <Text style={styles.itemText}>
+                        {diveLog.review.weight}
+                      </Text>
+                      <Text style={styles.measurement}>
+                        {user?.unit === 'imperial' ? 'lb' : 'kg'}
+                      </Text>
                     </View>
+                    <Text style={styles.itemLabel}>{t('WEIGHT')}</Text>
                   </View>
                 </View>
 
-                <View style={styles.waterAirContainer}>
-                  <Text style={styles.headerText}>{t('DIVING_DATA')}</Text>
-                  <View style={styles.waterAirBody}>
-                    <View style={styles.itemContainer}>
-                      <View style={styles.itemLabelContainer}>
-                        <Text style={styles.itemText}>
-                          {diveLog.review.water_temp}
-                        </Text>
-                        <Text style={styles.measurement}>
-                          {user?.unit === 'imperial' ? 'f' : 'c'}
-                        </Text>
-                      </View>
-                      <Text style={styles.itemLabel}>{t('WATER_TEMP')}</Text>
+                <View style={styles.waterAirBody}>
+                  <View>
+                    <View style={styles.itemLabelContainer}>
+                      <Text style={styles.itemText}>
+                        {diveLog.review.water_temp}
+                      </Text>
+                      <Text style={styles.measurement}>
+                        {user?.unit === 'imperial' ? 'f' : 'c'}
+                      </Text>
                     </View>
-                    <View style={styles.itemContainer}>
-                      <View style={styles.itemLabelContainer}>
-                        <Text style={styles.itemText}>
-                          {diveLog.review.visibility}
-                        </Text>
-                        <Text style={styles.measurement}></Text>
-                      </View>
-                      <Text style={styles.itemLabel}>{t('VISIBILITY')}</Text>
+                    <Text style={styles.itemLabel}>{t('WATER_TEMP')}</Text>
+                  </View>
+                  <View>
+                    <View style={styles.itemLabelContainer}>
+                      <Text style={styles.itemText}>
+                        {diveLog.review.visibility}
+                      </Text>
+                      <Text style={styles.measurement}></Text>
                     </View>
-                    <View style={styles.itemContainer}>
-                      <View style={styles.itemLabelContainer}>
-                        <Text style={styles.itemText}>
-                          {diveLog.review.air_temp}
-                        </Text>
-                        <Text style={styles.measurement}>
-                          {user?.unit === 'imperial' ? 'f' : 'c'}
-                        </Text>
-                      </View>
-                      <Text style={styles.itemLabel}>{t('AIR_TEMP')}</Text>
+                    <Text style={styles.itemLabel}>{t('VISIBILITY')}</Text>
+                  </View>
+                  <View>
+                    <View style={styles.itemLabelContainer}>
+                      <Text style={styles.itemText}>
+                        {diveLog.review.air_temp}
+                      </Text>
+                      <Text style={styles.measurement}>
+                        {user?.unit === 'imperial' ? 'f' : 'c'}
+                      </Text>
                     </View>
+                    <Text style={styles.itemLabel}>{t('AIR_TEMP')}</Text>
                   </View>
                 </View>
 
-                <View style={styles.divingGearContainer}>
-                  <Text style={styles.headerText}>{t('DIVING_DATA')}</Text>
-                  <View style={styles.divingGearBody}>
-                    <View style={styles.divingGearItemContainer}>
-                      <View style={styles.divingGearLabelContainer}>
-                        <View style={styles.airTankLabelContainer}>
-                          <Text style={styles.airTankLabelText}>
-                            {t('AIR_TANK')}
-                          </Text>
-                        </View>
-                        <View style={styles.airTankMeasurementContainer}>
-                          <Text style={styles.capacityText}>
-                            {diveLog.review.start_air}{' '}
-                            {user?.unit === 'imperial' ? 'psi' : 'bar'}
-                          </Text>
-                          <Text style={styles.divider}>|</Text>
-                          <Text style={styles.airTankTypetext}>
-                            {diveLog.review.air_type}
-                          </Text>
-                        </View>
+                <View style={styles.divingGearBody}>
+                  <View style={styles.divingGearItemContainer}>
+                    <View style={styles.divingGearLabelContainer}>
+                      <View style={styles.airTankLabelContainer}>
+                        <Text style={styles.airTankLabelText}>
+                          {t('AIR_TANK')}
+                        </Text>
                       </View>
-                      <View style={styles.progressContainer}>
-                        <GradientBox
-                          style={{
-                            ...styles.gradientLine,
-                            width: `${
-                              ((diveLog.review.end_air as number) /
-                                (diveLog.review.start_air as number)) *
-                              100
-                            }%`,
-                          }}
-                        />
+                      <View style={styles.airTankMeasurementContainer}>
+                        <Text style={styles.capacityText}>
+                          {diveLog.review.start_air}{' '}
+                          {user?.unit === 'imperial' ? 'psi' : 'bar'}
+                        </Text>
+                        <Text style={styles.divider}>|</Text>
+                        <Text style={styles.airTankTypetext}>
+                          {diveLog.review.air_type}
+                        </Text>
                       </View>
-                      <View style={styles.divingGearValueContainer}>
-                        <View style={styles.airTankValuelabelContainer}>
-                          <Text style={styles.airTankValueText}>
-                            {(diveLog.review.start_air || airLimit) -
-                              (diveLog.review.end_air || 0)}
-                            &nbsp;
-                            {user?.unit === 'imperial' ? 'psi' : 'bar'}
-                          </Text>
-                          <Text style={styles.divider}>|</Text>
-                          <Text style={styles.airTankUsedText}>
-                            {t('USED')}
-                          </Text>
-                        </View>
-                        <View style={styles.airTankMeasurementContainer}>
-                          <Text style={styles.airTankRemainderText}>
-                            {diveLog.review.end_air || 0}&nbsp;
-                            {user?.unit === 'imperial' ? 'psi' : 'bar'}
-                          </Text>
-                          <Text style={styles.divider}>|</Text>
-                          <Text style={styles.airTankRemainderLabel}>
-                            {t('LEFT')}
-                          </Text>
-                        </View>
+                    </View>
+                    <View style={styles.progressContainer}>
+                      <GradientBox
+                        style={{
+                          ...styles.gradientLine,
+                          width: `${
+                            ((diveLog.review.end_air as number) /
+                              (diveLog.review.start_air as number)) *
+                            100
+                          }%`,
+                        }}
+                      />
+                    </View>
+                    <View style={styles.divingGearValueContainer}>
+                      <View style={styles.airTankValuelabelContainer}>
+                        <Text style={styles.airTankValueText}>
+                          {(diveLog.review.start_air || airLimit) -
+                            (diveLog.review.end_air || 0)}
+                          &nbsp;
+                          {user?.unit === 'imperial' ? 'psi' : 'bar'}
+                        </Text>
+                        <Text style={styles.divider}>|</Text>
+                        <Text style={styles.airTankUsedText}>{t('USED')}</Text>
+                      </View>
+                      <View style={styles.airTankMeasurementContainer}>
+                        <Text style={styles.airTankRemainderText}>
+                          {diveLog.review.end_air || 0}&nbsp;
+                          {user?.unit === 'imperial' ? 'psi' : 'bar'}
+                        </Text>
+                        <Text style={styles.divider}>|</Text>
+                        <Text style={styles.airTankRemainderLabel}>
+                          {t('LEFT')}
+                        </Text>
                       </View>
                     </View>
                   </View>
@@ -406,23 +388,7 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
               </View>
             )}
 
-            {isAdvancedLog ? (
-              <View style={styles.editLogContainer}>
-                <Icon
-                  onPress={
-                    isAdvancedLog
-                      ? navigateToAdvancedLogsForm
-                      : navigateFromSimpleLogValue
-                  }
-                  name="pencil-outline"
-                  color="black"
-                  size={30}
-                />
-                <TouchableWithoutFeedback onPress={navigateToAdvancedLogsForm}>
-                  <Text style={styles.editLogText}>Edit dive log</Text>
-                </TouchableWithoutFeedback>
-              </View>
-            ) : (
+            {!isAdvancedLog ? (
               <View style={styles.editLogContainer}>
                 <Button
                   onPress={navigateFromSimpleLogValue}
@@ -444,6 +410,36 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                   Add weight, air, etc
                 </Button>
               </View>
+            ) : (
+              <></>
+            )}
+
+            {diveLog.dive_shop?.id ? (
+              <DiveShopStampView
+                diveShop={diveLog.dive_shop as DiveShopFull}
+                dateDived={diveLog.review.date_dived as string}
+              />
+            ) : (
+              <NoDiveShop loadDiveLog={loadDiveLog} diveLog={diveLog} />
+            )}
+            {isAdvancedLog ? (
+              <View style={styles.editLogContainer}>
+                <Icon
+                  onPress={
+                    isAdvancedLog
+                      ? navigateToAdvancedLogsForm
+                      : navigateFromSimpleLogValue
+                  }
+                  name="pencil-outline"
+                  color="black"
+                  size={30}
+                />
+                <TouchableWithoutFeedback onPress={navigateToAdvancedLogsForm}>
+                  <Text style={styles.editLogText}>Edit dive log</Text>
+                </TouchableWithoutFeedback>
+              </View>
+            ) : (
+              <></>
             )}
 
             <View style={styles.editLogContainer}>
@@ -457,15 +453,6 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
                 <Text style={styles.editLogText}>Delete dive log</Text>
               </TouchableWithoutFeedback>
             </View>
-
-            {diveLog.dive_shop?.id ? (
-              <DiveShopStampView
-                diveShop={diveLog.dive_shop as DiveShopFull}
-                dateDived={diveLog.review.date_dived as string}
-              />
-            ) : (
-              <NoDiveShop loadDiveLog={loadDiveLog} diveLog={diveLog} />
-            )}
           </View>
         </ScrollView>
       </View>
@@ -487,6 +474,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     marginTop: 25,
     marginHorizontal: 25,
+    marginBottom: 40,
   },
   locationContainer: {
     flexDirection: 'row',
@@ -594,9 +582,6 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     fontSize: 15,
   },
-  divingDataContainer: {
-    marginTop: 40,
-  },
   headerText: {
     fontSize: 18,
     fontWeight: '600',
@@ -633,10 +618,6 @@ const styles = StyleSheet.create({
     color: 'grey',
     fontSize: 15,
   },
-  itemContainer: {},
-  waterAirContainer: {
-    marginTop: 40,
-  },
   waterAirBody: {
     marginTop: 20,
     backgroundColor: '#fff',
@@ -645,9 +626,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 30,
     borderRadius: 7,
-  },
-  divingGearContainer: {
-    marginTop: 40,
   },
   divingGearBody: {
     marginTop: 20,
@@ -737,7 +715,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   diveShopText: {
-    marginLeft: 5,
+    marginLeft: 10,
     fontSize: 15,
     color: 'black',
   },

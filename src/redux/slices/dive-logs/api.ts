@@ -78,7 +78,6 @@ export async function handleUpdateDiveLog(
   auth_token: string,
 ): Promise<AdvancedDiveLogReturnValues> {
   try {
-    console.log('body: ', body)
     const url = `${config.API_ENDPOINT}/review/patch`;
     const response = await fetch(url, {
       method: 'PATCH',
@@ -91,7 +90,6 @@ export async function handleUpdateDiveLog(
         Authorization: `Bearer ${auth_token}`,
       },
     }).then(res => res.json());
-    console.log('response: ', response)
     return response;
   } catch (err) {
     throw err;
