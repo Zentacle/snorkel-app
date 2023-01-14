@@ -71,7 +71,7 @@ const DiveLogSummary: FunctionComponent<DiveLogSummaryProps> = ({
                 <Image source={Snorkel} style={{ width: 25, height: 25 }} />
               </View>
               <Text style={styles.summaryValue}>{diveLogs.length}</Text>
-              <Text style={styles.summaryLabel}>{t('DIVE_LOGS')}</Text>
+              <Text style={styles.summaryLabel}>{t('TOTAL_LOGS')}</Text>
             </View>
             <View style={styles.summaryItem}>
               <View style={styles.iconContainer}>

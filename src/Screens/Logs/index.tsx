@@ -10,7 +10,12 @@ import {
 import { useTranslation } from 'react-i18next';
 
 import Geolocation from 'react-native-geolocation-service';
-import { PERMISSIONS, RESULTS, checkMultiple, request } from 'react-native-permissions';
+import {
+  PERMISSIONS,
+  RESULTS,
+  checkMultiple,
+  request,
+} from 'react-native-permissions';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -54,17 +59,16 @@ const Logs: FunctionComponent<LogsProps> = ({ navigation }) => {
         PERMISSIONS.IOS.LOCATION_ALWAYS,
         PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
         PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-        PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION
-      ])
-      const hasLocationPermission = perms[PERMISSIONS.IOS.LOCATION_ALWAYS] === RESULTS.GRANTED
-      || perms[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE] === RESULTS.GRANTED
-      || perms[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === RESULTS.GRANTED
-      || perms[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] === RESULTS.GRANTED;
+        PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+      ]);
+      const hasLocationPermission =
+        perms[PERMISSIONS.IOS.LOCATION_ALWAYS] === RESULTS.GRANTED ||
+        perms[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE] === RESULTS.GRANTED ||
+        perms[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === RESULTS.GRANTED ||
+        perms[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] === RESULTS.GRANTED;
 
       if (Platform.OS === 'android') {
-        await request(
-          PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
-        );
+        await request(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
       } else {
         await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
       }
@@ -95,7 +99,7 @@ const Logs: FunctionComponent<LogsProps> = ({ navigation }) => {
           }),
         );
       }
-    }
+    };
 
     fetchData().catch(console.error);
   }, [navigation, authToken, dispatch, user]);
@@ -121,7 +125,10 @@ const Logs: FunctionComponent<LogsProps> = ({ navigation }) => {
               borderStyle: 'solid',
             },
           ]}>
-          <Text style={styles.headerText}>{t('DIVE_LOGS')}</Text>
+          <Text style={styles.headerText}>{t('RECENT_ACTIVITY')}</Text>
+          <Text style={styles.subheaderText}>
+            See the conditions in your local area ({'<'}50mi)
+          </Text>
         </View>
         <DiveLogListPlaceholder />
       </SafeAreaView>
@@ -139,7 +146,7 @@ const Logs: FunctionComponent<LogsProps> = ({ navigation }) => {
             borderStyle: 'solid',
           },
         ]}>
-        <Text style={styles.headerText}>{t('DIVE_LOGS')}</Text>
+        <Text style={styles.headerText}>{t('RECENT_ACTIVITY')}</Text>
         <Text style={styles.subheaderText}>
           See the conditions in your local area ({'<'}50mi)
         </Text>
