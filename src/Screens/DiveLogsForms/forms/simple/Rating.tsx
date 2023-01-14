@@ -20,14 +20,15 @@ import { DiveShopSearchResult } from '_utils/interfaces/data/logs';
 import FMInput from '_components/ui/FormManagementInput';
 import DiveShopAutocompleteModal from '_screens/DiveLogsForms/components/DiveShopAutocompleteModal';
 import ImagePickerArray from '_screens/DiveLogsForms/components/ImagePickerArray';
+import { handleGetDiveShop } from '_redux/slices/dive-shops/api';
 
 interface SimpleDetailProps {
+  dive_shop_id: number;
   dive_shop?: DiveShopSearchResult;
 }
 
-const Rating: FunctionComponent<SimpleDetailProps> = ({
-  dive_shop,
-}) => {
+const Rating: FunctionComponent<SimpleDetailProps> = (props) => {
+  const [dive_shop, setDiveShop] = React.useState<DiveShopSearchResult | undefined>(props.dive_shop);
   const { t } = useTranslation();
   const levels = [
     t('BEGINNER').toLowerCase(),
@@ -56,6 +57,20 @@ const Rating: FunctionComponent<SimpleDetailProps> = ({
   const openDiveShopModal = () => {
     toggleDiveShopAutocompleteModal(true);
   };
+
+  React.useEffect(() => {
+    if (!dive_shop && props.dive_shop_id) {
+      const getDiveShop = async () => {
+        const shop = (await handleGetDiveShop(props.dive_shop_id)).data
+        setDiveShop({
+          shop_id: shop.id,
+          location_city: shop.city,
+          name: shop.name,
+        })
+      }
+      getDiveShop();
+    }
+  }, [props.dive_shop_id, dive_shop])
 
   const isValidDiveShop = !!(
     dive_shop &&

@@ -8,8 +8,8 @@ import type {
 } from '_utils/interfaces/data/shops';
 import { FormImages } from '_utils/interfaces/data/logs';
 
-interface ResponseWithTypeahead {
-  data: DiveShopTypeaheadResponse[];
+interface ResponseWith<T> {
+  data: T;
 }
 
 export async function handleCreateDiveShop(
@@ -88,7 +88,7 @@ export async function handleUploadStampImage(
 
 export async function handleTypeAhead(
   query: string,
-): Promise<ResponseWithTypeahead> {
+): Promise<ResponseWith<DiveShopTypeaheadResponse>> {
   try {
     const url = `${config.API_ENDPOINT}/shop/typeahead?${query}`;
     const response = fetch(url, {
@@ -103,9 +103,26 @@ export async function handleTypeAhead(
   }
 }
 
+export async function handleGetDiveShop(
+  id: number,
+): Promise<ResponseWith<DiveShopFull>> {
+  try {
+    const url = `${config.API_ENDPOINT}/shop/${id}`;
+    const response = fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then(res => res.json());
+    return response;
+  } catch (err) {
+    throw err;
+  }
+}
+
 export async function handleTypeAheadNearby(
   query: string,
-): Promise<ResponseWithTypeahead> {
+): Promise<ResponseWith<DiveShopTypeaheadResponse>> {
   try {
     const url = `${config.API_ENDPOINT}/shop/typeahead/nearby?${query}`;
     const response = fetch(url, {

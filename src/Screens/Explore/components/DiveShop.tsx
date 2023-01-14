@@ -16,7 +16,6 @@ const DiveShop: FunctionComponent<DiveShopProps> = props => {
     <View style={styles.container}>
       <View style={styles.mapContainer}>
         <MapView
-          provider="google"
           style={styles.map}
           scrollEnabled={false}
           liteMode={true}

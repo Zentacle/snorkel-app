@@ -110,11 +110,15 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
     },
     {
       label: t('ENTRY'),
-      values: (diveSite && diveSite.access || []).map((access) => capitalize(access.text)!),
+      values: ((diveSite && diveSite.access) || []).map(
+        access => capitalize(access.text)!,
+      ),
     },
     {
       label: t('TAGS'),
-      values: (diveSite && diveSite.tags || []).map((tag) => capitalize(tag.text)!),
+      values: ((diveSite && diveSite.tags) || []).map(
+        tag => capitalize(tag.text)!,
+      ),
     },
   ];
 
@@ -210,14 +214,12 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
     navigation.navigate('App', {
       screen: 'LogsForm',
       params: {
-        diveLogs: {
-          location: {
-            lat: diveSite.latitude,
-            lng: diveSite.longitude,
-            desc: diveSite.name,
-            location_city: diveSite.location_city,
-            beach_id: diveSite.id,
-          },
+        location: {
+          lat: diveSite.latitude,
+          lng: diveSite.longitude,
+          desc: diveSite.name,
+          location_city: diveSite.location_city,
+          beach_id: diveSite.id,
         },
       },
     });
@@ -333,7 +335,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
               <View style={styles.activity}>
                 <Text style={styles.activityLabel}>{activity.label}</Text>
                 <View style={styles.activityValueContainer}>
-                  {activity.values.map((value) => (
+                  {activity.values.map(value => (
                     <Text key={value} style={styles.activityValue}>
                       {value}
                     </Text>
@@ -362,7 +364,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
               horizontal
               contentContainerStyle={styles.nearbySitesCardsContainer}
               showsHorizontalScrollIndicator={false}>
-              {nearby.map((item) => (
+              {nearby.map(item => (
                 <DiveSiteComp
                   key={item.id}
                   site={item}

@@ -16,6 +16,7 @@ const config = {
     App: {
       screens: {
         Explore: 'Beach',
+        LogsForm: 'Log',
       },
     },
     ExploreStack: {

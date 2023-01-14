@@ -13,9 +13,9 @@ export interface DiveShopSearchResult {
   location_city: string;
 }
 export interface SimpleFormInitialValues {
-  id: number;
+  id?: number;
   rating: number;
-  difficulty: string;
+  difficulty?: string;
   title?: string;
   text?: string;
   activity_type?: string;
@@ -27,7 +27,7 @@ export interface SimpleFormInitialValues {
     beach_id: number;
   };
   beach_id?: number;
-  images: FormImages[];
+  images?: FormImages[];
   dive_shop?: DiveShopSearchResult;
   dive_shop_id?: number;
   privacy?: string;

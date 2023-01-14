@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Form } from 'react-final-form';
-import validate from 'validate.js';
 import get from 'lodash/get';
 import arrayMutators from 'final-form-arrays';
 import { useTranslation } from 'react-i18next';
@@ -72,7 +71,7 @@ const SimpleDiveLogsForms: FunctionComponent<
   const [modalIsOpen, toggleModal] = React.useState(false);
   const [savedDiveLogId, saveDiveLogId] = React.useState(0);
   const [formSubmitting, setFormSubmitting] = React.useState(false);
-  const passedInLog: InitialValues = get(props.route, 'params.diveLogs', {});
+  const passedInLog: Partial<InitialValues> = get(props.route, 'params', {});
   let formRef = React.useRef<FormApi>();
 
   const stages: Stage[] = [
@@ -126,6 +125,15 @@ const SimpleDiveLogsForms: FunctionComponent<
       },
     });
   };
+
+  React.useEffect(() => {
+    if (passedInLog.dive_shop_id) {
+      Toast.show({
+        text1: 'Dive shop added',
+        text2: "Your stamp will be issued when you submit your dive log",
+      });
+    }
+  }, []);
 
   const handleNavigateToAdvancedDiveLog = (formvalues: InitialValues) => {
     navigateToAdvancedDiveForm({ ...formvalues, id: savedDiveLogId });
@@ -197,22 +205,9 @@ const SimpleDiveLogsForms: FunctionComponent<
     }
   };
 
-  const constraints = {};
-
   const initialValues: InitialValues = {
-    // ignore overwritten propertied error
-    // @ts-ignore
-    // id: 0,
-    // @ts-ignore
     rating: 0,
-    // @ts-ignore
-    difficulty: undefined,
     activity_type: 'scuba',
-    location: undefined,
-    // @ts-ignore
-    // images: [],
-    dive_shop: undefined,
-    // @ts-ignore
     privacy: 'public',
     ...passedInLog,
   };
@@ -259,8 +254,7 @@ const SimpleDiveLogsForms: FunctionComponent<
 
   return (
     <Form
-      validate={values => validate(values, constraints)}
-      onSubmit={() => { }}
+      onSubmit={() => {}}
       initialValues={initialValues}
       // keepDirtyOnReinitialize
       mutators={{
@@ -327,19 +321,20 @@ const SimpleDiveLogsForms: FunctionComponent<
                     goToPage={(target: number) => {
                       canMoveToNextPage(target - 1, values as InitialValues)
                         ? goToPage(target)
-                        : () => { };
+                        : () => {};
                     }}
                     activeId={page}
                     stages={stages}
                   />
                 )}
 
-                {page === 0 && (
-                  <Location
-                    location={values.location}
+                {page === 0 && <Location location={values.location} />}
+                {page === 1 && (
+                  <Rating
+                    dive_shop={values.dive_shop}
+                    dive_shop_id={values.dive_shop_id}
                   />
                 )}
-                {page === 1 && <Rating dive_shop={values.dive_shop} />}
                 {page === 2 && (
                   <Review
                     navigateToAdvancedDiveForm={() =>
@@ -357,13 +352,16 @@ const SimpleDiveLogsForms: FunctionComponent<
                   next={
                     page === stages.length - 1
                       ? () => {
-                        // submit then navigate to review
-                        submitLog(values as InitialValues, next);
-                        // next();
-                      }
+                          // submit then navigate to review
+                          submitLog(values as InitialValues, next);
+                          // next();
+                        }
                       : next
                   }
-                  disabled={!canMoveToNextPage(page, values as InitialValues) || formSubmitting}
+                  disabled={
+                    !canMoveToNextPage(page, values as InitialValues) ||
+                    formSubmitting
+                  }
                   text={
                     page === stages.length - 1
                       ? formSubmitting

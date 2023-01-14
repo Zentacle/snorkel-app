@@ -36,7 +36,6 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
         {logHasCoordinates ? (
           <View style={styles.mapContainer}>
             <MapView
-              provider="google"
               style={styles.map}
               scrollEnabled={false}
               liteMode={true}

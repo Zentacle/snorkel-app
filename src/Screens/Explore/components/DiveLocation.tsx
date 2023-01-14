@@ -30,7 +30,6 @@ const DiveLocation: FunctionComponent<DiveLocationProps> = ({
           </Text>
           <View style={styles.mapContainer}>
             <MapView
-              provider="google"
               style={styles.map}
               scrollEnabled={false}
               showsUserLocation={true}

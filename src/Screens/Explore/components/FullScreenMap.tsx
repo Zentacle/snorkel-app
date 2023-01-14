@@ -14,7 +14,6 @@ interface FullScreenMapProps {
 const FullScreenMap: FunctionComponent<FullScreenMapProps> = ({ coords }) => {
   return (
     <MapView
-      provider="google"
       style={styles.map}
       initialRegion={{
         latitude: coords.lat,

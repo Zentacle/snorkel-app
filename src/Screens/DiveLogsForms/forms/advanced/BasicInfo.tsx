@@ -101,7 +101,6 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
         <View style={styles.mapContainer}>
           {values.location && locationHasCoordinates && (
             <MapView
-              provider="google"
               style={styles.map}
               scrollEnabled={false}
               liteMode={true}

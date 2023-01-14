@@ -82,9 +82,7 @@ export type AppTabsParamList = {
   Profile: undefined;
   Search: undefined;
   Logs: undefined;
-  LogsForm: {
-    diveLogs: DiveLog | {};
-  };
+  LogsForm: DiveLog | {};
 };
 
 export type RootStackParamList = {
