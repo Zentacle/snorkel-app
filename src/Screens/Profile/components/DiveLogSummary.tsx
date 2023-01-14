@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import GradientBox from '_components/ui/GradientBox';
 
-import Snorkel from '_assets/scuba_icons/snorkel.svg';
+import Snorkel from '_assets/tab-icons/logs-active.png';
 import Location from '_assets/scuba_icons/Location.svg';
 import Clock from '_assets/clock-lar.png';
 
@@ -67,7 +67,7 @@ const DiveLogSummary: FunctionComponent<DiveLogSummaryProps> = ({
             </View>
             <View style={styles.summaryItem}>
               <View style={styles.iconContainer}>
-                <Snorkel width={25} height={25} />
+                <Image source={Snorkel} style={{ width: 25, height: 25 }} />
               </View>
               <Text style={styles.summaryValue}>{diveLogs.length}</Text>
               <Text style={styles.summaryLabel}>{t('DIVE_LOGS')}</Text>
