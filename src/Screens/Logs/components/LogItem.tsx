@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
   },
   timeDepthLabel: {
     color: 'gray',
-    marginBottom: 15,
+    marginBottom: 4,
   },
   userLockup: {
     flexDirection: 'row',

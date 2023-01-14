@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
   },
   timeDepthLabel: {
     color: 'gray',
-    marginBottom: 15,
+    marginBottom: 4,
   },
   unavailableLocationContainer: {
     width: 100,

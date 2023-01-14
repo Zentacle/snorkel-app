@@ -33,6 +33,7 @@ const DiveLocation: FunctionComponent<DiveLocationProps> = ({
               provider="google"
               style={styles.map}
               scrollEnabled={false}
+              showsUserLocation={true}
               liteMode={true}
               initialRegion={{
                 latitude: coordinates.latitude,
