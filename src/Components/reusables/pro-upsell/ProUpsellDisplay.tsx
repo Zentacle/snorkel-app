@@ -15,6 +15,7 @@ import Purchases, {
   PurchasesOffering,
   PurchasesOfferings,
   PurchasesPackage,
+  PACKAGE_TYPE,
 } from 'react-native-purchases';
 
 import DefaultHeroBackground from 'assets/default_hero_background.png';
@@ -68,6 +69,11 @@ const features: Features[] = [
     isFree: false,
     isPro: true,
   },
+  {
+    label: 'Support development of the app 🙏',
+    isFree: false,
+    isPro: true,
+  },
 ];
 
 interface ProUpsellDisplayProps {
@@ -85,6 +91,8 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
   navigateToWebView,
   source,
 }) => {
+  const [selectedPackage, setSelectedPackage] =
+    React.useState<PurchasesPackage | null>(null);
   const [proPackage, setPackage] = React.useState<PurchasesOffering | null>();
   const [purchaseError, setPurchaseError] = React.useState<string | null>();
   const [loading, setLoading] = React.useState(false);
@@ -107,6 +115,7 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
         offerings.current.availablePackages.length !== 0
       ) {
         setPackage(offerings.current);
+        setSelectedPackage(offerings.current.annual);
       }
     } catch (err: any) {
       Alert.alert('Error fetching offerings', err.message);
@@ -136,9 +145,7 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
         upsell: source,
       });
 
-      await Purchases.purchasePackage(
-        proPackage?.availablePackages[0] as PurchasesPackage,
-      );
+      await Purchases.purchasePackage(selectedPackage as PurchasesPackage);
 
       sendEvent('pro__register', {
         screen: 'pro_upsell',
@@ -194,72 +201,141 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
       )}
       <ScrollView style={styles.mainBody} showsVerticalScrollIndicator={false}>
         <Image source={DefaultHeroBackground} style={styles.image} />
-        <View style={styles.introTextContainer}>
-          <Text style={styles.mainText}>{proPackage.serverDescription}</Text>
-          <Text style={styles.subText}>
-            {`Get 1 week free, then only ${
-              proPackage.availablePackages[0].product.price_string
-            }/${
-              proPackage.availablePackages[0].packageType === 'MONTHLY'
-                ? 'month'
-                : 'year'
-            }.`}
-          </Text>
-        </View>
-        <View style={styles.tableContainer}>
-          <View style={styles.tableHeaderContainer}>
-            <Text style={[styles.tableLabelHeaderText]}>FEATURES</Text>
-            <View style={styles.tierHeader}>
-              <View style={styles.freeHeaderContainer}>
-                <Text style={styles.freeTableHeaderText}>FREE</Text>
-              </View>
-              <View style={styles.proContainer}>
-                <Text style={styles.proTableHeaderText}>PRO</Text>
-              </View>
-            </View>
+        <View style={styles.contentContainer}>
+          <View style={styles.introTextContainer}>
+            <Text style={styles.mainText}>{proPackage.serverDescription}</Text>
+            <Text style={styles.subText}>
+              {`Start with a free trial today! Cancel anytime.`}
+            </Text>
           </View>
-          <View style={styles.tableBodyContainer}>
-            {features.map((feature, index) => (
-              <View
-                style={[
-                  styles.tableBodyItem,
-                  index % 2 === 0 && styles.tableBodyItemEven,
-                ]}
-                key={index}>
-                <Text style={styles.tableBodyLabelText}>{feature.label}</Text>
-                <View style={styles.tierBody}>
-                  <View style={styles.freeBodyContainer}>
-                    {!!feature.isFree && (
-                      <Icon name="checkmark-circle" size={20} color="#26BC2A" />
+
+          <View style={styles.packageSectionContainer}>
+            {proPackage.availablePackages.map(pkg => {
+              const formatter = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+              });
+              const percentFormatter = new Intl.NumberFormat('en-US', {
+                maximumFractionDigits: 2,
+              });
+              const monthsInPeriod: Record<PACKAGE_TYPE, number> = {
+                [PACKAGE_TYPE.ANNUAL]: 12,
+                [PACKAGE_TYPE.MONTHLY]: 1,
+                [PACKAGE_TYPE.SIX_MONTH]: 6,
+                [PACKAGE_TYPE.THREE_MONTH]: 3,
+                [PACKAGE_TYPE.TWO_MONTH]: 2,
+                [PACKAGE_TYPE.WEEKLY]: 0.25,
+                [PACKAGE_TYPE.LIFETIME]: 36,
+                [PACKAGE_TYPE.CUSTOM]: 1,
+                [PACKAGE_TYPE.UNKNOWN]: 1,
+              };
+              const monthlyPrice =
+                pkg.product.price / monthsInPeriod[pkg.packageType];
+              return (
+                <Pressable
+                  style={[
+                    styles.proPackageContainer,
+                    selectedPackage?.identifier == pkg.identifier &&
+                      styles.selectedPackage,
+                  ]}
+                  key={pkg.identifier}
+                  onPress={() => setSelectedPackage(pkg)}>
+                  {pkg.packageType === PACKAGE_TYPE.ANNUAL && (
+                    <View style={styles.proMostPopularContainer}>
+                      <Text style={styles.proMostPopularText}>
+                        Most Popular
+                      </Text>
+                    </View>
+                  )}
+                  <View style={styles.proHeader}>
+                    <Text style={styles.proHeaderText}>{pkg.packageType}</Text>
+                  </View>
+                  <View style={styles.proText}>
+                    <Text style={styles.proPrice}>
+                      {pkg.product.price_string}
+                    </Text>
+                    <Text style={styles.proPriceMonthly}>
+                      ({formatter.format(monthlyPrice)}
+                      /mo)
+                    </Text>
+                    {pkg.packageType !== PACKAGE_TYPE.MONTHLY && (
+                      <Text style={styles.proDiscount}>
+                        SAVE{' '}
+                        {percentFormatter.format(
+                          (monthlyPrice / pkg.product.price) * 100,
+                        )}
+                        %
+                      </Text>
                     )}
                   </View>
-                  <View style={styles.proBodyContainer}>
-                    {!!feature.isPro && (
-                      <Icon name="checkmark-circle" size={20} color="#26BC2A" />
-                    )}
-                  </View>
+                </Pressable>
+              );
+            })}
+          </View>
+
+          <View style={styles.tableContainer}>
+            <View style={styles.tableHeaderContainer}>
+              <Text style={[styles.tableLabelHeaderText]}>FEATURES</Text>
+              <View style={styles.tierHeader}>
+                <View style={styles.freeHeaderContainer}>
+                  <Text style={styles.freeTableHeaderText}>FREE</Text>
+                </View>
+                <View style={styles.proContainer}>
+                  <Text style={styles.proTableHeaderText}>PRO</Text>
                 </View>
               </View>
-            ))}
+            </View>
+            <View style={styles.tableBodyContainer}>
+              {features.map((feature, index) => (
+                <View
+                  style={[
+                    styles.tableBodyItem,
+                    index % 2 === 0 && styles.tableBodyItemEven,
+                  ]}
+                  key={index}>
+                  <Text style={styles.tableBodyLabelText}>{feature.label}</Text>
+                  <View style={styles.tierBody}>
+                    <View style={styles.freeBodyContainer}>
+                      {!!feature.isFree && (
+                        <Icon
+                          name="checkmark-circle"
+                          size={20}
+                          color="#26BC2A"
+                        />
+                      )}
+                    </View>
+                    <View style={styles.proBodyContainer}>
+                      {!!feature.isPro && (
+                        <Icon
+                          name="checkmark-circle"
+                          size={20}
+                          color="#26BC2A"
+                        />
+                      )}
+                    </View>
+                  </View>
+                </View>
+              ))}
+            </View>
           </View>
-        </View>
 
-        <View style={styles.termsContainer}>
-          <Pressable
-            style={state => ({
-              opacity: state.pressed ? 0.7 : 1,
-            })}
-            onPress={navigateToPolicy}>
-            <Text style={styles.terms}>Privacy Policy</Text>
-          </Pressable>
-          <View style={styles.divider} />
-          <Pressable
-            style={state => ({
-              opacity: state.pressed ? 0.7 : 1,
-            })}
-            onPress={navigateToTerms}>
-            <Text style={styles.terms}>Terms of Service</Text>
-          </Pressable>
+          <View style={styles.termsContainer}>
+            <Pressable
+              style={state => ({
+                opacity: state.pressed ? 0.7 : 1,
+              })}
+              onPress={navigateToPolicy}>
+              <Text style={styles.terms}>Privacy Policy</Text>
+            </Pressable>
+            <View style={styles.divider} />
+            <Pressable
+              style={state => ({
+                opacity: state.pressed ? 0.7 : 1,
+              })}
+              onPress={navigateToTerms}>
+              <Text style={styles.terms}>Terms of Service</Text>
+            </Pressable>
+          </View>
         </View>
       </ScrollView>
       <View style={styles.footer}>
@@ -308,30 +384,30 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   image: {
-    height: 250,
+    height: 150,
     width: Dimensions.get('window').width,
     // backgroundColor: 'black',
+  },
+  contentContainer: {
+    paddingHorizontal: 25,
   },
   mainText: {
     color: 'black',
     fontSize: 31,
     fontWeight: '700',
-    marginBottom: 10,
   },
   subText: {
     color: 'black',
-    marginTop: 10,
+    marginTop: 4,
     fontSize: 17,
-    fontWeight: '600',
+    fontWeight: '500',
     marginBottom: 5,
   },
   introTextContainer: {
     marginTop: 30,
-    marginHorizontal: 25,
   },
   tableContainer: {
-    marginHorizontal: 25,
-    marginTop: 20,
+    marginTop: 10,
   },
   tableHeaderContainer: {
     flexDirection: 'row',
@@ -487,6 +563,77 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     marginHorizontal: 5,
     height: 10,
+  },
+  packageSectionContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical: 24,
+  },
+  proPackageContainer: {
+    borderRadius: 10,
+    flexBasis: 150,
+    position: 'relative',
+    borderColor: '#cecece',
+    borderWidth: 2,
+  },
+  proHeader: {
+    borderTopEndRadius: 8,
+    borderTopLeftRadius: 8,
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    backgroundColor: '#AA00FF',
+  },
+  proHeaderText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  proText: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  proPrice: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  proPriceMonthly: {
+    marginTop: 4,
+    textAlign: 'center',
+  },
+  proDiscount: {
+    borderRadius: 8,
+    backgroundColor: 'white',
+    fontSize: 10,
+    fontWeight: 'bold',
+    marginTop: 4,
+    overflow: 'hidden',
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    textAlign: 'center',
+  },
+  selectedPackage: {
+    borderColor: '#AA00FF',
+    borderWidth: 2,
+  },
+  proMostPopularContainer: {
+    position: 'absolute',
+    top: -10,
+    left: 0,
+    right: 0,
+    zIndex: 999,
+    textAlign: 'center',
+  },
+  proMostPopularText: {
+    backgroundColor: 'white',
+    borderRadius: 8,
+    marginHorizontal: 20,
+    overflow: 'hidden',
+    paddingHorizontal: 4,
+    paddingVertical: 2,
+    fontSize: 10,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 
