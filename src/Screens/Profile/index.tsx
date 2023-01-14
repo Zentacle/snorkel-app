@@ -31,6 +31,7 @@ import EmptyList from '../Logs/components/EmptyList';
 import DiveLogSummary from './components/DiveLogSummary';
 import { isBelowHeightThreshold } from '_utils/constants';
 import ProfileDiveLogs from '_components/reusables/Placeholders/DiveLogs/ProfileDiveLogs';
+import MapView, { Marker } from 'react-native-maps';
 
 type ProfileNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<AppTabsParamList, 'Profile'>,
@@ -105,6 +106,32 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
         <Text style={styles.displayName}>{user?.display_name}</Text>
 
         <DiveLogSummary diveLogs={diveLogs} />
+        {diveLogs && diveLogs.length ? (
+          <MapView
+            style={{ height: 150, width: '100%', borderRadius: 16, marginVertical: 16 }}
+            showsUserLocation={true}
+            liteMode={true}
+            initialRegion={{
+              latitude: diveLogs[0].spot.latitude,
+              longitude: diveLogs[0].spot.longitude,
+              latitudeDelta: 100,
+              longitudeDelta: 100,
+            }}>
+            {diveLogs
+              .filter(diveLog => diveLog.spot.latitude)
+              .map(diveLog => (
+                <Marker
+                  key={diveLog.id}
+                  coordinate={{
+                    latitude: diveLog.spot.latitude,
+                    longitude: diveLog.spot.longitude,
+                  }}
+                />
+              ))}
+          </MapView>
+        ) : (
+          <></>
+        )}
         {/* <SubscriptionBox /> */}
         {diveLogsIsLoading && !diveLogs.length ? (
           <ProfileDiveLogs />
