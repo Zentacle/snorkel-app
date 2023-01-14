@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   ScrollView,
   Platform,
+  TouchableOpacity,
 } from 'react-native';
 import { Form, Field } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
@@ -21,7 +22,7 @@ import Purchases from 'react-native-purchases';
 
 import SearchInput from '_components/ui/SearchInput';
 // import Tag from '_components/ui/Tag';
-// import GradientText from '_components/ui/GradientText';
+import GradientText from '_components/ui/GradientText';
 import DiveSite from './components/DiveSite';
 import DiveBuddy from './components/DiveBuddy';
 // import DiveShop from './components/DiveShop';
@@ -89,6 +90,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   const [autocompleteModalOpen, toggleAutocompleteModal] =
     React.useState(false);
   const authToken = useAppSelector(selectAuthToken);
+  const [position, setPosition] = React.useState({ latitude: 0, longitude: 0 });
 
   const [proUpsellModalOpen, toggleProUpsellModal] = React.useState(false);
   const [proVerified, verifyIsPro] = React.useState(false);
@@ -161,9 +163,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
     const coarseLocation = perms[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION];
 
     if (Platform.OS === 'android') {
-      await request(
-        PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
-      );
+      await request(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
     } else {
       await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
     }
@@ -176,6 +176,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
     ) {
       Geolocation.getCurrentPosition(
         position => {
+          setPosition(position.coords)
           dispatch(
             handleFetchDiveSites({
               latitude: position.coords.latitude,
@@ -269,6 +270,19 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   //   });
   // };
 
+  const navigateToMapView = () => {
+    navigation.navigate('ExploreStack', {
+      screen: 'Map',
+      params: {
+        isExplore: true,
+        coords: {
+          lat: position.latitude,
+          lng: position.longitude,
+        },
+      },
+    });
+  };
+
   if (!diveSitesIsLoading && !diveSites.length) {
     return <BeachLoading />;
   }
@@ -330,7 +344,11 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
             <Text style={styles.nearbySitesMainText}>
               {t('explore.NEARBY_SITES_MAIN_TEXT')}
             </Text>
-            {/* <TouchableWithoutFeedback>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => {
+                navigateToMapView();
+              }}>
               <GradientText
                 gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
                 start={{
@@ -345,7 +363,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
                 style={styles.nearbySitesMapText}>
                 {t('VIEW_MAP')}
               </GradientText>
-            </TouchableWithoutFeedback> */}
+            </TouchableOpacity>
           </View>
           <ScrollView
             horizontal

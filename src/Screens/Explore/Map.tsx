@@ -38,9 +38,10 @@ const Map: FunctionComponent<MapProps> = ({ navigation, route }) => {
   };
 
   const coords = route.params.coords;
+  const isExplore = route.params.isExplore;
   return (
     <>
-      <FullScreenMap coords={coords} />
+      <FullScreenMap coords={coords} isExplore={isExplore}/>
       <TouchableWithoutFeedback onPress={goBack}>
         <View style={styles.icon}>
           <Icon name="chevron-left" color="black" size={23} />
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: 'absolute',
-    top: Platform.OS === 'ios' ? 40 : 20,
+    top: Platform.OS === 'ios' ? 70 : 20,
     left: 20,
     backgroundColor: '#FFF',
     paddingVertical: 7,
