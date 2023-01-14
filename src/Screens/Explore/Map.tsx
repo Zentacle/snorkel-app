@@ -19,6 +19,7 @@ import type {
   RootStackParamList,
   ExploreStackParamList,
 } from '_utils/interfaces';
+import { sendEvent } from '_utils/functions/amplitude';
 
 type MapNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<ExploreStackParamList, 'Map'>,
@@ -36,6 +37,12 @@ const Map: FunctionComponent<MapProps> = ({ navigation, route }) => {
   const goBack = () => {
     navigation.goBack();
   };
+
+  React.useEffect(()=> {
+    sendEvent('page_view', {
+      type: 'full_map',
+    });
+  }, [])
 
   const coords = route.params.coords;
   const isExplore = route.params.isExplore;
