@@ -77,9 +77,7 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
     });
   };
 
-  // if (diveLogsIsLoading && !diveLogs.length) {
-  // return <ProfileDiveLogs />;
-  // }
+  const diveLogsWithLoc = diveLogs.filter(diveLog => diveLog.spot.latitude)
 
   return (
     <SafeAreaView style={styles.container}>
@@ -106,19 +104,18 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
         <Text style={styles.displayName}>{user?.display_name}</Text>
 
         <DiveLogSummary diveLogs={diveLogs} />
-        {diveLogs && diveLogs.length ? (
+        {diveLogsWithLoc && diveLogsWithLoc.length ? (
           <MapView
             style={{ height: 150, width: '100%', borderRadius: 16, marginVertical: 16 }}
             showsUserLocation={true}
             liteMode={true}
             initialRegion={{
-              latitude: diveLogs[0].spot.latitude,
-              longitude: diveLogs[0].spot.longitude,
+              latitude: diveLogsWithLoc[0].spot.latitude,
+              longitude: diveLogsWithLoc[0].spot.longitude,
               latitudeDelta: 100,
               longitudeDelta: 100,
             }}>
-            {diveLogs
-              .filter(diveLog => diveLog.spot.latitude)
+            {diveLogsWithLoc
               .map(diveLog => (
                 <Marker
                   key={diveLog.id}

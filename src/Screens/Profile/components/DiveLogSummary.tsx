@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import formatDuration from 'format-duration';
+// @ts-ignore
+import duration from 'format-duration-time';
 import { useTranslation } from 'react-i18next';
 
 import GradientBox from '_components/ui/GradientBox';
@@ -25,7 +26,7 @@ function calculateTotalDiveTime(diveLogs: DiveLogsState[]) {
   }
 
   if (!total) return 0;
-  return formatDuration(total * 60000);
+  return duration(total * 60000).format('h:m');
 }
 
 function calculateVisitedSites(diveLogs: DiveLogsState[]): number {
@@ -61,7 +62,7 @@ const DiveLogSummary: FunctionComponent<DiveLogSummaryProps> = ({
                 />
               </View>
               <Text style={styles.summaryValue}>
-                {calculateTotalDiveTime(diveLogs) || '0:00:00'}
+                {calculateTotalDiveTime(diveLogs) || '0:00'}
               </Text>
               <Text style={styles.summaryLabel}>{t('TOTAL_DIVE_TIME')}</Text>
             </View>
