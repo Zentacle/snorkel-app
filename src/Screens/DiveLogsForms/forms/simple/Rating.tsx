@@ -27,8 +27,10 @@ interface SimpleDetailProps {
   dive_shop?: DiveShopSearchResult;
 }
 
-const Rating: FunctionComponent<SimpleDetailProps> = (props) => {
-  const [dive_shop, setDiveShop] = React.useState<DiveShopSearchResult | undefined>(props.dive_shop);
+const Rating: FunctionComponent<SimpleDetailProps> = props => {
+  const [dive_shop, setDiveShop] = React.useState<
+    DiveShopSearchResult | undefined
+  >(props.dive_shop);
   const { t } = useTranslation();
   const levels = [
     t('BEGINNER').toLowerCase(),
@@ -48,7 +50,7 @@ const Rating: FunctionComponent<SimpleDetailProps> = (props) => {
   }, []);
 
   const [diveShopAutocompleteModalOpen, toggleDiveShopAutocompleteModal] =
-  React.useState(false);
+    React.useState(false);
 
   const closeDiveShopModal = () => {
     toggleDiveShopAutocompleteModal(false);
@@ -61,16 +63,20 @@ const Rating: FunctionComponent<SimpleDetailProps> = (props) => {
   React.useEffect(() => {
     if (!dive_shop && props.dive_shop_id) {
       const getDiveShop = async () => {
-        const shop = (await handleGetDiveShop(props.dive_shop_id)).data
+        const shop = (await handleGetDiveShop(props.dive_shop_id)).data;
         setDiveShop({
           shop_id: shop.id,
           location_city: shop.city,
           name: shop.name,
-        })
-      }
+        });
+      };
       getDiveShop();
     }
-  }, [props.dive_shop_id, dive_shop])
+  }, [props.dive_shop_id, dive_shop]);
+
+  React.useEffect(() => {
+    setDiveShop(props.dive_shop);
+  }, [props.dive_shop]);
 
   const isValidDiveShop = !!(
     dive_shop &&
@@ -163,11 +169,9 @@ const Rating: FunctionComponent<SimpleDetailProps> = (props) => {
             })}
             onPress={openDiveShopModal}>
             <View style={styles.subContainer}>
-              <Pressable onPress={openDiveShopModal}>
-                <GradientCircle style={styles.iconContainer}>
-                  <MUIcon name="store-outline" size={25} color="white" />
-                </GradientCircle>
-              </Pressable>
+              <GradientCircle style={styles.iconContainer}>
+                <MUIcon name="store-outline" size={25} color="white" />
+              </GradientCircle>
               <GradientText
                 gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
                 start={{
