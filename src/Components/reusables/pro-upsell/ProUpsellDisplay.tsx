@@ -252,7 +252,7 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
                   </View>
                   <View style={styles.proText}>
                     <Text style={styles.proPrice}>
-                      {pkg.product.price_string}
+                      {pkg.product.priceString}
                     </Text>
                     <Text style={styles.proPriceMonthly}>
                       ({formatter.format(monthlyPrice)}

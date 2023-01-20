@@ -87,6 +87,7 @@ const SelectWGradientBorderForPrivacy: FunctionComponent<ComponentProps> = ({
         isVisible={proUpsellModalOpen}
         closeModal={closeProUpsellModal}
         navigateToWebView={navigateToWebView}
+        source='privacy'
       />
       <ScrollView
         horizontal

@@ -27,11 +27,11 @@ export default function App() {
 
   const setUpIAP = () => {
     // Purchases.setDebugLogsEnabled(true);
-    Purchases.setAutomaticAppleSearchAdsAttributionCollection(true);
     if (Platform.OS === 'ios') {
-      Purchases.configure(config.REVENUE_CAT_IOS_API_KEY);
+      Purchases.configure({ apiKey: config.REVENUE_CAT_IOS_API_KEY });
+      Purchases.enableAdServicesAttributionTokenCollection()
     } else if (Platform.OS === 'android') {
-      Purchases.configure(config.REVENUE_CAT_ANDROID_API_KEY);
+      Purchases.configure({ apiKey: config.REVENUE_CAT_ANDROID_API_KEY });
     }
     Purchases.collectDeviceIdentifiers();
   };
