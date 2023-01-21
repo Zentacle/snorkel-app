@@ -29,7 +29,7 @@ export type ExploreStackParamList = {
   // };
   DiveShop: undefined;
   Map: {
-    isExplore: boolean;
+    isExplore?: boolean;
     coords: {
       lat: number;
       lng: number;
