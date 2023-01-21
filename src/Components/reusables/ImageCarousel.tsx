@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-  TouchableWithoutFeedback,
+  TouchableOpacity,
   Share,
   Alert,
   Platform,
@@ -163,49 +163,49 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = props => {
             ))}
       </ScrollView>
       <View style={styles.headerIconsContainer}>
-        <TouchableWithoutFeedback onPress={props.goBack}>
-          <View style={styles.headerIcon}>
-            <FEIcon name="chevron-left" color="black" size={25} />
-          </View>
-        </TouchableWithoutFeedback>
         {props.shareUrl ? (
-          <TouchableWithoutFeedback onPress={onShare}>
+          <TouchableOpacity activeOpacity={0.8} onPress={onShare}>
             <View style={styles.headerIcon}>
-              <FEIcon name="share" color="black" size={25} />
+              <FEIcon name="share" color="black" size={20} />
             </View>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
         ) : (
-          <TouchableWithoutFeedback>
+          <TouchableOpacity activeOpacity={0.8}>
             <View style={styles.headerIcon}>
-              <FEIcon name="share" color="black" size={25} />
+              <FEIcon name="share" color="black" size={24} />
             </View>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
         )}
       </View>
       <View style={styles.headerBottomContainer}>
-        <ScrollView contentContainerStyle={styles.photoDots}>
-          {(props.images || defaultImages)
-            .map((_dot, index) => {
-              // const range =
-              return (
-                <View
-                  key={index}
-                  style={
-                    index === focusedImageIndex
-                      ? styles.whitePhotoDot
-                      : styles.blackPhotoDot
-                  }
-                />
-              );
-            })
-            .slice(...activeRange)}
-        </ScrollView>
-        <View style={styles.imageCountContainer}>
-          <Icon name="image-outline" size={18} color="#FFF" />
-          <Text style={styles.imageCountText}>{`${focusedImageIndex + 1}/${
-            props.images ? props.images.length : defaultImages.length
-          }`}</Text>
-        </View>
+        {props.images && (
+          <ScrollView contentContainerStyle={styles.photoDots}>
+            {props.images
+              .map((image, index) => {
+                return (
+                  <View
+                    key={image.signedurl}
+                    style={
+                      index === focusedImageIndex
+                        ? styles.whitePhotoDot
+                        : styles.blackPhotoDot
+                    }
+                  />
+                );
+              })
+              .slice(...activeRange)}
+          </ScrollView>
+        )}
+        {props.images && props.images.length ? (
+          <View style={styles.imageCountContainer}>
+            <Icon name="image-outline" size={18} color="#FFF" />
+            <Text style={styles.imageCountText}>
+              {focusedImageIndex + 1}/{props.images?.length}
+            </Text>
+          </View>
+        ) : (
+          <></>
+        )}
       </View>
     </View>
   );
