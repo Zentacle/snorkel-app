@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
   Keyboard,
   Pressable,
-  TouchableWithoutFeedback,
+  TouchableOpacity,
 } from 'react-native';
 import debounce from 'lodash/debounce';
 import Config from 'react-native-config';
@@ -94,9 +94,9 @@ const Autocomplete: FunctionComponent<AutocompleteWfinalProps> = ({
           style={styles.search}
           placeholder="Search"
         />
-        <TouchableWithoutFeedback onPress={handleCloseModal}>
+        <TouchableOpacity activeOpacity={0.8} onPress={handleCloseModal}>
           <Text style={styles.searchLabel}>{t('CANCEL')}</Text>
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
       </View>
       {loading ? (
         <ActivityIndicator size="small" color="black" />
