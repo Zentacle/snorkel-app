@@ -10,7 +10,7 @@ import type { DiveLogsState } from '_utils/interfaces/data/logs';
 import DepthArrow from '_assets/ArrowsDownUp.png';
 import DiveTimeClock from '_assets/ClockClockwise.png';
 import UnavailableLocationBox from './UnavailableLocationListBox';
-import Snorkel from '_assets/scuba_icons/snorkel.svg';
+import Snorkel from '_assets/tab-icons/logs-active.png';
 import Location from '_assets/scuba_icons/Location.svg';
 import Shop from '_assets/scuba_icons/Shop.svg';
 import { selectUser } from '_redux/slices/user';
@@ -71,10 +71,6 @@ const LogItem: FunctionComponent<LogItemProps> = ({ diveLog }) => {
 
       <View>
         <View>
-          <View style={styles.descContainer}>
-            <Snorkel width={15} />
-            <Text style={styles.descText}>{diveLog.spot.name}</Text>
-          </View>
           <View style={styles.locationContainer}>
             <Location width={15} />
             <Text style={styles.locationText}>
@@ -169,16 +165,8 @@ const styles = StyleSheet.create({
     width: WIDTH * 0.5,
     marginRight: 40,
   },
-  descContainer: {
-    marginVertical: 4,
-    flexDirection: 'row',
-  },
-  descText: {
-    marginLeft: 5,
-    fontSize: 15,
-    color: 'black',
-  },
   locationContainer: {
+    marginTop: 4,
     flexDirection: 'row',
     alignItems: 'center',
   },
