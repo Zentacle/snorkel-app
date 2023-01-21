@@ -163,10 +163,15 @@ const ImageCarousel: FunctionComponent<ImageCarouselProps> = props => {
             ))}
       </ScrollView>
       <View style={styles.headerIconsContainer}>
+        <TouchableOpacity activeOpacity={0.8} onPress={props.goBack}>
+          <View style={styles.headerIcon}>
+            <FEIcon name="chevron-left" color="black" size={24} />
+          </View>
+        </TouchableOpacity>
         {props.shareUrl ? (
           <TouchableOpacity activeOpacity={0.8} onPress={onShare}>
             <View style={styles.headerIcon}>
-              <FEIcon name="share" color="black" size={20} />
+              <FEIcon name="share" color="black" size={24} />
             </View>
           </TouchableOpacity>
         ) : (

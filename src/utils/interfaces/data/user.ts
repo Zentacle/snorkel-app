@@ -40,7 +40,6 @@ export interface LoginResponse {
   data: AuthData;
   user: User;
   msg?: string; // failed login
-  cookie_header: string;
 }
 
 export interface UpdateUserReturn extends User {

@@ -13,8 +13,6 @@ import NetInfo, { useNetInfo } from '@react-native-community/netinfo';
 import Toast from 'react-native-toast-message';
 import {
   Notifications,
-  Registered,
-  RegistrationError,
   Notification,
   NotificationBackgroundFetchResult,
 } from 'react-native-notifications';
@@ -43,9 +41,6 @@ import {
   handleCheckExistingUser,
   selectAuthToken,
 } from '_redux/slices/user';
-import {
-  handleRegisterPushToken
-} from '_redux/slices/user/api';
 import { autoHydrateSettings } from '_redux/slices/settings';
 import { linking } from '_utils/functions/linking';
 import offlineManager from '_utils/functions/offline-manager';
@@ -59,6 +54,7 @@ import {
   SimpleFormInitialValues,
 } from '_utils/interfaces/data/logs';
 import { sendEvent } from '_utils/functions/amplitude';
+import registerPushToken from '_utils/functions/registerPushToken';
 
 const Navigator: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -78,25 +74,8 @@ const Navigator: React.FC = () => {
   }, []);
 
   React.useEffect(() => {
-    const registerPushToken = () => {
-      Notifications.registerRemoteNotifications();
-      Notifications.events().registerRemoteNotificationsRegistered(
-        async (event: Registered) => {
-          await handleRegisterPushToken(event.deviceToken, authToken!);
-        },
-      );
-      Notifications.events().registerRemoteNotificationsRegistrationFailed(
-        (event: RegistrationError) => {
-          console.log(event);
-        },
-      );
-      Notifications.events().registerRemoteNotificationsRegistrationDenied(() => {
-        console.log('testing');
-      });
-    }
-
     if (authToken) {
-      registerPushToken();
+      registerPushToken(authToken);
     }
 
     Notifications.events().registerNotificationReceivedForeground(
@@ -127,7 +106,9 @@ const Navigator: React.FC = () => {
     requestNotifications(['alert', 'sound', 'badge'])
       .then(({ status }) => {
         if (status === RESULTS.GRANTED) {
-          registerPushToken();
+          if (authToken) {
+            registerPushToken(authToken);
+          }
           sendEvent('notification_permission__granted')
         } else {
           sendEvent('notification_permission__denied')

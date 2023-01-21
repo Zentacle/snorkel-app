@@ -6,7 +6,6 @@ import {
   ImageBackground,
   TouchableWithoutFeedback,
   Pressable,
-  Platform,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { PERMISSIONS, RESULTS, checkMultiple } from 'react-native-permissions';
@@ -26,13 +25,13 @@ import type {
   AppleAuthReturn,
   GoogleAuthReturn,
 } from './utils/interfaces';
+import navigatePostSignup from './utils/navigatePostSignup';
 import { useAppDispatch, useAppSelector } from '_redux/hooks';
 import {
   googleRegister,
   selectLoadingState,
   appleRegister,
 } from '_redux/slices/user';
-import { LoginResponse } from '_utils/interfaces/data/user';
 
 import { isBelowHeightThreshold, HEIGHT } from '_utils/constants';
 import { sendEvent } from '_utils/functions/amplitude';
@@ -74,21 +73,9 @@ const Landing: FunctionComponent<LandingProps> = props => {
     props.navigation.navigate('EmailSignUp');
   };
 
-  const navigateToOnBoarding = () => {
-    props.navigation.navigate('OnBoarding', {
-      screen: 'ChooseAvatar',
-    });
-  };
-
   const navigateToApp = () => {
     props.navigation.navigate('App', {
       screen: 'Explore',
-    });
-  };
-
-  const navigateToFirstPro = () => {
-    props.navigation.navigate('OnBoarding', {
-      screen: 'ProUpsellFirst',
     });
   };
 
@@ -143,22 +130,11 @@ const Landing: FunctionComponent<LandingProps> = props => {
               googleRegister(credentialObj as { credential: string }),
             );
 
-            // assume user has filled onBoarding if username and profile_pic exist
-            const userPreviouslyFilledOnBoardingData = !!(
-              response.payload as LoginResponse
-            ).user.profile_pic;
-
             if (googleRegister.fulfilled.match(response)) {
               sendEvent('login_success', {
                 method: 'google',
               });
-              if (!(response.payload as LoginResponse).user.has_pro) {
-                navigateToFirstPro();
-              } else if (userPreviouslyFilledOnBoardingData) {
-                navigateToApp();
-              } else {
-                navigateToOnBoarding();
-              }
+              navigatePostSignup(response.payload, props.navigation);
             }
           }
         }
@@ -172,22 +148,11 @@ const Landing: FunctionComponent<LandingProps> = props => {
               appleRegister(credentialObj as AppleAuthReturn),
             );
 
-            // assume user has filled onBoarding if username and profile_pic exist
-            const userPreviouslyFilledOnBoardingData = !!(
-              response.payload as LoginResponse
-            ).user.profile_pic;
-
             if (appleRegister.fulfilled.match(response)) {
               sendEvent('login_success', {
                 method: 'apple',
               });
-              if (!(response.payload as LoginResponse).user.has_pro) {
-                navigateToFirstPro();
-              } else if (userPreviouslyFilledOnBoardingData) {
-                navigateToApp();
-              } else {
-                navigateToOnBoarding();
-              }
+              navigatePostSignup(response.payload, props.navigation);
             }
           }
         }
