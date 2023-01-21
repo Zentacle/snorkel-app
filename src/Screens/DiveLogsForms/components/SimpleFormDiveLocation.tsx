@@ -1,18 +1,15 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from 'react-i18next';
 
 import type { FunctionComponent } from 'react';
 
-import Snorkel from '_assets/scuba_icons/snorkel.svg';
-import Location from '_assets/scuba_icons/Location.svg';
-
 interface SimpleFormDiveLocationProps {
   coordinates: {
-    latitude: number;
-    longitude: number;
+    latitude?: number;
+    longitude?: number;
   };
   desc: string;
   onClickEdit: () => void;
@@ -23,15 +20,17 @@ const SimpleFormDiveLocation: FunctionComponent<
   SimpleFormDiveLocationProps
 > = ({ coordinates, onClickEdit, desc, location_city }) => {
   const { t } = useTranslation();
-  const canShowLocation = coordinates.latitude && coordinates.longitude;
 
   return (
     <View style={styles.diveLocationContainer}>
-      {canShowLocation ? (
-        <>
-          <Text style={styles.diveSiteLocationHeader}>
-            {t('DIVE_SITE_LOCATION')}
-          </Text>
+      <Text style={styles.diveSiteLocationHeader}>
+        {t('DIVE_SITE_LOCATION')}
+      </Text>
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={styles.container}
+        onPress={onClickEdit}>
+        {coordinates.latitude && coordinates.longitude && (
           <View style={styles.mapContainer}>
             <MapView
               style={styles.map}
@@ -51,28 +50,18 @@ const SimpleFormDiveLocation: FunctionComponent<
               />
             </MapView>
           </View>
-          <View style={styles.locationDetails}>
-            <View>
-              <View style={styles.descContainer}>
-                <Snorkel width={15} />
-                <Text style={styles.descText}>{desc}</Text>
-              </View>
-              <View style={styles.locationContainer}>
-                <Location width={15} />
-                <Text style={styles.locationText}>{location_city}</Text>
-              </View>
-            </View>
-            <Icon
-              name="pencil-outline"
-              color="black"
-              size={30}
-              onPress={onClickEdit}
-            />
-          </View>
-        </>
-      ) : (
-        <View />
-      )}
+        )}
+        <View style={styles.locationDetails}>
+          <Text style={styles.descText}>{desc}</Text>
+          <Text style={styles.locationText}>{location_city}</Text>
+        </View>
+        <Icon
+          name="pencil-outline"
+          color="black"
+          size={30}
+          style={styles.editIcon}
+        />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -86,55 +75,46 @@ const styles = StyleSheet.create({
   diveLocationContainer: {
     marginTop: 20,
   },
+  container: {
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    borderRadius: 16,
+    padding: 8,
+    marginTop: 10,
+  },
   mapContainer: {
-    width: '100%',
-    height: 120,
+    width: 100,
+    height: 100,
     borderTopLeftRadius: 18,
     borderTopRightRadius: 18,
-    marginTop: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
-    alignSelf: 'center',
-    backgroundColor: 'white',
   },
   map: {
-    width: '100%',
-    height: '100%',
-    borderTopLeftRadius: 18,
-    borderTopRightRadius: 18,
-
-    flex: 1,
-    ...StyleSheet.absoluteFillObject,
+    width: 100,
+    height: 100,
+    borderRadius: 8,
   },
   locationDetails: {
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-    backgroundColor: 'white',
-    width: '100%',
-    borderBottomLeftRadius: 18,
-    borderBottomRightRadius: 18,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  descContainer: {
-    flexDirection: 'row',
+    marginTop: 'auto',
+    marginBottom: 'auto',
+    paddingHorizontal: 16,
+    flexShrink: 1,
   },
   descText: {
-    marginLeft: 5,
-    fontSize: 15,
+    fontSize: 20,
     color: 'black',
-  },
-  locationContainer: {
-    flexDirection: 'row',
-    marginTop: 10,
-    alignItems: 'center',
+    fontWeight: 'bold',
+    flexWrap: 'wrap',
   },
   locationText: {
-    marginLeft: 5,
+    marginTop: 4,
     fontSize: 15,
     color: 'black',
+  },
+  editIcon: {
+    marginLeft: 'auto',
+    marginTop: 'auto',
+    marginBottom: 'auto',
+    flexShrink: 0,
   },
 });
 

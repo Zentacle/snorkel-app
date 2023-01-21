@@ -11,7 +11,6 @@ import SelectWGradientBorder from '_components/ui/SelectWGradientBorderV2';
 import LocationAutocompleteModal from '_screens/DiveLogsForms/components/LocationAutocompleteModal';
 import SimpleFormDiveLocation from '_screens/DiveLogsForms/components/SimpleFormDiveLocation';
 
-import UnavailableLocationBox from '_screens/DiveLogsForms/components/UnavailableLocationBox';
 import type { FunctionComponent } from 'react';
 import { isBelowHeightThreshold } from '_utils/constants';
 import {
@@ -30,9 +29,7 @@ interface LocationAndImageProps {
   };
 }
 
-const Location: FunctionComponent<LocationAndImageProps> = ({
-  location,
-}) => {
+const Location: FunctionComponent<LocationAndImageProps> = ({ location }) => {
   const { t } = useTranslation();
   const activity = [
     t('SCUBA').toLowerCase(),
@@ -68,8 +65,7 @@ const Location: FunctionComponent<LocationAndImageProps> = ({
     <ScrollView
       nestedScrollEnabled
       contentContainerStyle={styles.container}
-      keyboardShouldPersistTaps="handled"
-    >
+      keyboardShouldPersistTaps="handled">
       <Field
         name="location"
         isVisible={autocompleteModalOpen}
@@ -77,7 +73,7 @@ const Location: FunctionComponent<LocationAndImageProps> = ({
         closeModal={closeLocationModal}
       />
 
-      {isValidLocation ? (
+      {location?.desc ? (
         <SimpleFormDiveLocation
           coordinates={{
             latitude: location.lat,
@@ -86,13 +82,6 @@ const Location: FunctionComponent<LocationAndImageProps> = ({
           desc={location.desc}
           location_city={location.location_city}
           onClickEdit={openLocationModal}
-        />
-      ) : !isValidLocation && location?.desc ? (
-        <UnavailableLocationBox
-          desc={location.desc}
-          location_city={location.location_city}
-          onClickEdit={openLocationModal}
-          showEdit
         />
       ) : (
         <View>

@@ -29,7 +29,6 @@ import ActivityImage from '_assets/Activity.png';
 import GradientText from '_components/ui/GradientText';
 import LocationAutocompleteModal from '_screens/DiveLogsForms/components/LocationAutocompleteModal';
 import SimpleFormDiveLocation from '_screens/DiveLogsForms/components/SimpleFormDiveLocation';
-import UnavailableLocationBox from '_screens/DiveLogsForms/components/UnavailableLocationBox';
 import Button from '_components/ui/Buttons/Button';
 import { sendEvent } from '_utils/functions/amplitude';
 
@@ -157,12 +156,6 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
         initialValues={initialValues}
         render={({ values, form }) => {
           formRef.current = form;
-          const isValidLocation = !!(
-            values.location &&
-            values.location.lat &&
-            values.location.lng &&
-            values.location.desc
-          );
 
           return (
             <>
@@ -205,7 +198,7 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
                   />
 
                   <View style={styles.diveShopLabelContainer}></View>
-                  {isValidLocation ? (
+                  {values.location?.desc ? (
                     <SimpleFormDiveLocation
                       coordinates={{
                         latitude: values.location.lat,
@@ -214,13 +207,6 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
                       desc={values.location.desc}
                       location_city={values.location.location_city}
                       onClickEdit={openLocationModal}
-                    />
-                  ) : !isValidLocation && values.location?.desc ? (
-                    <UnavailableLocationBox
-                      desc={values.location.desc}
-                      location_city={values.location.location_city}
-                      onClickEdit={openLocationModal}
-                      showEdit
                     />
                   ) : (
                     <View>

@@ -17,7 +17,6 @@ import SelectWGradientBorderForPrivacy from '_components/SelectWGradientborderFo
 
 import type { FunctionComponent } from 'react';
 import type { AdvancedFormInitialValues as InitialValues } from '_utils/interfaces/data/logs';
-import UnavailableLocationBox from '_screens/DiveLogsForms/components/UnavailableLocationBox';
 import LocationAutocompleteModal from '_screens/DiveLogsForms/components/LocationAutocompleteModal';
 import DiveShopAutocompleteModal from '_screens/DiveLogsForms/components/DiveShopAutocompleteModal';
 import {
@@ -119,12 +118,6 @@ const BasicInfo: FunctionComponent<BasicInfoProps> = ({ values }) => {
             </MapView>
           )}
 
-          {values.location?.desc && !locationHasCoordinates && (
-            <UnavailableLocationBox
-              location_city={values.location.location_city}
-              desc={values.location.desc}
-            />
-          )}
           <View />
           <View style={styles.mapDescriptionContainer}>
             <View style={styles.mapTextContainer}>
