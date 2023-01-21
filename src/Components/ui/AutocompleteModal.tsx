@@ -10,7 +10,7 @@ import {
   Keyboard,
   Pressable,
   SafeAreaView,
-  TouchableWithoutFeedback,
+  TouchableOpacity,
 } from 'react-native';
 import debounce from 'lodash/debounce';
 import { useTranslation } from 'react-i18next';
@@ -186,11 +186,11 @@ const AutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
             enableClearInput
             handleClearInput={handleClearInput}
           />
-          <TouchableWithoutFeedback onPress={handleCloseModal}>
+          <TouchableOpacity activeOpacity={0.8} onPress={handleCloseModal}>
             <View style={styles.searchBar}>
               <Text style={styles.searchLabel}>{t('CANCEL')}</Text>
             </View>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
         </View>
         <View style={styles.listContainer}>
           <FlatList
