@@ -140,8 +140,8 @@ PODS:
     - RNPermissions
   - Permission-PhotoLibrary (3.6.1):
     - RNPermissions
-  - PurchasesHybridCommon (3.3.0):
-    - RevenueCat (= 4.9.0)
+  - PurchasesHybridCommon (4.8.0):
+    - RevenueCat (= 4.16.0)
   - RCT-Folly (2021.06.28.00-v2):
     - boost
     - DoubleConversion
@@ -438,7 +438,7 @@ PODS:
     - React-jsi (= 0.66.4)
     - React-logger (= 0.66.4)
     - React-perflogger (= 0.66.4)
-  - RevenueCat (4.9.0)
+  - RevenueCat (4.16.0)
   - RNAppleAuthentication (2.1.5):
     - React-Core
   - RNCAsyncStorage (1.12.1):
@@ -452,8 +452,8 @@ PODS:
     - React-Core
   - RNPermissions (3.6.1):
     - React-Core
-  - RNPurchases (5.0.0-beta.1):
-    - PurchasesHybridCommon (= 3.3.0)
+  - RNPurchases (5.6.0):
+    - PurchasesHybridCommon (= 4.8.0)
     - React-Core
   - RNScreens (3.10.1):
     - React-Core
@@ -761,7 +761,7 @@ SPEC CHECKSUMS:
   Permission-Microphone: 48212dd4d28025d9930d583e3c7a56da7268665c
   Permission-Notifications: 150484ae586eb9be4e32217582a78350a9bb31c3
   Permission-PhotoLibrary: 5b34ca67279f7201ae109cef36f9806a6596002d
-  PurchasesHybridCommon: 5c3e18d6813dc1c256d2fb9f295d73d2230d46d1
+  PurchasesHybridCommon: bd1e1d3476afd3f95332b0ae160e4ce1bd1efd99
   RCT-Folly: a21c126816d8025b547704b777a2ba552f3d9fa9
   RCTRequired: 4bf86c70714490bca4bf2696148638284622644b
   RCTTypeSafety: c475a7059eb77935fa53d2c17db299893f057d5d
@@ -800,14 +800,14 @@ SPEC CHECKSUMS:
   React-RCTVibration: e3ffca672dd3772536cb844274094b0e2c31b187
   React-runtimeexecutor: dec32ee6f2e2a26e13e58152271535fadff5455a
   ReactCommon: 57b69f6383eafcbd7da625bfa6003810332313c4
-  RevenueCat: d5ec5e2944eedce83497218f0dc01eda546dd7a7
+  RevenueCat: c12e14f5e3dc5732db6d5095ac4ce6ff08d7eeb0
   RNAppleAuthentication: 63c2127ace11985b94f852fc480eb84145653712
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCClipboard: cc054ad1e8a33d2a74cd13e565588b4ca928d8fd
   RNCMaskedView: c298b644a10c0c142055b3ae24d83879ecb13ccd
   RNGoogleSignin: c4381751eefd73c552b923ba347a9bfc6f18771c
   RNPermissions: dcdb7b99796bbeda6975a6e79ad519c41b251b1c
-  RNPurchases: 595eccd7692f02dd09d83093a734345b3c9952bb
+  RNPurchases: bf74bd8e79ed681a84f05d2c7324964d0859b913
   RNScreens: 522705f2e5c9d27efb17f24aceb2bf8335bc7b8e
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
