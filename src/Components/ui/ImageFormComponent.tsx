@@ -23,7 +23,7 @@ import { FormImages } from '_utils/interfaces/data/logs';
 type FinalFormProps = FieldRenderProps<FormImages | string, any>;
 
 interface BaseProps {
-  iconContaineStyle: ViewStyle;
+  iconContainerStyle: ViewStyle;
   placeholderStyle?: ImageStyle;
   imageStyling?: ImageStyle;
 }
@@ -37,7 +37,7 @@ interface PhotoOptions {
 
 const ImageFormComponent: FunctionComponent<ImageFormComponentProps> = ({
   input: { value, onChange },
-  iconContaineStyle,
+  iconContainerStyle,
   placeholderStyle,
   imageStyling,
 }) => {
@@ -182,29 +182,29 @@ const ImageFormComponent: FunctionComponent<ImageFormComponentProps> = ({
     <View style={styles.container}>
       <View
         style={[
-          iconContaineStyle,
+          iconContainerStyle,
           { backgroundColor: value ? 'none' : 'white' },
         ]}>
         {value ? (
           <>
-            <View>
-              {typeof value === 'string' ? (
-                <Image
-                  style={[styles.imageStyling, imageStyling]}
-                  source={{ uri: value }}
-                />
-              ) : (
-                <Image
-                  style={[styles.imageStyling, imageStyling]}
-                  source={{ uri: value.uri }}
-                />
-              )}
-            </View>
             <Pressable
               onPress={openCameraModal}
               style={state => ({
                 opacity: state.pressed ? 0.8 : 1,
               })}>
+              <View>
+                {typeof value === 'string' ? (
+                  <Image
+                    style={[styles.imageStyling, imageStyling]}
+                    source={{ uri: value }}
+                  />
+                ) : (
+                  <Image
+                    style={[styles.imageStyling, imageStyling]}
+                    source={{ uri: value.uri }}
+                  />
+                )}
+              </View>
               <View style={styles.editContainer}>
                 <Text style={styles.editText}>Edit</Text>
               </View>
