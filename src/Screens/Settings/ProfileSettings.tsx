@@ -60,7 +60,7 @@ const ProfileSettings: FunctionComponent<ProfileSettingsTypeProps> = ({
   const submitForm = async (values: User, form: any) => {
     const dirtyValues = Object.keys(form.getState().dirtyFields).reduce(
       (result: Record<string, any>, key: string) => {
-        result[key] = values[key];
+        result[key] = (values as any)[key];
         return result;
       },
       {},
