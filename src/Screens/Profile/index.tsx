@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   ScrollView,
   Image,
+  Pressable,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
@@ -56,6 +57,12 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
     });
   };
 
+  const navigateToProfileSettings = () => {
+    navigation.navigate('SettingsStack', {
+      screen: 'ProfileSettings',
+    });
+  };
+
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       dispatch(
@@ -77,7 +84,7 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
     });
   };
 
-  const diveLogsWithLoc = diveLogs.filter(diveLog => diveLog.spot.latitude)
+  const diveLogsWithLoc = diveLogs.filter(diveLog => diveLog.spot.latitude);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -91,7 +98,9 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
       <ScrollView
         style={styles.contentContainer}
         showsVerticalScrollIndicator={false}>
-        <View style={styles.profileImageContainer}>
+        <Pressable
+          style={styles.profileImageContainer}
+          onPress={navigateToProfileSettings}>
           {user?.profile_pic ? (
             <Image
               style={styles.profileImage}
@@ -100,13 +109,21 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
           ) : (
             <Image style={styles.profileImage} source={ProfileDefault} />
           )}
-        </View>
+          <View style={styles.editContainer}>
+            <Text style={styles.editText}>Edit</Text>
+          </View>
+        </Pressable>
         <Text style={styles.displayName}>{user?.display_name}</Text>
 
         <DiveLogSummary diveLogs={diveLogs} />
         {diveLogsWithLoc && diveLogsWithLoc.length ? (
           <MapView
-            style={{ height: 150, width: '100%', borderRadius: 16, marginVertical: 16 }}
+            style={{
+              height: 150,
+              width: '100%',
+              borderRadius: 16,
+              marginVertical: 16,
+            }}
             showsUserLocation={true}
             liteMode={true}
             initialRegion={{
@@ -115,16 +132,15 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
               latitudeDelta: 100,
               longitudeDelta: 100,
             }}>
-            {diveLogsWithLoc
-              .map(diveLog => (
-                <Marker
-                  key={diveLog.id}
-                  coordinate={{
-                    latitude: diveLog.spot.latitude,
-                    longitude: diveLog.spot.longitude,
-                  }}
-                />
-              ))}
+            {diveLogsWithLoc.map(diveLog => (
+              <Marker
+                key={diveLog.id}
+                coordinate={{
+                  latitude: diveLog.spot.latitude,
+                  longitude: diveLog.spot.longitude,
+                }}
+              />
+            ))}
           </MapView>
         ) : (
           <></>
@@ -172,6 +188,7 @@ const styles = StyleSheet.create({
   profileImageContainer: {
     alignItems: 'center',
     marginTop: 20,
+    marginBottom: 10,
   },
   profileImage: {
     width: isBelowHeightThreshold ? 100 : 120,
@@ -198,6 +215,19 @@ const styles = StyleSheet.create({
   },
   photosContainer: {
     marginBottom: 10,
+  },
+  editContainer: {
+    alignSelf: 'center',
+    backgroundColor: '#0B94EF',
+    paddingVertical: 3,
+    paddingHorizontal: 8,
+    borderRadius: 8,
+    position: 'absolute',
+    bottom: -10,
+  },
+  editText: {
+    color: 'white',
+    fontSize: 12,
   },
 });
 
