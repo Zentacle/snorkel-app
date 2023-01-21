@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Dimensions,
   View,
   Text,
   StyleSheet,
@@ -8,7 +9,7 @@ import {
   Platform,
   TouchableWithoutFeedback,
 } from 'react-native';
-import config from 'react-native-config';
+import { LineChart } from 'react-native-chart-kit';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from 'react-i18next';
 
@@ -222,6 +223,50 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
               />
             ) : (
               <UnavailableLocationBox desc={diveLog.spot.name} />
+            )}
+
+            {diveLog.review.max_depth && (
+              <LineChart
+                data={{
+                  labels: [],
+                  datasets: [
+                    {
+                      data: [
+                        0,
+                        diveLog.review.max_depth * -1,
+                        diveLog.review.max_depth * -1,
+                        diveLog.review.max_depth * -1,
+                        diveLog.review.max_depth * -1,
+                        diveLog.review.max_depth * -1,
+                        0,
+                      ],
+                    },
+                  ],
+                }}
+                bezier
+                width={Dimensions.get('window').width - 50} // from react-native
+                height={220}
+                yAxisSuffix={user?.unit === 'metric' ? 'm' : 'ft'}
+                yAxisInterval={1} // optional, defaults to 1
+                withInnerLines={false}
+                chartConfig={{
+                  backgroundColor: 'transparent',
+                  backgroundGradientFrom: '#EFF6F9',
+                  backgroundGradientTo: '#EFF6F9',
+                  decimalPlaces: 0, // optional, defaults to 2dp
+                  color: (opacity = 1) => `#0B94EF`,
+                  labelColor: (opacity = 1) => `#0B94EF`,
+                  propsForDots: {
+                    r: '0',
+                    strokeWidth: '1',
+                    stroke: '#ffa726',
+                  },
+                }}
+                style={{
+                  marginVertical: 8,
+                  borderRadius: 16,
+                }}
+              />
             )}
 
             <View style={styles.note}>
