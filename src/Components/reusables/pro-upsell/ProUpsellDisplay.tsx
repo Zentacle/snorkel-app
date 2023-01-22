@@ -178,6 +178,8 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
     );
   }
 
+  const standardPrice = proPackage.monthly?.product.price || 5;
+
   return (
     <View style={styles.container}>
       {isModal ? (
@@ -231,6 +233,7 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
               };
               const monthlyPrice =
                 pkg.product.price / monthsInPeriod[pkg.packageType];
+
               return (
                 <Pressable
                   style={[
@@ -262,7 +265,7 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
                       <Text style={styles.proDiscount}>
                         SAVE{' '}
                         {percentFormatter.format(
-                          (monthlyPrice / pkg.product.price) * 100,
+                          (monthlyPrice / standardPrice) * 100,
                         )}
                         %
                       </Text>

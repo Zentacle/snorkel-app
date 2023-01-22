@@ -176,7 +176,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
     ) {
       Geolocation.getCurrentPosition(
         position => {
-          setPosition(position.coords)
+          setPosition(position.coords);
           dispatch(
             handleFetchDiveSites({
               latitude: position.coords.latitude,
