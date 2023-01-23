@@ -71,6 +71,7 @@ const ProfileSettings: FunctionComponent<ProfileSettingsTypeProps> = ({
       {},
     );
     dispatch(updateUser(dirtyValues));
+    navigateBack();
   };
 
   return (
