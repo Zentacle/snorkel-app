@@ -25,7 +25,7 @@ import SearchInput from '_components/ui/SearchInput';
 import GradientText from '_components/ui/GradientText';
 import DiveSite from './components/DiveSite';
 import DiveBuddy from './components/DiveBuddy';
-// import DiveShop from './components/DiveShop';
+import DiveShop from './components/DiveShop';
 import ProUpsell from '_components/reusables/pro-upsell/ProUpsellButton';
 import { useAppDispatch, useAppSelector } from '_redux/hooks';
 import {
@@ -62,6 +62,7 @@ import AutocompleteModal from '_components/ui/AutocompleteModal';
 
 import { WIDTH, HEIGHT, isBelowWidthThreshold } from '_utils/constants';
 import type { LocationSearchInitialValues } from '_utils/interfaces/data/search';
+import { handleFetchNearbyShops, selectNearbyShops } from '_redux/slices/dive-shops';
 
 // interface TagInterface {
 //   name: string;
@@ -86,6 +87,8 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   const diveSitesIsLoading = useAppSelector(selectLoadingState);
   const nearbyBuddies =
     Object.values(useAppSelector(selectNearbyBuddies)) || [];
+  const nearbyShops =
+    Object.values(useAppSelector(selectNearbyShops)) || [];
   const user = useAppSelector(selectUser);
   const [autocompleteModalOpen, toggleAutocompleteModal] =
     React.useState(false);
@@ -185,6 +188,12 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
           );
           dispatch(
             handleFetchNearbyBuddies({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            }),
+          );
+          dispatch(
+            handleFetchNearbyShops({
               latitude: position.coords.latitude,
               longitude: position.coords.longitude,
             }),
@@ -410,35 +419,19 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
             </ScrollView>
           </View>
         )}
-        {/* <View style={styles.diveShops}>
+        <View style={styles.diveShops}>
           <View style={styles.diveShopsTextContainer}>
-            <Text style={styles.diveShopsMainText}>{t('DIVE_SHOPS')}</Text>
-            <TouchableWithoutFeedback>
-              <GradientText
-                gradientColors={['#AA00FF', '#00E0FF', '#00E0FF']}
-                start={{
-                  x: 0,
-                  y: 0,
-                }}
-                end={{
-                  x: 0.06,
-                  y: 1.8,
-                }}
-                gradientLocations={[0.01, 1, 1]}
-                style={styles.diveShopsMoreText}>
-                {t('OPEN_MORE')}
-              </GradientText>
-            </TouchableWithoutFeedback>
+            <Text style={styles.diveShopsMainText}>{t('CLOSEST_DIVE_SHOPS')}</Text>
           </View>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.diveShopsCardsContainer}>
-            {[1, 2, 3].map((item, index) => (
-              <DiveShop key={index} onPressContainer={navigateToDiveShop} />
+            {nearbyShops.map((item) => (
+              <DiveShop key={item.id} shop={item}/>
             ))}
           </ScrollView>
-        </View> */}
+        </View>
 
         <View style={styles.diveSites}>
           <View style={styles.diveSitesTextContainer}>

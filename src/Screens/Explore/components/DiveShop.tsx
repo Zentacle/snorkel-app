@@ -6,37 +6,41 @@ import MapView from 'react-native-maps';
 import type { FunctionComponent } from 'react';
 
 import Location from '_assets/scuba_icons/Location.svg';
+import { DiveShopFull } from '_utils/interfaces/data/shops';
 
 interface DiveShopProps {
+  shop: DiveShopFull;
   onPressContainer?: () => void;
 }
 
 const DiveShop: FunctionComponent<DiveShopProps> = props => {
   let content = (
     <View style={styles.container}>
-      <View style={styles.mapContainer}>
-        <MapView
-          style={styles.map}
-          scrollEnabled={false}
-          liteMode={true}
-          initialRegion={{
-            latitude: -8.409518,
-            longitude: 115.188919,
-            latitudeDelta: 0.0421,
-            longitudeDelta: 0.6922,
-          }}
-        />
-      </View>
+      {props.shop.latitude && (
+        <View style={styles.mapContainer}>
+          <MapView
+            style={styles.map}
+            scrollEnabled={false}
+            liteMode={true}
+            initialRegion={{
+              latitude: props.shop.latitude,
+              longitude: props.shop.longitude,
+              latitudeDelta: 0.0421,
+              longitudeDelta: 0.6922,
+            }}
+          />
+        </View>
+      )}
       <View style={styles.descriptionContainer}>
-        <Text style={styles.descriptionText}>Dive Shop on the beach</Text>
+        <Text style={styles.descriptionText}>{props.shop.name}</Text>
         <View style={styles.locationContainer}>
-          <Location width={15} />
-          <Text style={styles.locationText}>East Bali, Indonesia</Text>
+          <Text style={styles.locationText}>{props.shop.address1}</Text>
+          <Text style={styles.locationText}>{props.shop.city}</Text>
         </View>
         <View style={styles.ratingsContainer}>
-          <Text style={styles.ratingsText}>3.5</Text>
+          <Text style={styles.ratingsText}>5.0</Text>
           <Icon name="star" size={20} color="#aa00ff" />
-          <Text style={styles.ratingsCount}>(463)</Text>
+          {/* <Text style={styles.ratingsCount}>(0)</Text> */}
         </View>
       </View>
     </View>
@@ -54,7 +58,6 @@ const DiveShop: FunctionComponent<DiveShopProps> = props => {
 
 const styles = StyleSheet.create({
   container: {
-    // height: 185,
     width: 228,
     backgroundColor: '#FFF',
     marginRight: 15,
@@ -78,8 +81,7 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   descriptionContainer: {
-    paddingHorizontal: 15,
-    paddingVertical: 7,
+    padding: 16,
   },
   descriptionText: {
     color: 'black',
@@ -87,13 +89,10 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   locationContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 3,
+    marginTop: 4,
   },
   locationText: {
     color: 'black',
-    marginLeft: 10,
   },
   ratingsContainer: {
     flexDirection: 'row',
@@ -102,12 +101,12 @@ const styles = StyleSheet.create({
   },
   ratingsText: {
     color: 'black',
-    marginHorizontal: 5,
     fontSize: 16,
+    marginRight: 2,
   },
   ratingsCount: {
     color: 'black',
-    marginLeft: 5,
+    marginLeft: 4,
     fontSize: 16,
   },
 });

@@ -7,9 +7,33 @@ import type {
   DiveShopTypeaheadResponse,
 } from '_utils/interfaces/data/shops';
 import { FormImages } from '_utils/interfaces/data/logs';
+import { NearbyExplore } from '.';
 
 interface ResponseWith<T> {
   data: T;
+}
+
+export async function fetchNearbyShops(
+  coords: NearbyExplore,
+): Promise<ResponseWith<DiveShopFull[]>> {
+  try {
+    if (coords.latitude && coords.longitude) {
+      const url = `${config.API_ENDPOINT}/shop/nearby?lat=${coords.latitude}&lng=${coords.longitude}`;
+      const response = fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }).then(res => res.json());
+      return response;
+    } else {
+      return {
+        'data': [],
+      }
+    }
+  } catch (err) {
+    throw err;
+  }
 }
 
 export async function handleCreateDiveShop(
