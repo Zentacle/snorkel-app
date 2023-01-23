@@ -4,6 +4,7 @@ import {
   createSelector,
   createAsyncThunk,
 } from '@reduxjs/toolkit';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import { RootState } from '../../store';
 import {
@@ -67,9 +68,13 @@ interface RecentNearbyParams {
 export const fetchSingleDiveLog = createAsyncThunk(
   'dive-logs/fetch-single-dive-log',
   async (id: number, thunkApi) => {
-    const response = await handleFetchSingleDiveLog(id);
+    const response = await handleFetchSingleDiveLog(id)
+      .catch(() => ({ msg: 'Could not fetch dive logs'}));;
     if (response.msg) {
-      return thunkApi.rejectWithValue(response.msg);
+      return thunkApi.rejectWithValue({
+        msg: response.msg,
+        id,
+      });
     }
     return response;
   },
@@ -81,13 +86,25 @@ export const fetchOwnDiveLogs = createAsyncThunk(
     const response = await handleFetchOwnDiveLogs(
       userAuth.auth_token,
       userAuth.username,
-    );
+    )
     if (response.msg) {
       return thunkApi.rejectWithValue(response.msg);
     }
+    AsyncStorage.setItem('dive-logs/fetch-dive-logs', JSON.stringify(response.data));
     return response.data;
   },
 );
+
+export const loadOwnDiveLogs = createAsyncThunk(
+  'dive-logs/load-dive-logs',
+  async (_data, thunkApi) => {
+    const diveLogs = await AsyncStorage.getItem('dive-logs/fetch-dive-logs')
+    if (!diveLogs) {
+      return thunkApi.rejectWithValue('no dive logs');
+    }
+    return JSON.parse(diveLogs);
+  }
+)
 
 export const fetchNearbyRecentDiveLogs = createAsyncThunk(
   'dive-logs/fetch-nearby-recent-dive-logs',
@@ -131,6 +148,13 @@ export const diveLogsSlice = createSlice({
         state.diveLogs = normalizeData(action.payload.reviews);
         state.orderedDiveLogs = action.payload.reviews;
       })
+      .addCase(loadOwnDiveLogs.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error.status = false;
+        state.error.message = null;
+        state.diveLogs = normalizeData(action.payload.reviews);
+        state.orderedDiveLogs = action.payload.reviews;
+      })
       .addCase(fetchSingleDiveLog.pending, state => {
         state.loading = true;
         state.error.status = false;
@@ -144,13 +168,13 @@ export const diveLogsSlice = createSlice({
         state.activeDiveLog = action.payload;
       })
       .addCase(fetchSingleDiveLog.rejected, (state, action) => {
+        const payload: any = action.payload;
         state.loading = false;
         state.error.status = false;
-        state.error.message =
-          typeof action.payload === 'string'
-            ? action.payload
+        state.error.message = payload.msg
+            ? payload.msg
             : 'There was an fetching dive logs. Please try again later';
-        state.activeDiveLog = null;
+        state.activeDiveLog = { spot: state.diveLogs[payload.id].spot, review: state.diveLogs[payload.id] };
       })
       .addCase(fetchNearbyRecentDiveLogs.fulfilled, (state, action) => {
         state.loading = false;

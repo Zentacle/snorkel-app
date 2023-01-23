@@ -16,6 +16,7 @@ import { selectUser, selectAuthToken } from '_redux/slices/user';
 import {
   selectOrderedDiveLogs,
   fetchOwnDiveLogs,
+  loadOwnDiveLogs,
   selectDiveLogsLoadingState,
 } from '_redux/slices/dive-logs';
 
@@ -62,6 +63,10 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
       screen: 'ProfileSettings',
     });
   };
+
+  React.useEffect(() => {
+    dispatch(loadOwnDiveLogs());
+  }, []);
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
