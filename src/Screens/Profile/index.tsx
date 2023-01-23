@@ -93,13 +93,15 @@ const Profile: FunctionComponent<ProfileProps> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Icon
-        style={styles.optionsIcon}
-        onPress={navigateToSettings}
-        name="options-outline"
-        size={30}
-        color="black"
-      />
+      <View style={{ zIndex: 99 }}>
+        <Icon
+          style={styles.optionsIcon}
+          onPress={navigateToSettings}
+          name="options-outline"
+          size={30}
+          color="black"
+        />
+      </View>
       <ScrollView
         style={styles.contentContainer}
         showsVerticalScrollIndicator={false}>
@@ -185,6 +187,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: isBelowHeightThreshold ? 80 : 65,
     paddingBottom: 50,
+    zIndex: 1,
   },
   text: {
     color: 'black',
@@ -201,9 +204,13 @@ const styles = StyleSheet.create({
     borderRadius: isBelowHeightThreshold ? 50 : 60,
   },
   optionsIcon: {
-    alignSelf: 'flex-end',
-    marginRight: 25,
-    marginTop: isBelowHeightThreshold ? 10 : 5,
+    position: 'absolute',
+    top: 10,
+    right: 25,
+    zIndex: 99,
+    // alignSelf: 'flex-end',
+    // marginRight: 25,
+    // marginTop: isBelowHeightThreshold ? 10 : 5,
   },
   displayName: {
     textAlign: 'center',
