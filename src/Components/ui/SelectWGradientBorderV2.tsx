@@ -11,6 +11,7 @@ import type { FieldRenderProps } from 'react-final-form';
 import type { ViewStyle } from 'react-native';
 
 interface SelectWGradientBorderProps {
+  containerStyle?: ViewStyle;
   options: string[];
   activeComponent: (level: string) => JSX.Element;
   inactiveComponent: (level: string) => JSX.Element;
@@ -20,6 +21,7 @@ type FinalFormProps = FieldRenderProps<string, any>;
 type ComponentProps = SelectWGradientBorderProps & FinalFormProps;
 
 const SelectWGradientBorder: FunctionComponent<ComponentProps> = ({
+  containerStyle,
   input: { onChange, value },
   options,
   activeComponent,
@@ -30,7 +32,7 @@ const SelectWGradientBorder: FunctionComponent<ComponentProps> = ({
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      contentContainerStyle={style ? style : styles.container}>
+      contentContainerStyle={[style ? style : styles.container, containerStyle]}>
       {options.map((item, index) => {
         if (item === value) {
           return (

@@ -16,9 +16,14 @@ import type {
   SettingStackParamList,
 } from '_utils/interfaces';
 import { User } from '_utils/interfaces/data/user';
+import {
+  ActiveComponent,
+  InactiveComponent,
+} from '_utils/form/gradient-selection';
 
 import Button from '_components/ui/Buttons/Button';
 import Input from '_components/ui/FormManagementInput';
+import SelectWGradientBorder from '_components/ui/SelectWGradientBorderV2';
 import DeleteModal from './components/DeleteModal';
 import FMInput from '_components/ui/FormManagementInput';
 import ImageFormComponent from '_components/ui/ImageFormComponent';
@@ -105,10 +110,7 @@ const ProfileSettings: FunctionComponent<ProfileSettingsTypeProps> = ({
               <KeyboardAwareScrollView>
                 <View style={styles.contentContainer}>
                   <View style={styles.profileImageContainer}>
-                    <Field
-                      name="profile_pic"
-                      component={ImageFormComponent}
-                    />
+                    <Field name="profile_pic" component={ImageFormComponent} />
                   </View>
                 </View>
                 <View style={styles.form}>
@@ -121,16 +123,6 @@ const ProfileSettings: FunctionComponent<ProfileSettingsTypeProps> = ({
                     containerStyle={styles.inputContainer}
                   />
 
-                  <Text style={styles.nameLabel}>{t('EMAIL')}</Text>
-                  <Field
-                    name="email"
-                    component={Input}
-                    placeholder={t('EMAIL')}
-                    placeholderTextColor="#BFBFBF"
-                    // style={styles.input}
-                    containerStyle={styles.inputContainer}
-                  />
-
                   <Text style={styles.nameLabel}>Hometown</Text>
                   <Field
                     name="hometown"
@@ -138,6 +130,18 @@ const ProfileSettings: FunctionComponent<ProfileSettingsTypeProps> = ({
                     placeholder="Hometown"
                     placeholderTextColor="#BFBFBF"
                     // style={styles.input}
+                    containerStyle={styles.inputContainer}
+                  />
+
+                  <Text style={styles.nameLabel}>
+                    Highest Certification
+                  </Text>
+                  <Field
+                    name="certification"
+                    component={SelectWGradientBorder}
+                    options={['Open Water', 'Advanced Open Water', 'Rescue Diver', 'Divemaster', 'Instructor']}
+                    activeComponent={ActiveComponent}
+                    inactiveComponent={InactiveComponent}
                     containerStyle={styles.inputContainer}
                   />
 
