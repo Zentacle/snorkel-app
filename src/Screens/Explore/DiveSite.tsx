@@ -643,6 +643,11 @@ DiveSite.sharedElements = (route: DiveSiteRouteProps) => {
       animation: 'fade',
       resize: 'clip',
     },
+    {
+      id: `item.${diveSpotId}.description`,
+      animation: 'fade',
+      resize: 'clip',
+    },
   ];
 };
 
