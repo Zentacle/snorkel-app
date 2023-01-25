@@ -1,13 +1,7 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { SharedElement } from 'react-navigation-shared-element';
 
 import type { FunctionComponent } from 'react';
 import type { ViewStyle, ImageStyle } from 'react-native';
@@ -22,7 +16,7 @@ interface DiveSiteProps {
   containerStyle?: ViewStyle;
   imageContainerStyle?: ViewStyle;
   imageStyle?: ImageStyle;
-  onPressContainer?: (diveSpotId: number) => void;
+  onPressContainer?: (diveSpotId: number, diveSpot: Spot) => void;
   site: Spot;
 }
 
@@ -33,17 +27,21 @@ const DiveSite: FunctionComponent<DiveSiteProps> = props => {
     <View style={[styles.container, props.containerStyle]}>
       <View style={[styles.imageContainer, props.imageContainerStyle]}>
         {props.site.hero_img ? (
-          <Image
-            style={[styles.image, props.imageStyle]}
-            source={{
-              uri: props.site.hero_img,
-            }}
-          />
+          <SharedElement id={`item.${props.site.id}.image`}>
+            <Image
+              style={[styles.image, props.imageStyle]}
+              source={{
+                uri: props.site.hero_img,
+              }}
+            />
+          </SharedElement>
         ) : (
-          <Image
-            style={[styles.image, props.imageStyle]}
-            source={DiveSiteImage}
-          />
+          <SharedElement id={`item.${props.site.id}.image`}>
+            <Image
+              style={[styles.image, props.imageStyle]}
+              source={DiveSiteImage}
+            />
+          </SharedElement>
         )}
         {/* <View style={styles.imageCountContainer}>
           <Icon name="image-outline" size={18} color="#FFF" />
@@ -51,28 +49,38 @@ const DiveSite: FunctionComponent<DiveSiteProps> = props => {
         </View> */}
       </View>
       <View style={styles.descriptionContainer}>
-        <Text numberOfLines={1} style={styles.descriptionText}>
-          {props.site.name}
-        </Text>
-        <View style={styles.locationContainer}>
-          <Location width={15} />
-          <Text style={styles.locationText}>
-            {props.site.location_city}
+        <SharedElement id={`item.${props.site.id}.name`}>
+          <Text numberOfLines={1} style={styles.descriptionText}>
+            {props.site.name}
           </Text>
-        </View>
-        <View style={styles.ratingsContainer}>
-          <Text style={styles.ratingsLevelText}>
-            {capitalize(props.site.difficulty) || t('BEGINNER')}
-          </Text>
-          <View style={styles.dot} />
-          <Text style={styles.ratingsText}>
-            {Number(props.site.rating).toFixed(1)}
-          </Text>
-          <View style={styles.ratingsIconsContainer}>
-            {attachIcons(Number(props.site.rating))}
+        </SharedElement>
+
+        <SharedElement id={`item.${props.site.id}.location`}>
+          <View style={styles.locationContainer}>
+            <Location width={15} />
+            <Text style={styles.locationText}>{props.site.location_city}</Text>
           </View>
-          <Text style={styles.ratingsCount}>({props.site.num_reviews})</Text>
-        </View>
+        </SharedElement>
+
+        <SharedElement id={`item.${props.site.id}.review`}>
+          <View style={styles.ratingsContainer}>
+            <Text style={styles.ratingsLevelText}>
+              {capitalize(props.site.difficulty) || t('BEGINNER')}
+            </Text>
+            <View style={styles.dot} />
+            <Text style={styles.ratingsText}>
+              {Number(props.site.rating).toFixed(1)}
+            </Text>
+            <View style={styles.ratingsIconsContainer}>
+              {attachIcons(Number(props.site.rating))}
+            </View>
+            <Text style={styles.ratingsCount}>({props.site.num_reviews})</Text>
+          </View>
+        </SharedElement>
+
+        <SharedElement id={`item.${props.site.id}.description`}>
+          <View />
+        </SharedElement>
       </View>
     </View>
   );
@@ -82,7 +90,8 @@ const DiveSite: FunctionComponent<DiveSiteProps> = props => {
       <TouchableOpacity
         activeOpacity={0.8}
         onPress={() =>
-          props.onPressContainer && props.onPressContainer(props.site.id)
+          props.onPressContainer &&
+          props.onPressContainer(props.site.id, props.site)
         }>
         {content}
       </TouchableOpacity>

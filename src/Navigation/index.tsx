@@ -17,6 +17,7 @@ import {
   NotificationBackgroundFetchResult,
 } from 'react-native-notifications';
 import { RESULTS, requestNotifications } from 'react-native-permissions';
+import { createSharedElementStackNavigator } from 'react-navigation-shared-element';
 
 import type { RootStackParamList } from '_utils/interfaces';
 
@@ -102,16 +103,16 @@ const Navigator: React.FC = () => {
         completion();
       },
     );
-    sendEvent('notification_permission__requested')
+    sendEvent('notification_permission__requested');
     requestNotifications(['alert', 'sound', 'badge'])
       .then(({ status }) => {
         if (status === RESULTS.GRANTED) {
           if (authToken) {
             registerPushToken(authToken);
           }
-          sendEvent('notification_permission__granted')
+          sendEvent('notification_permission__granted');
         } else {
-          sendEvent('notification_permission__denied')
+          sendEvent('notification_permission__denied');
         }
       })
       .catch(err => console.log(err));
@@ -249,7 +250,8 @@ const Navigator: React.FC = () => {
     return null;
   }
 
-  const Stack = createNativeStackNavigator<RootStackParamList>();
+  // const Stack = createNativeStackNavigator<RootStackParamList>();
+  const Stack = createSharedElementStackNavigator<RootStackParamList>();
 
   return (
     <NavigationContainer linking={linking}>

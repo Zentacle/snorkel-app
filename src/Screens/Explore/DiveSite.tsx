@@ -1,5 +1,12 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
+import React, { Fragment } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Pressable,
+  Image,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from 'react-i18next';
 import { CommonActions } from '@react-navigation/native';
@@ -40,6 +47,9 @@ import { isBelowHeightThreshold, WIDTH } from '_utils/constants';
 import DiveSiteLoading from '_components/reusables/Placeholders/DiveSiteLoading';
 import UnavailableLocationBox from '_screens/Logs/components/UnavailabbleLocationDetailBox';
 import Location from '_assets/scuba_icons/Location.svg';
+import DiveSiteImage from '_assets/DiveSite.jpg';
+
+import { SharedElement } from 'react-navigation-shared-element';
 
 type DiveSiteNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<ExploreStackParamList, 'DiveSite'>,
@@ -63,6 +73,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
     typeof route.params.diveSpotId === 'number'
       ? route.params.diveSpotId
       : parseInt(route.params.diveSpotId, 10);
+  const navObjectSpot = route.params.diveSpot;
   const { t } = useTranslation();
   const [nearby, setNearby] = React.useState<Spot[]>([]);
   const [seeFullDesc, setFullDesc] = React.useState(false);
@@ -160,11 +171,12 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
     }
   }, [currentSpotId, dispatch, reviewInState, diveSiteInState, diveSite]);
 
-  const navigateToDiveSite = (diveSpotId: number) => {
+  const navigateToDiveSite = (diveSpotId: number, diveSpot: Spot) => {
     navigation.push('ExploreStack', {
       screen: 'DiveSite',
       params: {
         diveSpotId,
+        diveSpot,
       },
     });
   };
@@ -219,16 +231,49 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
     });
   };
 
-  if (isLoading && !diveSiteInState) {
-    return <DiveSiteLoading />;
-    // return <ActivityIndicator style={{ flex: 1 }} size="large" color="grey" />;
-  }
+  // if (isLoading && !diveSiteInState) {
+  //   return (
+  //     <View>
+  //       {navObjectSpot?.hero_img ? (
+  //         <SharedElement id={`item.${navObjectSpot.id}.image`}>
+  //           <ImageCarousel
+  //             goBack={navigateBack}
+  //             shareUrl={`https://zentacle.com${diveSite.url}`}
+  //             images={
+  //               navObjectSpot.hero_img
+  //                 ? [
+  //                     {
+  //                       signedurl: navObjectSpot.hero_img,
+  //                     },
+  //                   ]
+  //                 : []
+  //             }
+  //           />
+  //         </SharedElement>
+  //       ) : (
+  //         <SharedElement id={`item.${navObjectSpot?.id}.image`}>
+  //           <ImageCarousel
+  //             goBack={navigateBack}
+  //             shareUrl={`https://zentacle.com${diveSite.url}`}
+  //             images={[]}
+  //           />
+  //         </SharedElement>
+  //       )}
+  //     </View>
+  //   );
+  //   // return <DiveSiteLoading />;
+  //   // return <ActivityIndicator style={{ flex: 1 }} size="large" color="grey" />;
+  // }
 
-  if (!diveSiteInState) {
-    return null;
-  }
+  // if (!diveSiteInState) {
+  //   return null;
+  // }
 
-  const siteHasCoordinates = !!(diveSite.longitude && diveSite.latitude);
+  const siteHasCoordinates = !!(
+    diveSite &&
+    diveSite.longitude &&
+    diveSite.latitude
+  );
 
   return (
     <View style={styles.container}>
@@ -236,85 +281,120 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
       <ScrollView
         style={styles.scrollContainer}
         showsVerticalScrollIndicator={false}>
-        <ImageCarousel
-          goBack={navigateBack}
-          shareUrl={`https://zentacle.com${diveSite.url}`}
-          images={diveSite.images}
-        />
+        <SharedElement id={`item.${navObjectSpot.id}.image`}>
+          <ImageCarousel
+            goBack={navigateBack}
+            shareUrl={`https://zentacle.com${navObjectSpot.url}`}
+            images={
+              diveSiteInState
+                ? diveSite.images
+                : navObjectSpot.hero_img
+                ? [
+                    {
+                      signedurl: navObjectSpot.hero_img,
+                    },
+                  ]
+                : []
+            }
+          />
+        </SharedElement>
 
         <View style={styles.contentContainer}>
-          <Text style={styles.mainDescription}>{diveSite.name}</Text>
-          <View style={styles.locationContainer}>
-            <Location width={15} />
-            <Text style={styles.locationText}>{diveSite.location_city}</Text>
-          </View>
-          <View style={styles.ratingsContainer}>
-            <Text style={styles.ratingsLevelText}>
-              {capitalize(diveSite.difficulty) || t('BEGINNER')}
-            </Text>
-            <View style={styles.dot} />
-            <Text style={styles.ratingsText}>
-              {Number(diveSite.rating).toFixed(1)}
-            </Text>
-            <Icon name="star" size={20} color="#aa00ff" />
-            <Text style={styles.ratingsCount}>({diveSite.num_reviews})</Text>
-          </View>
+          <SharedElement id={`item.${navObjectSpot.id}.name`}>
+            <Text style={styles.mainDescription}>{navObjectSpot.name}</Text>
+          </SharedElement>
+
+          <SharedElement id={`item.${navObjectSpot.id}.location`}>
+            <View style={styles.locationContainer}>
+              <Location width={15} />
+              <Text style={styles.locationText}>
+                {navObjectSpot.location_city}
+              </Text>
+            </View>
+          </SharedElement>
+
+          <SharedElement id={`item.${navObjectSpot.id}.review`}>
+            <View style={styles.ratingsContainer}>
+              <Text style={styles.ratingsLevelText}>
+                {capitalize(navObjectSpot.difficulty) || t('BEGINNER')}
+              </Text>
+              <View style={styles.dot} />
+              <Text style={styles.ratingsText}>
+                {Number(navObjectSpot.rating).toFixed(1)}
+              </Text>
+              <Icon name="star" size={20} color="#aa00ff" />
+              <Text style={styles.ratingsCount}>
+                ({navObjectSpot.num_reviews})
+              </Text>
+            </View>
+          </SharedElement>
 
           {seeFullDesc ? (
-            <View style={[styles.descriptionContainer]}>
-              <Text style={styles.descriptionText}>{diveSite.description}</Text>
-              <Pressable onPress={() => setFullDesc(false)}>
-                <Text style={styles.seeMoreText}>See less</Text>
-              </Pressable>
-            </View>
-          ) : (
-            <View style={[styles.descriptionContainer]}>
-              <Text numberOfLines={4} style={styles.descriptionText}>
-                {diveSite.description}
-              </Text>
-              <Pressable onPress={() => setFullDesc(true)}>
-                <Text style={styles.seeMoreText}>See more</Text>
-              </Pressable>
-            </View>
-          )}
-
-          {siteHasCoordinates ? (
-            <DiveLocation
-              coordinates={{
-                latitude: diveSite.latitude,
-                longitude: diveSite.longitude,
-              }}
-              navigateToMap={navigateToMap}
-            />
-          ) : (
-            <View style={{ marginVertical: 10 }}>
-              <UnavailableLocationBox desc={diveSite.location_city} />
-            </View>
-          )}
-
-          {activities.map((activity, index) => (
-            <View key={index} style={styles.activityContainer}>
-              <View style={styles.activity}>
-                <Text style={styles.activityLabel}>{activity.label}</Text>
-                <View style={styles.activityValueContainer}>
-                  {activity.values.map(value => (
-                    <Text key={value} style={styles.activityValue}>
-                      {value}
-                    </Text>
-                  ))}
-                </View>
+            <SharedElement id={`item.${navObjectSpot.id}.description`}>
+              <View style={[styles.descriptionContainer]}>
+                <Text style={styles.descriptionText}>
+                  {navObjectSpot.description}
+                </Text>
+                <Pressable onPress={() => setFullDesc(false)}>
+                  <Text style={styles.seeMoreText}>See less</Text>
+                </Pressable>
               </View>
-            </View>
-          ))}
+            </SharedElement>
+          ) : (
+            <SharedElement id={`item.${navObjectSpot.id}.description`}>
+              <View style={[styles.descriptionContainer]}>
+                <Text numberOfLines={4} style={styles.descriptionText}>
+                  {navObjectSpot.description}
+                </Text>
+                <Pressable onPress={() => setFullDesc(true)}>
+                  <Text style={styles.seeMoreText}>See more</Text>
+                </Pressable>
+              </View>
+            </SharedElement>
+          )}
 
-          {!!diveSite.num_reviews && (
-            <DiveSiteReviews
-              diveSite={diveSite}
-              navigateToReviews={navigateToReviews}
-              reviews={reviews}
-            />
+          {diveSite && (
+            <Fragment>
+              {siteHasCoordinates ? (
+                <DiveLocation
+                  coordinates={{
+                    latitude: diveSite.latitude,
+                    longitude: diveSite.longitude,
+                  }}
+                  navigateToMap={navigateToMap}
+                />
+              ) : (
+                <View style={{ marginVertical: 10 }}>
+                  <UnavailableLocationBox desc={diveSite.location_city} />
+                </View>
+              )}
+
+              {activities.map((activity, index) => (
+                <View key={index} style={styles.activityContainer}>
+                  <View style={styles.activity}>
+                    <Text style={styles.activityLabel}>{activity.label}</Text>
+                    <View style={styles.activityValueContainer}>
+                      {activity.values.map(value => (
+                        <Text key={value} style={styles.activityValue}>
+                          {value}
+                        </Text>
+                      ))}
+                    </View>
+                  </View>
+                </View>
+              ))}
+
+              {!!diveSite.num_reviews && (
+                <DiveSiteReviews
+                  diveSite={diveSite}
+                  navigateToReviews={navigateToReviews}
+                  reviews={reviews}
+                />
+              )}
+            </Fragment>
           )}
         </View>
+
         {!!nearby && (
           <View style={styles.nearbySites}>
             <View style={styles.nearbySitesTextContainer}>
@@ -375,11 +455,13 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
           </View>
         </View> */}
       </ScrollView>
-      <Footer
-        reviewCount={diveSite.num_reviews}
-        navigateToAuth={navigateToAuth}
-        navigateToDiveLogForm={navigateToDiveLogForm}
-      />
+      {!!diveSite && (
+        <Footer
+          reviewCount={diveSite.num_reviews}
+          navigateToAuth={navigateToAuth}
+          navigateToDiveLogForm={navigateToDiveLogForm}
+        />
+      )}
     </View>
   );
 };
@@ -537,5 +619,31 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
 });
+
+DiveSite.sharedElements = (route: DiveSiteRouteProps) => {
+  const { diveSpotId } = route.params;
+  return [
+    {
+      id: `item.${diveSpotId}.image`,
+      animation: 'move',
+      resize: 'clip',
+    },
+    {
+      id: `item.${diveSpotId}.name`,
+      animation: 'fade',
+      resize: 'clip',
+    },
+    {
+      id: `item.${diveSpotId}.location`,
+      animation: 'fade',
+      resize: 'clip',
+    },
+    {
+      id: `item.${diveSpotId}.review`,
+      animation: 'fade',
+      resize: 'clip',
+    },
+  ];
+};
 
 export default DiveSite;
