@@ -76,6 +76,8 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
 
   const reviewInState = useAppSelector(isReviewInState(currentSpotId));
 
+  const isFullBeach;
+
   const reviewObj = useAppSelector(selectReviewById(currentSpotId));
   const reviews = reviewInState ? Object.values(reviewObj) : [];
   const diveSite = useAppSelector(selectDiveSiteById(currentSpotId));
@@ -139,6 +141,8 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
     }
   }, [route, navigation]);
 
+  console.log('nearby', nearby);
+
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
@@ -149,12 +153,9 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
       dispatch(handleFetchReviews(currentSpotId));
     }
 
-    // because we need to fetch images as well, we're making calls to the api unless the
-    // site we  want has had its images downloaded
-    if (!diveSiteInState || (diveSiteInState && !diveSite.images)) {
-      dispatch(handleFetchDiveSite(currentSpotId));
-    }
-  }, [currentSpotId, dispatch, reviewInState, diveSiteInState, diveSite]);
+    // just make call to fetch beach if no images, since we're only calling this hook once now
+    dispatch(handleFetchDiveSite(currentSpotId));
+  }, [currentSpotId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const navigateToDiveSite = (diveSpotId: number, diveSpot: Spot) => {
     navigation.push('ExploreStack', {
@@ -299,9 +300,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
             </SharedElement>
           )}
 
-          {!diveSite && <FullSiteSkeleton />}
-
-          {diveSite && (
+          {diveSite && typeof diveSite.images === 'object' ? (
             <Fragment>
               {siteHasCoordinates ? (
                 <DiveLocation
@@ -340,6 +339,8 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
                 />
               )}
             </Fragment>
+          ) : (
+            <FullSiteSkeleton />
           )}
         </View>
 
