@@ -1,12 +1,5 @@
 import React, { Fragment } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Pressable,
-  Image,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from 'react-i18next';
 import { CommonActions } from '@react-navigation/native';
@@ -44,10 +37,9 @@ import type { Spot } from '_utils/interfaces/data/spot';
 
 import { capitalize } from '_utils/functions';
 import { isBelowHeightThreshold, WIDTH } from '_utils/constants';
-import DiveSiteLoading from '_components/reusables/Placeholders/DiveSiteLoading';
+import FullSiteSkeleton from '_components/reusables/Placeholders/DiveSiteLoading/FullSiteSkeleton';
 import UnavailableLocationBox from '_screens/Logs/components/UnavailabbleLocationDetailBox';
 import Location from '_assets/scuba_icons/Location.svg';
-import DiveSiteImage from '_assets/DiveSite.jpg';
 
 import { SharedElement } from 'react-navigation-shared-element';
 
@@ -83,17 +75,10 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   );
 
   const reviewInState = useAppSelector(isReviewInState(currentSpotId));
-  const isLoading = useAppSelector(selectLoadingState);
 
   const reviewObj = useAppSelector(selectReviewById(currentSpotId));
   const reviews = reviewInState ? Object.values(reviewObj) : [];
   const diveSite = useAppSelector(selectDiveSiteById(currentSpotId));
-
-  // const diveSiteImages = [
-  //   {
-  //     uri: diveSite.hero_img,
-  //   },
-  // ];
 
   const activities: Activity[] = [
     {
@@ -231,44 +216,6 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
     });
   };
 
-  // if (isLoading && !diveSiteInState) {
-  //   return (
-  //     <View>
-  //       {navObjectSpot?.hero_img ? (
-  //         <SharedElement id={`item.${navObjectSpot.id}.image`}>
-  //           <ImageCarousel
-  //             goBack={navigateBack}
-  //             shareUrl={`https://zentacle.com${diveSite.url}`}
-  //             images={
-  //               navObjectSpot.hero_img
-  //                 ? [
-  //                     {
-  //                       signedurl: navObjectSpot.hero_img,
-  //                     },
-  //                   ]
-  //                 : []
-  //             }
-  //           />
-  //         </SharedElement>
-  //       ) : (
-  //         <SharedElement id={`item.${navObjectSpot?.id}.image`}>
-  //           <ImageCarousel
-  //             goBack={navigateBack}
-  //             shareUrl={`https://zentacle.com${diveSite.url}`}
-  //             images={[]}
-  //           />
-  //         </SharedElement>
-  //       )}
-  //     </View>
-  //   );
-  //   // return <DiveSiteLoading />;
-  //   // return <ActivityIndicator style={{ flex: 1 }} size="large" color="grey" />;
-  // }
-
-  // if (!diveSiteInState) {
-  //   return null;
-  // }
-
   const siteHasCoordinates = !!(
     diveSite &&
     diveSite.longitude &&
@@ -277,7 +224,6 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      {/* {Platform.OS === 'ios' && <StatusBar barStyle={'light-content'} />} */}
       <ScrollView
         style={styles.scrollContainer}
         showsVerticalScrollIndicator={false}>
@@ -353,6 +299,8 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
             </SharedElement>
           )}
 
+          {!diveSite && <FullSiteSkeleton />}
+
           {diveSite && (
             <Fragment>
               {siteHasCoordinates ? (
@@ -395,7 +343,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
           )}
         </View>
 
-        {!!nearby && (
+        {!!nearby.length && (
           <View style={styles.nearbySites}>
             <View style={styles.nearbySitesTextContainer}>
               <Text style={styles.nearbySitesMainText}>
