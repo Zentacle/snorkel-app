@@ -14,7 +14,6 @@ import {
   selectDiveSiteById,
   handleFetchDiveSite,
   isDiveSiteDetailinState,
-  selectLoadingState,
 } from '_redux/slices/dive-sites';
 import { fetchNearby } from '_redux/slices/dive-sites/api';
 import {
@@ -75,8 +74,6 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   );
 
   const reviewInState = useAppSelector(isReviewInState(currentSpotId));
-
-  const isFullBeach;
 
   const reviewObj = useAppSelector(selectReviewById(currentSpotId));
   const reviews = reviewInState ? Object.values(reviewObj) : [];
@@ -140,8 +137,6 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
       }
     }
   }, [route, navigation]);
-
-  console.log('nearby', nearby);
 
   const dispatch = useAppDispatch();
 

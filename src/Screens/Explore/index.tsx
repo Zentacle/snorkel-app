@@ -252,7 +252,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
       dispatch(fetchUserWalletAddress(user.access_token as string));
     }
     return unsubscribe;
-  }, [navigation, dispatch, authToken, user]);
+  }, [navigation, authToken, user]);
 
   const navigateToDiveSite = (diveSpotId: number, diveSpot: Spot) => {
     navigation.navigate('ExploreStack', {
