@@ -9,6 +9,8 @@ import DiveSite from '_screens/Explore/DiveSite';
 import DiveShop from '_screens/Explore/DiveShop';
 import Map from '_screens/Explore/Map';
 import Reviews from '_screens/Explore/Reviews';
+import Search from '_screens/Explore/Search';
+
 import { StackNavigationOptions } from '@react-navigation/stack';
 
 const options: StackNavigationOptions = {
@@ -39,6 +41,7 @@ const ExploreNavigator: React.FC = () => {
       <ExploreStack.Screen name="DiveShop" component={DiveShop} />
       <ExploreStack.Screen name="Map" component={Map} />
       <ExploreStack.Screen name="Reviews" component={Reviews} />
+      <ExploreStack.Screen name="Search" component={Search} />
     </ExploreStack.Navigator>
   );
 };

@@ -22,7 +22,7 @@ export type OnboardingStackParamList = {
 export type ExploreStackParamList = {
   DiveSite: {
     diveSpotId: number | string;
-    diveSpot: Spot;
+    diveSpot?: Spot;
     wildcard?: string;
     reset?: boolean;
   };
@@ -40,6 +40,7 @@ export type ExploreStackParamList = {
   Reviews: {
     id: number;
   };
+  Search: undefined;
 };
 
 export type ProfileStackParamList = {

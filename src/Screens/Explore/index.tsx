@@ -19,6 +19,7 @@ import {
 import Geolocation from 'react-native-geolocation-service';
 import config from 'react-native-config';
 import Purchases from 'react-native-purchases';
+import { SharedElement } from 'react-navigation-shared-element';
 
 import SearchInput from '_components/ui/SearchInput';
 // import Tag from '_components/ui/Tag';
@@ -58,10 +59,8 @@ import BeachLoading from '_components/reusables/Placeholders/BeachLoading/index'
 // import Newest from '_assets/tags/newest.png';
 // import Popular from '_assets/tags/popular.png';
 // import TopRating from '_assets/tags/top-rating.png';
-import AutocompleteModal from '_components/ui/AutocompleteModal';
 
 import { WIDTH, HEIGHT, isBelowWidthThreshold } from '_utils/constants';
-import type { LocationSearchInitialValues } from '_utils/interfaces/data/search';
 import {
   handleFetchNearbyShops,
   selectNearbyShops,
@@ -93,8 +92,6 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
     Object.values(useAppSelector(selectNearbyBuddies)) || [];
   const nearbyShops = Object.values(useAppSelector(selectNearbyShops)) || [];
   const user = useAppSelector(selectUser);
-  const [autocompleteModalOpen, toggleAutocompleteModal] =
-    React.useState(false);
   const authToken = useAppSelector(selectAuthToken);
   const [position, setPosition] = React.useState({ latitude: 0, longitude: 0 });
 
@@ -264,17 +261,10 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
     });
   };
 
-  const navigateToSearchResults = (values: LocationSearchInitialValues) => {
-    navigation.navigate('SearchStack', {
-      screen: 'SearchResults',
-      params: {
-        search: values,
-      },
-    });
-  };
-
   const handleInputFocus = () => {
-    toggleAutocompleteModal(true);
+    navigation.navigate('ExploreStack', {
+      screen: 'Search',
+    });
   };
 
   // const navigateToDiveShop = () => {
@@ -321,15 +311,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
           keepDirtyOnReinitialize
           render={() => {
             return (
-              <View>
-                <Field
-                  name="search_term"
-                  isVisible={autocompleteModalOpen}
-                  component={AutocompleteModal}
-                  closeModal={() => toggleAutocompleteModal(false)}
-                  navigateToDiveSite={navigateToDiveSite}
-                  navigateToSearchResults={navigateToSearchResults}
-                />
+              <SharedElement id="beach.search">
                 <Field
                   name="search_term"
                   placeholder={t('explore.SEARCH_PLACEHOLDER')}
@@ -338,7 +320,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
                   component={SearchInput}
                   style={{ height: 50 }}
                 />
-              </View>
+              </SharedElement>
             );
           }}
         />
