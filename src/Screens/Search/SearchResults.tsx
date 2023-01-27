@@ -112,10 +112,11 @@ const SearchResults: FunctionComponent<SearchResultsProps> = ({
   };
 
   const navigateToDiveSite = (diveSpot: Spot) => {
-    navigation.navigate('ExploreStack', {
+    navigation.push('ExploreStack', {
       screen: 'DiveSite',
       params: {
         diveSpotId: diveSpot.id,
+        diveSpot,
       },
     });
   };

@@ -3,6 +3,7 @@ import { NavigatorScreenParams } from '@react-navigation/native';
 import type { ViewStyle, TextStyle, ImageStyle } from 'react-native';
 import type { AdvancedFormInitialValues as DiveLog } from './data/logs';
 import type { InitialSearchValues as FullInitialValues } from './data/search';
+import { Spot } from './data/spot';
 
 export type AuthtackParamList = {
   Landing: undefined;
@@ -21,6 +22,7 @@ export type OnboardingStackParamList = {
 export type ExploreStackParamList = {
   DiveSite: {
     diveSpotId: number | string;
+    diveSpot?: Spot;
     wildcard?: string;
     reset?: boolean;
   };
@@ -38,6 +40,7 @@ export type ExploreStackParamList = {
   Reviews: {
     id: number;
   };
+  Search: undefined;
 };
 
 export type ProfileStackParamList = {
