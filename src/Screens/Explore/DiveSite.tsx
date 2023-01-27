@@ -37,8 +37,10 @@ import type { Spot } from '_utils/interfaces/data/spot';
 import { capitalize } from '_utils/functions';
 import { isBelowHeightThreshold, WIDTH } from '_utils/constants';
 import FullSiteSkeleton from '_components/reusables/Placeholders/DiveSiteLoading/FullSiteSkeleton';
+import DiveSiteLoading from '_components/reusables/Placeholders/DiveSiteLoading';
 import UnavailableLocationBox from '_screens/Logs/components/UnavailabbleLocationDetailBox';
 import Location from '_assets/scuba_icons/Location.svg';
+import DiveSiteWithoutNavObject from './components/DiveSiteWithoutNavObject';
 
 import { SharedElement } from 'react-navigation-shared-element';
 
@@ -54,7 +56,7 @@ interface DiveSiteProps {
   route: DiveSiteRouteProps;
 }
 
-interface Activity {
+export interface Activity {
   label: string;
   values: string[];
 }
@@ -217,6 +219,29 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
     diveSite.longitude &&
     diveSite.latitude
   );
+
+  if (!navObjectSpot && !diveSite) {
+    return <DiveSiteLoading />;
+  }
+
+  if (!navObjectSpot && diveSite) {
+    return (
+      <DiveSiteWithoutNavObject
+        diveSite={diveSite}
+        navigateBack={navigateBack}
+        seeFullDesc={seeFullDesc}
+        setFullDesc={setFullDesc}
+        navigateToMap={navigateToMap}
+        navigateToReviews={navigateToReviews}
+        navigateToAuth={navigateToAuth}
+        navigateToDiveLogForm={navigateToDiveLogForm}
+        navigateToDiveSite={navigateToDiveSite}
+        activities={activities}
+        reviews={reviews}
+        nearby={nearby}
+      />
+    );
+  }
 
   return (
     <View style={styles.container}>
