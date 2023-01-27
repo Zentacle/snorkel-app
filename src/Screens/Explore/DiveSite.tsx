@@ -248,17 +248,17 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
       <ScrollView
         style={styles.scrollContainer}
         showsVerticalScrollIndicator={false}>
-        <SharedElement id={`item.${(navObjectSpot as Spot).id}.image`}>
+        <SharedElement id={`item.${navObjectSpot?.id}.image`}>
           <ImageCarousel
             goBack={navigateBack}
-            shareUrl={`https://zentacle.com${(navObjectSpot as Spot).url}`}
+            shareUrl={`https://zentacle.com${navObjectSpot?.url}`}
             images={
               diveSiteInState
                 ? diveSite.images
-                : (navObjectSpot as Spot).hero_img
+                : navObjectSpot?.hero_img
                 ? [
                     {
-                      signedurl: (navObjectSpot as Spot).hero_img,
+                      signedurl: navObjectSpot?.hero_img,
                     },
                   ]
                 : []
@@ -267,22 +267,20 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
         </SharedElement>
 
         <View style={styles.contentContainer}>
-          <SharedElement id={`item.${(navObjectSpot as Spot).id}.name`}>
-            <Text style={styles.mainDescription}>
-              {(navObjectSpot as Spot).name}
-            </Text>
+          <SharedElement id={`item.${navObjectSpot?.id}.name`}>
+            <Text style={styles.mainDescription}>{navObjectSpot?.name}</Text>
           </SharedElement>
 
-          <SharedElement id={`item.${(navObjectSpot as Spot).id}.location`}>
+          <SharedElement id={`item.${navObjectSpot?.id}.location`}>
             <View style={styles.locationContainer}>
               <Location width={15} />
               <Text style={styles.locationText}>
-                {(navObjectSpot as Spot).location_city}
+                {navObjectSpot?.location_city}
               </Text>
             </View>
           </SharedElement>
 
-          <SharedElement id={`item.${(navObjectSpot as Spot).id}.review`}>
+          <SharedElement id={`item.${navObjectSpot?.id}.review`}>
             <View style={styles.ratingsContainer}>
               <Text style={styles.ratingsLevelText}>
                 {capitalize((navObjectSpot as Spot).difficulty) ||
@@ -290,21 +288,20 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
               </Text>
               <View style={styles.dot} />
               <Text style={styles.ratingsText}>
-                {Number((navObjectSpot as Spot).rating).toFixed(1)}
+                {Number(navObjectSpot?.rating).toFixed(1)}
               </Text>
               <Icon name="star" size={20} color="#aa00ff" />
               <Text style={styles.ratingsCount}>
-                ({(navObjectSpot as Spot).num_reviews})
+                ({navObjectSpot?.num_reviews})
               </Text>
             </View>
           </SharedElement>
 
           {seeFullDesc ? (
-            <SharedElement
-              id={`item.${(navObjectSpot as Spot).id}.description`}>
+            <SharedElement id={`item.${navObjectSpot?.id}.description`}>
               <View style={[styles.descriptionContainer]}>
                 <Text style={styles.descriptionText}>
-                  {(navObjectSpot as Spot).description}
+                  {navObjectSpot?.description}
                 </Text>
                 <Pressable onPress={() => setFullDesc(false)}>
                   <Text style={styles.seeMoreText}>See less</Text>
@@ -312,11 +309,10 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
               </View>
             </SharedElement>
           ) : (
-            <SharedElement
-              id={`item.${(navObjectSpot as Spot).id}.description`}>
+            <SharedElement id={`item.${navObjectSpot?.id}.description`}>
               <View style={[styles.descriptionContainer]}>
                 <Text numberOfLines={4} style={styles.descriptionText}>
-                  {(navObjectSpot as Spot).description}
+                  {navObjectSpot?.description}
                 </Text>
                 <Pressable onPress={() => setFullDesc(true)}>
                   <Text style={styles.seeMoreText}>See more</Text>
