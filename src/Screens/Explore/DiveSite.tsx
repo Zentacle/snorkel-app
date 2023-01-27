@@ -152,7 +152,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
 
     // just make call to fetch beach if no images, since we're only calling this hook once now
     dispatch(handleFetchDiveSite(currentSpotId));
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [currentSpotId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const navigateToDiveSite = (diveSpotId: number, diveSpot: Spot) => {
     navigation.push('ExploreStack', {
