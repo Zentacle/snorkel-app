@@ -158,8 +158,8 @@ const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <SharedElement id="beach.search">
-        <View style={styles.searchContainer}>
+      <View style={styles.searchContainer}>
+        <SharedElement id="beach.search">
           <PlainSearchInput
             onChange={handleTextChange}
             value={text}
@@ -171,13 +171,14 @@ const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
             enableClearInput
             handleClearInput={handleClearInput}
           />
-          <TouchableOpacity activeOpacity={0.8} onPress={handleCancelSearch}>
-            <View style={styles.searchBar}>
-              <Text style={styles.searchLabel}>{t('CANCEL')}</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </SharedElement>
+        </SharedElement>
+
+        <TouchableOpacity activeOpacity={0.8} onPress={handleCancelSearch}>
+          <View style={styles.searchBar}>
+            <Text style={styles.searchLabel}>{t('CANCEL')}</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
       <View style={styles.listContainer}>
         <FlatList
           keyExtractor={_keyExtractor}

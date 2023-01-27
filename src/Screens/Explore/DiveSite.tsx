@@ -250,7 +250,7 @@ DiveSite.sharedElements = (route: DiveSiteRouteProps) => {
   return [
     {
       id: `item.${diveSpotId}.image`,
-      animation: 'move',
+      animation: 'fade',
       resize: 'clip',
     },
     {
