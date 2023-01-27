@@ -157,7 +157,7 @@ const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
   const _keyExtractor = (item: any) => `${item.id}_${item.url}`;
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <SharedElement id="beach.search">
         <View style={styles.searchContainer}>
           <PlainSearchInput
@@ -186,7 +186,7 @@ const Search: FunctionComponent<SearchProps> = ({ navigation }) => {
           keyboardShouldPersistTaps="always"
         />
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -194,6 +194,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#EFF6F9',
     flex: 1,
+    paddingTop: 20,
   },
   listContainer: {
     marginBottom: 100,
