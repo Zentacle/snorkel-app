@@ -138,6 +138,17 @@
 	<key>branch_app_domain</key>
 	<string>$(BRANCH_APP_DOMAIN)</string>
 	<key>branch_key</key>
-	<string>$(BRANCH_KEY)</string>
+	<dict>
+		<key>live</key>
+		<string>$(BRANCH_KEY)</string>
+		<key>test</key>
+		<string>$(BRANCH_KEY_TEST)</string>
+	</dict>
+	<key>branch_universal_link_domains</key>
+	<array>
+		<string>zentacle.app.link</string>
+		<string>zentacle-alternate.app.link</string>
+		<string>zentacle.test.app.link</string>
+	</array>
 </dict>
 </plist>

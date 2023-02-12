@@ -15,7 +15,7 @@ const config = {
     },
     App: {
       screens: {
-        Explore: 'Beach',
+        Explore: '*',
         LogsForm: 'Log',
       },
     },
@@ -26,7 +26,6 @@ const config = {
         },
       },
     },
-    NotFound: '*',
   },
 };
 

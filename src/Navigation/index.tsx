@@ -102,16 +102,16 @@ const Navigator: React.FC = () => {
         completion();
       },
     );
-    sendEvent('notification_permission__requested')
+    sendEvent('notification_permission__requested');
     requestNotifications(['alert', 'sound', 'badge'])
       .then(({ status }) => {
         if (status === RESULTS.GRANTED) {
           if (authToken) {
             registerPushToken(authToken);
           }
-          sendEvent('notification_permission__granted')
+          sendEvent('notification_permission__granted');
         } else {
-          sendEvent('notification_permission__denied')
+          sendEvent('notification_permission__denied');
         }
       })
       .catch(err => console.log(err));
@@ -243,7 +243,7 @@ const Navigator: React.FC = () => {
     return () => {
       subscription.remove();
     };
-  });
+  }, [dispatch]);
 
   if (loadingState) {
     return null;

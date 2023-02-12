@@ -13,6 +13,7 @@
 		<string>applinks:zentacle.app.link</string>
 		<string>applinks:zentacle-alternate.app.link</string>
 		<string>applinks:zentacle.com</string>
+		<string>applinks:zentacle.test.app.link</string>
 	</array>
 </dict>
 </plist>

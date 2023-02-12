@@ -62,7 +62,10 @@ import AutocompleteModal from '_components/ui/AutocompleteModal';
 
 import { WIDTH, HEIGHT, isBelowWidthThreshold } from '_utils/constants';
 import type { LocationSearchInitialValues } from '_utils/interfaces/data/search';
-import { handleFetchNearbyShops, selectNearbyShops } from '_redux/slices/dive-shops';
+import {
+  handleFetchNearbyShops,
+  selectNearbyShops,
+} from '_redux/slices/dive-shops';
 
 // interface TagInterface {
 //   name: string;
@@ -87,8 +90,7 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   const diveSitesIsLoading = useAppSelector(selectLoadingState);
   const nearbyBuddies =
     Object.values(useAppSelector(selectNearbyBuddies)) || [];
-  const nearbyShops =
-    Object.values(useAppSelector(selectNearbyShops)) || [];
+  const nearbyShops = Object.values(useAppSelector(selectNearbyShops)) || [];
   const user = useAppSelector(selectUser);
   const [autocompleteModalOpen, toggleAutocompleteModal] =
     React.useState(false);
@@ -111,6 +113,10 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   };
 
   React.useEffect(() => {
+    Purchases.getOfferings();
+  }, [])
+
+  React.useEffect(() => {
     if (user) {
       checkSubscription();
     }
@@ -124,7 +130,6 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
 
   const checkSubscription = async () => {
     try {
-      await Purchases.getOfferings();
       const customerInfo = await Purchases.getCustomerInfo();
       if (
         customerInfo.entitlements.active[
@@ -421,14 +426,16 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
         )}
         <View style={styles.diveShops}>
           <View style={styles.diveShopsTextContainer}>
-            <Text style={styles.diveShopsMainText}>{t('CLOSEST_DIVE_SHOPS')}</Text>
+            <Text style={styles.diveShopsMainText}>
+              {t('CLOSEST_DIVE_SHOPS')}
+            </Text>
           </View>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.diveShopsCardsContainer}>
-            {nearbyShops.map((item) => (
-              <DiveShop key={item.id} shop={item}/>
+            {nearbyShops.map(item => (
+              <DiveShop key={item.id} shop={item} />
             ))}
           </ScrollView>
         </View>

@@ -29,7 +29,6 @@ export const handleFetchNearbyShops = createAsyncThunk(
   'shops/fetchNearby',
   async (coords: NearbyExplore, thunkApi) => {
     const response = await fetchNearbyShops(coords);
-    console.log(response);
     if (!response.data) {
       return thunkApi.rejectWithValue(response.msg);
     }
