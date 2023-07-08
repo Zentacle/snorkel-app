@@ -4,7 +4,7 @@ import {
   createSelector,
   createAsyncThunk,
 } from '@reduxjs/toolkit';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { RootState } from '../../store';
 import {

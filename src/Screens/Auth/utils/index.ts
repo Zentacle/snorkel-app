@@ -1,6 +1,5 @@
 import { Platform } from 'react-native';
 import { appleAuth } from '@invertase/react-native-apple-authentication';
-import 'react-native-get-random-values';
 import {
   GoogleSignin,
   statusCodes,

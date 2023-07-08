@@ -1,6 +1,6 @@
 import { AppleAuthReturn } from 'src/screens/Auth/utils/interfaces';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   handleRegister,
