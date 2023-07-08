@@ -142,7 +142,7 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
 
                 <Field
                   name="profile_pic"
-                  iconContaineStyle={styles.iconContainer}
+                  iconContainerStyle={styles.iconContainer}
                   component={ImageFormComponent}
                 />
               </View>
