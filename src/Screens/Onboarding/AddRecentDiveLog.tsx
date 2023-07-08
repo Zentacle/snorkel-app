@@ -86,7 +86,7 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
     const customerInfo = await Purchases.getCustomerInfo();
     if (
       customerInfo.entitlements.active[
-        config.REVENUE_CAT_ENTITLEMENT_IDENTIFIER
+        config.REVENUE_CAT_ENTITLEMENT_IDENTIFIER!
       ]?.isActive
     ) {
       verifyIsPro(true);
@@ -139,7 +139,7 @@ const AddRecentDiveLog: FunctionComponent<AddRecentDiveLogProps> = ({
     if (isValidLocation) {
       navigateToDiveLogForm(location);
     }
-  });
+  }, []);
 
   const handleSkip = () => {
     sendEvent('skip_onboarding', {
