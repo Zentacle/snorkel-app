@@ -9,6 +9,7 @@ import {
   Share,
   Alert,
 } from 'react-native';
+import Rate from 'react-native-rate'
 import IoIcon from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -92,6 +93,20 @@ const Review: FunctionComponent<ReviewProps> = ({
       type: 'dive_log__simple_completion',
     });
   }, []);
+
+  const options = {
+    AppleAppID:"1611242564",
+    preferInApp:true,
+    openAppStoreIfInAppFails:true,
+  }
+
+  React.useEffect(() => {
+    Rate.rate(options, (success, error) => {
+      if (error) {
+        console.error(error);
+      }
+    });
+  }, [])
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
