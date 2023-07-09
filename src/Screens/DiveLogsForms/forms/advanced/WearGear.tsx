@@ -15,6 +15,16 @@ import { selectUser } from '_redux/slices/user';
 const WearGear = () => {
   const { t } = useTranslation();
   const air_typeTypes = [t('NORMAL').toLowerCase(), 'EANx32', 'EANx36'];
+  const wetsuitTypes = [
+    'None',
+    '1mm',
+    '2mm',
+    '3mm',
+    '5mm',
+    '7mm',
+    '9mm',
+    'Drysuit',
+  ];
   const user = useAppSelector(selectUser);
 
   return (
@@ -32,6 +42,19 @@ const WearGear = () => {
           benchMarks={user?.unit === 'imperial' ? [0, 20, 40] : [0, 10, 20]}
           minimumValue={0}
           maximumValue={user?.unit === 'imperial' ? 40 : 20}
+        />
+      </View>
+
+      <View style={styles.labelTextContainer}>
+        <Text style={styles.labelText}>{t('WETSUIT')}</Text>
+      </View>
+      <View>
+        <Field
+          name="wetsuit"
+          component={SelectWGradientBorder}
+          options={wetsuitTypes}
+          activeComponent={ActiveSquareGradientComponent}
+          inactiveComponent={InActiveSquareGradientComponent}
         />
       </View>
 

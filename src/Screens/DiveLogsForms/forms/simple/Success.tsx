@@ -167,7 +167,7 @@ const Review: FunctionComponent<ReviewProps> = ({
         )}
       </View>
 
-      <View style={styles.shareContainer}>
+      {/* <View style={styles.shareContainer}>
         <TouchableWithoutFeedback onPress={onShare}>
           <View style={styles.shareItems}>
             <Image style={styles.shareIcon} source={UploadIcon} />
@@ -206,7 +206,7 @@ const Review: FunctionComponent<ReviewProps> = ({
             </GradientText>
           </View>
         </TouchableWithoutFeedback>
-      </View>
+      </View> */}
 
       <View>
         <Button
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
     fontSize: isBelowHeightThreshold ? 18 : 20,
     fontWeight: '500',
     textAlign: 'center',
-    marginTop: 30,
+    marginTop: 20,
     marginHorizontal: '20%',
   },
   gradientContainer: {

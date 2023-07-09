@@ -36,8 +36,8 @@ export interface SimpleFormInitialValues {
 }
 
 export interface AdvancedFormInitialValues extends SimpleFormInitialValues {
-  startDate?: Date | string; // date type for form, string type for redux. Will handle api value types later
-  startTime?: Date | string; // date type for form, string type for redux. Will handle api value types later
+  startDate: Date;
+  startTime?: Date;
   dive_length?: number;
   max_depth?: number;
   water_temp?: number;
@@ -50,6 +50,7 @@ export interface AdvancedFormInitialValues extends SimpleFormInitialValues {
   air_type?: string;
   date_dived?: string;
   date_posted?: string;
+  wetsuit?: string;
 }
 
 interface DiveLogDetailReview extends AdvancedFormInitialValues {

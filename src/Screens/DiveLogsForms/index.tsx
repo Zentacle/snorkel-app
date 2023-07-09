@@ -32,7 +32,7 @@ import Footer from './components/FormFooter';
 
 import Location from './forms/simple/Location';
 import Rating from './forms/simple/Rating';
-import Review from './forms/simple/Review';
+import Success from './forms/simple/Success';
 import ExitModal from './components/ExitModal';
 
 import { useAppSelector } from '_redux/hooks';
@@ -99,6 +99,12 @@ const SimpleDiveLogsForms: FunctionComponent<
       // offline, cannot fetch details of created log
       props.navigation.navigate('Explore');
     } else {
+      switchPage(0);
+      formRef.current?.reset();
+      props.navigation.setParams({
+        diveLogs: {},
+      });
+      props.navigation.navigate('Logs');
       props.navigation.navigate('LogsStack', {
         screen: 'LogDetail',
         params: {
@@ -130,7 +136,7 @@ const SimpleDiveLogsForms: FunctionComponent<
     if (passedInLog.dive_shop_id) {
       Toast.show({
         text1: 'Dive shop added',
-        text2: "Your stamp will be issued when you submit your dive log",
+        text2: 'Your stamp will be issued when you submit your dive log',
       });
     }
   }, []);
@@ -166,7 +172,7 @@ const SimpleDiveLogsForms: FunctionComponent<
           type: 'info',
           text1: 'No network available',
           text2:
-            "We'll upload your dive log as soon as You are connected to the internet",
+            "We'll upload your dive log as soon as you are connected to the internet",
         });
         setFormSubmitting(false);
         callback();
@@ -199,7 +205,7 @@ const SimpleDiveLogsForms: FunctionComponent<
       console.log(err);
       Toast.show({
         type: 'error',
-        text1: 'There was an error submitting this dive log!',
+        text1: err as string || 'There was an error submitting this dive log!',
       });
       setFormSubmitting(false);
     }
@@ -305,7 +311,11 @@ const SimpleDiveLogsForms: FunctionComponent<
                   </Text>
                   <TouchableWithoutFeedback
                     onPress={
-                      page === stages.length ? () => goToLog() : openModal
+                      page === stages.length
+                        ? () => goToLog()
+                        : !values.location // if the user hasn't selected a location, just go back
+                        ? () => goBack()
+                        : openModal
                     }>
                     <Icon
                       style={styles.back}
@@ -336,7 +346,7 @@ const SimpleDiveLogsForms: FunctionComponent<
                   />
                 )}
                 {page === 2 && (
-                  <Review
+                  <Success
                     navigateToAdvancedDiveForm={() =>
                       handleNavigateToAdvancedDiveLog(values as InitialValues)
                     }

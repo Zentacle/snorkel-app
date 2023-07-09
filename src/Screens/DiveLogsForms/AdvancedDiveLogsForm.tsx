@@ -75,19 +75,26 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   const user = useAppSelector(selectUser);
   const [page, switchPage] = React.useState(1);
   const [modalIsOpen, toggleModal] = React.useState(false);
-  const [logDate, setLogDate] = React.useState<Date>();
   const [formSubmitting, setFormSubmitting] = React.useState(false);
 
   let formRef = React.useRef<FormApi<InitialValues, Partial<InitialValues>>>();
   let scrollContainerRef = React.useRef<ScrollView | null>();
 
-  const simpleDiveLogsForm: InitialValues = get(route, 'params.diveLog', {});
+  const simpleDiveLogsForm: Partial<InitialValues> = get(
+    route,
+    'params.diveLog',
+    {},
+  );
   const startTime = React.useMemo(
-    () => simpleDiveLogsForm.startTime && new Date(simpleDiveLogsForm.startTime), [simpleDiveLogsForm.startTime]
-  )
+    () =>
+      simpleDiveLogsForm.startTime && new Date(simpleDiveLogsForm.startTime),
+    [simpleDiveLogsForm.startTime],
+  );
   const startDate = React.useMemo(
-    () => simpleDiveLogsForm.startDate && new Date(simpleDiveLogsForm.startDate), [simpleDiveLogsForm.startDate]
-  )
+    () =>
+      simpleDiveLogsForm.startDate && new Date(simpleDiveLogsForm.startDate),
+    [simpleDiveLogsForm.startDate],
+  );
 
   const stages: Stage[] = [
     {
@@ -119,10 +126,6 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   const previous = () => {
     switchPage(page - 1);
   };
-
-  React.useEffect(() => {
-    setLogDate(new Date());
-  }, []);
 
   React.useEffect(() => {
     scrollContainerRef.current?.scrollTo({
@@ -176,8 +179,8 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
         dive_shop_id: values.dive_shop?.shop_id,
         is_private: values.privacy === t('DIVE_LOG_PRIVATE').toLowerCase(),
       };
-      delete arrangedValues.startDate;
-      delete arrangedValues.startTime;
+      arrangedValues.startDate = new Date();
+      arrangedValues.startTime = new Date();
       delete arrangedValues.location;
       delete arrangedValues.date_posted;
       delete arrangedValues.dive_shop;
@@ -236,30 +239,14 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   const constraints = {};
   const initialValues: InitialValues = {
     id: simpleDiveLogsForm.id,
-    dive_length: simpleDiveLogsForm.dive_length
-      ? simpleDiveLogsForm.dive_length
-      : undefined,
-    max_depth: simpleDiveLogsForm.max_depth
-      ? simpleDiveLogsForm.max_depth
-      : undefined,
-    water_temp: simpleDiveLogsForm.water_temp
-      ? simpleDiveLogsForm.water_temp
-      : undefined,
-    air_temp: simpleDiveLogsForm.air_temp
-      ? simpleDiveLogsForm.air_temp
-      : undefined,
-    visibility: simpleDiveLogsForm.visibility
-      ? simpleDiveLogsForm.visibility
-      : undefined,
-    entry: simpleDiveLogsForm.entry
-      ? simpleDiveLogsForm.entry
-      : undefined,
-    startDate: startDate
-      ? startDate
-      : logDate,
-    startTime: startTime
-      ? startTime
-      : logDate,
+    dive_length: simpleDiveLogsForm.dive_length,
+    max_depth: simpleDiveLogsForm.max_depth,
+    water_temp: simpleDiveLogsForm.water_temp,
+    air_temp: simpleDiveLogsForm.air_temp,
+    visibility: simpleDiveLogsForm.visibility,
+    entry: simpleDiveLogsForm.entry,
+    startDate: startDate ? startDate : new Date(),
+    startTime: startTime ? startTime : new Date(),
     weight: simpleDiveLogsForm.weight
       ? simpleDiveLogsForm.weight
       : user?.unit === 'imperial'
@@ -278,7 +265,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     air_type: simpleDiveLogsForm.air_type
       ? simpleDiveLogsForm.air_type
       : t('NORMAL').toLowerCase(),
-    rating: simpleDiveLogsForm.rating,
+    rating: simpleDiveLogsForm.rating || 5,
     difficulty: simpleDiveLogsForm.difficulty,
     location: simpleDiveLogsForm.location,
     activity_type: simpleDiveLogsForm.activity_type,
@@ -287,6 +274,7 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
     text: simpleDiveLogsForm.text,
     dive_shop: simpleDiveLogsForm.dive_shop,
     privacy: simpleDiveLogsForm.privacy,
+    wetsuit: simpleDiveLogsForm.wetsuit,
     // ...simpleDiveLogsForm,
   };
 
@@ -427,8 +415,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 20,
-    marginTop: 25,
-    marginBottom: 10,
+    marginTop: 20,
+    marginBottom: 0,
   },
   header: {
     color: 'black',

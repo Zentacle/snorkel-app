@@ -1,7 +1,7 @@
 import { NavigatorScreenParams } from '@react-navigation/native';
 
 import type { ViewStyle, TextStyle, ImageStyle } from 'react-native';
-import type { AdvancedFormInitialValues as DiveLog } from './data/logs';
+import type { AdvancedFormInitialValues } from './data/logs';
 import type { InitialSearchValues as FullInitialValues } from './data/search';
 
 export type AuthtackParamList = {
@@ -74,7 +74,7 @@ export type LogsStackParamList = {
 
 export type LogsFormStackParamList = {
   AdvancedDiveLogsForm: {
-    diveLog: DiveLog;
+    diveLog: Partial<AdvancedFormInitialValues>;
   };
 };
 
@@ -83,7 +83,7 @@ export type AppTabsParamList = {
   Profile: undefined;
   Search: undefined;
   Logs: undefined;
-  LogsForm: DiveLog | {};
+  LogsForm: AdvancedFormInitialValues | {};
 };
 
 export type RootStackParamList = {

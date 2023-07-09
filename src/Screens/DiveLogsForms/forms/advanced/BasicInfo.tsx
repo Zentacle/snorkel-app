@@ -304,8 +304,6 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   mediaContainer: {
-    marginTop: 30,
-    marginBottom: 30,
   },
   optionalContainer: {},
   optionaltext: {
@@ -386,7 +384,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   ratingContainer: {
-    marginTop: 20,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

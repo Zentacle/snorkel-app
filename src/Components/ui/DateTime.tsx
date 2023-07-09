@@ -27,6 +27,10 @@ const DateTime: FunctionComponent<ComponentProps> = ({
           date={value || new Date()}
           mode={mode}
           onDateChange={(dateValue: Date) => onChange(dateValue)}
+          maximumDate={new Date()}
+          style={{
+            height: 150,
+          }}
         />
       </View>
     </View>
