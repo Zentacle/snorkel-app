@@ -2,7 +2,7 @@ import { Spot } from './spot';
 import { User } from './user';
 import { DiveShopFull } from './shops';
 export interface FormImages {
-  uri: string;
+  url: string;
   type?: string;
   name: string;
 }

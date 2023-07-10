@@ -31,6 +31,7 @@ const DateTime: FunctionComponent<ComponentProps> = ({
           style={{
             height: 150,
           }}
+          theme='light'
         />
       </View>
     </View>

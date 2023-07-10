@@ -87,12 +87,16 @@ const AdvancedDiveLogsForm: FunctionComponent<AdvancedDiveLogsFormsProps> = ({
   );
   const startTime = React.useMemo(
     () =>
-      simpleDiveLogsForm.startTime && new Date(simpleDiveLogsForm.startTime),
+      simpleDiveLogsForm.startTime
+        ? new Date(simpleDiveLogsForm.startTime)
+        : new Date(simpleDiveLogsForm.date_dived),
     [simpleDiveLogsForm.startTime],
   );
   const startDate = React.useMemo(
     () =>
-      simpleDiveLogsForm.startDate && new Date(simpleDiveLogsForm.startDate),
+      simpleDiveLogsForm.startDate
+        ? new Date(simpleDiveLogsForm.startDate)
+        : new Date(simpleDiveLogsForm.date_dived),
     [simpleDiveLogsForm.startDate],
   );
 

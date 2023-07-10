@@ -156,8 +156,8 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
               desc: diveLog.spot.name,
               location_city: diveLog.spot.location_city,
             },
-            startDate: diveLog.review.date_dived,
-            startTime: diveLog.review.date_dived,
+            startDate: diveLog.review.date_dived || diveLog.review.date_posted,
+            startTime: diveLog.review.date_dived || diveLog.review.date_posted,
             dive_shop: diveLog.dive_shop && {
               shop_id: diveLog.dive_shop.id,
               location_city: `${diveLog.dive_shop.city}, ${diveLog.dive_shop?.state}`,
