@@ -53,10 +53,9 @@ const Logs: FunctionComponent<LogsProps> = ({ navigation }) => {
   const diveLogsIsLoading = useAppSelector(selectDiveLogsLoadingState);
   const authToken = useAppSelector(selectAuthToken);
   const user = useAppSelector(selectUser);
-  const [feedDistance, setFeedDistance] = React.useState<string>('all');
+  const [feedDistance, setFeedDistance] = React.useState<string>('global');
 
   useEffect(() => {
-    console.log(feedDistance);
     const fetchData = async () => {
       if (feedDistance !== 'nearby') {
         dispatch(
@@ -162,7 +161,7 @@ const Logs: FunctionComponent<LogsProps> = ({ navigation }) => {
             setFeedDistance(value);
           }}
           options={[
-            { label: 'All', value: 'all' },
+            { label: 'Global', value: 'global' },
             { label: 'Nearby', value: 'nearby' },
           ]}
           value={feedDistance}
