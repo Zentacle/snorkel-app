@@ -35,6 +35,7 @@ import EmptyList from './components/EmptyList';
 import LogsList from './components/List';
 import { isBelowHeightThreshold } from '_utils/constants';
 import DiveLogListPlaceholder from '_components/reusables/Placeholders/DiveLogs/List';
+import Selector from '_components/ui/Selector';
 
 type LogsNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<AppTabsParamList, 'Logs'>,
@@ -52,57 +53,66 @@ const Logs: FunctionComponent<LogsProps> = ({ navigation }) => {
   const diveLogsIsLoading = useAppSelector(selectDiveLogsLoadingState);
   const authToken = useAppSelector(selectAuthToken);
   const user = useAppSelector(selectUser);
+  const [feedDistance, setFeedDistance] = React.useState<string>('all');
 
   useEffect(() => {
+    console.log(feedDistance);
     const fetchData = async () => {
-      const perms = await checkMultiple([
-        PERMISSIONS.IOS.LOCATION_ALWAYS,
-        PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
-        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-        PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
-      ]);
-      const hasLocationPermission =
-        perms[PERMISSIONS.IOS.LOCATION_ALWAYS] === RESULTS.GRANTED ||
-        perms[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE] === RESULTS.GRANTED ||
-        perms[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === RESULTS.GRANTED ||
-        perms[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] === RESULTS.GRANTED;
-
-      if (Platform.OS === 'android') {
-        await request(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
-      } else {
-        await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
-      }
-
-      if (hasLocationPermission) {
-        Geolocation.getCurrentPosition(
-          position => {
-            dispatch(
-              fetchNearbyRecentDiveLogs({
-                auth_token: authToken as string,
-                position,
-              }),
-            );
-          },
-          error => {
-            console.log(error);
-            dispatch(
-              fetchNearbyRecentDiveLogs({
-                auth_token: authToken as string,
-              }),
-            );
-          },
-        );
-      } else {
+      if (feedDistance !== 'nearby') {
         dispatch(
           fetchNearbyRecentDiveLogs({
             auth_token: authToken as string,
           }),
         );
+      } else {
+        const perms = await checkMultiple([
+          PERMISSIONS.IOS.LOCATION_ALWAYS,
+          PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
+          PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+          PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+        ]);
+        const hasLocationPermission =
+          perms[PERMISSIONS.IOS.LOCATION_ALWAYS] === RESULTS.GRANTED ||
+          perms[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE] === RESULTS.GRANTED ||
+          perms[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === RESULTS.GRANTED ||
+          perms[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] === RESULTS.GRANTED;
+
+        if (Platform.OS === 'android') {
+          await request(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
+        } else {
+          await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+        }
+
+        if (hasLocationPermission) {
+          Geolocation.getCurrentPosition(
+            position => {
+              dispatch(
+                fetchNearbyRecentDiveLogs({
+                  auth_token: authToken as string,
+                  position,
+                }),
+              );
+            },
+            error => {
+              console.log(error);
+              dispatch(
+                fetchNearbyRecentDiveLogs({
+                  auth_token: authToken as string,
+                }),
+              );
+            },
+          );
+        } else {
+          dispatch(
+            fetchNearbyRecentDiveLogs({
+              auth_token: authToken as string,
+            }),
+          );
+        }
       }
     };
-
     fetchData().catch(console.error);
-  }, [navigation, authToken, dispatch, user]);
+  }, [navigation, authToken, dispatch, user, feedDistance]);
 
   const navigateToLogDetail = (diveLogId: number) => {
     navigation.navigate('LogsStack', {
@@ -147,9 +157,21 @@ const Logs: FunctionComponent<LogsProps> = ({ navigation }) => {
           },
         ]}>
         <Text style={styles.headerText}>{t('RECENT_ACTIVITY')}</Text>
-        <Text style={styles.subheaderText}>
-          See the conditions in your local area ({'<'}50mi)
-        </Text>
+        <Selector
+          onChange={(value: string) => {
+            setFeedDistance(value);
+          }}
+          options={[
+            { label: 'All', value: 'all' },
+            { label: 'Nearby', value: 'nearby' },
+          ]}
+          value={feedDistance}
+        />
+        {feedDistance === 'nearby' && (
+          <Text style={styles.subheaderText}>
+            Conditions in your local area ({'<'}50mi)
+          </Text>
+        )}
       </View>
       <View></View>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -188,10 +210,9 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   subheaderText: {
-    marginTop: 4,
-    fontWeight: '500',
+    marginTop: 8,
     color: 'black',
-    fontSize: 20,
+    fontSize: 14,
   },
 });
 

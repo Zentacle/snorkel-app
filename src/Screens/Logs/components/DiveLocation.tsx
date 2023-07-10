@@ -24,9 +24,6 @@ const DiveLocation: FunctionComponent<DiveLocationProps> = ({
     <View style={styles.diveLocationContainer}>
       {canShowLocation ? (
         <>
-          <Text style={styles.diveSiteLocationHeader}>
-            {t('DIVE_SITE_LOCATION')}
-          </Text>
           <View style={styles.mapContainer}>
             <MapView
               style={styles.map}

@@ -114,12 +114,9 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
 
   const navigateToMap = () => {
     navigation.navigate('ExploreStack', {
-      screen: 'Map',
+      screen: 'DiveSite',
       params: {
-        coords: {
-          lat: coords.latitude,
-          lng: coords.longitude,
-        },
+        diveSpotId: diveLog!.spot.id!,
       },
     });
   };
@@ -188,10 +185,6 @@ const Log: FunctionComponent<LogProps> = ({ navigation, route }) => {
 
           <View style={styles.contentContainer}>
             <Text style={styles.mainDescription}>{diveLog.review.title}</Text>
-            <View style={styles.locationContainer}>
-              <Snorkel width={15} />
-              <Text style={styles.locationText}>{diveLog.spot.name}</Text>
-            </View>
             <View style={styles.locationContainer}>
               <Location width={15} />
               <Text style={styles.locationText}>

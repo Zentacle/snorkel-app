@@ -1,4 +1,5 @@
 export interface Spot {
+  activity?: Tag[];
   access: Tag[];
   area_one_id: number;
   area_two_id: number;

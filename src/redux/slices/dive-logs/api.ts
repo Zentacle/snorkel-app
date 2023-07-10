@@ -140,6 +140,7 @@ export async function handleFetchNearbyRecentDiveLogs(
   longitude?: number,
 ): Promise<NearbyRecentDiveLogsResponse> {
   try {
+    console.log('latitude', latitude)
     const url = `${config.API_ENDPOINT}/reviews/recent?type=nearby&latitude=${latitude || ''}&longitude=${longitude || ''}`;
     const response = fetch(url, {
       method: 'GET',
