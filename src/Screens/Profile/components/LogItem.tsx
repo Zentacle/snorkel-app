@@ -10,7 +10,6 @@ import type { DiveLogsState } from '_utils/interfaces/data/logs';
 import DepthArrow from '_assets/ArrowsDownUp.png';
 import DiveTimeClock from '_assets/ClockClockwise.png';
 import UnavailableLocationBox from './UnavailableLocationListBox';
-import Snorkel from '_assets/tab-icons/logs-active.png';
 import Location from '_assets/scuba_icons/Location.svg';
 import Shop from '_assets/scuba_icons/Shop.svg';
 import { selectUser } from '_redux/slices/user';

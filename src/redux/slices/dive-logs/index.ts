@@ -50,7 +50,7 @@ const initialState: DiveLogsStoreState = {
 const normalizeData = (data: DiveLogsState[]) => {
   const normalizedObj: NormalizedObj = {};
   for (let item of data) {
-    normalizedObj[item.id.toString()] = item;
+    normalizedObj[item.id!.toString()] = item;
   }
   return normalizedObj;
 };

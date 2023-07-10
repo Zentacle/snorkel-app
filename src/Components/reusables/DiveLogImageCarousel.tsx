@@ -28,14 +28,14 @@ enum Directions {
 }
 
 interface ImageType {
-  uri: string;
+  url: string;
   type?: string;
   name?: string;
 }
 
 const defaultImages: ImageType[] = [
   {
-    uri: 'https://snorkel.s3.amazonaws.com/default/default_hero_background.png',
+    url: 'https://snorkel.s3.amazonaws.com/default/default_hero_background.png',
   },
 ];
 
@@ -116,7 +116,7 @@ const DiveLogImageCarousel: FunctionComponent<
                 height: 130
               } : {}
             ]}
-            source={{ uri: image.uri }}
+            source={{ uri: image.url }}
           />
         ))}
       </ScrollView>
