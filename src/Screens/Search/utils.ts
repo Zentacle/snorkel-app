@@ -12,38 +12,18 @@ export const destinations: Destination[] = [
     image: DiveSite1,
   },
   {
-    place: 'Palazo',
-    country: 'Indonesia',
+    place: 'Tulum',
+    country: 'Mexico',
     image: DiveSite2,
   },
   {
-    place: 'Baohol',
-    country: 'Indonesia',
+    place: 'Belize',
+    country: 'Belize',
     image: DiveSite3,
   },
   {
-    place: 'Koh Tao',
-    country: 'Indonesia',
-    image: DiveSite4,
-  },
-  {
-    place: 'Bali',
-    country: 'Indonesia',
-    image: DiveSite1,
-  },
-  {
-    place: 'Palazo',
-    country: 'Indonesia',
-    image: DiveSite2,
-  },
-  {
-    place: 'Baohol',
-    country: 'Indonesia',
-    image: DiveSite3,
-  },
-  {
-    place: 'Koh Tao',
-    country: 'Indonesia',
+    place: 'Bonaire',
+    country: 'Bonaire',
     image: DiveSite4,
   },
 ];
