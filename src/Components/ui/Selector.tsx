@@ -19,12 +19,16 @@ const Selector: FunctionComponent<Props> = ({ options, value, onChange }) => {
     <View style={styles.container}>
       {options.map(option => (
         <TouchableOpacity
+          key={option.value}
           onPress={() => {
             onChange(option.value);
           }}
           style={value === option.value ? styles.selected : styles.option}>
           <View>
-            <Text style={styles.text}>{option.label}</Text>
+            <Text style={{
+              ...styles.text,
+              color: value === option.value ? 'white' : 'black',
+            }}>{option.label}</Text>
           </View>
         </TouchableOpacity>
       ))}
@@ -41,25 +45,31 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
     borderRadius: 5,
+    height: 30,
   },
   selected: {
+    backgroundColor: '#aa00ff',
+    borderRadius: 5,
+    color: 'white',
     flexBasis: 50,
     flexGrow: 1,
     flexShrink: 0,
-    backgroundColor: 'lightblue',
+    justifyContent: 'center',
     textAlign: 'center',
     overflow: 'hidden',
   },
   option: {
+    alignItems: 'center',
     flexBasis: 50,
     flexGrow: 1,
     flexShrink: 0,
+    justifyContent: 'center',
     textAlign: 'center',
     overflow: 'hidden',
   },
   text: {
     fontSize: 16,
-    color: 'black',
+    fontWeight: '700',
     textAlign: 'center',
   },
 });

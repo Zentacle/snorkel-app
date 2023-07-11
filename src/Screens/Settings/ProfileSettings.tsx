@@ -6,7 +6,7 @@ import { Form, Field } from 'react-final-form';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { useAppDispatch, useAppSelector } from '_redux/hooks';
-import { selectUser, updateUser } from '_redux/slices/user';
+import { selectAuthToken, selectUser, updateUser } from '_redux/slices/user';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -27,6 +27,8 @@ import SelectWGradientBorder from '_components/ui/SelectWGradientBorderV2';
 import DeleteModal from './components/DeleteModal';
 import FMInput from '_components/ui/FormManagementInput';
 import ImageFormComponent from '_components/ui/ImageFormComponent';
+import { handleUploadProfilePic } from '_redux/slices/user/api';
+import { FormImages } from '_utils/interfaces/data/logs';
 
 type ProfileSettingsTypeNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<SettingStackParamList, 'ProfileSettings'>,
@@ -44,6 +46,7 @@ const ProfileSettings: FunctionComponent<ProfileSettingsTypeProps> = ({
   const [modalIsOpen, toggleModal] = React.useState(false);
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
+  const authToken = useAppSelector(selectAuthToken);
 
   const navigateBack = () => {
     navigation.goBack();
@@ -63,6 +66,14 @@ const ProfileSettings: FunctionComponent<ProfileSettingsTypeProps> = ({
   };
 
   const submitForm = async (values: User, form: any) => {
+    if (form.getState().dirtyFields['profile_pic']) {
+      const response = await handleUploadProfilePic(
+        values.profile_pic as FormImages,
+        authToken as string,
+      );
+      console.log(response);
+      values.profile_pic = response.data;
+    }
     const dirtyValues = Object.keys(form.getState().dirtyFields).reduce(
       (result: Record<string, any>, key: string) => {
         result[key] = (values as any)[key];
