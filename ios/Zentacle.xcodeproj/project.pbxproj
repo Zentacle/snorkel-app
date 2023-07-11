@@ -602,7 +602,7 @@
 				CODE_SIGN_ENTITLEMENTS = Zentacle/Zentacle.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 120;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9C8EQ3DGNG;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Zentacle/Info.plist;
@@ -611,7 +611,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.6.6;
+				MARKETING_VERSION = 2.6.7;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -637,7 +637,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 120;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9C8EQ3DGNG;
 				INFOPLIST_FILE = Zentacle/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -645,7 +645,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.6.6;
+				MARKETING_VERSION = 2.6.7;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
