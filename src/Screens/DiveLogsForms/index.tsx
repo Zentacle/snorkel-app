@@ -205,7 +205,8 @@ const SimpleDiveLogsForms: FunctionComponent<
       console.log(err);
       Toast.show({
         type: 'error',
-        text1: err as string || 'There was an error submitting this dive log!',
+        text1:
+          (err as string) || 'There was an error submitting this dive log!',
       });
       setFormSubmitting(false);
     }
@@ -338,7 +339,7 @@ const SimpleDiveLogsForms: FunctionComponent<
                   />
                 )}
 
-                {page === 0 && <Location location={values.location} />}
+                {page === 0 && <Location location={values.location} navigation={props.navigation}/>}
                 {page === 1 && (
                   <Rating
                     dive_shop={values.dive_shop}

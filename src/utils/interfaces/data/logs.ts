@@ -80,3 +80,13 @@ export interface DiveLogsState extends DiveLogsStateStarter {
   spot: Spot;
   user?: User;
 }
+
+export interface NewDiveSiteForm {
+  name: string;
+  location: {
+    lat: number;
+    lng: number;
+  };
+  desc: string;
+  location_city: string;
+}

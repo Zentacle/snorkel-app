@@ -5,6 +5,7 @@ import type {
   ResponseWithImages,
 } from '_utils/interfaces/data/spot';
 import { NearbyExplore } from '.';
+import { NewDiveSiteForm } from '_utils/interfaces/data/logs';
 
 interface ResponseWithSpots {
   data: Spot[];
@@ -102,6 +103,30 @@ export async function fetchDiveSiteImages(
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+      },
+    }).then(res => res.json());
+    return response;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function fetchCreateDiveSite(
+  body: NewDiveSiteForm,
+  auth_token: string,
+): Promise<any> {
+  try {
+    const url = `${config.API_ENDPOINT}/spots/add`;
+    const response = fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        ...body,
+        latitude: body.location.lat,
+        longitude: body.location.lng,
+      }),
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${auth_token}`,
       },
     }).then(res => res.json());
     return response;

@@ -76,6 +76,7 @@ export type LogsFormStackParamList = {
   AdvancedDiveLogsForm: {
     diveLog: Partial<AdvancedFormInitialValues>;
   };
+  NewDiveSite: undefined;
 };
 
 export type AppTabsParamList = {

@@ -31,8 +31,18 @@ import LocationImage from '_assets/LocationLargish.png';
 import { isBelowHeightThreshold } from '_utils/constants';
 import { sendEvent } from '_utils/functions/amplitude';
 import { offlineTypeAhead } from '_utils/functions/offline-location-search';
+import { CompositeNavigationProp } from '@react-navigation/native';
+import { AppTabsParamList, RootStackParamList } from '_utils/interfaces';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+type SimpleDiveLogsFormsNavigationProps = CompositeNavigationProp<
+  BottomTabNavigationProp<AppTabsParamList, 'LogsForm'>,
+  NativeStackNavigationProp<RootStackParamList>
+>;
 
 interface BaseProps {
+  navigation: SimpleDiveLogsFormsNavigationProps;
   isVisible: boolean;
   closeModal: () => void;
   reset: () => void;
@@ -54,6 +64,7 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
   isVisible,
   closeModal,
   input: { onChange, value },
+  ...props
 }) => {
   const { t } = useTranslation();
   const [text, changeText] = React.useState('');
@@ -63,18 +74,21 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     sendEvent('page_view', {
       type: 'dive_log__select_location',
     });
-    Geolocation.getCurrentPosition(async position => {
-      const queryObj = {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-      };
-      const queryString = stringify(queryObj);
-      const response = await handleTypeAheadNearby(queryString);
+    Geolocation.getCurrentPosition(
+      async position => {
+        const queryObj = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+        const queryString = stringify(queryObj);
+        const response = await handleTypeAheadNearby(queryString);
 
-      if (response.data) {
-        setSuggestions(response.data);
-      }
-    }, (err) => console.error(err));
+        if (response.data) {
+          setSuggestions(response.data);
+        }
+      },
+      err => console.error(err),
+    );
   }, [isVisible]);
 
   React.useEffect(() => {
@@ -138,10 +152,10 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
     setSuggestions([]);
   };
 
-  const _renderItem = (item: { item: TypeaheadResponse }) => {
-    return (
+  const _renderItem = (item: { item: TypeaheadResponse | null }) => {
+    return item && item.item ? (
       <Pressable
-        onPress={() => setPlace(item.item)}
+        onPress={() => setPlace(item.item!)}
         style={({ pressed }) => [
           {
             backgroundColor: pressed ? '#cecece' : 'transparent',
@@ -155,16 +169,41 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
           </View>
         </View>
       </Pressable>
+    ) : (
+      <Pressable
+        onPress={() => {
+          handleCloseModal();
+          props.navigation.navigate('LogsFormStack', {
+            screen: 'NewDiveSite',
+          });
+        }}
+        style={({ pressed }) => [
+          {
+            backgroundColor: pressed ? '#cecece' : 'transparent',
+          },
+        ]}>
+        <View style={styles.resultContainer}>
+          <Image source={LocationImage} />
+          <View style={styles.placeContainer}>
+            <Text style={styles.place}>Add new dive site</Text>
+            <Text style={styles.placeSubText}>
+              Share a new spot with the community
+            </Text>
+          </View>
+        </View>
+      </Pressable>
     );
   };
 
-  const _keyExtractor = (item: any) => item.url;
+  const _keyExtractor = (item: TypeaheadResponse | null) =>
+    item ? item.url : 'add_new_dive_site';
 
   return (
     <Modal
       visible={isVisible}
       onRequestClose={closeModal}
       animationType="slide"
+      presentationStyle="pageSheet"
       style={styles.modal}>
       <SafeAreaView style={styles.container}>
         <View style={styles.searchContainer}>
@@ -190,7 +229,7 @@ const LocationAutocompleteModal: FunctionComponent<ModalWFinalFormProps> = ({
             keyExtractor={_keyExtractor}
             renderItem={_renderItem}
             showsVerticalScrollIndicator={false}
-            data={suggestions}
+            data={[...suggestions, null]}
             keyboardShouldPersistTaps="handled"
           />
         </View>

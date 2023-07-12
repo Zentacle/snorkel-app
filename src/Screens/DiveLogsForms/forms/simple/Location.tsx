@@ -19,8 +19,18 @@ import {
 } from '_utils/form/gradient-selection';
 import { capitalize } from '_utils/functions';
 import { sendEvent } from '_utils/functions/amplitude';
+import { CompositeNavigationProp } from '@react-navigation/native';
+import { AppTabsParamList, RootStackParamList } from '_utils/interfaces';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+type SimpleDiveLogsFormsNavigationProps = CompositeNavigationProp<
+  BottomTabNavigationProp<AppTabsParamList, 'LogsForm'>,
+  NativeStackNavigationProp<RootStackParamList>
+>;
 
 interface LocationAndImageProps {
+  navigation: SimpleDiveLogsFormsNavigationProps;
   location?: {
     lat: number;
     lng: number;
@@ -29,7 +39,10 @@ interface LocationAndImageProps {
   };
 }
 
-const Location: FunctionComponent<LocationAndImageProps> = ({ location }) => {
+const Location: FunctionComponent<LocationAndImageProps> = ({
+  location,
+  ...props
+}) => {
   const { t } = useTranslation();
   const activity = [
     t('SCUBA').toLowerCase(),
@@ -71,6 +84,7 @@ const Location: FunctionComponent<LocationAndImageProps> = ({ location }) => {
         isVisible={autocompleteModalOpen}
         component={LocationAutocompleteModal}
         closeModal={closeLocationModal}
+        navigation={props.navigation}
       />
 
       {location?.desc ? (
