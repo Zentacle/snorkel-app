@@ -87,7 +87,7 @@ const DiveSite: FunctionComponent<DiveSiteProps> = ({ navigation, route }) => {
   const activities: Activity[] = [
     {
       label: t('ACTIVITY'),
-      values: diveSite.activity?.length
+      values: diveSite?.activity?.length
         ? diveSite.activity.map(activity => capitalize(activity.text)!)
         : [t('SCUBA'), t('SNORKEL'), t('FREEDIVING')],
     },
