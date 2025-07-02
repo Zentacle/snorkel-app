@@ -1,7 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-// @ts-ignore
-import duration from 'format-duration-time';
 import { useTranslation } from 'react-i18next';
 
 import GradientBox from '_components/ui/GradientBox';
@@ -17,6 +15,18 @@ interface DiveLogSummaryProps {
   diveLogs: DiveLogsState[];
 }
 
+/**
+ * Native duration formatting to replace format-duration-time
+ * Converts milliseconds to hours:minutes format
+ */
+function formatDuration(milliseconds: number): string {
+  const totalMinutes = Math.floor(milliseconds / 60000);
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  return `${hours}:${minutes.toString().padStart(2, '0')}`;
+}
+
 function calculateTotalDiveTime(diveLogs: DiveLogsState[]) {
   let total = 0;
   for (let log of diveLogs) {
@@ -25,8 +35,8 @@ function calculateTotalDiveTime(diveLogs: DiveLogsState[]) {
     }
   }
 
-  if (!total) return 0;
-  return duration(total * 60000).format('h:m');
+  if (!total) return '0:00';
+  return formatDuration(total * 60000);
 }
 
 function calculateVisitedSites(diveLogs: DiveLogsState[]): number {
@@ -62,7 +72,7 @@ const DiveLogSummary: FunctionComponent<DiveLogSummaryProps> = ({
                 />
               </View>
               <Text style={styles.summaryValue}>
-                {calculateTotalDiveTime(diveLogs) || '0:00'}
+                {calculateTotalDiveTime(diveLogs)}
               </Text>
               <Text style={styles.summaryLabel}>{t('TOTAL_DIVE_TIME')}</Text>
             </View>
