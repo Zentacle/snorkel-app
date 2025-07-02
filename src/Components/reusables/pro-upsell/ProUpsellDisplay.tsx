@@ -107,18 +107,38 @@ const ProUpsellDisplay: FunctionComponent<ProUpsellDisplayProps> = ({
     fetchOfferings();
   }, [source]);
 
-  const fetchOfferings = async () => {
+    const fetchOfferings = async () => {
     try {
+      console.log('Fetching RevenueCat offerings...');
       const offerings: PurchasesOfferings = await Purchases.getOfferings();
+      console.log('RevenueCat offerings:', JSON.stringify(offerings, null, 2));
+
       if (
         offerings.current !== null &&
         offerings.current.availablePackages.length !== 0
       ) {
+        console.log('Found current offering with packages:', offerings.current.availablePackages.length);
         setPackage(offerings.current);
-        setSelectedPackage(offerings.current.annual);
+        // In v8.0.0, we need to find the annual package by type
+        const annualPackage = offerings.current.availablePackages.find(
+          pkg => pkg.packageType === PACKAGE_TYPE.ANNUAL
+        );
+        setSelectedPackage(annualPackage || offerings.current.availablePackages[0]);
+      } else {
+        console.warn('No current offerings available');
+        console.log('All offerings:', offerings);
+        Alert.alert(
+          'No Products Available',
+          'No subscription products are currently available. Please check your App Store Connect configuration.'
+        );
       }
     } catch (err: any) {
-      Alert.alert('Error fetching offerings', err.message);
+      console.error('RevenueCat fetchOfferings error:', err);
+      console.error('Error details:', JSON.stringify(err, null, 2));
+      Alert.alert(
+        'Error fetching offerings',
+        `Details: ${err.message}\n\nPlease check your RevenueCat and App Store Connect configuration.`
+      );
     }
   };
 

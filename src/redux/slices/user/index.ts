@@ -112,8 +112,6 @@ export const registerUser = createAsyncThunk(
     );
 
     await Purchases.logIn(`${response.user.id}`);
-    Purchases.setEmail(response.user.email as string);
-    Purchases.setDisplayName(response.user.display_name as string);
     await flagExistingUser();
     return {
       ...response,
@@ -202,8 +200,6 @@ export const googleRegister = createAsyncThunk(
     );
 
     await Purchases.logIn(`${response.user.id}`);
-    Purchases.setEmail(response.user.email as string);
-    Purchases.setDisplayName(response.user.display_name as string);
 
     await flagExistingUser();
 
@@ -230,8 +226,6 @@ export const appleRegister = createAsyncThunk(
     );
 
     await Purchases.logIn(`${response.user.id}`);
-    Purchases.setEmail(response.user.email as string);
-    Purchases.setDisplayName(response.user.display_name as string);
 
     await flagExistingUser();
 
