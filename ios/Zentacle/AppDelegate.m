@@ -34,6 +34,11 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  self.moduleName = @"zentacle";
+  // You can add your custom initial props in the dictionary below.
+  // They will be passed down to the ViewController used by React Native.
+  self.initialProps = @{};
+
   NSString* mapsApiKey = [RNCConfig envFor:@"GOOGLE_MAPS_API_KEY"];
   [GMSServices provideAPIKey:mapsApiKey];
   [RNBranch initSessionWithLaunchOptions:launchOptions isReferrable:YES]; // <-- add this
@@ -102,6 +107,16 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler {
   [RNNotifications didReceiveBackgroundNotification:userInfo withCompletionHandler:completionHandler];
+}
+
+/// This method controls whether the `concurrentRoot`feature of React18 is turned on or off.
+///
+/// @see: https://reactjs.org/blog/2022/03/29/react-v18.html
+/// @note: This requires to be rendering on Fabric (i.e. on the New Architecture).
+/// @return: `true` if the `concurrentRoot` feature is enabled. Otherwise, it returns `false`.
+- (BOOL)concurrentRootEnabled
+{
+  return true;
 }
 
 @end
