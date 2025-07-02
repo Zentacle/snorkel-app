@@ -3,7 +3,7 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-#import "RNSplashScreen.h"
+
 #import <React/RCTLinkingManager.h>
 #import <RNGoogleSignin/RNGoogleSignin.h>
 #import <GoogleMaps/GoogleMaps.h>
@@ -15,16 +15,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  self.moduleName = @"zentacle";
-  // You can add your custom initial props in the dictionary below.
-  // They will be passed down to the ViewController used by React Native.
-  self.initialProps = @{};
-
   NSString* mapsApiKey = [RNCConfig envFor:@"GOOGLE_MAPS_API_KEY"];
   [GMSServices provideAPIKey:mapsApiKey];
-  [RNBranch initSessionWithLaunchOptions:launchOptions isReferrable:YES]; // <-- add this
+  [RNBranch initSessionWithLaunchOptions:launchOptions isReferrable:YES];
   [RNNotifications startMonitorNotifications];
-  NSURL *jsCodeLocation;
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
@@ -42,7 +36,6 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-  [RNSplashScreen show];
   return YES;
 }
 
