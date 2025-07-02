@@ -6,8 +6,6 @@ import {
   TouchableNativeFeedback,
   Image,
 } from 'react-native';
-import MaskedView from '@react-native-masked-view/masked-view';
-import LinearGradient from 'react-native-linear-gradient';
 
 import type { FunctionComponent } from 'react';
 import type { ImageSourcePropType } from 'react-native';
@@ -23,47 +21,23 @@ interface ButtonProps {
   inactiveColor?: string;
   imageSource: ImageSourcePropType;
   loading?: boolean;
+  children?: React.ReactNode;
 }
 
 export const Button: FunctionComponent<ButtonProps> = (props): JSX.Element => {
   const textComp = (
-    <MaskedView
-      maskElement={
-        <Text
-          style={[
-            styles.text,
-            props.style?.text,
-            props.disabled && {
-              color: 'grey',
-            },
-          ]}>
-          {props.children}
-        </Text>
-      }>
-      <LinearGradient
-        style={[props.loading && { opacity: 0.3 }]}
-        start={{
-          x: 0.003,
-          y: 3.75,
-        }}
-        end={{
-          x: 1.5,
-          y: 0.08,
-        }}
-        colors={['#AA00FF', '#00E0FF']}>
-        <Text
-          style={[
-            styles.text,
-            props.style?.text,
-            props.disabled && {
-              color: 'grey',
-            },
-            { opacity: 0 },
-          ]}>
-          {props.children}
-        </Text>
-      </LinearGradient>
-    </MaskedView>
+    <Text
+      style={[
+        styles.text,
+        props.style?.text,
+        props.disabled && {
+          color: 'grey',
+        },
+        props.loading && { opacity: 0.3 },
+        { color: '#AA00FF' },
+      ]}>
+      {props.children}
+    </Text>
   );
   const button = (
     <View

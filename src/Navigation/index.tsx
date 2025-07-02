@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import SplashScreen from 'react-native-splash-screen';
 import { AppState } from 'react-native';
 import {
   requestTrackingPermission,
@@ -122,9 +121,7 @@ const Navigator: React.FC = () => {
     // to improve user experience
     dispatch(handleCheckExistingUser());
     dispatch(handleFetchDiveSites({}));
-    dispatch(autoAuth()).then(() => {
-      SplashScreen.hide();
-    });
+    dispatch(autoAuth());
     dispatch(autoHydrateSettings());
     dispatch(getCurrentUser());
   }, [dispatch]);

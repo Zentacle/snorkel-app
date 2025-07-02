@@ -58,19 +58,9 @@ const DiveSiteReviews: FunctionComponent<DiveSiteReviewsProps> = (
 
       <Button
         // onPress={navigateToReviews}
-        textGradient
-        start={{
-          x: 0,
-          y: 1,
-        }}
-        end={{
-          x: 0.65,
-          y: 7.4,
-        }}
-        gradientColors={['#AA00FF', '#00E0FF']}
         style={{
           container: styles.showReviewsButtonContainer,
-          text: styles.showReviewsButtonText,
+          text: { ...styles.showReviewsButtonText, color: '#AA00FF' },
         }}>
         {t('SHOW_ALL_REVIEWS')}
       </Button>

@@ -1,9 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, Modal } from 'react-native';
 import IoIcon from 'react-native-vector-icons/Ionicons';
-import { format } from 'date-fns';
 import NFTSymbol from 'assets/scuba_icons/nft-symbol-large.svg';
-import NFTLarge from 'assets/NFTLarge.png';
 import GradientCircle from '_components/ui/GradientCircle';
 import GradientBox from '_components/ui/GradientBox';
 import StockDiveShopLogo from 'assets/stock-dive-shop-logo.png';
@@ -17,6 +15,19 @@ interface FullScreenDiveStampProps {
   closeModal(): void;
   diveShop: DiveShopFull;
   dateDived: string;
+}
+
+/**
+ * Native date formatting to replace date-fns/format
+ * Formats date to MM/dd/yyyy format
+ */
+function formatDate(date: Date): string {
+  const formatter = new Intl.DateTimeFormat('en-US', {
+    month: '2-digit',
+    day: '2-digit',
+    year: 'numeric'
+  });
+  return formatter.format(date);
 }
 
 const FullScreenDiveStamp: React.FunctionComponent<
@@ -66,7 +77,7 @@ const FullScreenDiveStamp: React.FunctionComponent<
           <View style={styles.diveShopSubTextContainer}>
             <Text style={styles.verifiedText}>Verified Dive Stamp</Text>
             <Text style={styles.dateStamp}>
-              {format(new Date(dateDived), 'MM/dd/yyyy')}
+              {formatDate(new Date(dateDived))}
             </Text>
           </View>
         </View>

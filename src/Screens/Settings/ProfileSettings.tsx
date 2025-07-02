@@ -204,17 +204,6 @@ const ProfileSettings: FunctionComponent<ProfileSettingsTypeProps> = ({
                     // loading={submitting}
                     // disabled={invalid && !dirtySinceLastSubmit}
                     onPress={openModal}
-                    textGradient
-                    gradientColors={['#FA0E0E', '#FF9900', '#FF9900']}
-                    gradientLocations={[1, 1, 1]}
-                    start={{
-                      x: 0,
-                      y: 0,
-                    }}
-                    end={{
-                      x: 0.06,
-                      y: 6,
-                    }}
                     style={{
                       container: {
                         backgroundColor: 'white',
@@ -223,7 +212,7 @@ const ProfileSettings: FunctionComponent<ProfileSettingsTypeProps> = ({
                         marginVertical: 8,
                       },
                       text: {
-                        color: '#FFF',
+                        color: '#AA00FF',
                         fontSize: 17,
                         fontWeight: '800',
                       },

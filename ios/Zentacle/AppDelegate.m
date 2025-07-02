@@ -3,45 +3,19 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-#import "RNSplashScreen.h"
+
 #import <React/RCTLinkingManager.h>
 #import <RNGoogleSignin/RNGoogleSignin.h>
-#import <GoogleMaps/GoogleMaps.h>
 #import "RNCConfig.h"
 #import <RNBranch/RNBranch.h>
 #import "RNNotifications.h"
-
-#ifdef FB_SONARKIT_ENABLED
-#import <FlipperKit/FlipperClient.h>
-#import <FlipperKitLayoutPlugin/FlipperKitLayoutPlugin.h>
-#import <FlipperKitUserDefaultsPlugin/FKUserDefaultsPlugin.h>
-#import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
-#import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
-#import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
-
-static void InitializeFlipper(UIApplication *application) {
-  FlipperClient *client = [FlipperClient sharedClient];
-  SKDescriptorMapper *layoutDescriptorMapper = [[SKDescriptorMapper alloc] initWithDefaults];
-  [client addPlugin:[[FlipperKitLayoutPlugin alloc] initWithRootNode:application withDescriptorMapper:layoutDescriptorMapper]];
-  [client addPlugin:[[FKUserDefaultsPlugin alloc] initWithSuiteName:nil]];
-  [client addPlugin:[FlipperKitReactPlugin new]];
-  [client addPlugin:[[FlipperKitNetworkPlugin alloc] initWithNetworkAdapter:[SKIOSNetworkAdapter new]]];
-  [client start];
-}
-#endif
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  NSString* mapsApiKey = [RNCConfig envFor:@"GOOGLE_MAPS_API_KEY"];
-  [GMSServices provideAPIKey:mapsApiKey];
-  [RNBranch initSessionWithLaunchOptions:launchOptions isReferrable:YES]; // <-- add this
+  [RNBranch initSessionWithLaunchOptions:launchOptions isReferrable:YES];
   [RNNotifications startMonitorNotifications];
-  NSURL *jsCodeLocation;
-#ifdef FB_SONARKIT_ENABLED
-  InitializeFlipper(application);
-#endif
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
@@ -59,7 +33,6 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-  [RNSplashScreen show];
   return YES;
 }
 
@@ -102,6 +75,16 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler {
   [RNNotifications didReceiveBackgroundNotification:userInfo withCompletionHandler:completionHandler];
+}
+
+/// This method controls whether the `concurrentRoot`feature of React18 is turned on or off.
+///
+/// @see: https://reactjs.org/blog/2022/03/29/react-v18.html
+/// @note: This requires to be rendering on Fabric (i.e. on the New Architecture).
+/// @return: `true` if the `concurrentRoot` feature is enabled. Otherwise, it returns `false`.
+- (BOOL)concurrentRootEnabled
+{
+  return true;
 }
 
 @end
