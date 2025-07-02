@@ -45,19 +45,9 @@ const DiveLocation: FunctionComponent<DiveLocationProps> = ({
           </View>
           <Button
             onPress={navigateToMap}
-            textGradient
-            start={{
-              x: 0,
-              y: 1,
-            }}
-            end={{
-              x: 0.65,
-              y: 0.4,
-            }}
-            gradientColors={['#AA00FF', '#AA00FF', '#00E0FF']}
             style={{
               container: styles.viewMapButtonContainer,
-              text: styles.viewMapButtonText,
+              text: { ...styles.viewMapButtonText, color: '#AA00FF' },
             }}>
             {t('VIEW_MAP')}
           </Button>
