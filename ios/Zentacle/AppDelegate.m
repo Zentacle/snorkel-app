@@ -6,7 +6,6 @@
 
 #import <React/RCTLinkingManager.h>
 #import <RNGoogleSignin/RNGoogleSignin.h>
-#import <GoogleMaps/GoogleMaps.h>
 #import "RNCConfig.h"
 #import <RNBranch/RNBranch.h>
 #import "RNNotifications.h"
@@ -15,8 +14,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  NSString* mapsApiKey = [RNCConfig envFor:@"GOOGLE_MAPS_API_KEY"];
-  [GMSServices provideAPIKey:mapsApiKey];
   [RNBranch initSessionWithLaunchOptions:launchOptions isReferrable:YES];
   [RNNotifications startMonitorNotifications];
 

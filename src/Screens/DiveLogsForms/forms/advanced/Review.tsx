@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import IoIcon from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Clipboard from '@react-native-clipboard/clipboard';
 import { useTranslation } from 'react-i18next';
 
 import GradientCircle from '_components/ui/GradientCircle';
@@ -77,14 +76,14 @@ const Review: FunctionComponent<ReviewProps> = ({
     }
   };
 
-  const onCopyToClipboard = () => {
-    const url = `https://zentacle.com/dive-log/${formValues.id}`;
-    Clipboard.setString(url);
-    setCopymessage(true);
-    setTimeout(() => {
-      setCopymessage(false);
-    }, 1000);
-  };
+  // const onCopyToClipboard = () => {
+  //   const url = `https://zentacle.com/dive-log/${formValues.id}`;
+  //   Clipboard.setString(url);
+  //   setCopymessage(true);
+  //   setTimeout(() => {
+  //     setCopymessage(false);
+  //   }, 1000);
+  // };
 
   return (
     <View style={styles.container}>
@@ -190,7 +189,8 @@ const Review: FunctionComponent<ReviewProps> = ({
             </GradientText>
           </View>
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={onCopyToClipboard}>
+        {/* <TouchableWithoutFeedback onPress={onCopyToClipboard}> */}
+        <TouchableWithoutFeedback>
           <View style={styles.shareItems}>
             <Image style={styles.shareIcon} source={CopyIcon} />
             <GradientText

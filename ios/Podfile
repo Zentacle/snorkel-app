@@ -19,11 +19,6 @@ target 'Zentacle' do
   pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
   pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
 
-  # React Native Maps dependencies
-  rn_maps_path = '../node_modules/react-native-maps'
-  pod 'react-native-google-maps', :path => rn_maps_path
-  pod 'GoogleMaps'
-  pod 'Google-Maps-iOS-Utils'
   pod 'react-native-branch', path: '../node_modules/react-native-branch'
 
   use_react_native!(
