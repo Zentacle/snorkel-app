@@ -67,6 +67,7 @@
     "@babel/runtime": "^7.12.5",
     "@faker-js/faker": "^6.0.0-alpha.5",
     "@react-native-community/eslint-config": "^2.0.0",
+    "@react-native/metro-config": "^0.80.1",
     "@types/jest": "^26.0.23",
     "@types/lodash": "^4.14.178",
     "@types/qs": "^6.9.7",
