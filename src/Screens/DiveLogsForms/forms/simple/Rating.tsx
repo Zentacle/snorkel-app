@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, Platform, Pressable } from 'react-native';
 import { Field } from 'react-final-form';
 import { FieldArray } from 'react-final-form-arrays';
 import { useTranslation } from 'react-i18next';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import KeyboardAwareScrollView from '_components/ui/KeyboardAwareScrollView';
 import MUIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import GradientText from '_components/ui/GradientText';

@@ -1,8 +1,8 @@
 PODS:
-  - Amplitude (8.16.3):
+  - Amplitude (8.18.0):
     - AnalyticsConnector (~> 1.0.0)
-  - amplitude-react-native (2.17.2):
-    - Amplitude (= 8.16.3)
+  - amplitude-react-native (2.17.3):
+    - Amplitude (= 8.18.0)
     - React-Core
   - AnalyticsConnector (1.0.3)
   - AppAuth (1.7.6):
@@ -12,8 +12,8 @@ PODS:
   - AppAuth/ExternalUserAgent (1.7.6):
     - AppAuth/Core
   - boost (1.83.0)
-  - BranchSDK (2.2.0)
-  - BVLinearGradient (2.7.3):
+  - BranchSDK (2.2.1)
+  - BVLinearGradient (2.8.3):
     - React-Core
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.73.11)
@@ -34,25 +34,25 @@ PODS:
     - AppAuth/Core (~> 1.6)
     - GTMSessionFetcher/Core (< 3.0, >= 1.5)
   - GTMSessionFetcher/Core (1.7.2)
-  - Permission-Camera (3.8.3):
+  - Permission-Camera (3.10.1):
     - RNPermissions
-  - Permission-Contacts (3.8.3):
+  - Permission-Contacts (3.10.1):
     - RNPermissions
-  - Permission-FaceID (3.8.3):
+  - Permission-FaceID (3.10.1):
     - RNPermissions
-  - Permission-LocationAccuracy (3.8.3):
+  - Permission-LocationAccuracy (3.10.1):
     - RNPermissions
-  - Permission-LocationAlways (3.8.3):
+  - Permission-LocationAlways (3.10.1):
     - RNPermissions
-  - Permission-LocationWhenInUse (3.8.3):
+  - Permission-LocationWhenInUse (3.10.1):
     - RNPermissions
-  - Permission-MediaLibrary (3.8.3):
+  - Permission-MediaLibrary (3.10.1):
     - RNPermissions
-  - Permission-Microphone (3.8.3):
+  - Permission-Microphone (3.10.1):
     - RNPermissions
-  - Permission-Notifications (3.8.3):
+  - Permission-Notifications (3.10.1):
     - RNPermissions
-  - Permission-PhotoLibrary (3.8.3):
+  - Permission-PhotoLibrary (3.10.1):
     - RNPermissions
   - PurchasesHybridCommon (13.38.1):
     - RevenueCat (= 5.29.0)
@@ -897,31 +897,27 @@ PODS:
   - React-Mapbuffer (0.73.11):
     - glog
     - React-debug
-  - react-native-branch (5.9.0):
-    - BranchSDK (= 2.2.0)
+  - react-native-branch (5.9.2):
+    - BranchSDK (= 2.2.1)
     - React-Core
-  - react-native-config (1.5.1):
-    - react-native-config/App (= 1.5.1)
-  - react-native-config/App (1.5.1):
+  - react-native-config (1.5.5):
+    - react-native-config/App (= 1.5.5)
+  - react-native-config/App (1.5.5):
     - React-Core
-  - react-native-date-picker (4.2.13):
+  - react-native-date-picker (4.4.2):
     - React-Core
   - react-native-geolocation-service (5.3.1):
     - React
   - react-native-image-picker (4.10.3):
     - React-Core
-  - react-native-maps (1.7.1):
+  - react-native-maps (1.20.1):
     - React-Core
-  - react-native-netinfo (9.4.1):
+  - react-native-netinfo (9.5.0):
     - React-Core
   - react-native-notifications (4.3.5):
     - React-Core
-  - react-native-safe-area-context (4.6.4):
-    - RCT-Folly
-    - RCTRequired
-    - RCTTypeSafety
+  - react-native-safe-area-context (4.14.1):
     - React-Core
-    - ReactCommon/turbomodule/core
   - react-native-tracking-transparency (0.1.2):
     - React
   - react-native-webview (11.26.1):
@@ -1090,7 +1086,7 @@ PODS:
     - React-logger (= 0.73.11)
     - React-perflogger (= 0.73.11)
   - RevenueCat (5.29.0)
-  - RNAppleAuthentication (2.2.2):
+  - RNAppleAuthentication (2.4.1):
     - React-Core
   - RNCAsyncStorage (2.2.0):
     - React-Core
@@ -1099,14 +1095,14 @@ PODS:
   - RNGoogleSignin (7.2.2):
     - GoogleSignIn (~> 6.1.0)
     - React-Core
-  - RNPermissions (3.8.3):
+  - RNPermissions (3.10.1):
     - React-Core
   - RNPurchases (8.11.7):
     - PurchasesHybridCommon (= 13.38.1)
     - React-Core
-  - RNRate (1.2.12):
-    - React-Core
-  - RNScreens (3.22.1):
+  - RNScreens (3.37.0):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
     - React-Core
     - React-RCTImage
   - RNSVG (12.5.1):
@@ -1194,7 +1190,6 @@ DEPENDENCIES:
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNPurchases (from `../node_modules/react-native-purchases`)
-  - RNRate (from `../node_modules/react-native-rate`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -1365,8 +1360,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-permissions"
   RNPurchases:
     :path: "../node_modules/react-native-purchases"
-  RNRate:
-    :path: "../node_modules/react-native-rate"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNSVG:
@@ -1377,13 +1370,13 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  Amplitude: 10f20d4436fdcd38ddd5be1da7033fcc21f4143e
-  amplitude-react-native: 31547517af995bb7e18052580ce3bad6907bd39e
+  Amplitude: 184def4f87aa26f94a93a7faa334e06b1cae704d
+  amplitude-react-native: 6b7a1d30627233fe6f03741109831561d0a5f69c
   AnalyticsConnector: a53214d38ae22734c6266106c0492b37832633a9
   AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
-  BranchSDK: 8749d10e30725d08b6c188ab90e6fd6223d204db
-  BVLinearGradient: 4a9d6755e4f89f454b048698a78f414098a028bb
+  BranchSDK: cb046c2714b03e573484ce9e349e2ddbad7016e8
+  BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
   FBLazyVector: b46891061bfe0a9b07f601813114c8653a72a45c
   FBReactNativeSpec: 9a01850c21d81027fa7b20b9dcc25d9bfae083da
@@ -1392,16 +1385,16 @@ SPEC CHECKSUMS:
   GoogleSignIn: c90b5bec45e780f54c6a8e1e3c182a86e3dda69d
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
-  Permission-Camera: f829da0c6648f19c50be3c48048d82e20f0eadfc
-  Permission-Contacts: e3178a9743f1721166571b59888679d3cb0da0d3
-  Permission-FaceID: 7f8838f83d1ed407fc683a2da3a818fc5438bac5
-  Permission-LocationAccuracy: 19d2b5205cd6bd10d791a8c3d95460ae930a89a6
-  Permission-LocationAlways: 0c07c2fd523bf63ab81065c7f640d98bb993eadd
-  Permission-LocationWhenInUse: ba0df636b9e6d0854ae9ea06852f61f4a36b65d8
-  Permission-MediaLibrary: 81354a9209fed9850b80c4492416e6d8023d785b
-  Permission-Microphone: f0897ce2967a5dea6543a509e01ad65262ff3431
-  Permission-Notifications: 93728c1237e4967c86e66e3840f24570d679084d
-  Permission-PhotoLibrary: 6a89047d4f4ddf7be5a57967246f3b969c51c1ea
+  Permission-Camera: cf14fb2d76432ee0f36546249ee608ef6037a23e
+  Permission-Contacts: 72c74d9415090effa9e79c7fc46423ad5b3e020d
+  Permission-FaceID: 57f30c981224753654df9350828dfbfc75dc5e83
+  Permission-LocationAccuracy: 30c5421911024b28d8916db5cbd728097da54434
+  Permission-LocationAlways: af165dee8a5a5888df6764f9f6ba98b112893709
+  Permission-LocationWhenInUse: e4a1bdc6b9f4a7a598613a6a748bd186e937df34
+  Permission-MediaLibrary: 45ffd4ae96f5083e792486e5709dc286d35f338d
+  Permission-Microphone: 744eafab00992871bd06b3e3f1cbc1ba5b024b58
+  Permission-Notifications: e254bc5abf9c33a6ac6b9f68f4c406d5bf7ab46e
+  Permission-PhotoLibrary: 6088ef4424a006e2bbf3ef6ccbca0f88fa1a52a4
   PurchasesHybridCommon: 5a46c67f78680dee9289783edbcebd983ff7bd9c
   RCT-Folly: cd21f1661364f975ae76b3308167ad66b09f53f5
   RCTRequired: 415e56f7c33799a6483e41e4dce607f3daf1e69b
@@ -1424,15 +1417,15 @@ SPEC CHECKSUMS:
   React-jsinspector: a98428936fb888cc15d857226a26d9ac0a668a0e
   React-logger: 6e4873d1f9c54cca30f6c91a6617f8c91b75ba4c
   React-Mapbuffer: 57bf49a458398d329dad2bf8bc660e3e35b96989
-  react-native-branch: 1f674ed4bd812ddd4a11d3bdf530b26781927180
-  react-native-config: 136f9755ccc991cc6438053a44363259ad4c7813
-  react-native-date-picker: b3f227d7e7be09b6754e009ad1fd27327468ca1e
+  react-native-branch: 5d4ecda7bae040542f6c9f651a05d3df23d8b35a
+  react-native-config: 644074ab88db883fcfaa584f03520ec29589d7df
+  react-native-date-picker: 5ddb34db03afc527bc07777952c2ac72fa384411
   react-native-geolocation-service: 32b2c2a3b91e70ce2a8d0c684801aaeb0a07e0ec
   react-native-image-picker: 1f5318beec2ebed6695454ffb9bea8c4152f1598
-  react-native-maps: 38394e3f4258d7fe8f1241c2624b91acf35e2dd5
-  react-native-netinfo: 58a62fc2fc7245875718b99ac9914c307e1523ca
+  react-native-maps: 9febd31278b35cd21e4fad2cf6fa708993be5dab
+  react-native-netinfo: 26560022f28c06d8ef00a9ff1e03beefbbb60c2d
   react-native-notifications: 5ec52fe4f3c3e096adcb255f7d810ea819cdd4bb
-  react-native-safe-area-context: f7b689d77c2b0dde4f9a396d554c912df72feb72
+  react-native-safe-area-context: 758e894ca5a9bd1868d2a9cfbca7326a2b6bf9dc
   react-native-tracking-transparency: 15eb319f2b982070eb9831582af27d87badfa624
   react-native-webview: ec195db71ebf55705d7b46a7da5f1b1746bb7efd
   React-nativeconfig: 8fd29a35a3e4e8c37682d976667663d834ba6165
@@ -1456,19 +1449,18 @@ SPEC CHECKSUMS:
   React-utils: e8549669b504c18929b2e9aa4d87657e530a91a4
   ReactCommon: 95e8885213aab98c49fd0e24917f07c435c4347d
   RevenueCat: 5fa12c42c14b390dd2423897e925f407f474b8fa
-  RNAppleAuthentication: 4272012a6745519a2411889894eb69a3f553c9f9
+  RNAppleAuthentication: c3dddf5918126c9aae85dc2e2ce9fb87835e9e04
   RNCAsyncStorage: b44e8a4e798c3e1f56bffccd0f591f674fb9198f
   RNCMaskedView: 4b5b12efdee55966f1d68f32d4b3401c2acf05c2
   RNGoogleSignin: 4855dd248bc4b254ebd1cb7cd53b8c8316440290
-  RNPermissions: 48614f7dbd81823aeff50b56540f527cedfe5602
+  RNPermissions: bd0d9ca7969ff7b999aa605ee2e5919c12522bfe
   RNPurchases: 5f508be6d4237128d78b69fb17958ab07ae5380f
-  RNRate: 7641919330e0d6688ad885a985b4bd697ed7d14c
-  RNScreens: 39db1910d2ea9ae885dcda43086818e9f8b714d0
+  RNScreens: 3ce54903891fd6281865ad3e7cfe4c2bb438c70c
   RNSVG: d7cb8bd34550cf4c4fc7edd7ac627905e2b71f3f
   RNVectorIcons: 1f688883f7dfb5b346a03689800a88c5e3376029
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: a813a6d82538ccba91c54406404e3ed80b48a692
 
-PODFILE CHECKSUM: aab9b62dcc7bcbeda89c2a60148cb1f234301a5d
+PODFILE CHECKSUM: 4fa12177133e65a55f60730530602211a8563bcb
 
 COCOAPODS: 1.16.2

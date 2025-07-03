@@ -9,7 +9,6 @@ import {
   Share,
   Alert,
 } from 'react-native';
-import Rate from 'react-native-rate';
 import IoIcon from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from 'react-i18next';
@@ -98,14 +97,6 @@ const Review: FunctionComponent<ReviewProps> = ({
     preferInApp: true,
     openAppStoreIfInAppFails: false,
   };
-
-  React.useEffect(() => {
-    Rate.rate(options, (success, error) => {
-      if (error) {
-        console.error(error);
-      }
-    });
-  }, []);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>

@@ -6,7 +6,7 @@ import {
   View,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import KeyboardAwareScrollView from '_components/ui/KeyboardAwareScrollView';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Form, Field } from 'react-final-form';
 import validate from 'validate.js';

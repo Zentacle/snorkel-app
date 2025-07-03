@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, SafeAreaView, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
 import { Form, Field } from 'react-final-form';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import KeyboardAwareScrollView from '_components/ui/KeyboardAwareScrollView';
 
 import { useAppDispatch, useAppSelector } from '_redux/hooks';
 import { selectAuthToken, selectUser, updateUser } from '_redux/slices/user';
