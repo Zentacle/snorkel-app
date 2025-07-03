@@ -27,6 +27,6 @@ export const users: User[] = [
     email: 'mjmayank@gmail.com',
     password: 'password',
     username: 'mjmayank',
-    admin: true;
+    admin: true,
   },
 ];

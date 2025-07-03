@@ -28,8 +28,9 @@
     },
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "skipLibCheck": false,
-    "resolveJsonModule": true
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "types": ["react-native"]
   },
   "exclude": [
     "node_modules",
