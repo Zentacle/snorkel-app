@@ -5,11 +5,9 @@ import {
   StyleSheet,
   Dimensions,
   SafeAreaView,
-  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
-import { PERMISSIONS, RESULTS, checkMultiple } from 'react-native-permissions';
 import { Form, Field } from 'react-final-form';
 import validate from 'validate.js';
 
@@ -33,6 +31,7 @@ import ImageFormComponent from '_components/ui/ImageFormComponent';
 import { handleUploadProfilePic } from '_redux/slices/user/api';
 import { FormImages } from '_utils/interfaces/data/logs';
 import { sendEvent } from '_utils/functions/amplitude';
+import { checkLocationPermissions } from '_utils/functions/permissions';
 
 const HEIGHT = Dimensions.get('window').width;
 
@@ -71,22 +70,8 @@ const ChooseAvatar: FunctionComponent<ChooseAvatarProps> = props => {
     if (authType === 'register') {
       navigateToLocationPermissions();
     } else {
-      const perms = await checkMultiple([
-        PERMISSIONS.IOS.LOCATION_ALWAYS,
-        PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
-        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-        PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
-      ]);
-      const locationAlways = perms[PERMISSIONS.IOS.LOCATION_ALWAYS];
-      const locationWhenInUse = perms[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE];
-      const fineLocation = perms[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION];
-      const coarseLocation = perms[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION];
-      if (
-        locationAlways === RESULTS.GRANTED ||
-        locationWhenInUse === RESULTS.GRANTED ||
-        fineLocation === RESULTS.GRANTED ||
-        coarseLocation === RESULTS.GRANTED
-      ) {
+      const hasLocationPermissions = await checkLocationPermissions();
+      if (hasLocationPermissions) {
         navigateToAddRecentDiveLog();
       } else {
         navigateToLocationPermissions();

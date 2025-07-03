@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import {
-  Platform,
   View,
   Text,
   StyleSheet,
@@ -10,12 +9,6 @@ import {
 import { useTranslation } from 'react-i18next';
 
 import Geolocation from 'react-native-geolocation-service';
-import {
-  PERMISSIONS,
-  RESULTS,
-  checkMultiple,
-  request,
-} from 'react-native-permissions';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -36,6 +29,7 @@ import LogsList from './components/List';
 import { isBelowHeightThreshold } from '_utils/constants';
 import DiveLogListPlaceholder from '_components/reusables/Placeholders/DiveLogs/List';
 import Selector from '_components/ui/Selector';
+import { ensureLocationPermissions } from '_utils/functions/permissions';
 
 type LogsNavigationProps = CompositeNavigationProp<
   BottomTabNavigationProp<AppTabsParamList, 'Logs'>,
@@ -64,25 +58,9 @@ const Logs: FunctionComponent<LogsProps> = ({ navigation }) => {
           }),
         );
       } else {
-        const perms = await checkMultiple([
-          PERMISSIONS.IOS.LOCATION_ALWAYS,
-          PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
-          PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-          PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
-        ]);
-        const hasLocationPermission =
-          perms[PERMISSIONS.IOS.LOCATION_ALWAYS] === RESULTS.GRANTED ||
-          perms[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE] === RESULTS.GRANTED ||
-          perms[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === RESULTS.GRANTED ||
-          perms[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] === RESULTS.GRANTED;
+        const hasLocationPermissions = await ensureLocationPermissions();
 
-        if (Platform.OS === 'android') {
-          await request(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
-        } else {
-          await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
-        }
-
-        if (hasLocationPermission) {
+        if (hasLocationPermissions) {
           Geolocation.getCurrentPosition(
             position => {
               dispatch(

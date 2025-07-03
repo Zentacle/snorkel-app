@@ -10,12 +10,6 @@ import {
 } from 'react-native';
 import { Form, Field } from 'react-final-form';
 import { useTranslation } from 'react-i18next';
-import {
-  PERMISSIONS,
-  RESULTS,
-  checkMultiple,
-  request,
-} from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
 import config from 'react-native-config';
 import Purchases from 'react-native-purchases';
@@ -66,6 +60,7 @@ import {
   handleFetchNearbyShops,
   selectNearbyShops,
 } from '_redux/slices/dive-shops';
+import { ensureLocationPermissions } from '_utils/functions/permissions';
 
 // interface TagInterface {
 //   name: string;
@@ -159,29 +154,9 @@ const Explore: FunctionComponent<ExploreProps> = ({ navigation }) => {
   // ];
 
   const handleRecommendedSitesRequest = async () => {
-    const perms = await checkMultiple([
-      PERMISSIONS.IOS.LOCATION_ALWAYS,
-      PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
-      PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-      PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
-    ]);
-    const locationAlways = perms[PERMISSIONS.IOS.LOCATION_ALWAYS];
-    const locationWhenInUse = perms[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE];
-    const fineLocation = perms[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION];
-    const coarseLocation = perms[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION];
+    const hasLocationPermissions = await ensureLocationPermissions();
 
-    if (Platform.OS === 'android') {
-      await request(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
-    } else {
-      await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
-    }
-
-    if (
-      locationAlways === RESULTS.GRANTED ||
-      locationWhenInUse === RESULTS.GRANTED ||
-      fineLocation === RESULTS.GRANTED ||
-      coarseLocation === RESULTS.GRANTED
-    ) {
+    if (hasLocationPermissions) {
       Geolocation.getCurrentPosition(
         position => {
           setPosition(position.coords);

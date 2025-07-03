@@ -5,8 +5,6 @@ import {
   Text,
   View,
   TouchableWithoutFeedback,
-  Pressable,
-  Platform,
 } from 'react-native';
 import KeyboardAwareScrollView from '_components/ui/KeyboardAwareScrollView';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -14,7 +12,6 @@ import { Form, Field } from 'react-final-form';
 import validate from 'validate.js';
 import { FORM_ERROR } from 'final-form';
 import { useTranslation } from 'react-i18next';
-import { PERMISSIONS, RESULTS, checkMultiple } from 'react-native-permissions';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { CompositeNavigationProp } from '@react-navigation/native';
@@ -41,7 +38,6 @@ import type {
 import { LoginResponse } from '_utils/interfaces/data/user';
 
 import { isBelowHeightThreshold, HEIGHT } from '_utils/constants';
-import GradientText from '_components/ui/GradientText';
 import { sendEvent } from '_utils/functions/amplitude';
 
 type LandingScreenNavigationProps = CompositeNavigationProp<
@@ -109,48 +105,6 @@ const SignIn: FunctionComponent<SignInProps> = props => {
     props.navigation.navigate('OnBoarding', {
       screen: 'LocationPermissions',
     });
-  };
-
-  const checkLocationPermissions = async () => {
-    const perms = await checkMultiple([
-      PERMISSIONS.IOS.LOCATION_ALWAYS,
-      PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
-      PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-      PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION
-    ])
-    if (Platform.OS === 'ios') {
-      const locationAlways = perms[PERMISSIONS.IOS.LOCATION_ALWAYS];
-      const locationWhenInUse = perms[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE];
-
-      if (
-        locationAlways === RESULTS.GRANTED ||
-        locationWhenInUse === RESULTS.GRANTED
-      ) {
-        // navigate straight to app if not loggged in or if user has settings filled out
-        // else navigate to settings
-        return true;
-      }
-
-      return false;
-    } else {
-      const fineLocation = perms[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION];
-      const coarseLocation = perms[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION];
-
-      if (fineLocation === RESULTS.GRANTED || coarseLocation === RESULTS.GRANTED) {
-        return true;
-      }
-
-      return false;
-    }
-  };
-
-  const handleSkip = async () => {
-    const locationPermissions = await checkLocationPermissions();
-    if (!locationPermissions) {
-      navigateToLocationPermissions();
-    } else {
-      navigateToApp();
-    }
   };
 
   const constraints = {

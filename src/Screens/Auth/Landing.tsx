@@ -6,9 +6,9 @@ import {
   ImageBackground,
   TouchableWithoutFeedback,
   Pressable,
+  Platform,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { PERMISSIONS, RESULTS, checkMultiple } from 'react-native-permissions';
 import Purchases from 'react-native-purchases';
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -35,6 +35,7 @@ import {
 
 import { isBelowHeightThreshold, HEIGHT } from '_utils/constants';
 import { sendEvent } from '_utils/functions/amplitude';
+import { checkLocationPermissions } from '_utils/functions/permissions';
 
 type LandingScreenNavigationProps = CompositeNavigationProp<
   NativeStackNavigationProp<AuthtackParamList, 'Landing'>,
@@ -83,26 +84,6 @@ const Landing: FunctionComponent<LandingProps> = props => {
     props.navigation.navigate('OnBoarding', {
       screen: 'LocationPermissions',
     });
-  };
-
-  const checkLocationPermissions = async () => {
-    const perms = await checkMultiple([
-      PERMISSIONS.IOS.LOCATION_ALWAYS,
-      PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,
-      PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-      PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
-    ]);
-    const locationAlways = perms[PERMISSIONS.IOS.LOCATION_ALWAYS];
-    const locationWhenInUse = perms[PERMISSIONS.IOS.LOCATION_WHEN_IN_USE];
-    const fineLocation = perms[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION];
-    const coarseLocation = perms[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION];
-
-    return (
-      locationAlways === RESULTS.GRANTED ||
-      locationWhenInUse === RESULTS.GRANTED ||
-      fineLocation === RESULTS.GRANTED ||
-      coarseLocation === RESULTS.GRANTED
-    );
   };
 
   const handleSkip = async () => {
