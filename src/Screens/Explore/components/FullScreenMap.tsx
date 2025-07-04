@@ -50,6 +50,7 @@ const FullScreenMap: FunctionComponent<FullScreenMapProps> = ({
       {isExplore ? (
         diveSites.map(site => (
           <Marker
+            key={site.id || `${site.latitude}-${site.longitude}`}
             title={site.name}
             description={site.location_city}
             coordinate={{
