@@ -6,7 +6,7 @@ import GradientBox from '_components/ui/GradientBox';
 
 import Snorkel from '_assets/tab-icons/logs-active.png';
 import Location from '_assets/scuba_icons/Location.svg';
-import Clock from '_assets/clock-lar.png';
+import Clock from '_assets/clock.png';
 
 import type { FunctionComponent } from 'react';
 import { DiveLogsState } from '_utils/interfaces/data/logs';
@@ -67,7 +67,7 @@ const DiveLogSummary: FunctionComponent<DiveLogSummaryProps> = ({
             <View style={styles.summaryItem}>
               <View style={styles.iconContainer}>
                 <Image
-                  style={{ width: 25, height: 25, marginBottom: 5 }}
+                  style={{ width: 25, height: 25 }}
                   source={Clock}
                 />
               </View>
